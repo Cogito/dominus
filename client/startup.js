@@ -80,35 +80,37 @@ Session.setDefault('dupes', [])
 
 // selected units reactive variable
 
-var selected_units = {}
-var selected_units_dep = new Deps.Dependency
+Meteor.startup(function() {
+	var selected_units = {}
+	var selected_units_dep = new Deps.Dependency
 
-_.each(s.army.types, function(type) {
-	selected_units[type] = 0
-})
-
-get_selected_units = function() {
-	selected_units_dep.depend()
-	return selected_units
-}
-
-get_selected_unit = function(type) {
-	selected_units_dep.depend()
-	return selected_units[type]
-}
-
-set_selected_unit = function(type, num) {
-	if (selected_units[type] != num) {
-		selected_units[type] = num
-		selected_units_dep.changed()
-	}
-}
-
-num_selected_units = function() {
-	selected_units_dep.depend()
-	var num = 0
 	_.each(s.army.types, function(type) {
-		num += selected_units[type]
+		selected_units[type] = 0
 	})
-	return num
-}
+
+	get_selected_units = function() {
+		selected_units_dep.depend()
+		return selected_units
+	}
+
+	get_selected_unit = function(type) {
+		selected_units_dep.depend()
+		return selected_units[type]
+	}
+
+	set_selected_unit = function(type, num) {
+		if (selected_units[type] != num) {
+			selected_units[type] = num
+			selected_units_dep.changed()
+		}
+	}
+
+	num_selected_units = function() {
+		selected_units_dep.depend()
+		var num = 0
+		_.each(s.army.types, function(type) {
+			num += selected_units[type]
+		})
+		return num
+	}
+})

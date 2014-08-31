@@ -1,3 +1,5 @@
+// this file needs to be split into server settings, client settings and common settings
+
 s = {}
 s.market = {}
 s.resource = {}

@@ -383,314 +383,316 @@ Template.rp_hire_army_from_castle.destroyed = function() {
 // getters and setters
 /////////////////////////////////////////////////////////////////////////////
 
-// max
-
-var hiring_maxs = {}
-_.each(s.army.types, function(type) {
-	hiring_maxs[type] = 0
-})
-var hiring_maxs_dep = new Deps.Dependency
-
-var get_hiring_maxs = function() {
-	hiring_maxs_dep.depend()
-	return clone_object(hiring_maxs)
-}
-
-var get_hiring_max = function(type) {
-	check(type, String)
-
-	hiring_maxs_dep.depend()
-	return hiring_maxs[type]
-}
-
-var set_hiring_max = function(type, num) {
-	check(type, String)
-	check(num, Number)
-
-	if (hiring_maxs[type] != num) {
-		hiring_maxs[type] = num
-		hiring_maxs_dep.changed()
-	}
-}
-
-var set_hiring_maxs = function(army) {
-	check(army, Object)
-	var has_changed = false
-
-	_.each(costs, function(value, key) {
-		if (hiring_maxs[key] != value) {
-			hiring_maxs[key] = value
-			has_changed = true
-		}
-	})
-
-	if (has_changed) {
-		hiring_maxs_dep.changed()
-	}
-}
-
-
-
-
-
-// final
-
-var hiring_final_costs = {}
-_.each(s.resource.types_plus_gold, function(type) {
-	hiring_final_costs[type] = 0
-})
-var hiring_final_costs_dep = new Deps.Dependency
-
-var get_hiring_final_costs = function() {
-	hiring_final_costs_dep.depend()
-	return clone_object(hiring_final_costs)
-}
-
-var get_hiring_final_cost = function(type) {
-	check(type, String)
-
-	hiring_final_costs_dep.depend()
-	return hiring_final_costs[type]
-}
-
-var set_hiring_final_cost = function(type, num) {
-	check(type, String)
-	check(num, Number)
-
-	if (hiring_final_costs[type] != num) {
-		hiring_final_costs[type] = num
-		hiring_final_costs_dep.changed()
-	}
-}
-
-var set_hiring_final_costs = function(costs) {
-	check(costs, Object)
-	var has_changed = false
-
-	_.each(costs, function(value, key) {
-		if (hiring_final_costs[key] != value) {
-			hiring_final_costs[key] = value
-			has_changed = true
-		}
-	})
-
-	if (has_changed) {
-		hiring_final_costs_dep.changed()
-	}
-}
-
-
-
-
-
-
-// costs for each army type
-
-var hiring_army_costs = {}
-_.each(s.army.types, function(type) {
-	hiring_army_costs[type] = 0
-})
-var hiring_army_costs_dep = new Deps.Dependency
-
-var get_hiring_army_costs = function() {
-	hiring_army_costs_dep.depend()
-	return clone_object(hiring_army_costs)
-}
-
-var get_hiring_army_cost = function(type) {
-	check(type, String)
-
-	hiring_army_costs_dep.depend()
-	return hiring_army_costs[type]
-}
-
-var set_hiring_army_cost = function(type, num) {
-	check(type, String)
-	check(num, Number)
-
-	if (hiring_army_costs[type] != num) {
-		hiring_army_costs[type] = num
-		hiring_army_costs_dep.changed()
-	}
-}
-
-var set_hiring_army_costs = function(costs) {
-	check(costs, Object)
-	var has_changed = false
-
-	_.each(costs, function(value, key) {
-		if (hiring_army_costs[key] != value) {
-			hiring_army_costs[key] = value
-			has_changed = true
-		}
-	})
-
-	if (has_changed) {
-		hiring_army_costs_dep.changed()
-	}
-}
-
-
-
-
-
-
-// costs
-
-var hiring_costs = {}
-_.each(s.resource.types_plus_gold, function(type) {
-	hiring_costs[type] = 0
-})
-var hiring_costs_dep = new Deps.Dependency
-
-var get_hiring_costs = function() {
-	hiring_costs_dep.depend()
-	return clone_object(hiring_costs)
-}
-
-var get_hiring_cost = function(type) {
-	check(type, String)
-
-	hiring_costs_dep.depend()
-	return hiring_costs[type]
-}
-
-var set_hiring_cost = function(type, num) {
-	check(type, String)
-	check(num, Number)
-
-	if (hiring_costs[type] != num) {
-		hiring_costs[type] = num
-		hiring_costs_dep.changed()
-	}
-}
-
-var set_hiring_costs = function(costs) {
-	check(costs, Object)
-	var has_changed = false
-
-	_.each(costs, function(value, key) {
-		if (hiring_costs[key] != value) {
-			hiring_costs[key] = value
-			has_changed = true
-		}
-	})
-
-	if (has_changed) {
-		hiring_costs_dep.changed()
-	}
-}
-
-
-
-
-// users current resources
-
-var hiring_current_resources = {}
-_.each(s.resource.types_plus_gold, function(type) {
-	hiring_current_resources[type] = 0
-})
-var hiring_current_resources_dep = new Deps.Dependency
-
-var get_hiring_current_resources = function() {
-	hiring_current_resources_dep.depend()
-	return clone_object(hiring_current_resources)
-}
-
-var get_hiring_current_resource = function(type) {
-	check(type, String)
-
-	hiring_current_resources_dep.depend()
-	return hiring_current_resources[type]
-}
-
-var set_hiring_current_resource = function(type, num) {
-	check(type, String)
-	check(num, Number)
-
-	if (hiring_current_resources[type] != num) {
-		hiring_current_resources[type] = num
-		hiring_current_resources_dep.changed()
-	}
-}
-
-var set_hiring_current_resources = function(resources) {
-	var has_changed = false
-
-	_.each(resources, function(value, key) {
-		if (hiring_current_resources[key] != value) {
-			hiring_current_resources[key] = value
-			has_changed = true
-		}
-	})
-
-	if (has_changed) {
-		hiring_current_resources_dep.changed()
-	}
-}
-
-
-
-
-
-// selected units
-
-var selected_hiring_units = {}
-_.each(s.army.types, function(type) {
-	selected_hiring_units[type] = 0
-})
-var selected_hiring_units_dep = new Deps.Dependency
-
-var get_selected_hiring_units = function() {
-	selected_hiring_units_dep.depend()
-	return clone_object(selected_hiring_units)
-}
-
-var get_selected_hiring_unit = function(type) {
-	check(type, String)
-	selected_hiring_units_dep.depend()
-	return selected_hiring_units[type]
-}
-
-var set_selected_hiring_unit = function(type, num) {
-	check(type, String)
-	check(num, Number)
-
-	if (selected_hiring_units[type] != num) {
-		selected_hiring_units_dep.changed()
-		selected_hiring_units[type] = num
-	}
-}
-
-var set_selected_hiring_units = function(army) {
-	var has_changed = false
-
-	_.each(army, function(value, key) {
-		if (selected_hiring_units[key] != value) {
-			selected_hiring_units[key] = value
-			has_changed = true
-		}
-	})
-
-	if (has_changed) {
-		selected_hiring_units_dep.changed()
-	}
-}
-
-var reset_selected_hiring_units = function() {
-	var set = {}
+Meteor.startup(function() {
+	// max
+	var hiring_maxs = {}
 	_.each(s.army.types, function(type) {
-		set[type] = 0
+		hiring_maxs[type] = 0
 	})
-	set_selected_hiring_units(set)
-}
+	var hiring_maxs_dep = new Deps.Dependency
 
-var no_units_are_selected = function() {
-	var has_no_units = true
-	_.each(s.army.types, function(type) {
-		if (selected_hiring_units[type] > 0) {
-			has_no_units = false
+	var get_hiring_maxs = function() {
+		hiring_maxs_dep.depend()
+		return clone_object(hiring_maxs)
+	}
+
+	var get_hiring_max = function(type) {
+		check(type, String)
+
+		hiring_maxs_dep.depend()
+		return hiring_maxs[type]
+	}
+
+	var set_hiring_max = function(type, num) {
+		check(type, String)
+		check(num, Number)
+
+		if (hiring_maxs[type] != num) {
+			hiring_maxs[type] = num
+			hiring_maxs_dep.changed()
 		}
+	}
+
+	var set_hiring_maxs = function(army) {
+		check(army, Object)
+		var has_changed = false
+
+		_.each(costs, function(value, key) {
+			if (hiring_maxs[key] != value) {
+				hiring_maxs[key] = value
+				has_changed = true
+			}
+		})
+
+		if (has_changed) {
+			hiring_maxs_dep.changed()
+		}
+	}
+
+
+
+
+
+	// final
+
+	var hiring_final_costs = {}
+	_.each(s.resource.types_plus_gold, function(type) {
+		hiring_final_costs[type] = 0
 	})
-	return has_no_units
-}
+	var hiring_final_costs_dep = new Deps.Dependency
+
+	var get_hiring_final_costs = function() {
+		hiring_final_costs_dep.depend()
+		return clone_object(hiring_final_costs)
+	}
+
+	var get_hiring_final_cost = function(type) {
+		check(type, String)
+
+		hiring_final_costs_dep.depend()
+		return hiring_final_costs[type]
+	}
+
+	var set_hiring_final_cost = function(type, num) {
+		check(type, String)
+		check(num, Number)
+
+		if (hiring_final_costs[type] != num) {
+			hiring_final_costs[type] = num
+			hiring_final_costs_dep.changed()
+		}
+	}
+
+	var set_hiring_final_costs = function(costs) {
+		check(costs, Object)
+		var has_changed = false
+
+		_.each(costs, function(value, key) {
+			if (hiring_final_costs[key] != value) {
+				hiring_final_costs[key] = value
+				has_changed = true
+			}
+		})
+
+		if (has_changed) {
+			hiring_final_costs_dep.changed()
+		}
+	}
+
+
+
+
+
+
+	// costs for each army type
+
+	var hiring_army_costs = {}
+	_.each(s.army.types, function(type) {
+		hiring_army_costs[type] = 0
+	})
+	var hiring_army_costs_dep = new Deps.Dependency
+
+	var get_hiring_army_costs = function() {
+		hiring_army_costs_dep.depend()
+		return clone_object(hiring_army_costs)
+	}
+
+	var get_hiring_army_cost = function(type) {
+		check(type, String)
+
+		hiring_army_costs_dep.depend()
+		return hiring_army_costs[type]
+	}
+
+	var set_hiring_army_cost = function(type, num) {
+		check(type, String)
+		check(num, Number)
+
+		if (hiring_army_costs[type] != num) {
+			hiring_army_costs[type] = num
+			hiring_army_costs_dep.changed()
+		}
+	}
+
+	var set_hiring_army_costs = function(costs) {
+		check(costs, Object)
+		var has_changed = false
+
+		_.each(costs, function(value, key) {
+			if (hiring_army_costs[key] != value) {
+				hiring_army_costs[key] = value
+				has_changed = true
+			}
+		})
+
+		if (has_changed) {
+			hiring_army_costs_dep.changed()
+		}
+	}
+
+
+
+
+
+
+	// costs
+
+	var hiring_costs = {}
+	_.each(s.resource.types_plus_gold, function(type) {
+		hiring_costs[type] = 0
+	})
+	var hiring_costs_dep = new Deps.Dependency
+
+	var get_hiring_costs = function() {
+		hiring_costs_dep.depend()
+		return clone_object(hiring_costs)
+	}
+
+	var get_hiring_cost = function(type) {
+		check(type, String)
+
+		hiring_costs_dep.depend()
+		return hiring_costs[type]
+	}
+
+	var set_hiring_cost = function(type, num) {
+		check(type, String)
+		check(num, Number)
+
+		if (hiring_costs[type] != num) {
+			hiring_costs[type] = num
+			hiring_costs_dep.changed()
+		}
+	}
+
+	var set_hiring_costs = function(costs) {
+		check(costs, Object)
+		var has_changed = false
+
+		_.each(costs, function(value, key) {
+			if (hiring_costs[key] != value) {
+				hiring_costs[key] = value
+				has_changed = true
+			}
+		})
+
+		if (has_changed) {
+			hiring_costs_dep.changed()
+		}
+	}
+
+
+
+
+	// users current resources
+
+	var hiring_current_resources = {}
+	_.each(s.resource.types_plus_gold, function(type) {
+		hiring_current_resources[type] = 0
+	})
+	var hiring_current_resources_dep = new Deps.Dependency
+
+	var get_hiring_current_resources = function() {
+		hiring_current_resources_dep.depend()
+		return clone_object(hiring_current_resources)
+	}
+
+	var get_hiring_current_resource = function(type) {
+		check(type, String)
+
+		hiring_current_resources_dep.depend()
+		return hiring_current_resources[type]
+	}
+
+	var set_hiring_current_resource = function(type, num) {
+		check(type, String)
+		check(num, Number)
+
+		if (hiring_current_resources[type] != num) {
+			hiring_current_resources[type] = num
+			hiring_current_resources_dep.changed()
+		}
+	}
+
+	var set_hiring_current_resources = function(resources) {
+		var has_changed = false
+
+		_.each(resources, function(value, key) {
+			if (hiring_current_resources[key] != value) {
+				hiring_current_resources[key] = value
+				has_changed = true
+			}
+		})
+
+		if (has_changed) {
+			hiring_current_resources_dep.changed()
+		}
+	}
+
+
+
+
+
+	// selected units
+
+	var selected_hiring_units = {}
+	_.each(s.army.types, function(type) {
+		selected_hiring_units[type] = 0
+	})
+	var selected_hiring_units_dep = new Deps.Dependency
+
+	var get_selected_hiring_units = function() {
+		selected_hiring_units_dep.depend()
+		return clone_object(selected_hiring_units)
+	}
+
+	var get_selected_hiring_unit = function(type) {
+		check(type, String)
+		selected_hiring_units_dep.depend()
+		return selected_hiring_units[type]
+	}
+
+	var set_selected_hiring_unit = function(type, num) {
+		check(type, String)
+		check(num, Number)
+
+		if (selected_hiring_units[type] != num) {
+			selected_hiring_units_dep.changed()
+			selected_hiring_units[type] = num
+		}
+	}
+
+	var set_selected_hiring_units = function(army) {
+		var has_changed = false
+
+		_.each(army, function(value, key) {
+			if (selected_hiring_units[key] != value) {
+				selected_hiring_units[key] = value
+				has_changed = true
+			}
+		})
+
+		if (has_changed) {
+			selected_hiring_units_dep.changed()
+		}
+	}
+
+	var reset_selected_hiring_units = function() {
+		var set = {}
+		_.each(s.army.types, function(type) {
+			set[type] = 0
+		})
+		set_selected_hiring_units(set)
+	}
+
+	var no_units_are_selected = function() {
+		var has_no_units = true
+		_.each(s.army.types, function(type) {
+			if (selected_hiring_units[type] > 0) {
+				has_no_units = false
+			}
+		})
+		return has_no_units
+	}
+
+})
