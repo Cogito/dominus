@@ -65,9 +65,12 @@ create_castle = function(user_id) {
 		return false
 	}
 
+	// if there are no hexes then this is a new game
+	// create a new map and reset market
 	if (Hexes.find().count() == 0) {
 		console.log('no hexes found')
 		generate_hexes(4)
+		reset_market()
 	}
 
 	var found = false

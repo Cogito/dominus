@@ -1,3 +1,3 @@
 #!/bin/bash
 
-METEOR_SETTINGS={"stripe_secret_key": "", "public": {"stripe_public_key": ""}} DOMINUS_ADMIN_EMAIL=admin@email.com DOMINUS_WORKER=true meteor --settings settings.json
+METEOR_SETTINGS='{"stripe_secret_key": "", "public": {"stripe_public_key": ""}}' DOMINUS_ADMIN_EMAIL=admin@email.com DOMINUS_WORKER=true meteor --settings settings.json
