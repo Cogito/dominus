@@ -12,11 +12,9 @@ Meteor.methods({
 
 		var user = Meteor.users.findOne({_id:user_id, "status.lastLogin.ipAddr": {$ne: "10.112.144.11"}}, {fields: {"status.lastLogin.ipAddr":1, username:1}})
 		if (user) {
-			if (user.username == 'Danimal' || user.username == 'fred') { } else {
-				Meteor.users.find({"status.lastLogin.ipAddr":user.status.lastLogin.ipAddr, _id: {$ne: user._id}}, {fields: {username:1}}).forEach(function(u) {
-					dupes.push(u.username)
-				})
-			}
+			Meteor.users.find({"status.lastLogin.ipAddr":user.status.lastLogin.ipAddr, _id: {$ne: user._id}}, {fields: {username:1}}).forEach(function(u) {
+				dupes.push(u.username)
+			})
 		}
 
 		return dupes

@@ -1,3 +1,5 @@
+// this is the old battle system, not used anymore
+
 old_battle = function(attacker_id, attacker_type, defender_id, defender_type) {
 	check(attacker_id, String)
 	check(attacker_type, String)

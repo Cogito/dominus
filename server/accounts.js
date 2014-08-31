@@ -9,7 +9,7 @@ Accounts.onCreateUser(function(options, user) {
 	user.admin = false;
 
 	// this should probably be changed to a env variable
-	if (user.emails[0].address == 'insertAdminAddressHere') {
+	if (user.emails[0].address == process.env.DOMINUS_ADMIN_EMAIL) {
 		user.admin = true
 	}
 
