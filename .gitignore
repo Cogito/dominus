@@ -1,0 +1,5 @@
+.demeteorized/
+git_stats/
+.meteor/local
+.meteor/meteorite
+.build*

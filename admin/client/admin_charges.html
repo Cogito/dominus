@@ -1,0 +1,11 @@
+<template name="admin_charges">
+	{{#if currentUser.admin}}
+		<div id="admin_container">
+			{{> admin_menu}}
+
+			{{#each charges}}
+				<div>{{livemode}} {{user_username}} {{user_email}} {{amount}} {{date_calendar created_at}}</div>
+			{{/each}}
+		</div>
+	{{/if}}
+</template>

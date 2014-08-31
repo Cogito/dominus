@@ -1,0 +1,10 @@
+<template name="admin_mailchimp_list">
+	{{#if currentUser.admin}}
+		<div id="admin_container">
+			{{> admin_menu}}
+
+			<pre>{{#each users}}{{emails.[0].address}}	{{username}}	{{_id}}
+{{/each}}</pre>
+		</div>
+	{{/if}}
+</template>

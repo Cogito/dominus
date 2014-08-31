@@ -1,0 +1,26 @@
+<template name="admin_forums">
+	{{#if currentUser.admin}}
+		<div id="admin_container">
+			{{> admin_menu}}
+
+			<div class="input-group" style="width: 400px;">
+				<input type="text" class="form-control" placeholder="Forum Name" id="add_forum_input">
+				<br><br>
+				<textarea class="form-control" placeholder="Description" id="add_form_description"></textarea>
+				<br><br><br>
+				<button class="btn btn-primary" type="button" id="add_forum_button">Add Forum</button>
+			</div><!-- /input-group -->
+
+			<br>
+
+			{{#each forums}}
+				<div>
+					{{name}}
+					<button class="btn btn-primary btn-xs" type="button" data-id="{{_id}}" id="up_forum_button"><i class="fa fa-arrow-up"></i></button>
+					<button class="btn btn-primary btn-xs" type="button" data-id="{{_id}}" id="down_forum_button"><i class="fa fa-arrow-down"></i></button>
+					<button class="btn btn-primary btn-xs" type="button" data-id="{{_id}}" id="delete_forum_button"><i class="fa fa-times"></i></button>
+				</div>
+			{{/each}}
+		</div>
+	{{/if}}
+</template>

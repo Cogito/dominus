@@ -1,0 +1,22 @@
+<template name="notifications_global">
+	<div class="panel-group" id="notifications">
+		{{#each notifications}}
+			<div class="panel panel-default">
+				{{> not_header}}
+				{{#if show_notification}}
+					<div id="notifications-{{_id}}">
+						<div class="panel-body">
+							{{> UI.dynamic template=notification_type}}
+						</div>
+					</div>
+				{{/if}}
+			</div>
+		{{else}}
+			<div class="panel panel-default">
+				<div class="panel-body">
+					No notifications yet.
+				</div>
+			</div>			
+		{{/each}}
+	</div>
+</template>

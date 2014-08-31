@@ -1,0 +1,20 @@
+<template name="menu">
+	<div id="menu">
+		<ul class="nav nav-pills">
+			<li class="{{summary_active}}"><a href="#" id="show_summary_panel_button">Summary</a></li>
+			<li class="{{notifications_active}}"><a href="#" id="show_notifications_panel_button">Notifications <span class="badge">{{#if has_notifications}}{{num_notifications}}{{/if}}</span></a></li>
+			<li class="{{market_active}}"><a href="#" id="show_market_panel_button">Market</a></li>
+			<li class="{{stats_active}}"><a href="#" id="show_stats_panel_button">Stats</a></li>
+			<li class="{{chat_active}}"><a href="#" id="show_chat_panel_button">Chat <span class="badge">{{#if is_new_chat}}!{{/if}}</span></a></li>
+			<li class="{{forum_active}}"><a href="#" id="show_forum_panel_button">Forums <span class="badge">{{#if is_new_forum_post}}!{{/if}}</span></a></li>
+			<li class="{{rankings_active}}"><a href="#" id="show_rankings_panel_button">Rankings</a></li>
+			<li class="{{settings_active}}"><a href="#" id="show_settings_panel_button">Settings</a></li>
+			<li class="{{help_active}}"><a href="#" id="show_help_panel_button">Help</a></li>
+			<li class="{{tree_active}}"><a href="#" id="show_tree_panel_button">Tree</a></li>
+			<li class="{{store_active}}"><a href="#" id="show_store_panel_button">Store</a></li>
+			{{#if currentUser.admin}}
+				<li class="{{admin_active}}"><a href="#" id="show_admin_panel_button">Admin</a></li>
+			{{/if}}
+		</ul>
+	</div>
+</template>

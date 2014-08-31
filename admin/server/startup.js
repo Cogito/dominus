@@ -1,0 +1,1 @@
+Facts.setUserIdFilter(function () { return true; })

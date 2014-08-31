@@ -1,0 +1,19 @@
+{
+  "packages": {
+    "iron-router": {},
+    "moment": {},
+    "npm": {},
+    "bootstrap3-less": {},
+    "nvd3js": {},
+    "font-awesome": {},
+    "underscore-string-latest": {},
+    "stripe": {},
+    "timesync": {},
+    "subs-manager": {},
+    "kadira": {},
+    "user-status": {},
+    "modernizr-meteor": {},
+    "cookies": {},
+    "phantomjs": {}
+  }
+}

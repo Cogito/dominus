@@ -1,0 +1,12 @@
+<template name="lp_lord">
+	{{#if lord}}
+		<table class="table table-condensed">
+			<tbody>
+				<tr>
+					<td>{{lord.username}}</td>
+					<td style="text-align: right;">{{> center_on_button x=lord.x y=lord.y selected_type='castle' selected_id=lord.castle_id}}</td>
+				</tr>
+			</tbody>
+		</table>
+	{{/if}}
+</template>

@@ -1,0 +1,293 @@
+@import (reference) url("../../../client/css/variables.lessimport");
+
+#top_panel {
+	background-color: @panel_bg;
+	position: absolute;
+	width: 100%;
+	height: 40px;
+	padding: 20px;
+	padding-top: 10px;
+	z-index: 10;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+#left_panels {
+	position: absolute;
+	margin-top:40px;
+	pointer-events: none;
+	z-index: 10;
+	-webkit-user-select: text;
+	-khtml-user-select: text;
+	-moz-user-select: text;
+	-ms-user-select: text;
+	user-select: text;
+	overflow:hidden;
+}
+
+.left_panel_content {
+	float: left;
+	height: 100%;
+	pointer-events: none;
+}
+
+#left_panel {
+	overflow: auto;
+	background-color: @panel_bg;
+	padding: @panel_padding;
+	height: 100%;
+	pointer-events: auto;
+	z-index: 10;
+	font-size: 90%;
+	white-space:nowrap;
+}
+
+
+
+
+
+#subscription_ready_panel {
+	position: absolute;
+	padding: @panel_padding;
+	background-color: @panel_bg;
+	bottom: 0px;
+	margin-left: auto;
+	margin-right: auto;
+	z-index: 10;
+	-webkit-user-select: text;
+	-khtml-user-select: text;
+	-moz-user-select: text;
+	-ms-user-select: text;
+	user-select: text;
+	pointer-events: none;
+}
+
+.panel_title {
+	text-align: center;
+	font-size: 150%;
+	margin-bottom: 5px;
+	background-color:@panel-bg;
+	padding-top:5px;
+	padding-bottom:5px;
+	font-weight:bold;
+	color:#ccc;
+}
+
+
+#admin_panel {
+	overflow: auto;
+	background-color: @panel_bg;
+	padding: @panel_padding;
+	height: 100%;
+	pointer-events: auto;
+	margin-left: 10px;
+}
+
+
+
+
+
+#forum_panel {
+	overflow: auto;
+	background-color: @panel_bg;
+	padding: @panel_padding;
+	height: 100%;
+	pointer-events: auto;
+	margin-left: 10px;
+	width: 400px;
+}
+
+.forum_message img {
+	max-width: 425px;
+}
+
+.forum_heading {
+	font-size: @font-size-base !important;
+	color: @text-color-light !important;
+	text-align: right !important;
+}
+
+
+#help_panel {
+	overflow: auto;
+	background-color: @panel_bg;
+	padding: @panel_padding;
+	height: 100%;
+	pointer-events: auto;
+	margin-left: 10px;
+	width: 400px;
+}
+
+#help_panel .panel-heading {
+	text-align: left;
+}
+
+.help_section {
+	font-size: 120%;
+	padding-bottom: 5px;
+	padding-top:15px;
+}
+
+.help_flag {
+	width: 20px;
+	display: inline-block;
+	margin-right: 6px;
+}
+
+.help_flag.mine {
+	background-color: @icon_mine_fill;
+}
+
+.help_flag.foe {
+	background-color: @icon_foe_fill;
+}
+
+.help_flag.king{
+	background-color: @icon_king_fill;
+}
+
+.help_flag.above{
+	background-color: @icon_above_fill;
+}
+
+.help_flag.lord{
+	background-color: @icon_lord_fill;
+}
+
+.help_flag.sibling{
+	background-color: @icon_sibling_fill;
+}
+
+.help_flag.vassal {
+	background-color: @icon_vassal_fill;
+}
+
+.help_flag.below {
+	background-color: @icon_below_fill;
+}
+
+.help_flag.team {
+	.icon_team_gradient_mixin
+}
+
+
+#market_panel {
+	overflow: auto;
+	background-color: @panel_bg;
+	padding: @panel_padding;
+	height: 100%;
+	pointer-events: auto;
+	margin-left: 10px;
+	width: 400px;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+#navigation_panel {
+	text-align:center;
+	padding-top:10px;
+	pointer-events: none;
+	margin-left: 10px;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+#navigation_panel button {
+	pointer-events: auto;
+	box-shadow: 0px 2px 1px rgba(0,0,0,0.5);
+}
+
+#navigation_panel input {
+	pointer-events: auto;
+	box-shadow: 0px 2px 1px rgba(0,0,0,0.5);
+	width:60px;
+}
+
+
+
+#rankings_panel {
+	overflow: auto;
+	background-color: @panel_bg;
+	padding: @panel_padding;
+	height: 100%;
+	pointer-events: auto;
+	margin-left: 10px;
+	width: 400px;
+}
+
+
+#settings_panel {
+	overflow: auto;
+	background-color: @panel_bg;
+	padding: @panel_padding;
+	height: 100%;
+	pointer-events: auto;
+	margin-left: 10px;
+	max-width:250px;
+}
+
+#store_panel {
+	overflow: auto;
+	background-color: @panel_bg;
+	padding: @panel_padding;
+	height: 100%;
+	pointer-events: auto;
+	margin-left: 10px;
+	max-width:350px;
+}
+
+
+#stats_panel {
+	overflow: auto;
+	background-color: @panel_bg;
+	padding: @panel_padding;
+	height: 100%;
+	pointer-events: auto;
+	margin-left: 10px;
+	width: 400px;
+}
+
+.dailystats_chart {
+	height: 200px;
+}
+
+.dailystats_chart text {
+	fill: @text-color;
+}
+
+.dailystats_chart .nvtooltip {
+	background-color: rgba(20,20,20,0.6);
+	color: @text-color;
+}
+
+.dailystats_chart .nvd3 .nv-axis line {
+	stroke: #666 !important;
+}
+
+.nvd3 .nv-axis path {
+  stroke: #666;
+}
+
+
+.nav-pills > li > a {
+	padding: 3px 5px !important;
+}
+
+
+.rank_start {
+	counter-reset: ranking-counter;
+}
+
+.rank_username:before {
+	content: counter(ranking-counter) ". ";
+	counter-increment: ranking-counter;
+}

@@ -1,0 +1,32 @@
+<template name="chat_panel">
+	<div id="chat_panel">
+		<div class="panel_title"><i class="fa fa-comments fa-lg"></i> &nbsp;Chat</div>
+
+<!-- 		<div class="panel panel-default">
+			<div class="panel-body">
+				Check out the "Army Balancing" forum thread.
+			</div>
+		</div> -->
+
+		<div class="panel-group" id="accordion_chat">
+			{{#each chatrooms}}
+				{{> chatroom}}
+			{{/each}}
+		</div>
+
+		<br>
+
+		<div class="alert alert-danger" id="chat_error_alert" style="display:none;"></div>
+		<div class="alert alert-success" id="chat_success_alert" style="display:none;"></div>
+
+		<div class="pad_group">
+			<div class="input-group">
+				<input type="text" class="form-control" placeholder="Enter someone's name here to chat with them." id="chat_start_with_name">
+				<span class="input-group-btn">
+					<button class="btn btn-primary" type="button" id="chat_start_with_button">Start Chat</button>
+				</span>
+			</div><!-- /input-group -->
+		</div>
+
+	</div>
+</template>

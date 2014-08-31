@@ -1,0 +1,14 @@
+<template name="forum_message">
+	<div class="panel panel-default">
+		<div class="panel-heading forum_heading">
+			<div style="float:left;">
+				Posted by {{username}}
+				{{> center_on_button x=castle_x y=castle_y selected_type='castle' selected_id=castle_id}}
+			</div>
+			{{date_calendar created_at}}
+		</div>
+		<div class="panel-body forum_message">
+			{{{message}}}
+		</div>
+	</div>
+</template>

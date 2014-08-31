@@ -1,0 +1,56 @@
+<template name="not_battle">
+	<div>
+		Battle at <a href="" class="not_battle_goto_hex">hex {{vars.battle.defender.x}}, {{vars.battle.defender.y}}</a>.<br>
+		Battle started {{date_calendar vars.battle.created_at}}.<br>
+		Fought {{vars.battle.roundNumber}} times.<br>
+
+		<h3>Losses</h3>
+		{{#each vars.battle.deaths}}
+			{{username}}'s {{type}} {{name}}
+			<ul>
+				{{#if greater_than_zero footmen}}
+					<li>
+						Footmen: {{footmen}}
+					</li>
+				{{/if}}
+
+				{{#if greater_than_zero archers}}
+					<li>
+						Archers: {{archers}}
+					</li>
+				{{/if}}
+
+				{{#if greater_than_zero pikemen}}
+					<li>
+						Pikemen: {{pikemen}}
+					</li>
+				{{/if}}
+
+				{{#if greater_than_zero cavalry}}
+					<li>
+						Cavalry: {{cavalry}}
+					</li>
+				{{/if}}
+
+				{{#if greater_than_zero catapults}}
+					<li>
+						Catapults: {{catapults}}
+					</li>
+				{{/if}}
+			</ul>
+		{{/each}}
+		<br>
+
+		<h3>Results from Last Fight</h3>
+
+		<h4>Defender</h4>
+		{{> battle_report_unit vars.battle.defender}}
+
+		<br>
+
+		<h4>Attackers</h4>
+		{{#each vars.battle.attackers}}
+			{{> battle_report_unit}}
+		{{/each}}
+	</div>
+</template>

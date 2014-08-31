@@ -1,0 +1,42 @@
+<template name="settings_panel">
+	<div id="settings_panel">
+		<div class="panel_title"><i class="fa fa-wrench fa-lg"></i> &nbsp;Settings</div>
+
+		<div class="pad_group">
+			<button type="button" class="btn btn-sm btn-primary btn-block" id="toggle_coords_button">Toggle Hex Coordinates</button>
+			<button type="button" class="btn btn-sm btn-primary btn-block" id="toggle_minimap_button">Toggle Mini-Map</button>
+			<br>
+			Turning hex coordinates and mini-map off improves performance.<br>
+			<br>
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-body">
+
+				<div class="alert alert-danger" id="change_username_alert" style="display:none;"></div>
+
+
+				<div class="form-group">
+					<label for="edit_name_input">Change Username</label>
+					<input type="text" class="form-control" id="change_username_input" value="{{username}}">
+				</div>
+
+				<div class="form-group">
+					<button class="btn btn-primary btn-block" type="button" id="change_username_button">Save New Name</button>
+				</div>
+			</div>
+		</div>
+
+<!-- 		<br><br>
+		<button class="btn btn-primary btn-block" type="button" id="delete_account_button">Delete Account</button> -->
+
+		<!-- <div class="panel panel-default">
+			<div class="panel-heading">
+				Email Notifications
+			</div>
+			<div class="panel-body">
+				Disable All Notifications
+
+			</div> -->
+	</div>
+</template>

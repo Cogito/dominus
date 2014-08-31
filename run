@@ -1,0 +1,3 @@
+#!/bin/bash
+
+DOMINUS_WORKER=true meteor --settings settings.json

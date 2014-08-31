@@ -1,0 +1,41 @@
+<template name="admin_panel">
+	<div id="admin_panel">
+		<input type="text" class="form-control input-sm" id="num_of_rings_input" placeholder="number of rings">
+		<button type="button" class="btn btn-xs btn-primary" id="gen_hexes_button">generate hexes</button>
+
+		<br><br>
+
+		num hexes loaded: {{num_hexes_loaded}}<br>
+		center hex: {{center_hex_x}},{{center_hex_y}}<br>
+		mo id: {{mouseover_hex_id}}<br>
+		mmode: {{mouse_mode}}
+
+		<br><br>
+
+		<br>
+
+		<button type="button" class="btn btn-xs btn-primary" id="delete_all_users_button">delete all users</button>
+
+		<br><br>
+
+		<button type="button" class="btn btn-xs btn-primary" id="toggle_debug_symbols">toggle debug symbols</button>
+
+		<br><br>
+
+		<button type="button" class="btn btn-xs btn-primary" id="reset_market_button">reset market</button>
+
+		<br><br>
+
+		<button type="button" class="btn btn-xs btn-primary" id="give_gold_button">give gold</button>
+
+		<br>
+
+		<button type="button" class="btn btn-xs btn-primary" id="reset_everyone_resources_button">reset everyone's resources</button>
+
+		<br>
+
+		<button type="button" class="btn btn-xs btn-primary" id="debug_create_50_armies">create 50 armies</button>
+		
+
+	</div>
+</template>

@@ -1,0 +1,25 @@
+<template name="not_header">
+	<div class="panel-heading notifications_title">
+		<table style="width:100%;">
+			<tr>
+				{{#if show_mine}}
+					{{#unless read}}
+						<td>
+							<i class="fa fa-exclamation-circle"></i>
+							&nbsp;&nbsp;&nbsp;
+						</td>
+					{{/unless}}
+				{{/if}}
+				<td>
+					<a href="" data-id="{{_id}}" class="read_notification_button">
+						{{title}}
+					</a>
+					&nbsp;&nbsp;&nbsp;
+				</td>
+				<td style="text-align:right;">
+					<small class="light_text">{{date_nice}}</small>
+				</td>
+			</tr>
+		</table>
+	</div>
+</template>

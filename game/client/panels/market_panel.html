@@ -1,0 +1,171 @@
+<template name="market_panel">
+	<div id="market_panel">
+		<div class="panel_title">
+			<i class="fa fa-money fa-lg"></i> &nbsp;Resource Market
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Current Prices
+			</div>
+			<div class="panel-body">
+				<div style="float:left;width:50%;">
+					<table class="table table-condensed">
+						<tbody>
+							<tr>
+								<td><b>Grain</b></td>
+								<td style="text-align:right;">{{round_2 grain.price}} gold</td>
+							</tr>
+							<tr>
+								<td><b>Lumber</b></td>
+								<td style="text-align:right;">{{round_2 lumber.price}} gold</td>
+							</tr>
+							<tr>
+								<td><b>Ore</b></td>
+								<td style="text-align:right;">{{round_2 ore.price}} gold</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div style="float:right;width:50%;">
+					<table class="table table-condensed">
+						<tbody>
+							<tr>
+								<td><b>Wool</b></td>
+								<td style="text-align:right;">{{round_2 wool.price}} gold</td>
+							</tr>
+							<tr>
+								<td><b>Clay</b></td>
+								<td style="text-align:right;">{{round_2 clay.price}} gold</td>
+							</tr>
+							<tr>
+								<td><b>Glass</b></td>
+								<td style="text-align:right;">{{round_2 glass.price}} gold</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div style="clear:both;"></div>
+		</div>
+
+
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Buy or Sell Resources
+			</div>
+			<div class="panel-body">
+				<div style="width:33%;float:left;">
+					<div class="radio">
+						<label>
+							<input type="radio" name="market_type_radio" id="market_type_option_1" value="grain">
+							grain
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="market_type_radio" id="market_type_option_2" value="lumber">
+							lumber
+						</label>
+					</div>
+				</div>
+				<div style="width:33%;float:left;">
+					<div class="radio">
+						<label>
+							<input type="radio" name="market_type_radio" id="market_type_option_3" value="ore">
+							ore
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="market_type_radio" id="market_type_option_4" value="wool">
+							wool
+						</label>
+					</div>
+				</div>
+				<div style="width:33%;float:left;">
+					<div class="radio">
+						<label>
+							<input type="radio" name="market_type_radio" id="market_type_option_5" value="clay">
+							clay
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="market_type_radio" id="market_type_option_6" value="glass">
+							glass
+						</label>
+					</div>
+				</div>
+				<div style="clear:both;"></div>
+
+				<div>
+					<form class="form form-inline" role="form">
+						<input type="number" class="form-control input-sm" id="quantity_input" placeholder="How many?">
+						<button type="button" class="btn btn-primary btn-sm" id="max_buy_button" disabled="{{disabled_max_buttons}}">Max Buy</button>
+						<button type="button" class="btn btn-primary btn-sm" id="max_sell_button" disabled="{{disabled_max_buttons}}">Max Sell</button>
+					</form>
+				</div>
+
+				<div style="margin-top:10px;">
+					<button type="button" class="btn btn-primary btn-sm" id="market_buy_button" disabled="{{disabled_buttons}}">Buy</button>
+					<span id="market_preview_buy"></span>
+				</div>
+				<div style="margin-top:10px;">
+					<button type="button" class="btn btn-primary btn-sm" id="market_sell_button" disabled="{{disabled_buttons}}">Sell</button>
+					<span id="market_preview_sell"></span>
+				</div>
+
+				<br>
+				<div class="alert alert-danger" id="market_error_alert" style="display:none;"></div>
+				<div class="alert alert-success" id="market_success_alert" style="display:none;"></div>
+
+				{{tax_precent}}% tax when selling.
+			</div>
+		</div>
+
+		<!--
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Purchase Gold
+			</div>
+			<div class="panel-body">
+
+				<div class="alert alert-danger" id="stripe_error_alert" style="display:none;"></div>
+				<div class="alert alert-success" id="stripe_success_alert" style="display:none;"></div>
+
+				<button type="button" class="btn btn-primary btn-sm btn-block" id="stripe_button_200">Purchase {{gold_200}} gold for $2</button>
+				<button type="button" class="btn btn-primary btn-sm btn-block" id="stripe_button_500">Purchase {{gold_500}} gold for $5</button>
+				<button type="button" class="btn btn-primary btn-sm btn-block" id="stripe_button_1000">Purchase {{gold_1000}} gold for $10</button>
+				<button type="button" class="btn btn-primary btn-sm btn-block" id="stripe_button_2000">Purchase {{gold_2000}} gold for $20</button>
+				<button type="button" class="btn btn-primary btn-sm btn-block" id="stripe_button_4000">Purchase {{gold_4000}} gold for $40</button>
+
+				<br>
+				Payments are processed with <a href="https://stripe.com/">Stripe</a>.
+			</div>
+		</div>
+		-->
+
+
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Price History
+			</div>
+			<div id="market_price_chart" class="dailystats_chart">
+				<svg></svg>
+			</div>
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Volume History
+			</div>
+			<div id="market_volume_chart" class="dailystats_chart">
+				<svg></svg>
+			</div>
+		</div>
+
+	</div>
+</template>

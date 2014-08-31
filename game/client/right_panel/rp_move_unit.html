@@ -1,0 +1,104 @@
+<template name="rp_move_unit">
+	<div class="rp_content" id="rp_move_unit">
+		{{#if castle_or_village}}
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Select Units
+				</div>
+
+				<div class="panel-body" id="send_army_error" style="display:none;">
+					<div class="alert alert-danger">Use the sliders to set how many unts to send.</div>
+				</div>
+
+				<div class="panel-body">
+					<table class="table table-condensed">
+						<tbody>
+							{{#each army_settings.types}}
+								<tr>
+									<td>{{capitalize this}}</td>
+									<td style="text-align:right;">
+										selected: {{num_units this}}
+									</td>
+									<td style="text-align:right;">
+										max: {{max_units this}}
+									</td>
+								</tr>
+								<tr>
+								<td colspan="3">
+									<input type="range" data-type="{{this}}" class="send_units_slider" value="0" min="0" step="1" max="1">
+								</td>
+								</tr>
+							{{/each}}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		{{/if}}
+
+
+		<div class="panel panel-default">
+			<div class="panel-body">
+				{{#if queue_not_empty}}
+					<h4>Move army to hex {{final_destination}}?</h4>
+					<button type="button" class="btn btn-sm btn-primary btn-block" id="move_unit_button">Yes</button>
+				{{else}}
+					<h4>Click on the hex you want to move army to.</h4>
+				{{/if}}
+				<button type="button" class="btn btn-sm btn-primary btn-block" id="move_unit_cancel_button">Cancel</button>
+				{{#if queue_not_empty}}
+					<br>
+					Click on more hexes to queue moves.<br>
+				{{/if}}
+			</div>
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<table class="table table-condensed table-striped">
+					<thead>
+						<tr>
+							<td></td>
+							<td>From</td>
+							<td>To</td>
+							<td>Distance</td>
+							<td>Time</td>
+							<td></td>
+						</tr>
+					</thead>
+					<tbody>
+						{{#each queued_moves}}
+							<tr>
+								<td>{{num}}</td>
+								<td>{{from_x}},{{from_y}}</td>
+								<td>{{to_x}},{{to_y}}</td>
+								<td>{{distance}} hexes</td>
+								<td>{{duration}}</td>
+								<td>
+									<button type="button" class="btn btn-sm btn-primary btn-xs remove_move_button" data-index="{{index}}"><i class="fa fa-trash-o"></i></button>
+								</td>
+							</tr>
+						{{/each}}
+						{{#if current_move}}
+							{{#with current_move}}
+								<tr>
+									<td>{{num}}</td>
+									<td>{{from_x}},{{from_y}}</td>
+									<td>{{to_x}},{{to_y}}</td>
+									<td>{{distance}} hexes</td>
+									<td>{{duration}}</td>
+									<td></td>
+								</tr>
+							{{/with}}
+						{{/if}}
+						<tr>
+							<td colspan="3">Total:</td>
+							<td>{{total_distance}} hexes</td>
+							<td>{{total_duration}}</td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</template>

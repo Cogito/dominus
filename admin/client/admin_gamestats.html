@@ -1,0 +1,36 @@
+<template name="admin_gamestats">
+	{{#if currentUser.admin}}
+		<div id="admin_container">
+			{{> admin_menu}}
+
+			<table class="table">
+				<thead>
+					<tr>
+						<td>Date</td>
+						<td>Num Users</td>
+						<td>Active Users Past 2 Days</td>
+						<td>Total Gold</td>
+						<td>Avg Market Price</td>
+						<td>Num Chats</td>
+						<td>Money Earned</td>
+						<td>Users with Duplicate IP</td>
+					</tr>
+				</thead>
+				<tbody>
+					{{#each gamestats}}
+						<tr>
+							<td>{{date_calendar created_at}}</td>
+							<td>{{round num_users}}</td>
+							<td>{{round num_active_users}}</td>
+							<td>{{round total_gold}}</td>
+							<td>{{round_2 avg_market_price}}</td>
+							<td>{{num_chats}}</td>
+							<td>${{round_2 money_earned}}</td>
+							<td>{{users_with_duplicate_ip}}</td>
+						</tr>
+					{{/each}}
+				</tbody>
+			</table>
+		</div>
+	{{/if}}
+</template>

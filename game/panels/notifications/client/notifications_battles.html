@@ -1,0 +1,38 @@
+<template name="notifications_battles">
+	<div class="panel-group" id="notifications">
+		{{#each battles}}
+			<div class="panel panel-default">
+
+				<div class="panel-heading notifications_title">
+					<table style="width:100%;">
+						<tr>
+							<td>
+								<a href="" data-id="{{_id}}" class="read_notification_button">
+									{{title}}
+								</a>
+								&nbsp;&nbsp;&nbsp;
+							</td>
+							<td style="text-align:right;">
+								<small class="light_text">{{date_nice}}</small>
+							</td>
+						</tr>
+					</table>
+				</div>
+
+				{{#if show_notification}}
+					<div id="notifications-{{_id}}">
+						<div class="panel-body">
+							{{> battle_report}}
+						</div>
+					</div>
+				{{/if}}
+			</div>
+		{{else}}
+			<div class="panel panel-default">
+				<div class="panel-body">
+					No battles, the land is at peace.
+				</div>
+			</div>			
+		{{/each}}
+	</div>
+</template>

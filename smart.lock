@@ -1,0 +1,119 @@
+{
+  "meteor": {},
+  "dependencies": {
+    "basePackages": {
+      "iron-router": {},
+      "moment": {},
+      "npm": {},
+      "bootstrap3-less": {},
+      "nvd3js": {},
+      "font-awesome": {},
+      "underscore-string-latest": {},
+      "stripe": {},
+      "timesync": {},
+      "subs-manager": {},
+      "kadira": {},
+      "user-status": {},
+      "modernizr-meteor": {},
+      "cookies": {},
+      "phantomjs": {}
+    },
+    "packages": {
+      "iron-router": {
+        "git": "https://github.com/EventedMind/iron-router.git",
+        "tag": "v0.8.2",
+        "commit": "05415a8891ea87a00fb1e2388585f2ca5a38e0da"
+      },
+      "moment": {
+        "git": "https://github.com/acreeger/meteor-moment.git",
+        "tag": "v2.6.0",
+        "commit": "26156df681750fd6e6ed77043eef32b6653ebbdf"
+      },
+      "npm": {
+        "git": "https://github.com/arunoda/meteor-npm.git",
+        "tag": "v0.2.6",
+        "commit": "177ab6118de5bf8cffb19481343d5762ff7a2aaf"
+      },
+      "bootstrap3-less": {
+        "git": "https://github.com/simison/bootstrap3-less",
+        "tag": "v0.2.1",
+        "commit": "dc94a51ed00d7de6d6f2b6d65107a876d849ad61"
+      },
+      "nvd3js": {
+        "git": "https://github.com/ouuyeah/nvd3js.git",
+        "tag": "v0.1.0",
+        "commit": "89a8c66bb3b35d25900d31195ae0b318e4176ddb"
+      },
+      "font-awesome": {
+        "git": "https://github.com/nate-strauser/meteor-font-awesome.git",
+        "tag": "v4.1.0",
+        "commit": "ce6b1e92715d1938babc5d69c655c17e387f5926"
+      },
+      "underscore-string-latest": {
+        "git": "https://github.com/TimHeckel/meteor-underscore-string.git",
+        "tag": "v2.3.3",
+        "commit": "4a5d70eee48fbd90a6e6fc78747250d704a0b3bb"
+      },
+      "stripe": {
+        "git": "https://github.com/appleifreak/stripe-meteor.git",
+        "tag": "v1.5.5",
+        "commit": "30874f53c864c31ae1f8818e21ee113ea5c99099"
+      },
+      "timesync": {
+        "git": "https://github.com/mizzao/meteor-timesync.git",
+        "tag": "v0.2.1",
+        "commit": "fa4abd511f4e32a3c5d22795ce2c1e8369428fac"
+      },
+      "subs-manager": {
+        "git": "https://github.com/meteorhacks/subs-manager.git",
+        "tag": "v1.0.1",
+        "commit": "38317052d1601002d4dff537e4e0f61d1aa36e6d"
+      },
+      "kadira": {
+        "git": "https://github.com/meteorhacks/kadira.git",
+        "tag": "v2.4.10",
+        "commit": "036c85cea98369a55cf3a5c46463dffe755dadbd"
+      },
+      "user-status": {
+        "git": "https://github.com/mizzao/meteor-user-status.git",
+        "tag": "v0.6.0",
+        "commit": "dba80d742522ac104f2155f1db852922e4249f96"
+      },
+      "modernizr-meteor": {
+        "git": "https://github.com/ckir/modernizr-meteor.git",
+        "tag": "v2.6.2",
+        "commit": "391ca2a3beff3cd2b0e1099cb2d744b5a2e8a73e"
+      },
+      "cookies": {
+        "git": "https://github.com/subhog/meteor-cookies.git",
+        "tag": "v0.3.0",
+        "commit": "c3d2684cd97dd611652833169b5f628ad23c57f6"
+      },
+      "phantomjs": {
+        "git": "https://github.com/gadicohen/meteor-phantomjs.git",
+        "tag": "v0.0.2",
+        "commit": "a72eb79af068dd5d5d617ac71a42bd74e0cb52a4"
+      },
+      "iron-layout": {
+        "git": "https://github.com/EventedMind/iron-layout.git",
+        "tag": "v0.2.0",
+        "commit": "4a2d53e35ba036b0c189c7ceca34be494d4c6c97"
+      },
+      "blaze-layout": {
+        "git": "https://github.com/EventedMind/blaze-layout.git",
+        "tag": "v0.2.5",
+        "commit": "273e3ab7d005d91a1a59c71bd224533b4dae2fbd"
+      },
+      "iron-core": {
+        "git": "https://github.com/EventedMind/iron-core.git",
+        "tag": "v0.2.0",
+        "commit": "0e48b5dc50d03f01025b7b900fb5ce2f13d52cad"
+      },
+      "iron-dynamic-template": {
+        "git": "https://github.com/EventedMind/iron-dynamic-template.git",
+        "tag": "v0.2.1",
+        "commit": "4dd1185c4d9d616c9abdb3f33e4a7d5a88db7e18"
+      }
+    }
+  }
+}

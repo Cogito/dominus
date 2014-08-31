@@ -1,0 +1,22 @@
+<template name="notifications_panel">
+	<div id="notifications_panel">
+		<div class="panel_title"><i class="fa fa-bullhorn fa-lg"></i> &nbsp;Notifications</div>
+
+		<!-- <div class="panel panel-default">
+			<div class="panel-body">
+				Thanks for playing in the fourth game of {{game_name}}.
+			</div>
+		</div> -->
+
+		<div class="pad_group">
+			<ul class="nav nav-tabs nav-justified" role="tablist">
+				<li class="{{mine_active}}"><a href="" id="show_mine_tab">My Notifications</a></li>
+				<li class="{{global_active}}"><a href="" id="show_global_tab">Global</a></li>
+				<li class="{{battls_active}}"><a href="" id="show_battles_tab">Battles</a></li>
+			</ul>
+		</div>
+
+		{{> UI.dynamic template=notifications_type}}
+
+	</div>
+</template>

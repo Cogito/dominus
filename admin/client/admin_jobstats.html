@@ -1,0 +1,26 @@
+<template name="admin_jobstats">
+	{{#if currentUser.admin}}
+		<div id="admin_container">
+			{{> admin_menu}}
+
+			<table class="table">
+				<thead>
+					<tr>
+						<td>function</td>
+						<td>run time</td>
+						<td>finish date</td>
+					</tr>
+				</thead>
+				<tbody>
+					{{#each jobstats}}
+						<tr>
+							<td>{{job_name}}</td>
+							<td>{{round time}}</td>
+							<td>{{date_calendar updated_at}}</td>
+						</tr>
+					{{/each}}
+				</tbody>
+			</table>
+		</div>
+	{{/if}}
+</template>

@@ -1,0 +1,5 @@
+<template name="village">
+	<image xlink:href="/game_images/village_01.png" x="{{coord_to_pixel_x x y -63}}" y="{{coord_to_pixel_y x y -41}}" height="83" width="126" style="pointer-events: none;"/>
+	<polygon points="{{hex_points x y}}" class="village" data-id="{{_id}}" data-x="{{x}}" data-y="{{y}}" />
+	<polygon points="{{flag_points x y}}" class="flag village_flag {{friend_or_foe}}" data-user_id="{{user_id}}" />
+</template>

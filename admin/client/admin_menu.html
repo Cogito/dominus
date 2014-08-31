@@ -1,0 +1,20 @@
+<template name="admin_menu">
+	{{#if currentUser.admin}}
+		<div>
+			<ul class="nav nav-pills">
+				<li><a href="/">Game</a></li>
+				<li><a href="/admin">Admin Home</a></li>
+				<li><a href="{{pathFor 'admin_forums'}}">Forum</a></li>
+				<li><a href="{{pathFor 'admin_facts'}}">Server Facts</a></li>
+				<li><a href="{{pathFor 'admin_charges'}}">Charges</a></li>
+				<li><a href="{{pathFor 'admin_gamestats'}}">Game Stats</a></li>
+				<li><a href="{{pathFor 'admin_jobstats'}}">Job Stats</a></li>
+				<li><a href="{{pathFor 'admin_mailchimp_list'}}">Mailchimp List</a></li>
+				<li><a href="{{pathFor 'admin_users_online'}}">Users Online</a></li>
+				<li><a href="{{pathFor 'admin_jobqueue'}}">Job Queue</a></li>
+				<li><a href="{{pathFor 'admin_commands'}}">Commands</a></li>
+			</ul>
+		</div>
+		<br>
+	{{/if}}
+</template>

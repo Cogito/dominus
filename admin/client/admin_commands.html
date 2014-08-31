@@ -1,0 +1,10 @@
+<template name="admin_commands">
+	{{#if currentUser.admin}}
+		<div id="admin_container">
+			{{> admin_menu}}
+
+			<input type="text" class="form-control" placeholder="Username" id="update_allies_username_input">
+			<button class="btn btn-primary btn-xs" type="button" id="update_allies_user_button">Run Update Allies</button>
+		</div>
+	{{/if}}
+</template>

@@ -1,0 +1,1 @@
+Session.setDefault('notifications_type', 'notifications_mine')

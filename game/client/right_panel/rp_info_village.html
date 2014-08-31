@@ -1,0 +1,129 @@
+<template name="rp_info_village">
+	<div class="rp_content">
+		<div class="panel panel-default" style="margin-top:0;">
+			<div class="panel-body">
+				<h4>
+					<span class="light_text">Village</span> {{name}}
+					&nbsp;
+					{{#if is_owner}}
+						{{> edit_name_button}}
+					{{/if}}
+				</h4>
+
+				{{#unless is_owner}}
+					<span class="light_text">Lord</span> {{username}}
+					&nbsp;&nbsp;
+					{{> center_on_button x=castle_x y=castle_y selected_type='castle' selected_id=castle_id}}
+					<br>
+				{{/unless}}
+
+				{{> hex_location}}
+				&nbsp;&nbsp;
+				{{> center_on_button x=x y=y selected_id=_id selected_type='village'}}
+				<br>
+				
+				
+
+			</div>
+		</div>
+		
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Village Garrison
+			</div>
+			<table class="table table-condensed table-striped">
+				<tbody>
+					<tr>
+						<td>Footmen</td>
+						<td style="text-align:right;">{{round footmen}}</td>
+					</tr>
+					<tr>
+						<td>Archers</td>
+						<td style="text-align:right;">{{round archers}}</td>
+					</tr>
+					<tr>
+						<td>Pikemen</td>
+						<td style="text-align:right;">{{round pikemen}}</td>
+					</tr>
+					<tr>
+						<td>Cavalry</td>
+						<td style="text-align:right;">{{round cavalry}}</td>
+					</tr>
+					<tr>
+						<td>Catapults</td>
+						<td style="text-align:right;">{{round catapults}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		{{#if battle}}
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Battle
+				</div>
+				<div class="panel-body">
+					{{> battle_report battle}}
+				</div>
+			</div>
+		{{/if}}
+
+		{{#if is_owner}}
+			<div class="pad_group">
+				<button type="button" class="btn btn-sm btn-primary btn-block" id="send_army_from_village_button" disabled="{{no_soldiers}}">Send Army from Village</button>
+			</div>
+
+			 <div class="panel panel-default">
+				<div class="panel-heading">
+					Resource Collection
+				</div>
+				<table class="table table-condensed table-striped">
+					<tbody>
+						<tr>
+							<td>Gold</td>
+							<td style="text-align:right;">{{resources_per_interval.gold}}</td>
+						</tr>
+						<tr>
+							<td>Grain</td>
+							<td style="text-align:right;">{{resources_per_interval.grain}}</td>
+						</tr>
+						<tr>
+							<td>Lumber</td>
+							<td style="text-align:right;">{{resources_per_interval.lumber}}</td>
+						</tr>
+						<tr>
+							<td>Ore</td>
+							<td style="text-align:right;">{{resources_per_interval.ore}}</td>
+						</tr>
+						<tr>
+							<td>Wool</td>
+							<td style="text-align:right;">{{resources_per_interval.wool}}</td>
+						</tr>
+						<tr>
+							<td>Clay</td>
+							<td style="text-align:right;">{{resources_per_interval.clay}}</td>
+						</tr>
+						<tr>
+							<td>Glass</td>
+							<td style="text-align:right;">{{resources_per_interval.glass}}</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="panel-body light_text" style="text-align:center;">
+					Collected every {{interval}}<br>
+					from surrounding hexes.
+				</div>
+			</div>
+
+			<br>
+			
+			<div class="pad_group">
+				<button type="button" class="btn btn-sm btn-primary btn-block" id="destroy_village_button">Destroy Village</button>
+			</div>
+		{{/if}}
+
+
+		
+
+	</div>
+</template>

@@ -1,0 +1,4 @@
+<template name="castle">
+	<image xlink:href="/game_images/{{image}}" x="{{coord_to_pixel_x x y -63}}" y="{{coord_to_pixel_y x y -41}}" height="83" width="126" style="pointer-events: none;"/>
+	<polygon points="{{hex_points x y}}" class="castle" data-id="{{_id}}" data-x="{{x}}" data-y="{{y}}"/>
+</template>

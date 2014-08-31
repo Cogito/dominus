@@ -1,0 +1,34 @@
+# Meteor packages used by this project, one per line.
+#
+# 'meteor add' and 'meteor remove' will edit this file for you,
+# but you can also edit it by hand.
+
+standard-app-packages
+jquery
+less
+random
+accounts-password
+npm
+bootstrap3-less
+d3
+nvd3js
+font-awesome
+facts
+underscore-string-latest
+email
+accounts-ui
+stripe
+timesync
+subs-manager
+kadira
+user-status
+modernizr-meteor
+cookies
+reactive-dict
+iron-router
+phantomjs
+spiderable
+danimal:dominus-minimap
+danimal:dominus-battle
+mrt:moment
+

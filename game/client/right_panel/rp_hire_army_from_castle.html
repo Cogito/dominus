@@ -1,0 +1,184 @@
+<template name="rp_hire_army_from_castle">
+	<div class="rp_content" id="rp_hire_army_from_castle">
+
+		{{#if is_ally_below}}
+			<div style="text-align:center;">
+				<div class="panel_title">
+					Hire Soldiers for {{username}}
+				</div>
+				<div class="pad_group">
+					This is your ally's castle.  You can hire soldiers for them.  These soldiers will be under their control, you will not be able to control them.
+				</div>
+				<br>
+			</div>
+		{{/if}}
+
+		<div class="alert alert-danger" style="display:none;margin:0 12px 0 12px;" id="hire_error">Could not hire.</div>
+		<div class="alert alert-danger" style="display:none;margin:0 12px 0 12px;" id="hire_zero_error">Use the sliders to set how many soldiers to hire.</div>
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Hire Soldiers
+			</div>
+			<div class="panel-body">
+				<table class="table table-condensed">
+					<tbody>
+						{{#each army_settings.types}}
+							<tr>
+								<td>{{capitalize this}}</td>
+								<td style="text-align:right;">selected: {{num_units this}}</td>
+								<td style="text-align:right;">max: {{max_units this}}</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<input type="range" data-type="{{this}}" class="hire_units_new_slider" value="0" min="0" step="1" max="1">
+								</td>
+							</tr>
+						{{/each}}
+						<tr>
+							<td colspan="3" style="text-align:center;">
+								<br>
+								<button type="button" class="btn btn-sm btn-primary" id="hire_army_from_castle_hire_button">Hire</button>
+								<button type="button" class="btn btn-sm btn-primary" id="hire_army_from_castle_cancel_button">Cancel</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Resources
+			</div>
+			<div class="panel-body">
+				<table class="table table-condensed">
+					<thead>
+						<tr>
+							<td></td>
+							<td>Current</td>
+							<td>Cost</td>
+							<td>Final</td>
+							<td></td>
+						</tr>
+					</thead>
+					<tbody>
+						{{#each resource_settings.types_plus_gold}}
+							<tr>
+								<td>{{capitalize this}}</td>
+								<td style="text-align:right;">{{cur_res this}}</td>
+								<td style="text-align:right;">{{sel_cost this}}</td>
+								<td style="text-align:right;">{{final_cost this}}</td>
+								<td>
+									{{#unless is_gold this}}
+										<button type="button" class="btn btn-xs btn-primary btn-block sell_all_button" data-type="{{this}}">Sell All {{capitalize this}}</button>
+									{{/unless}}
+								</td>
+							</tr>
+						{{/each}}
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Prices
+			</div>
+			<div class="panel-body">
+				<table class="table table-condensed">
+					<thead>
+						<tr>
+							<th></th>
+							<th>Footmen</th>
+							<th>Archer</th>
+							<th>Pikemen</th>
+							<th>Cavalry</th>
+							<th>Catapults</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Grain</td>
+							<td>{{price.footmen.grain}}</td>
+							<td>{{price.archers.grain}}</td>
+							<td>{{price.pikemen.grain}}</td>
+							<td>{{price.cavalry.grain}}</td>
+							<td>{{price.catapults.grain}}</td>
+						</tr>
+						<tr>
+							<td>Lumber</td>
+							<td>{{price.footmen.lumber}}</td>
+							<td>{{price.archers.lumber}}</td>
+							<td>{{price.pikemen.lumber}}</td>
+							<td>{{price.cavalry.lumber}}</td>
+							<td>{{price.catapults.lumber}}</td>
+						</tr>
+						<tr>
+							<td>Ore</td>
+							<td>{{price.footmen.ore}}</td>
+							<td>{{price.archers.ore}}</td>
+							<td>{{price.pikemen.ore}}</td>
+							<td>{{price.cavalry.ore}}</td>
+							<td>{{price.catapults.ore}}</td>
+						</tr>
+						<tr>
+							<td>Wool</td>
+							<td>{{price.footmen.wool}}</td>
+							<td>{{price.archers.wool}}</td>
+							<td>{{price.pikemen.wool}}</td>
+							<td>{{price.cavalry.wool}}</td>
+							<td>{{price.catapults.wool}}</td>
+						</tr>
+						<tr>
+							<td>Clay</td>
+							<td>{{price.footmen.clay}}</td>
+							<td>{{price.archers.clay}}</td>
+							<td>{{price.pikemen.clay}}</td>
+							<td>{{price.cavalry.clay}}</td>
+							<td>{{price.catapults.clay}}</td>
+						</tr>
+						<tr>
+							<td>Glass</td>
+							<td>{{price.footmen.glass}}</td>
+							<td>{{price.archers.glass}}</td>
+							<td>{{price.pikemen.glass}}</td>
+							<td>{{price.cavalry.glass}}</td>
+							<td>{{price.catapults.glass}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Army Types
+			</div>
+			<div class="panel-body">
+				<p>
+					<b>Footmen</b><br>
+					Offense: {{s_army.stats.footmen.offense}} &nbsp; Defense: {{s_army.stats.footmen.defense}} &nbsp; Speed: {{s_army.stats.footmen.speed}}<br>
+					Footmen are good all-around soldiers.<br>
+					<br>
+					<b>Archers</b><br>
+					Offense: {{s_army.stats.archers.offense}} &nbsp; Defense: {{s_army.stats.archers.defense}} &nbsp; Speed: {{s_army.stats.archers.speed}}<br>
+					Good at defense. Bonus against footmen.<br>
+					<br>
+					<b>Pikemen</b><br>
+					Offense: {{s_army.stats.pikemen.offense}} &nbsp; Defense: {{s_army.stats.pikemen.defense}} &nbsp; Speed: {{s_army.stats.pikemen.speed}}<br>
+					Good at defense. Bonus against cavalry.<br>
+					<br>
+					<b>Cavalry</b><br>
+					Offense: {{s_army.stats.cavalry.offense}} &nbsp; Defense: {{s_army.stats.cavalry.defense}} &nbsp; Speed: {{s_army.stats.cavalry.speed}}<br>
+					Good at offense. Bonus against archers and footmen.<br>
+					<br>
+					<b>Catapults</b><br>
+					Offense: {{s_army.stats.catapults.offense}} &nbsp; Defense: {{s_army.stats.catapults.defense}} &nbsp; Speed: {{s_army.stats.catapults.speed}}<br>
+					{{s_army.stats.catapults.bonus_against_buildings}}x bonus when attacking a castle or village.<br>
+				</p>
+			</div>
+		</div>
+	</div>
+</template>

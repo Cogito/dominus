@@ -1,0 +1,17 @@
+<template name="forum_thread">
+	<tr>
+		<td class="forum_thread">
+			<div class="thread_name">
+				{{#if is_new}}
+					<span class="badge">!</span>
+				{{/if}}
+				<a href="" class="thread_link" data-id="{{_id}}">{{name}}</a>
+			</div>
+			<div class="thread_date">
+				{{date_calendar updated_at}} by {{last_post_username}}
+			</div>
+		</td>
+		<td style="text-align:center;">{{numMessages}}</td>
+		<td style="text-align:center;">{{numViews}}</td>
+	</tr>
+</template>
