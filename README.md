@@ -16,6 +16,8 @@ Dominus is made using the web platform <a href="http://meteor.com">Meteor.js</a>
 * Set Stripe keys in settings.json
 * Run with "./run"
 
+process_renders requires ImageMagick
+
 
 ### Known Issues ###
 
