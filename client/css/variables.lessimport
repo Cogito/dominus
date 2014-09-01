@@ -1,15 +1,15 @@
-// @import "/packages/bootstrap3-less/bootstrap.import.less";
+// @import "/packages/bootstrap3-less/bootstrap.less";
 
 // defines where the package is
-@bootstrap3-less-root: "/packages/bootstrap3-less";
+@bootstrap3-less-root: "/client/css/.bootstrap3_less";
 
 // Import Bootstrap Config Defaults
 // ---------------------------------------
 // (you need these first, to get the default setup for bootstrap)
 
 
-@import "@{bootstrap3-less-root}/lib/less/variables.import.less";
-@import "@{bootstrap3-less-root}/lib/less/mixins.import.less";
+@import "@{bootstrap3-less-root}/variables.less";
+@import "@{bootstrap3-less-root}/mixins.less";
 
 // Application Overrides (config)
 // ---------------------------------------
@@ -23,50 +23,50 @@
 // (This is the full set of package files, include only what you need)
 
 // Reset
-@import "@{bootstrap3-less-root}/lib/less/normalize.import.less";
-//@import "@{bootstrap3-less-root}/lib/less/print.import.less";
+@import "@{bootstrap3-less-root}/normalize.less";
+//@import "@{bootstrap3-less-root}/print.less";
 
 // Core CSS
-@import "@{bootstrap3-less-root}/lib/less/scaffolding.import.less";
-@import "@{bootstrap3-less-root}/lib/less/type.import.less";
-@import "@{bootstrap3-less-root}/lib/less/code.import.less";
-@import "@{bootstrap3-less-root}/lib/less/grid.import.less";
-@import "@{bootstrap3-less-root}/lib/less/tables.import.less";
-@import "@{bootstrap3-less-root}/lib/less/forms.import.less";
-@import "@{bootstrap3-less-root}/lib/less/buttons.import.less";
+@import "@{bootstrap3-less-root}/scaffolding.less";
+@import "@{bootstrap3-less-root}/type.less";
+@import "@{bootstrap3-less-root}/code.less";
+@import "@{bootstrap3-less-root}/grid.less";
+@import "@{bootstrap3-less-root}/tables.less";
+@import "@{bootstrap3-less-root}/forms.less";
+@import "@{bootstrap3-less-root}/buttons.less";
 
 // Components
-@import "@{bootstrap3-less-root}/lib/less/component-animations.import.less";
-//@import "@{bootstrap3-less-root}/lib/less/glyphicons.import.less";
-//@import "@{bootstrap3-less-root}/lib/less/dropdowns.import.less";
-@import "@{bootstrap3-less-root}/lib/less/button-groups.import.less";
-@import "@{bootstrap3-less-root}/lib/less/input-groups.import.less";
-@import "@{bootstrap3-less-root}/lib/less/navs.import.less";
-//@import "@{bootstrap3-less-root}/lib/less/navbar.import.less";
-@import "@{bootstrap3-less-root}/lib/less/breadcrumbs.import.less";
-@import "@{bootstrap3-less-root}/lib/less/pagination.import.less";
-//@import "@{bootstrap3-less-root}/lib/less/pager.import.less";
-@import "@{bootstrap3-less-root}/lib/less/labels.import.less";
-@import "@{bootstrap3-less-root}/lib/less/badges.import.less";
-//@import "@{bootstrap3-less-root}/lib/less/jumbotron.import.less";
-//@import "@{bootstrap3-less-root}/lib/less/thumbnails.import.less";
-@import "@{bootstrap3-less-root}/lib/less/alerts.import.less";
-//@import "@{bootstrap3-less-root}/lib/less/progress-bars.import.less";
-@import "@{bootstrap3-less-root}/lib/less/media.import.less";
-@import "@{bootstrap3-less-root}/lib/less/list-group.import.less";
-@import "@{bootstrap3-less-root}/lib/less/panels.import.less";
-@import "@{bootstrap3-less-root}/lib/less/wells.import.less";
-@import "@{bootstrap3-less-root}/lib/less/close.import.less";
+@import "@{bootstrap3-less-root}/component-animations.less";
+//@import "@{bootstrap3-less-root}/glyphicons.less";
+//@import "@{bootstrap3-less-root}/dropdowns.less";
+@import "@{bootstrap3-less-root}/button-groups.less";
+@import "@{bootstrap3-less-root}/input-groups.less";
+@import "@{bootstrap3-less-root}/navs.less";
+//@import "@{bootstrap3-less-root}/navbar.less";
+@import "@{bootstrap3-less-root}/breadcrumbs.less";
+@import "@{bootstrap3-less-root}/pagination.less";
+//@import "@{bootstrap3-less-root}/pager.less";
+@import "@{bootstrap3-less-root}/labels.less";
+@import "@{bootstrap3-less-root}/badges.less";
+//@import "@{bootstrap3-less-root}/jumbotron.less";
+//@import "@{bootstrap3-less-root}/thumbnails.less";
+@import "@{bootstrap3-less-root}/alerts.less";
+//@import "@{bootstrap3-less-root}/progress-bars.less";
+@import "@{bootstrap3-less-root}/media.less";
+@import "@{bootstrap3-less-root}/list-group.less";
+@import "@{bootstrap3-less-root}/panels.less";
+@import "@{bootstrap3-less-root}/wells.less";
+@import "@{bootstrap3-less-root}/close.less";
 
 // Components w/ JavaScript
-//@import "@{bootstrap3-less-root}/lib/less/modals.import.less";
-@import "@{bootstrap3-less-root}/lib/less/tooltip.import.less";
-//@import "@{bootstrap3-less-root}/lib/less/popovers.import.less";
-//@import "@{bootstrap3-less-root}/lib/less/carousel.import.less";
+//@import "@{bootstrap3-less-root}/modals.less";
+@import "@{bootstrap3-less-root}/tooltip.less";
+//@import "@{bootstrap3-less-root}/popovers.less";
+//@import "@{bootstrap3-less-root}/carousel.less";
 
 // Utility classes
-@import "@{bootstrap3-less-root}/lib/less/utilities.import.less";
-@import "@{bootstrap3-less-root}/lib/less/responsive-utilities.import.less";
+@import "@{bootstrap3-less-root}/utilities.less";
+@import "@{bootstrap3-less-root}/responsive-utilities.less";
 
 
 
