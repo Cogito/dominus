@@ -22,6 +22,11 @@ Dominus is made using the web platform <a href="http://meteor.com">Meteor.js</a>
 .art/process_renders requires ImageMagick
 
 
+### Packages ###
+
+The best way I've found to work with packages is to create a symlink to them.  Instructions are here(https://meteor.hackpad.com/Unipackage-tvas8pXYMOW) for creating packages.  Create a symlink with "ln -s /path/to/package /dominus/packages".
+
+
 ### Known Issues ###
 
 * The battle package has some issues still.  I believe the problem is defender.enemies and attackers[0].enemies should not be a reference.  It causes a Maximum call stack size exceeded error.
