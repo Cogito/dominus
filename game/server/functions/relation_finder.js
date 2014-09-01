@@ -26,6 +26,9 @@ relation_finder = function(user_id) {
 		var self = this
 		var lord = Meteor.users.findOne(user.lord, {fields: {lord:1}})
 		if (lord) {
+			if (user._id == lord._id) {
+				throw new Meteor.Error(404, "infinite loop");
+			}
 			self.find_top(lord)
 		} else {
 			self.traverse_down(user)

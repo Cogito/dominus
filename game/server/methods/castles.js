@@ -1,11 +1,4 @@
 Meteor.methods({
-	// TODO: add security, user_id has to be there because it's called from
-	// onCreateUser but add a check to... make sure that user doesn't exists
-	// yet?
-	// create_castle: function() {
-	// 	worker.enqueue('create_castle', {user_id: Meteor.userId()})
-	// },
-
 	get_usernames_with_same_ip: function(user_id) {
 		this.unblock()
 		var dupes = []

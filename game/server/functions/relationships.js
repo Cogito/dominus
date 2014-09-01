@@ -76,7 +76,6 @@ set_lord_and_vassal = function(winner, loser) {
 	notification_new_vassal(winner._id, {_id: loser._id, username: loser.username, x: loser.x, y: loser.y, castle_id: loser.castle_id})
 	notification_new_lord(loser._id, {_id: winner._id, username: winner.username, x: winner.x, y: winner.y, castle_id: winner.castle_id})
 
-	//update_allies(lord._id)
 	worker.enqueue('update_allies', {user_id: winner._id})
 
 	if (loser_prev_lord_id) {

@@ -6,6 +6,7 @@ Meteor.startup(function() {
 
 		gamestats_job()
 
+
 		// army moves
 		Meteor.setInterval(function() {
 			var start_time = new Date()
