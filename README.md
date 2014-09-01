@@ -13,7 +13,7 @@ Dominus is made using the web platform <a href="http://meteor.com">Meteor.js</a>
 ### Steps to run ###
 
 * Install Meteor.js
-* run "meteor update" to install packages (might need to be migrated to 0.9 with "mrt migrate-app" after "npm install -g mrt")
+* Run "meteor update" to install packages.
 * Duplicate the file run_temp.  "mv run_temp run"
 * "chmod +x run"
 * Fill in the run file with your info.  This file is in the .gitignore and never checked in.
