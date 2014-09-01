@@ -24,7 +24,7 @@ Dominus is made using the web platform <a href="http://meteor.com">Meteor.js</a>
 
 ### Packages ###
 
-The best way I've found to work with packages is to create a symlink to them.  Instructions are here(https://meteor.hackpad.com/Unipackage-tvas8pXYMOW) for creating packages.  Create a symlink with "ln -s /path/to/package /dominus/packages".
+The best way I've found to work with packages is to create a symlink to them.  Instructions are <a href="https://meteor.hackpad.com/Unipackage-tvas8pXYMOW">here</a> for creating packages.  Add the package with "meteor add user:package".  Create a symlink with "ln -s /path/to/package /path/to/dominus/packages".  When you're done publish the package with "meteor publish".  There is a .gitignore in dominus/packages so that they aren't added (might not be needed).
 
 
 ### Known Issues ###
