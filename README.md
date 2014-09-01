@@ -33,5 +33,5 @@ The best way I've found to work with packages is to create a symlink to them.  I
 
 ### Known Issues ###
 
-* The battle package has some issues still.  I believe the problem is defender.enemies and attackers[0].enemies should not be a reference.  It causes a Maximum call stack size exceeded error.
 * Issues are tracked at https://bitbucket.org/daniel_phillips/gridgame/issues?status=new&status=open and should probably be moved to github.
+* There are some notes in the top of battle.js in the battle package about some things that need fixing.
