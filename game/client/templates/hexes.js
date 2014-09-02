@@ -30,21 +30,21 @@ Template.hexes.helpers({
 
 Template.hexes.events({
 	// grid drag
-	'mousedown #hexes': function(event, template) { 
+	'mousedown #hexes': function(event, template) {
 		if (event.which == 1) {
 			// left mouse button
-			start_grid_drag(event, false)
+			dragger.start_grid_drag(event, false)
 		}
 	},
-	'mouseup #hexes': function(event, template) { stop_grid_drag() },
-	'mouseleave #hexes': function(event, template) { stop_grid_drag(); Session.set('mouseover_hex_id', ''); },
-	'mousemove #hexes': function(event, template) { hexes_mouse_move(event, false) },
+	'mouseup #hexes': function(event, template) { dragger.stop_grid_drag() },
+	'mouseleave #hexes': function(event, template) { dragger.stop_grid_drag(); Session.set('mouseover_hex_id', ''); },
+	'mousemove #hexes': function(event, template) { dragger.hexes_mouse_move(event, false) },
 
 	'touchstart #hexes': function(event, template) {
-		start_grid_drag(event, true)
+		dragger.start_grid_drag(event, true)
 	},
-	'touchend #hexes': function(event, template) { stop_grid_drag() },
-	'touchmove #hexes': function(event, template) { hexes_mouse_move(event, true) },
+	'touchend #hexes': function(event, template) { dragger.stop_grid_drag() },
+	'touchmove #hexes': function(event, template) { dragger.hexes_mouse_move(event, true) },
 
 	// selecting hex to move army to
 	'mouseenter .hex': function(event, template) {
@@ -147,7 +147,7 @@ Template.hexes.rendered = function() {
 	})
 
 
-	
+
 }
 
 
