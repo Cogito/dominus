@@ -1,7 +1,0 @@
-#!/bin/bash
-
-rm -r -f .demeteorized
-demeteorizer
-cd .demeteorized
-modulus deploy -p dominus_4_worker
-cd ..
