@@ -1,5 +1,18 @@
 Router.map(function() {
-	this.route('game', {path: '/'})
+	
+	this.route('index', {
+		path: '/',
+		action: function() {
+			if (Meteor.userId()) {
+				this.render('game')
+			} else {
+				this.render('landing')
+			}
+		}
+	})
+
+	// not used
+	//this.route('game', {path: '/'})
 
 	this.route('admin')
 
