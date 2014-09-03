@@ -185,8 +185,8 @@ dragger = (function () {
 	}
 
 	var hexes_mouse_move = function(event, is_touch) {
-		event.preventDefault()
 		if (Session.get('is_dragging_hexes')) {
+			event.preventDefault()
 			if (last_mouse_pos.x != 0 || last_mouse_pos.y != 0) {
 				if (new Date() - last_drag_update > 50) {
 					var point = point_from_event(event, is_touch)
