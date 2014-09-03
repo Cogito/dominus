@@ -26,32 +26,16 @@ Template.hexes.helpers({
 
 
 
-// todo: maybe use mousedrag for dragging?
 
 Template.hexes.events({
-	// grid drag
-	'mousedown #hexes': function(event, template) {
-		if (event.which == 1) {
-			// left mouse button
-			dragger.start_grid_drag(event, false)
-		}
-	},
-	'mouseup #hexes': function(event, template) { dragger.stop_grid_drag() },
-	'mouseleave #hexes': function(event, template) { dragger.stop_grid_drag(); Session.set('mouseover_hex_id', ''); },
-	'mousemove #hexes': function(event, template) { dragger.hexes_mouse_move(event, false) },
-
-	'touchstart #hexes': function(event, template) {
-		dragger.start_grid_drag(event, true)
-	},
-	'touchend #hexes': function(event, template) { dragger.stop_grid_drag() },
-	'touchmove #hexes': function(event, template) { dragger.hexes_mouse_move(event, true) },
-
 	// selecting hex to move army to
 	'mouseenter .hex': function(event, template) {
 		var id = $(event.currentTarget).attr('data-id')
 		Session.set('mouseover_hex_id', id)
 	},
-
+	'mouseleave .hex': function(event, template) {
+		Session.set('mouseover_hex_id', '');
+	},
 
 	'click .hex': function(event, template) {
 		var id = $(event.currentTarget).attr('data-id')
