@@ -144,61 +144,67 @@ deselect_all = function() {
 // should dragging be changed to has mouse moved since mousedown?
 // should this be inside a deps.autorun?
 
-mouse_down = false
-last_mouse_pos_x = 0
-last_mouse_pos_y = 0
-last_drag_update = new Date(0)
+dragger = (function () {
+	var mouse_down = false
+	var last_mouse_pos = {x: 0, y: 0}
+	var last_drag_update = new Date(0)
 
-// delay to figure out if this is a click or a drag
-start_grid_drag = function(event, is_touch) {
-	mouse_down = true
-	Meteor.setTimeout(function() {
-		if (mouse_down) {
-			event.preventDefault()
-			if (is_touch && event.originalEvent.touches[0]) {
-				last_mouse_pos_x = event.originalEvent.touches[0].pageX
-				last_mouse_pos_y = event.originalEvent.touches[0].pageY
-			} else {
-				last_mouse_pos_x = event.clientX
-				last_mouse_pos_y = event.clientY
+	var point_from_event = function (event, is_touch) {
+		if (is_touch && event.originalEvent.touches[0]) {
+			return {
+				x: event.originalEvent.touches[0].pageX,
+				y: event.originalEvent.touches[0].pageY
 			}
-			Session.set('is_dragging_hexes', true)
-		}
-	}, 150)
-}
-
-stop_grid_drag = function() {
-	// hexes mouseup sometimes fires before hex click
-	// do this so that hex click always knows if we're dragging
-	Meteor.setTimeout(function() {
-		mouse_down = false
-		Session.set('is_dragging_hexes', false)
-	}, 0)
-}
-
-hexes_mouse_move = function(event, is_touch) {
-	event.preventDefault()
-	if (Session.get('is_dragging_hexes')) {
-		if (last_mouse_pos_x != 0 || last_mouse_pos_y != 0) {
-			if (new Date() - last_drag_update > 50) {
-				if (is_touch && event.originalEvent.touches[0]) {
-					var offset_x = event.originalEvent.touches[0].pageX - last_mouse_pos_x
-					var offset_y = event.originalEvent.touches[0].pageY - last_mouse_pos_y
-				} else {
-					var offset_x = event.clientX - last_mouse_pos_x
-					var offset_y = event.clientY - last_mouse_pos_y
-				}
-				offset_hexes(offset_x, offset_y)
-				last_drag_update = new Date()
-				if (is_touch && event.originalEvent.touches[0]) {
-					last_mouse_pos_x = event.originalEvent.touches[0].pageX
-					last_mouse_pos_y = event.originalEvent.touches[0].pageY
-				} else {
-					last_mouse_pos_x = event.clientX
-					last_mouse_pos_y = event.clientY
-				}
+		} else {
+			return {
+				x: event.clientX,
+				y: event.clientY
 			}
 		}
-		
 	}
-}
+
+	// delay to figure out if this is a click or a drag
+	var start_grid_drag = function(event, is_touch) {
+		mouse_down = true
+		Meteor.setTimeout(function() {
+			if (mouse_down) {
+				event.preventDefault()
+				last_mouse_pos = point_from_event(event, is_touch)
+				Session.set('is_dragging_hexes', true)
+			}
+		}, 150)
+	}
+
+	var stop_grid_drag = function() {
+		// hexes mouseup sometimes fires before hex click
+		// do this so that hex click always knows if we're dragging
+		Meteor.setTimeout(function() {
+			mouse_down = false
+			Session.set('is_dragging_hexes', false)
+		}, 0)
+	}
+
+	var hexes_mouse_move = function(event, is_touch) {
+		if (Session.get('is_dragging_hexes')) {
+			event.preventDefault()
+			if (last_mouse_pos.x != 0 || last_mouse_pos.y != 0) {
+				if (new Date() - last_drag_update > 50) {
+					var point = point_from_event(event, is_touch)
+					var offset = {
+						x: point.x - last_mouse_pos.x,
+						y: point.y - last_mouse_pos.y
+					}
+					offset_hexes(offset.x, offset.y)
+					last_drag_update = new Date()
+					last_mouse_pos = point
+				}
+			}
+		}
+	}
+
+	return {
+		start_grid_drag: start_grid_drag,
+		stop_grid_drag: stop_grid_drag,
+		hexes_mouse_move: hexes_mouse_move
+	};
+})();

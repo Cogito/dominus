@@ -55,7 +55,20 @@ Template.game.helpers({
 
 })
 
+Template.game.events({
+	// grid drag. Only start dragging if starting within #hex_body; continue dragging everywhere.
+	'mousedown #hex_body': function(event, template) {
+		if (event.which == 1) { // left mouse button
+			dragger.start_grid_drag(event, false)
+		}
+	},
+	'mouseup': function(event, template) { dragger.stop_grid_drag() },
+	'mousemove': function(event, template) { dragger.hexes_mouse_move(event, false) },
 
+	'touchstart #hex_body': function(event, template) { dragger.start_grid_drag(event, true) },
+	'touchend': function(event, template) { dragger.stop_grid_drag() },
+	'touchmove': function(event, template) { dragger.hexes_mouse_move(event, true) }
+})
 
 Template.game.destroyed = function() {
 	if (this.deps_noUser) {
