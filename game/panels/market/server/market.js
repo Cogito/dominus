@@ -6,47 +6,6 @@ Meteor.methods({
 			reset_market()
 		}
 	},
-
-
-	stripe_buy_gold: function(amount_in_cents, token) {
-		check(amount_in_cents, Number)
-
-		var fut = new Future()
-		var stripe = StripeAPI(Meteor.settings.stripe_secret_key)
-
-		var amount = worth_of_army(s.stripe.num_footmen, s.stripe.num_archers, s.stripe.num_pikemen, s.stripe.num_cavalry) * s.stripe['gold_'+amount_in_cents]
-
-		var charge = stripe.charges.create({
-			amount: amount_in_cents,
-			currency: "usd",
-			card: token.id,
-			description: Meteor.user().emails[0].address
-		}, Meteor.bindEnvironment(function(err, charge) {
-			//if (err && err.type === 'StripeCardError') {
-			if (err) {
-				fut['return'](false)
-			} else {
-				Meteor.users.update(Meteor.userId(), {$inc: {gold: amount}})
-
-				//update_networth(Meteor.userId())
-				worker.enqueue('update_networth', {user_id: Meteor.userId()})
-				
-				var id = Charges.insert({
-					created_at: new Date(),
-					user_id: Meteor.userId(),
-					amount: amount_in_cents,
-					gold: amount,
-					user_email: Meteor.user().emails[0].address,
-					user_username: Meteor.user().username,
-					livemode: charge.livemode,
-					stripe_charge_id: charge.id
-				})
-
-				fut['return'](id)
-			}
-		}))
-		return fut.wait()
-	},
 })
 
 

@@ -47,25 +47,6 @@ Template.market_panel.helpers({
 		}
 	},
 
-	// gold_200: function() {
-	// 	return round_number(worth_of_army(s.stripe.num_footmen, s.stripe.num_archers, s.stripe.num_pikemen, s.stripe.num_cavalry) * s.stripe.gold_200)
-	// },
-
-	// gold_500: function() {
-	// 	return round_number(worth_of_army(s.stripe.num_footmen, s.stripe.num_archers, s.stripe.num_pikemen, s.stripe.num_cavalry) * s.stripe.gold_500)
-	// },
-
-	// gold_1000: function() {
-	// 	return round_number(worth_of_army(s.stripe.num_footmen, s.stripe.num_archers, s.stripe.num_pikemen, s.stripe.num_cavalry) * s.stripe.gold_1000)
-	// },
-
-	// gold_2000: function() {
-	// 	return round_number(worth_of_army(s.stripe.num_footmen, s.stripe.num_archers, s.stripe.num_pikemen, s.stripe.num_cavalry) * s.stripe.gold_2000)
-	// },
-
-	// gold_4000: function() {
-	// 	return round_number(worth_of_army(s.stripe.num_footmen, s.stripe.num_archers, s.stripe.num_pikemen, s.stripe.num_cavalry) * s.stripe.gold_4000)
-	// },
 })
 
 
@@ -200,31 +181,6 @@ Template.market_panel.events({
 		Session.set('temp_market_type', $('input[name=market_type_radio]:checked').val())
 	},
 
-	// 'click #stripe_button_200': function(event, template) {
-	// 	var button = template.find('#stripe_button_200')
-	// 	stripe_checkout(200, template, button)
-	// },
-
-	// 'click #stripe_button_500': function(event, template) {
-	// 	var button = template.find('#stripe_button_500')
-	// 	stripe_checkout(500, template, button)
-	// },
-
-	// 'click #stripe_button_1000': function(event, template) {
-	// 	var button = template.find('#stripe_button_1000')
-	// 	stripe_checkout(1000, template, button)
-	// },
-
-	// 'click #stripe_button_2000': function(event, template) {
-	// 	var button = template.find('#stripe_button_2000')
-	// 	stripe_checkout(2000, template, button)
-	// },
-
-	// 'click #stripe_button_4000': function(event, template) {
-	// 	var button = template.find('#stripe_button_4000')
-	// 	stripe_checkout(4000, template, button)
-	// },
-
 	'click #max_sell_button': function(event, template) {
 		var num = Meteor.user()[Session.get('temp_market_type')]
 		num = Math.floor(num)
@@ -242,54 +198,6 @@ Template.market_panel.events({
 		}
 	}
 })
-
-
-// stripe_checkout = function(amount_in_cents, template, button) {
-// 	var error_alert = template.find('#stripe_error_alert')
-// 	var success_alert = template.find('#stripe_success_alert')
-
-// 	var amount = worth_of_army(s.stripe.num_footmen, s.stripe.num_archers, s.stripe.num_pikemen, s.stripe.num_cavalry) * s.stripe['gold_'+amount_in_cents]
-
-// 	$(error_alert).hide()
-// 	$(success_alert).hide()
-
-// 	var button_html = $(button).html()
-// 	$(button).attr('disabled', true)
-// 	$(button).html('<i class="fa fa-refresh fa-spin"></i> Please Wait')
-
-// 	var handler = StripeCheckout.configure({
-// 		key: s.stripe.publishable_key,
-// 		image: '/stripe_logo.jpg',
-// 		token: function(token, args) {
-// 			// Use the token to create the charge with a server-side script.
-// 			// You can access the token ID with `token.id`
-// 			$(button).html('<i class="fa fa-refresh fa-spin"></i> Please Wait. Charging card.')
-// 			Meteor.call('stripe_buy_gold', amount_in_cents, token, function(error, charge_id) {
-// 				if (error) {
-// 					$(button).attr('disabled', false)
-// 					$(button).html(button_html)
-// 					$(error_alert).show()
-// 					$(error_alert).html('Error charging card.  Card declined.')
-// 				} else {
-// 					log_gold_purchase(charge_id, amount_in_cents)
-
-// 					$(button).attr('disabled', false)
-// 					$(button).html(button_html)
-// 					$(success_alert).show()
-// 					$(success_alert).html('Purchased '+round_number_1(amount)+' gold.')
-// 				}
-// 			})
-// 		}
-// 	})
-
-// 	handler.open({
-// 		name: s.game_name,
-// 		description: round_number(amount) +" gold ($"+round_number_1(amount_in_cents/100)+")",
-// 		amount: amount_in_cents,
-// 		email: Meteor.user().emails[0].address
-// 	})
-// }
-
 
 
 Template.market_panel.destroyed = function() {
