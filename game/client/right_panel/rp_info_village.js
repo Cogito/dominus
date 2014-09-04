@@ -71,6 +71,10 @@ Template.rp_info_village.rendered = function() {
 	logevent('right_panel', 'open', 'info_village')
 
 	this.autorun(function() {
-		Meteor.subscribe('battle_notifications_at_hex', self.data.x, self.data.y)
+		// if (self.data) is a hack, shouldn't be run until it's loaded
+		// this probably makes the autorun run everytime anything in data is changed
+		if (self.data) {
+			Meteor.subscribe('battle_notifications_at_hex', self.data.x, self.data.y)
+		}
 	})
 }
