@@ -34,7 +34,7 @@ Meteor.startup(function() {
 							var y = from_pos.y * (1 - i/distance) + to_pos.y * i/distance
 
 							//sample hexes at circles
-							var coords = Hx.posToCoordinates(x, y, hexSize, hexSquish)
+							var coords = Hx.posToCoordinates(x, y, s.hex_size, s.hex_squish)
 
 							// move army
 							if (move_army_to_next_hex) {

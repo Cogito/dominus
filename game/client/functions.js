@@ -60,7 +60,7 @@ highlight_hex_path = function(from_x, from_y, to_x, to_y) {
 	// remove_castle_highlights()
 	// remove_village_highlights()
 
-	var from_pox = Hx.coordinatesToPos(from_x, from_y, s.hex_size, s.hex_squish)
+	var from_pos = Hx.coordinatesToPos(from_x, from_y, s.hex_size, s.hex_squish)
 	var to_pos = Hx.coordinatesToPos(to_x, to_y, s.hex_size, s.hex_squish)
 
 	// draw debug line
@@ -93,7 +93,7 @@ highlight_hex_path = function(from_x, from_y, to_x, to_y) {
 		// }
 
 		//sample hexes at circles
-		var coords = Hx.posToCoordinates(x, y, hexSize, hexSquish)
+		var coords = Hx.posToCoordinates(x, y, s.hex_size, s.hex_squish)
 		highlight_hex_coords(coords.x, coords.y)
 
 		var castle = Castles.findOne({x: coords.x, y: coords.y}, {fields: {_id: 1}})
