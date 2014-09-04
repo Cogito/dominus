@@ -93,9 +93,9 @@ UI.registerHelper('ally_castle_defense_bonus', function() {
 	return s.castle.ally_defense_bonus
 })
 
-UI.registerHelper('stripe', function() {
-	return s.stripe
-})
+// UI.registerHelper('stripe', function() {
+// 	return s.stripe
+// })
 
 UI.registerHelper('resource_interval', function() {
 	return moment.duration(s.resource.interval).humanize()

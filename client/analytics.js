@@ -9,7 +9,7 @@ logevent = function(category, action, label, value) {
 	}
 }
 
-// todo: change this to store purchase
+// todo: change this to work with store purchase
 //
 // log_gold_purchase = function(charge_id, amount_in_cents) {
 // 	ga('ecommerce:addTransaction', {

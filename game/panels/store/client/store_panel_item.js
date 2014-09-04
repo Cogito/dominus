@@ -49,7 +49,7 @@ Template.store_panel_item.events({
 		$(button).html('<i class="fa fa-refresh fa-spin"></i> Please Wait')
 
 		var handler = StripeCheckout.configure({
-			key: s.stripe.publishable_key,
+			key: stripe_publishable_key,
 			image: '/stripe_logo.jpg',
 			token: function(token, args) {
 				Meteor.call('stripe_purchase_checkout', amount_in_cents, self.type, self.id, token, function(error, charge_id) {
@@ -59,7 +59,7 @@ Template.store_panel_item.events({
 						$(error_alert).show()
 						$(error_alert).html('Error charging card.  Card declined.')
 					} else {
-						log_gold_purchase(charge_id, amount_in_cents)
+						//log_gold_purchase(charge_id, amount_in_cents)
 						$(button).attr('disabled', false)
 						$(button).html(button_html)
 					}

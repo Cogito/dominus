@@ -14,9 +14,10 @@ Dominus is made using the web platform <a href="http://meteor.com">Meteor.js</a>
 
 * Install Meteor.js
 * Run "meteor update" to install packages.
-* Duplicate the file run_temp.  "mv run_temp run"
+* Duplicate the file "run_temp".  "mv run_temp run"
 * "chmod +x run"
 * Fill in the run file with your info.  This file is in the .gitignore and never checked in.
+* Do the same with "stripe_temp.js"
 * Start game with "./run"
 
 .art/process_renders requires ImageMagick
