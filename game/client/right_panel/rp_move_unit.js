@@ -11,7 +11,7 @@ Template.rp_move_unit.helpers({
 			var mouseover_hex_id = Session.get('mouseover_hex_id')
 			var to = id_to_coords(mouseover_hex_id, 'hex')
 			if (to) {
-				var distance = hex_distance(from.x, from.y, to.x, to.y)
+				var distance = Hx.hexDistance(from.x, from.y, to.x, to.y)
 				var army_speed = speed_of_army(get_selected_units())
 				var duration = ms_to_short_time_string(army_speed * distance * 1000 * 60)
 				return {from_x:from.x, from_y:from.y, to_x:to.x, to_y:to.y, distance:distance, duration:duration, num:length_of_queue()+1}
@@ -26,7 +26,7 @@ Template.rp_move_unit.helpers({
 		var army_speed = speed_of_army(self)
 		var index = 0
 		moves = _.map(moves, function(move) {
-			move.distance = hex_distance(move.from_x, move.from_y, move.to_x, move.to_y)
+			move.distance = Hx.hexDistance(move.from_x, move.from_y, move.to_x, move.to_y)
 			move.duration = ms_to_short_time_string(army_speed * move.distance * 1000 * 60)
 			move.index = index
 			move.num = index+1
@@ -44,12 +44,12 @@ Template.rp_move_unit.helpers({
 			var mouseover_hex_id = Session.get('mouseover_hex_id')
 			var to = id_to_coords(mouseover_hex_id, 'hex')
 			if (to) {
-				distance += hex_distance(from.x, from.y, to.x, to.y)
+				distance += Hx.hexDistance(from.x, from.y, to.x, to.y)
 			}
 		}
 
 		_.each(get_unit_moves(), function(move) {
-			distance += hex_distance(move.from_x, move.from_y, move.to_x, move.to_y)
+			distance += Hx.hexDistance(move.from_x, move.from_y, move.to_x, move.to_y)
 		})
 
 		return distance
@@ -65,12 +65,12 @@ Template.rp_move_unit.helpers({
 			var mouseover_hex_id = Session.get('mouseover_hex_id')
 			var to = id_to_coords(mouseover_hex_id, 'hex')
 			if (to) {
-				distance += hex_distance(from.x, from.y, to.x, to.y)
+				distance += Hx.hexDistance(from.x, from.y, to.x, to.y)
 			}
 		}
 
 		_.each(get_unit_moves(), function(move) {
-			distance += hex_distance(move.from_x, move.from_y, move.to_x, move.to_y)
+			distance += Hx.hexDistance(move.from_x, move.from_y, move.to_x, move.to_y)
 		})
 
 		var duration = ms_to_short_time_string(army_speed * distance * 1000 * 60)

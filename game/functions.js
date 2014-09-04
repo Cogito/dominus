@@ -1,3 +1,4 @@
+// used in Meteor.publish
 max_onscreen = function(hex_size, canvas_width, canvas_height, hex_scale) {
 	check(hex_size, Number)
 	check(canvas_width, Number)
@@ -17,46 +18,6 @@ max_onscreen = function(hex_size, canvas_width, canvas_height, hex_scale) {
 	}
 
 	return max
-}
-
-
-///////////////////////////////////////////////////////////////////////////////
-// hex functions
-///////////////////////////////////////////////////////////////////////////////
-
-// take coords of a hex and return pixel the hex is at
-// probably need to add half of screen size to this number
-coordinates_to_grid = function(x, y) {
-	check(x, Number)
-	check(y, Number)
-
-	var pixel_x = s.hex_size * 3/2 * x
-	var pixel_y = s.hex_size * (Math.sqrt(3) * s.hex_squish) * (y + x/2)
-
-	return {
-		x: pixel_x,
-		y: pixel_y
-	}
-}
-
-// this isn't actually pixel to coordinates
-// it's grid pos to coordinates
-grid_to_coordinates = function(x, y) {
-	check(x, Number)
-	check(y, Number)
-
-	var q = 2/3 * x / s.hex_size
-	var r = (1/3 * (Math.sqrt(3) / s.hex_squish) * y - 1/3 * x) / s.hex_size
-
-	// just rounding doesn't work, must convert to cube coords then round then covert to axial
-	var cube = convert_axial_to_cube_coordinates(q,r)
-	var round = round_cube_coordinates(cube.x, cube.y, cube.z)
-	var axial = convert_cube_to_axial_coordinates(round.x, round.y, round.z)
-
-	return {
-		x:axial.x,
-		y:axial.y
-	}
 }
 
 
@@ -89,65 +50,6 @@ pixel_to_grid = function(x,y) {
 }
 
 
-convert_axial_to_cube_coordinates = function(q,r) {
-	check(q, Number)
-	check(r, Number)
-
-	return {
-		x: q,
-		y: -1 * q - r,
-		z: r
-	}
-}
-
-
-convert_cube_to_axial_coordinates = function(x,y,z) {
-	check(x, Number)
-	check(y, Number)
-	check(z, Number)
-
-	return {x: x, y: z}
-}
-
-
-round_cube_coordinates = function(x,y,z) {
-	check(x, Number)
-	check(y, Number)
-	check(z, Number)
-
-	var rx = Math.round(x)
-	var ry = Math.round(y)
-	var rz = Math.round(z)
-
-	var x_diff = Math.abs(rx - x)
-	var y_diff = Math.abs(ry - y)
-	var z_diff = Math.abs(rz - z)
-
-	if (x_diff > y_diff && x_diff > z_diff) {
-		rx = -1 * ry - rz
-	} else if (y_diff > z_diff) {
-		ry = -1 * rx - rz
-	} else {
-		rz = -1 * rx - ry
-	}
-
-	return {x: rx, y: ry, z: rz}
-}
-
-
-
-// number of hexes between two coords, not pixels
-hex_distance = function(x1, y1, x2, y2) {
-	check(x1, Number)
-	check(y1, Number)
-	check(x2, Number)
-	check(y2, Number)
-
-	return (Math.abs(x1 - x2) + Math.abs(y1 - y2) + Math.abs(x1 + y1 - x2 - y2)) / 2
-}
-
-
-
 // empty if you're own army are there
 is_hex_empty_id = function(id) {
 	check(id, String)
@@ -176,7 +78,8 @@ is_hex_empty_coords = function(x,y) {
 
 
 
-
+// it might be faster to just query minimongo instead of trying jquery
+// would definatly be simpler
 id_to_coords = function(id, type) {
 	check(id, String)
 	check(type, String)
@@ -430,78 +333,6 @@ resources_to_gold = function(numGrain, numLumber, numOre, numWool, numClay, numG
 
 	return worth
 }
-
-
-
-// distance_to_town_or_village = function(worker) {
-// 	check(worker, Object)
-
-// 	var c = Castles.findOne({user_id: worker.user_id}, {fields: {x:1, y:1}})
-// 	if (!c) { return 0 }
-// 	var distance = hex_distance(worker.x, worker.y, c.x, c.y)
-
-// 	Villages.find({user_id: worker.user_id}, {fields: {x:1, y:1}}).forEach(function(v) {
-// 		var d = hex_distance(worker.x, worker.y, v.x, v.y)
-// 		if (d < distance) {
-// 			distance = d
-// 		}
-// 	})
-
-// 	return distance
-// }
-
-
-
-get_hexes_surrounding = function(x, y, num_rings) {
-	check(x, Number)
-	check(y, Number)
-
-	var hexes = []
-
-	var pos = {x:x, y:y}
-	for (var k=1; k<=num_rings; k++) {
-		pos = get_neighbor(pos.x, pos.y, 4)
-		for (var i =  0; i < 6; i++) {		// change direction
-			for (var j = 0; j < k; j++) {		// number to get in this direction
-				hexes.push({x:pos.x, y:pos.y})
-				pos = get_neighbor(pos.x, pos.y, i)
-			}
-		}
-	}
-
-	return hexes
-}
-
-
-
-// get x,y's neighbor
-get_neighbor = function(x, y, direction) {
-	switch(direction) {
-		case 0:
-			x = x + 1
-			break;
-		case 1:
-			x = x + 1
-			y = y - 1
-			break;
-		case 2:
-			y = y - 1
-			break;
-		case 3:
-			x = x - 1
-			break;
-		case 4:
-			x = x - 1
-			y = y + 1
-			break;
-		case 5:
-			y = y + 1
-			break;
-	}
-
-	return {x: x, y: y}
-}
-
 
 
 speed_of_army_id = function(id) {

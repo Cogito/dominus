@@ -20,10 +20,11 @@ coffeescript@1.0.2
 ctl-helper@1.0.2
 ctl@1.0.0
 d3@1.0.0
-danimal:accounts-templates@1.0.1
+danimal:accounts-templates@1.0.2
 danimal:dominus-battle@1.0.18
 danimal:dominus-minimap@1.0.2
 danimal:dominus-settings@1.0.6
+danimal:hx@0.0.1
 deps@1.0.1
 ejson@1.0.0
 email@1.0.2

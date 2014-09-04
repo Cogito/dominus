@@ -30,7 +30,7 @@ gather_resources_surrounding = function(x, y, num_rings, user_id, gold) {
 		glass:0
 	}
 
-	var hex_array = get_hexes_surrounding(x, y, num_rings)
+	var hex_array = Hx.getSurroundingHexes(x, y, num_rings)
 	var hexes = Hexes.find({x:{$gte: x-num_rings, $lte: x+num_rings}, y:{$gte: y-num_rings, $lte: y+num_rings}}, {fields: {x:1, y:1, type:1}})
 	hexes.forEach(function(hex) {
 		var h = _.find(hex_array, function(arr) {

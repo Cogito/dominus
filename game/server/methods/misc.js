@@ -16,36 +16,23 @@ generate_hexes = function(num_of_rings) {
 	destroy_all_armies()
 	destroy_all_villages()
 
-	// create hexes
-	var pos = assign_properties_to_hex()
-	pos.x = 0
-	pos.y = 0
-	pos.is_border = false
-	Hexes.insert(pos)
+	var hexArray = Hx.createHexGrid(num_of_rings)
 
-	for (var k = 1; k <= num_of_rings; k++) {
-		// move out a ring, has to be direction 4
-		pos = get_neighbor(pos.x, pos.y, 4)
-		for (var i =  0; i < 6; i++) {
-			for (var j = 0; j < k; j++) {
-				var hex = assign_properties_to_hex()
-				hex.x = pos.x
-				hex.y = pos.y
-				hex.is_border = false
-				Hexes.insert(hex)
-				// move to neighbor in direction i
-				pos = get_neighbor(pos.x, pos.y, i)
-			}
-		}
-	}
+	_.each(hexArray, function(h) {
+		var hex = assign_properties_to_hex()
+		hex.x = h.x
+		hex.y = h.y
+		hex.is_border = false	// used in creating castle to make sure castle is not on edge of map
+		Hexes.insert(hex)
+	})
 }
 
-
+// should move to danimal:Hx
 add_ring = function(is_border) {
 	var h = Hexes.findOne({}, {sort: {x: 1, y: -1}})
 	var k = h.y + 1
 
-	var pos = get_neighbor(h.x, h.y, 4)
+	var pos = Hx.getNeighbor(h.x, h.y, 4)
 	for (var i =  0; i < 6; i++) {
 		for (var j = 0; j < k; j++) {
 			var hex = assign_properties_to_hex()
@@ -54,7 +41,7 @@ add_ring = function(is_border) {
 			hex.is_border = is_border	// keep track of hexes on the edge of map so that people don't get castles on the edge
 			var id = Hexes.insert(hex)
 			// move to neighbor in direction i
-			pos = get_neighbor(pos.x, pos.y, i)
+			pos = Hx.getNeighbor(pos.x, pos.y, i)
 		}
 	}
 

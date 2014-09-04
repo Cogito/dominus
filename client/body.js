@@ -13,7 +13,7 @@ UI.registerHelper('coord_to_pixel_x', function(x, y, offset) {
 	check(y, Number)
 	check(offset, Number)
 
-	var grid = coordinates_to_grid(x,y)
+	var grid = Hx.coordinatesToPos(x, y, s.hex_size, s.hex_squish)
 	//return Math.round(pixel.x +  canvas_center_x + offset)
 	return grid.x +  offset
 })
@@ -23,7 +23,7 @@ UI.registerHelper('coord_to_pixel_y', function(x, y, offset) {
 	check(y, Number)
 	check(offset, Number)
 	
-	var grid = coordinates_to_grid(x,y)
+	var grid = Hx.coordinatesToPos(x, y, s.hex_size, s.hex_squish)
 	//return Math.round(pixel.y +  canvas_center_y + offset)
 	return grid.y +  offset
 })
@@ -45,7 +45,7 @@ UI.registerHelper('random_int_1_to_3', function() {
 
 // draw the outline for the hex
 UI.registerHelper('hex_points', function(x, y) {
-	var grid = coordinates_to_grid(x,y)
+	var grid = Hx.coordinatesToPos(x, y, s.hex_size, s.hex_squish)
 	return calculate_hex_polygon_points(grid.x, grid.y, s.hex_size)
 })
 

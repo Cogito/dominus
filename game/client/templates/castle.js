@@ -49,7 +49,7 @@ draw_castle_highlight = function(castle_id, draw_resource_hexes) {
 	check(coords.x, Number)
 	check(coords.y, Number)
 
-	var grid = coordinates_to_grid(coords.x,coords.y)
+	var grid = Hx.coordinatesToPos(coords.x, coords.y, s.hex_size, s.hex_squish)
 	var points = calculate_hex_polygon_points(grid.x, grid.y, s.hex_size * 0.95)
 	if (points != false) {
 		var polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
@@ -59,9 +59,9 @@ draw_castle_highlight = function(castle_id, draw_resource_hexes) {
 	}
 
 	if (draw_resource_hexes) {
-		var hexes = get_hexes_surrounding(coords.x, coords.y, s.resource.num_rings_castle)
+		var hexes = Hx.getSurroundingHexes(coords.x, coords.y, s.resource.num_rings_castle)
 		_.each(hexes, function(hex) {
-			var grid = coordinates_to_grid(hex.x,hex.y)
+			var grid = Hx.coordinatesToPos(hex.x, hex.y, s.hex_size, s.hex_squish)
 			var points = calculate_hex_polygon_points(grid.x, grid.y, s.hex_size * 0.95)
 			if (points != false) {
 				var polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')

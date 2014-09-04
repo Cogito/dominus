@@ -20,10 +20,10 @@ Template.lp_armies.helpers({
 					var last_move_at
 					moves.forEach(function(move) {
 						if (move.index == 0) {
-							var d = hex_distance(a.x, a.y, move.to_x, move.to_y)
+							var d = Hx.hexDistance(a.x, a.y, move.to_x, move.to_y)
 							last_move_at = move.last_move_at
 						} else {
-							var d = hex_distance(move.from_x, move.from_y, move.to_x, move.to_y)
+							var d = Hx.hexDistance(move.from_x, move.from_y, move.to_x, move.to_y)
 						}
 						distance += d
 					})

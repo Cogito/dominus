@@ -38,7 +38,7 @@ Template.village.helpers({
 
 		var canvas_size = Session.get('canvas_size')
 
-		var grid = coordinates_to_grid(x,y)
+		var grid = Hx.coordinatesToPos(x, y, s.hex_size, s.hex_squish)
 		var offset_x = 0
 		var offset_y = 0
 		var points = ''
@@ -97,7 +97,7 @@ draw_village_highlight = function(id, draw_resource_hexes) {
 	check(coords.x, Number)
 	check(coords.y, Number)
 
-	var grid = coordinates_to_grid(coords.x,coords.y)
+	var grid = Hx.coordinatesToPos(coords.x, coords.y, s.hex_size, s.hex_squish)
 	var points = calculate_hex_polygon_points(grid.x, grid.y, s.hex_size * 0.95)
 	if (points != false) {
 		var polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
@@ -107,9 +107,9 @@ draw_village_highlight = function(id, draw_resource_hexes) {
 	}
 
 	if (draw_resource_hexes) {
-		var hexes = get_hexes_surrounding(coords.x, coords.y, s.resource.num_rings_village)
+		var hexes = Hx.getSurroundingHexes(coords.x, coords.y, s.resource.num_rings_village)
 		_.each(hexes, function(hex) {
-			var grid = coordinates_to_grid(hex.x,hex.y)
+			var grid = Hx.coordinatesToPos(hex.x, hex.y, s.hex_size, s.hex_squish)
 			var points = calculate_hex_polygon_points(grid.x, grid.y, s.hex_size * 0.95)
 			if (points != false) {
 				var polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')

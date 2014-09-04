@@ -13,7 +13,7 @@ Template.hover_box.helpers({
 		check(x, Number)
 		check(y, Number)
 
-		var grid = coordinates_to_grid(x, y)
+		var grid = Hx.coordinatesToPos(x, y, s.hex_size, s.hex_squish)
 
 		var offset = 0
 
@@ -40,7 +40,7 @@ Template.hover_box.helpers({
 		check(x, Number)
 		check(y, Number)
 
-		var grid = coordinates_to_grid(x, y)
+		var grid = Hx.coordinatesToPos(x, y, s.hex_size, s.hex_squish)
 
 		var offset = 0
 

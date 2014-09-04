@@ -57,7 +57,7 @@ Template.rp_info_castle.helpers({
 			glass:0
 		}
 
-		var hexes = get_hexes_surrounding(this.x, this.y, s.resource.num_rings_castle)
+		var hexes = Hx.getSurroundingHexes(this.x, this.y, s.resource.num_rings_castle)
 		_.each(hexes, function(hex) {
 			var h = Hexes.findOne({x:hex.x, y:hex.y}, {fields:{type:1}})
 			if (h) {

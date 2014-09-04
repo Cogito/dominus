@@ -38,7 +38,7 @@ center_on_hex = function(x, y) {
 	check(y, Number)
 	var hex_scale = get_hex_scale()
 	var canvas_size = Session.get('canvas_size')
-	var grid = coordinates_to_grid(x, y)
+	var grid = Hx.coordinatesToPos(x, y, s.hex_size, s.hex_squish)
 
 	var x = canvas_size.half_width
 	var y = canvas_size.half_height
@@ -59,8 +59,9 @@ highlight_hex_path = function(from_x, from_y, to_x, to_y) {
 	// hex_remove_highlights()
 	// remove_castle_highlights()
 	// remove_village_highlights()
-	var from_pos = coordinates_to_grid(from_x, from_y)
-	var to_pos = coordinates_to_grid(to_x, to_y)
+
+	var from_pox = Hx.coordinatesToPos(from_x, from_y, s.hex_size, s.hex_squish)
+	var to_pos = Hx.coordinatesToPos(to_x, to_y, s.hex_size, s.hex_squish)
 
 	// draw debug line
 	// if (Session.get('show_debug_symbols')) {
@@ -74,7 +75,7 @@ highlight_hex_path = function(from_x, from_y, to_x, to_y) {
 	// }
 
 	// get distance
-	var distance = hex_distance(from_x, from_y, to_x, to_y)
+	var distance = Hx.hexDistance(from_x, from_y, to_x, to_y)
 
 	for (i = 0; i <= distance; i++) {
 		// pick points along line
@@ -92,7 +93,7 @@ highlight_hex_path = function(from_x, from_y, to_x, to_y) {
 		// }
 
 		//sample hexes at circles
-		var coords = grid_to_coordinates(x, y)
+		var coords = Hx.posToCoordinates(x, y, hexSize, hexSquish)
 		highlight_hex_coords(coords.x, coords.y)
 
 		var castle = Castles.findOne({x: coords.x, y: coords.y}, {fields: {_id: 1}})

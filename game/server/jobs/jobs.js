@@ -18,11 +18,11 @@ Meteor.startup(function() {
 					if (moment(new Date(move.last_move_at)).add('minutes', army_speed) < moment()) {
 						// we're somewhere along path
 						// test until we find where
-						var from_pos = coordinates_to_grid(move.from_x, move.from_y)
-						var to_pos = coordinates_to_grid(move.to_x, move.to_y)
+						var from_pos = Hx.coordinatesToPos(move.from_x, move.from_y, s.hex_size, s.hex_squish)
+						var to_pos = Hx.coordinatesToPos(move.to_x, move.to_y, s.hex_size, s.hex_squish)
 
 						// get distance
-						var distance = hex_distance(move.from_x, move.from_y, move.to_x, move.to_y)
+						var distance = Hx.hexDistance(move.from_x, move.from_y, move.to_x, move.to_y)
 
 						var move_army_to_next_hex = false
 						var move_is_finished = false
@@ -34,7 +34,7 @@ Meteor.startup(function() {
 							var y = from_pos.y * (1 - i/distance) + to_pos.y * i/distance
 
 							//sample hexes at circles
-							var coords = grid_to_coordinates(x, y)
+							var coords = Hx.posToCoordinates(x, y, hexSize, hexSquish)
 
 							// move army
 							if (move_army_to_next_hex) {

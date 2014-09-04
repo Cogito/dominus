@@ -10,7 +10,7 @@ Template.rp_info_army.helpers({
 		var army_speed = speed_of_army(self)
 		var index = 0
 		moves = moves.map(function(move) {
-			move.distance = hex_distance(move.from_x, move.from_y, move.to_x, move.to_y)
+			move.distance = Hx.hexDistance(move.from_x, move.from_y, move.to_x, move.to_y)
 			move.duration = ms_to_short_time_string(army_speed * move.distance * 1000 * 60)
 			move.index = index
 			move.num = index+1
@@ -31,7 +31,7 @@ Template.rp_info_army.helpers({
 
 		var moves = Moves.find({army_id:self._id})
 		moves.forEach(function(move) {
-			distance += hex_distance(move.from_x, move.from_y, move.to_x, move.to_y)
+			distance += Hx.hexDistance(move.from_x, move.from_y, move.to_x, move.to_y)
 		})
 
 		return distance
@@ -44,7 +44,7 @@ Template.rp_info_army.helpers({
 
 		var moves = Moves.find({army_id:self._id})
 		moves.forEach(function(move) {
-			distance += hex_distance(move.from_x, move.from_y, move.to_x, move.to_y)
+			distance += Hx.hexDistance(move.from_x, move.from_y, move.to_x, move.to_y)
 		})
 
 		var duration = ms_to_short_time_string(army_speed * distance * 1000 * 60)
@@ -97,10 +97,10 @@ Template.rp_info_army.helpers({
 		var last_move_at
 		moves.forEach(function(move) {
 			if (move.index == 0) {
-				var d = hex_distance(self.x, self.y, move.to_x, move.to_y)
+				var d = Hx.hexDistance(self.x, self.y, move.to_x, move.to_y)
 				last_move_at = move.last_move_at
 			} else {
-				var d = hex_distance(move.from_x, move.from_y, move.to_x, move.to_y)
+				var d = Hx.hexDistance(move.from_x, move.from_y, move.to_x, move.to_y)
 			}
 			distance += d
 		})

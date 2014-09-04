@@ -112,7 +112,7 @@ Template.hexes.rendered = function() {
 
 				var pixel = grid_to_pixel(hexes_pos.x, hexes_pos.y)
 
-				var coords = grid_to_coordinates(pixel.x, pixel.y)
+				var coords = Hx.posToCoordinates(pixel.x, pixel.y, s.hex_size, s.hex_squish)
 
 				var x = coords.x * -1 	// why -1???
 				var y = coords.y * -1
@@ -157,7 +157,7 @@ observe_hexes = function(self) {
 			var offset_x = -63
 			var offset_y = -41
 
-			var grid = coordinates_to_grid(doc.x,doc.y)
+			var grid = Hx.coordinatesToPos(doc.x, doc.y, s.hex_size, s.hex_squish)
 			// var x = Math.round(pixel.x + canvas_size.half_width + offset_x)
 			// var y = Math.round(pixel.y + canvas_size.half_height + offset_y)
 			var x = grid.x + offset_x
@@ -207,7 +207,7 @@ highlight_hex_coords = function(x, y) {
 	check(x, Number)
 	check(y, Number)
 
-	var pixel = coordinates_to_grid(x,y)
+	var pixel = Hx.coordinatesToPos(x, y, s.hex_size, s.hex_squish)
 	var points = calculate_hex_polygon_points(pixel.x, pixel.y, s.hex_size * 0.95)
 
 	if (points != false) {
