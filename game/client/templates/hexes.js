@@ -19,7 +19,7 @@ Template.hexes.helpers({
 	//is_type_grain: function() { return this.type == 'grain' ? true: false },
 
 	show_coords: function() {
-		return Session.get('show_coords')
+		return get_user_property("sp_show_coords")
 	}
 })
 
