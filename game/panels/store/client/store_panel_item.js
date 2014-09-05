@@ -71,7 +71,7 @@ Template.store_panel_item.events({
 			name: s.game_name,
 			description: 'Purchase '+_store[self.type][self.id].name+' for $'+_store[self.type][self.id].price,
 			amount: amount_in_cents,
-			email: Meteor.user().emails[0].address
+			email: get_user_property("emails")[0].address
 		})
 	},
 })

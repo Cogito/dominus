@@ -60,15 +60,15 @@ Template.left_panel.helpers({
 	},
 
 	show_armies_group: function() {
-		return Meteor.user().lp_show_armies
+		return get_user_property("lp_show_armies")
 	},
 
 	show_lord_group: function() {
-		return Meteor.user().lp_show_lord
+		return get_user_property("lp_show_lord")
 	},
 
 	show_vassals_group: function() {
-		return Meteor.user().lp_show_vassals
+		return get_user_property("lp_show_vassals")
 	},
 
 	time_til_update: function() {
@@ -92,7 +92,7 @@ Template.left_panel.helpers({
 
 Template.left_panel.events({
 	'click #castle_group_link': function(event, template) {
-		if (Meteor.user().lp_show_castle) {
+		if (get_user_property("lp_show_castle")) {
 			Meteor.call('hide_castle')
 		} else {
 			Meteor.call('show_castle')
@@ -100,31 +100,31 @@ Template.left_panel.events({
 	},
 
 	'click #village_group_link': function(event, template) {
-		if (Meteor.user().lp_show_villages) {
+		if (get_user_property("lp_show_villages")) {
 			Meteor.call('hide_villages')
 		} else {
 			Meteor.call('show_villages')
 		}
 	},
-	
+
 	'click #armies_group_link': function(event, template) {
-		if (Meteor.user().lp_show_armies) {
+		if (get_user_property("lp_show_armies")) {
 			Meteor.call('hide_armies')
 		} else {
 			Meteor.call('show_armies')
 		}
 	},
-	
+
 	'click #lord_group_link': function(event, template) {
-		if (Meteor.user().lp_show_lord) {
+		if (get_user_property("lp_show_lord")) {
 			Meteor.call('hide_lord')
 		} else {
 			Meteor.call('show_lord')
 		}
 	},
-	
+
 	'click #vassals_group_link': function(event, template) {
-		if (Meteor.user().lp_show_vassals) {
+		if (get_user_property("lp_show_vassals")) {
 			Meteor.call('hide_vassals')
 		} else {
 			Meteor.call('show_vassals')

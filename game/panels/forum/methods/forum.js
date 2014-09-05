@@ -81,13 +81,13 @@ Meteor.methods({
 			forum_id: forum_id,
 			thread_id: thread_id,
 			user_id: Meteor.userId(),
-			username: Meteor.user().username,
+			username: get_user_property("username"),
 			created_at: new Date(),
 			updated_at: new Date(),
 			message: clean_message,
-			castle_x: Meteor.user().x,
-			castle_y: Meteor.user().y,
-			castle_id: Meteor.user().castle_id
+			castle_x: get_user_property("x"),
+			castle_y: get_user_property("y"),
+			castle_id: get_user_property("castle_id")
 		})
 
 		Threads.update(thread_id, {$inc: {
@@ -96,7 +96,7 @@ Meteor.methods({
 
 		Threads.update(thread_id, {$set: {
 			updated_at: new Date(),
-			last_post_username: Meteor.user().username,
+			last_post_username: get_user_property("username"),
 		}})
 
 		Forums.update(forum_id, {$inc: {

@@ -31,7 +31,7 @@ Template.rp_send_gold.events({
 			$(submit_button).prop('disabled', true)
 		}
 
-		if (!error && num > Meteor.user().gold) {
+		if (!error && num > get_user_property("gold")) {
 			$(alert).show()
 			$(alert).html('You do not have enough gold')
 			$(submit_button).prop('disabled', true)

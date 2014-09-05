@@ -1,7 +1,7 @@
 Meteor.methods({
 
 	admin_empty_jobqueue: function() {
-		if (Meteor.user().admin) {
+		if (get_user_property("admin")) {
 			if (worker) {
 				worker.empty_queue()
 			}

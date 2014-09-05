@@ -26,7 +26,7 @@ Meteor.methods({
 		Villages.update({user_id: Meteor.userId()}, {$set: {username: username}}, {multi: true})
 		Armies.update({user_id: Meteor.userId()}, {$set: {username: username}}, {multi: true})
 		Threads.update({user_id: Meteor.userId()}, {$set: {username: username}}, {multi: true})
-		Threads.update({last_post_username: Meteor.user().username}, {$set: {last_post_username: username}}, {multi: true})
+		Threads.update({last_post_username: get_user_property("username")}, {$set: {last_post_username: username}}, {multi: true})
 		Messages.update({user_id: Meteor.userId()}, {$set: {username: username}}, {multi: true})
 		Charges.update({user_id: Meteor.userId()}, {$set: {user_username: username}}, {multi: true})
 		Meteor.users.update(Meteor.userId(), {$set: {username: username}})

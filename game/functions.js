@@ -387,3 +387,17 @@ clone_object = function(obj){
 clone_array = function(arr) {
 	return arr.slice(0)
 }
+
+
+/////////////////////////////////////////////////////////////////////////////////
+// User Properties
+/////////////////////////////////////////////////////////////////////////////////
+
+get_user_property = function (property) {
+	var fields = {}
+	fields[property] = 1
+	var user = Meteor.users.findOne(Meteor.userId(), {fields: fields})
+	if (user) {
+			return user[property]
+	}
+}
