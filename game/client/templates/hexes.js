@@ -1,7 +1,7 @@
 Template.hexes.helpers({
 	hexes: function() {
 		Session.get('subscription_ready')
-		return Hexes.find({}, {fields: {x:1, y:1, type:1}, reactive:false})
+		return Hexes.find({}, {fields: {x:1, y:1, type:1}})
 	},
 
 	castles: function() {
