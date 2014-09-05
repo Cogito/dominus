@@ -9,18 +9,18 @@ Template.settings_panel.helpers({
 
 Template.settings_panel.events({
 	'click #toggle_coords_button': function(event, template) {
-		if (Session.get('show_coords')) {
-			Session.set('show_coords', false)
+		if (get_user_property("sp_show_coords")) {
+			Meteor.call('hide_coords')
 		} else {
-			Session.set('show_coords', true)
+			Meteor.call('show_coords')
 		}
 	},
 
 	'click #toggle_minimap_button': function(event, template) {
-		if (Session.get('show_minimap')) {
-			Session.set('show_minimap', false)
+		if (get_user_property("sp_show_minimap")) {
+			Meteor.call('hide_minimap')
 		} else {
-			Session.set('show_minimap', true)
+			Meteor.call('show_minimap')
 		}
 	},
 

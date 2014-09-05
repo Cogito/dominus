@@ -51,7 +51,7 @@ Meteor.methods({
 			amount: amount_in_cents,
 			currency: "usd",
 			card: token.id,
-			description: Meteor.user().emails[0].address
+			description: get_user_property("emails")[0].address
 		}, Meteor.bindEnvironment(function(err, charge) {
 			//if (err && err.type === 'StripeCardError') {
 			if (err) {
@@ -64,8 +64,8 @@ Meteor.methods({
 					user_id: Meteor.userId(),
 					amount: amount_in_cents,
 					type: 'store_purchase',
-					user_email: Meteor.user().emails[0].address,
-					user_username: Meteor.user().username,
+					user_email: get_user_property("emails")[0].address,
+					user_username: get_user_property("username"),
 					livemode: charge.livemode,
 					stripe_charge_id: charge.id
 				})
@@ -87,7 +87,7 @@ Meteor.methods({
 			amount: amount_in_cents,
 			currency: "usd",
 			card: token.id,
-			description: Meteor.user().emails[0].address
+			description: get_user_property("emails")[0].address
 		}, Meteor.bindEnvironment(function(err, charge) {
 			//if (err && err.type === 'StripeCardError') {
 			if (err) {
@@ -98,8 +98,8 @@ Meteor.methods({
 					user_id: Meteor.userId(),
 					amount: amount_in_cents,
 					type: 'donation',
-					user_email: Meteor.user().emails[0].address,
-					user_username: Meteor.user().username,
+					user_email: get_user_property("emails")[0].address,
+					user_username: get_user_property("username"),
 					livemode: charge.livemode,
 					stripe_charge_id: charge.id
 				})

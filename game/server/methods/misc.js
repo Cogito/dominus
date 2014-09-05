@@ -1,7 +1,7 @@
 Meteor.methods({	
 
 	generate_hexes: function(num_of_rings) {
-		if (Meteor.user().admin) {
+		if (get_user_property("admin")) {
 			generate_hexes(num_of_rings)
 		}
 	},

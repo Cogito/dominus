@@ -1,7 +1,7 @@
 Template.hexes.helpers({
 	hexes: function() {
 		Session.get('subscription_ready')
-		return Hexes.find({}, {fields: {x:1, y:1, type:1}, reactive:false})
+		return Hexes.find({}, {fields: {x:1, y:1, type:1}})
 	},
 
 	castles: function() {
@@ -19,7 +19,7 @@ Template.hexes.helpers({
 	//is_type_grain: function() { return this.type == 'grain' ? true: false },
 
 	show_coords: function() {
-		return Session.get('show_coords')
+		return get_user_property("sp_show_coords")
 	}
 })
 

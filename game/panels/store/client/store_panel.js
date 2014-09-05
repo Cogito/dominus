@@ -52,7 +52,7 @@ Template.store_panel.events({
 			name: s.game_name,
 			description: 'Donate $10 to '+s.game_name,
 			amount: amount_in_cents,
-			email: Meteor.user().emails[0].address
+			email: get_user_property("emails")[0].address
 		})
 	}
 })

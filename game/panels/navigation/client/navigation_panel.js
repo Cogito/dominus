@@ -1,5 +1,5 @@
 Template.navigation_panel.helpers({
-	show_minimap: function() { return Session.get('show_minimap')}
+	show_minimap: function() { return get_user_property("sp_show_minimap") }
 })
 
 

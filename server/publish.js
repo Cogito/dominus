@@ -177,7 +177,9 @@ Meteor.publish('user_data', function () {
 			hex_scale:1,
 			income:1,
 			purchases:1,
-			losses_worth:1
+			losses_worth:1,
+			sp_show_coords:1,
+			sp_show_minimap:1
 		}})
 	} else {
 		this.ready()

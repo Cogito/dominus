@@ -66,7 +66,7 @@ Template.market_panel.events({
 					$('#market_error_alert').show()
 				} else {
 					var cost = total_of_buy(type, quantity)
-					if (cost <= Meteor.user().gold) {
+					if (cost <= get_user_property("gold")) {
 						$('#market_success_alert').text('Buying resource.')
 						$('#market_success_alert').show()
 
@@ -192,7 +192,7 @@ Template.market_panel.events({
 		var type = Session.get('temp_market_type')
 		var resource = Market.findOne({type: type})
 		if (resource) {
-			var num = max_buy(Meteor.user().gold, resource.price)
+			var num = max_buy(get_user_property("gold"), resource.price)
 			$('#quantity_input').val(num)
 			Session.set('temp_market_quantity', num)
 		}
@@ -240,7 +240,7 @@ Template.market_panel.rendered = function() {
 				// buy
 				var cost = total_of_buy(type, quantity)
 				$('#market_preview_buy').text('Buy '+quantity+' '+type+' for '+round_number_1(cost)+' gold.')
-				if (cost > Meteor.user().gold) {
+				if (cost > get_user_property("gold")) {
 					$('#market_preview_buy').css('color', 'red')
 				}
 

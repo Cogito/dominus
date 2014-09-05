@@ -1,7 +1,7 @@
 Meteor.methods({
 	
 	reset_market: function() {
-		if (Meteor.user().admin) {
+		if (get_user_property("admin")) {
 			this.unblock()
 			reset_market()
 		}

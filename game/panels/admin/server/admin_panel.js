@@ -1,7 +1,7 @@
 Meteor.methods({
 
 	give_gold: function(num_gold) {
-		if (Meteor.user().admin) {
+		if (get_user_property("admin")) {
 			Meteor.users.update({_id: Meteor.userId()}, {$inc: {
 				gold: num_gold
 			}})
@@ -9,7 +9,7 @@ Meteor.methods({
 	},
 
 	delete_user: function(user_id) {
-		if (Meteor.user().admin) {
+		if (get_user_property("admin")) {
 			Castles.remove({user_id: user_id})
 			Villages.remove({user_id: user_id})
 			Armies.remove({user_id: user_id})
@@ -20,7 +20,7 @@ Meteor.methods({
 	},
 
 	delete_all_users: function() {
-		if (Meteor.user() && Meteor.user().admin) {
+		if (Meteor.user() && get_user_property("admin")) {
 			Castles.remove({})
 			Villages.remove({})
 			Armies.remove({})
@@ -40,7 +40,7 @@ Meteor.methods({
 	},
 
 	reset_everyone_resources: function() {
-		if (Meteor.user().admin) {
+		if (get_user_property("admin")) {
 			Meteor.users.find().forEach(function(u) {
 				Meteor.users.update(u._id, {$set: {
 					gold: s.starting_resources.gold,

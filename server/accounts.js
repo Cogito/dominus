@@ -55,6 +55,8 @@ Accounts.onCreateUser(function(options, user) {
 	}
 	user.losses = {}
 	user.losses_worth = 0
+	user.sp_show_coords = false
+	user.sp_show_minimap = true
 
 	// var everyone = Chatrooms.findOne({name: 'Everyone'}, {fields: {_id:1}})
 	// user.chatrooms = [everyone._id]
