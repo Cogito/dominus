@@ -32,6 +32,21 @@ Meteor.methods({
 		Meteor.users.update(Meteor.userId(), {$set: {username: username}})
 
 		return {result: true}
-	}
+	},
 
+	show_coords: function () {
+		Meteor.users.update(Meteor.userId(), {$set: {sp_show_coords: true}})
+	},
+
+	hide_coords: function() {
+		Meteor.users.update(Meteor.userId(), {$set: {sp_show_coords: false}})
+	},
+
+	show_minimap: function () {
+		Meteor.users.update(Meteor.userId(), {$set: {sp_show_minimap: true}})
+	},
+
+	hide_minimap: function() {
+		Meteor.users.update(Meteor.userId(), {$set: {sp_show_minimap: false}})
+	},
 })
