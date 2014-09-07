@@ -3,26 +3,14 @@ Template.notifications_global.helpers({
 		var self = this
 		var not = Notifications.find({}, {sort: {created_at: -1}})
 		// battle notifications are doubled because one is created for both attacker and defender
-		// only show attacker's
+		// only show people who win
 		not = _.filter(not.fetch(), function(n) {
 			if (n.type == 'battle') {
-
-				// find user who was notified
-				if (n.user_id == n.vars.battle.defender.user_id) {
-					var unit = n.vars.battle.defender
-				} else {
-					var unit = _.find(n.vars.battle.attackers, function(a) {
-						if (n.user_id == a.user_id) {
-							return true
-						} else {
-							return false
-						}
-					})
-				}
-
+				var unit = n.vars.battle.unit
 				// return true if won battle
+				// also return true if tied, this gets doubled up
 				if (unit) {
-					if (unit.dif > 0) {
+					if (unit.dif >= 0) {
 						return true
 					} else {
 						return false

@@ -13,18 +13,7 @@ Template.not_header.helpers({
 		if (this.type == 'battle') {
 			var mine = (Session.get('notifications_type') == 'notifications_mine')
 
-			// find user who was notified
-			if (this.user_id == this.vars.battle.defender.user_id) {
-				var unit = this.vars.battle.defender
-			} else {
-				var unit = _.find(self.vars.battle.attackers, function(a) {
-					if (self.user_id == a.user_id) {
-						return true
-					} else {
-						return false
-					}
-				})
-			}
+			var unit = self.vars.battle.unit
 
 			if (mine) {
 				var str = unit.type

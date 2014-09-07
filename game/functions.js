@@ -370,23 +370,7 @@ speed_of_army = function(army) {
 
 
 
-// clone object before returning so that it doesn't return a reference
-clone_object = function(obj){
-	if(obj == null || typeof(obj) != 'object')
-		return obj;
 
-	var temp = obj.constructor(); // changed
-
-	for(var key in obj)
-		temp[key] = clone_object(obj[key]);
-	return temp;
-}
-
-
-
-clone_array = function(arr) {
-	return arr.slice(0)
-}
 
 
 /////////////////////////////////////////////////////////////////////////////////
