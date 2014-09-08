@@ -85,10 +85,10 @@ Template.not_header.helpers({
 		}
 
 		if (this.type == 'now_dominus') {
-			if (Session.get('notifications_show_mine')) {
+			if (Session.get('notifications_type') == 'notifications_mine') {
 				return 'You are the Dominus'
 			} else {
-				return 'New Dominus'
+				return 'There is a new Dominus'
 			}
 		}
 
