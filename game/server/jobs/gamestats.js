@@ -1,6 +1,6 @@
 gamestats_job = function() {
 	var begin = moment().startOf('day').toDate()
-	var end = moment().add('days', 1).startOf('day').toDate()
+	var end = moment().add(1, 'days').startOf('day').toDate()
 
 	var stat = Gamestats.findOne({created_at: {$gte: begin, $lt: end}})
 
@@ -24,7 +24,7 @@ gamestats_job = function() {
 	stat.total_gold = total_gold
 
 	// active users past 2 days
-	var cutoff = moment().subtract('days', 2).toDate()
+	var cutoff = moment().subtract(2, 'days').toDate()
 	var num_active_users = Meteor.users.find({"status.lastLogin.date": {$gt: cutoff}}).count()
 	check(num_active_users, Number)
 	stat.num_active_users = num_active_users

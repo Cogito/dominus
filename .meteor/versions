@@ -17,9 +17,9 @@ ctl-helper@1.0.3
 ctl@1.0.1
 d3@1.0.0
 danimal:accounts-templates@1.0.2
-danimal:dominus-battle@1.1.2
+danimal:dominus-battle@1.1.3
 danimal:dominus-minimap@1.0.4
-danimal:dominus-settings@1.0.10
+danimal:dominus-settings@1.0.12
 danimal:hx@1.0.0
 ddp@1.0.8
 deps@1.0.3

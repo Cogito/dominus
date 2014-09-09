@@ -70,7 +70,7 @@ update_networth = function(user_id) {
 	}
 
 	var begin = moment().startOf('day').toDate()
-	var end = moment().add('days', 1).startOf('day').toDate()
+	var end = moment().add(1, 'days').startOf('day').toDate()
 
 	Dailystats.upsert({user_id: user_id, created_at: {$gte: begin, $lt: end}}, {$setOnInsert: {user_id:user_id, created_at: new Date()}, $set: {networth:worth.total, updated_at:new Date()}})
 	Meteor.users.update(user_id, {$set: {networth: worth.total}})
@@ -110,7 +110,7 @@ update_losses_worth = function(user_id) {
 		}
 
 		var begin = moment().startOf('day').toDate()
-		var end = moment().add('days', 1).startOf('day').toDate()
+		var end = moment().add(1, 'days').startOf('day').toDate()
 
 		Dailystats.upsert({user_id: user_id, created_at: {$gte: begin, $lt: end}}, {$setOnInsert: {user_id:user_id, created_at: new Date()}, $set: {losses_worth:worth.total, updated_at:new Date()}})
 		Meteor.users.update(user_id, {$set: {losses_worth: worth.total}})
@@ -119,91 +119,6 @@ update_losses_worth = function(user_id) {
 
 
 
-
-
-
-// inc_daily_stats = function(user_id, new_stats, add_to) {
-// 	check(user_id, String)
-// 	check(new_stats, Object)
-// 	check(add_to, Boolean)
-	
-// 	var begin = moment().startOf('day').toDate()
-// 	var end = moment().add('days', 1).startOf('day').toDate()
-
-// 	var stat = Dailystats.findOne({user_id: user_id, created_at: {$gte: begin, $lt: end}})
-
-// 	if (!stat) {
-// 		var stat = {
-// 			user_id: user_id,
-// 			created_at: new Date(),
-// 			updated_at: new Date(),
-// 			income: {
-// 				gold: 0,
-// 				grain: 0,
-// 				lumber: 0,
-// 				ore: 0,
-// 				wool: 0,
-// 				clay: 0,
-// 				glass: 0
-// 			},
-// 			vassal_income: {
-// 				gold: 0,
-// 				grain: 0,
-// 				lumber: 0,
-// 				ore: 0,
-// 				wool: 0,
-// 				clay: 0,
-// 				glass: 0
-// 			},
-// 			networth: 0
-// 		}
-// 		stat._id = Dailystats.insert(stat)
-// 	}
-
-// 	if (!_.isEmpty(new_stats)) {
-
-// 		_.each(new_stats, function(value, key) {
-// 			if (_.isObject(value)) {
-// 				_.each(value, function(nValue, nKey) {
-// 					if (isNaN(nValue)) {
-// 						throw new Meteor.Error(0, 'passed dailystat is not a number. key: '+nKey+' value: '+nValue)
-// 					}
-// 					if (add_to) {
-// 						stat[key][nKey] += nValue
-// 					} else {
-// 						stat[key][nKey] = nValue
-// 					}
-// 				})
-// 			} else {
-// 				if (isNaN(value)) {
-// 					throw new Meteor.Error(0, 'passed dailystat is not a number key: '+key+' value: '+value)
-// 				}
-// 				if (add_to) {
-// 					stat[key] += value
-// 				} else {
-// 					stat[key] = value
-// 				}
-// 			}
-// 		})
-
-// 		stat.updated_at = new Date()
-
-// 		Dailystats.update(stat._id, stat)
-// 	}
-// }
-
-
-
-// set_networth = function(user_id, networth) {
-// 	check(user_id, String)
-// 	check(networth, Number)
-
-// 	var begin = moment().startOf('day').toDate()
-// 	var end = moment().add('days', 1).startOf('day').toDate()
-
-// 	Deailystats.upsert({user_id: user_id, created_at: {$gte: begin, $lt: end}}, {$setOnInsert: {created_at: new Date()}, $set: {networth:networth, updated_at:new Date()}})
-// 	Meteor.users.update(user_id, {$set: {networth: networth}})
-// }
 
 
 init_dailystats_for_new_user = function(user_id) {

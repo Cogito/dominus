@@ -160,7 +160,7 @@ run_cached_user_update = function() {
 		}
 
 		var begin = moment().startOf('day').toDate()
-		var end = moment().add('days', 1).startOf('day').toDate()
+		var end = moment().add(1, 'days').startOf('day').toDate()
 
 		Dailystats.upsert({user_id: arr.user_id, created_at: {$gte: begin, $lt: end}}, {$setOnInsert:setOnInsert, $inc:inc, $set:set})
 	})

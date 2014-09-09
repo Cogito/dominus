@@ -61,7 +61,7 @@ Template.chatroom.events({
 			Latestchats.insert({room_id: this._id, updated_at: date})
 		}
 
-		Cookie.set('room_'+this._id+'_open', moment(date).add('s',1).toDate(), {years: 10})
+		Cookie.set('room_'+this._id+'_open', moment(date).add(1, 's').toDate(), {years: 10})
 
 		$(input).val('')
 
@@ -101,7 +101,7 @@ Template.chatroom.events({
 				Latestchats.insert({room_id: this._id, updated_at: date})
 			}
 
-			Cookie.set('room_'+this._id+'_open', moment(date).add('s',1).toDate(), {years: 10})
+			Cookie.set('room_'+this._id+'_open', moment(date).add(1, 's').toDate(), {years: 10})
 
 			$(input).val('')
 
@@ -131,13 +131,13 @@ Template.chatroom.events({
 	'hide.bs.collapse .panel-collapse': function(event, template) {
 		Session.set('room_'+this._id+'_open', false)
 		var date = new Date(TimeSync.serverTime())
-		Cookie.set('room_'+this._id+'_open', moment(date).add('s',1).toDate(), {years: 10})
+		Cookie.set('room_'+this._id+'_open', moment(date).add(1, 's').toDate(), {years: 10})
 	},
 
 	// click on chatroom background to clear alerts
 	'click .chat_body': function(event, template) {
 		var date = new Date(TimeSync.serverTime())
-		Cookie.set('room_'+this._id+'_open', moment(date).add('s',1).toDate(), {years: 10})
+		Cookie.set('room_'+this._id+'_open', moment(date).add(1, 's').toDate(), {years: 10})
 	}
 })
 

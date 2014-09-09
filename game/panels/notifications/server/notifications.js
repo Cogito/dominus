@@ -145,6 +145,6 @@ create_notification_new = function(user_id, type, vars) {
 
 
 delete_old_notifications = function() {
-	var begin = moment().add('days', -15).toDate()
+	var begin = moment().add(-15, 'days').toDate()
 	Notifications.remove({read: true, created_at: {$lt: begin}})
 }

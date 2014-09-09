@@ -28,7 +28,7 @@ Template.lp_armies.helpers({
 						distance += d
 					})
 
-					var move_time = moment(new Date(last_move_at)).add('minutes', distance * army_speed)
+					var move_time = moment(new Date(last_move_at)).add(distance * army_speed, 'minutes')
 					if (move_time < moment()) {
 						a.time_to_destination = 'soon'
 					} else {

@@ -75,7 +75,7 @@ Template.rp_info_army.helpers({
 		var move = Moves.findOne({army_id:this._id, index:0})
 		if (move) {
 			var army_speed = speed_of_army(this)
-			var move_time = moment(new Date(move.last_move_at)).add('minutes', army_speed)
+			var move_time = moment(new Date(move.last_move_at)).add(army_speed, 'minutes')
 			if (move_time < moment()) {
 				return 'soon'
 			} else {
@@ -106,7 +106,7 @@ Template.rp_info_army.helpers({
 		})
 
 		var army_speed = speed_of_army(self)
-		var move_time = moment(new Date(last_move_at)).add('minutes', distance * army_speed)
+		var move_time = moment(new Date(last_move_at)).add(distance * army_speed, 'minutes')
 		if (move_time < moment()) {
 			return 'soon'
 		} else {

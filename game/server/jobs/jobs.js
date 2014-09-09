@@ -15,7 +15,7 @@ Meteor.startup(function() {
 				var army = Armies.findOne(move.army_id)
 				if (army) {
 					var army_speed = speed_of_army(army)
-					if (moment(new Date(move.last_move_at)).add('minutes', army_speed) < moment()) {
+					if (moment(new Date(move.last_move_at)).add(army_speed, 'minutes') < moment()) {
 						// we're somewhere along path
 						// test until we find where
 						var from_pos = Hx.coordinatesToPos(move.from_x, move.from_y, s.hex_size, s.hex_squish)
@@ -97,7 +97,7 @@ Meteor.startup(function() {
 
 
 		// nightly job
-		var endOfDay = moment().endOf('day').add('minutes', 2)
+		var endOfDay = moment().endOf('day').add(2, 'minutes')
 		var timeUntilMidnight = endOfDay - moment()
 
 		Meteor.setTimeout(function() {
@@ -110,7 +110,7 @@ Meteor.startup(function() {
 
 
 		// hourly job
-		var endOfHour = moment().endOf('hour').add('minutes', 2)
+		var endOfHour = moment().endOf('hour').add(2, 'minutes')
 		var timeUntilNextHour = endOfHour - moment()
 
 		Meteor.setTimeout(function() {

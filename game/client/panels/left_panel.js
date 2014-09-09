@@ -75,7 +75,7 @@ Template.left_panel.helpers({
 		Session.get('refresh_time_field')
 		var stat = Jobstats.findOne()
 		if (stat) {
-			var will_run_at = moment(new Date(stat.updated_at)).add('milliseconds', s.resource.interval)
+			var will_run_at = moment(new Date(stat.updated_at)).add(s.resource.interval, 'milliseconds')
 			return will_run_at.fromNow()
 		}
 	},
