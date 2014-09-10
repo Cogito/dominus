@@ -1,3 +1,4 @@
+// admin game stats
 gamestats_job = function() {
 	var begin = moment().startOf('day').toDate()
 	var end = moment().add(1, 'days').startOf('day').toDate()

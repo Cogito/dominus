@@ -66,5 +66,5 @@ gather_resources_surrounding = function(x, y, num_rings, user_id, gold) {
 
 	})
 
-	receive_income_id(user_id, gold, income.grain, income.lumber, income.ore, income.wool, income.clay, income.glass, false)
+	receive_income_id(user_id, gold, income.grain, income.lumber, income.ore, income.wool, income.clay, income.glass)
 }

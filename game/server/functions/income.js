@@ -1,89 +1,84 @@
-receive_income_id = function(user_id, numGold, numGrain, numLumber, numOre, numWool, numClay, numGlass, from_vassal) {
+receive_income_id = function(user_id, numGold, numGrain, numLumber, numOre, numWool, numClay, numGlass) {
 	check(user_id, String)
-	check(numGold, Number)
-	check(numGrain, Number)
-	check(numLumber, Number)
-	check(numOre, Number)
-	check(numWool, Number)
-	check(numClay, Number)
-	check(from_vassal, Boolean)
+	func.checkNumber(numGold)
+	func.checkNumber(numGrain)
+	func.checkNumber(numLumber)
+	func.checkNumber(numOre)
+	func.checkNumber(numWool)
+	func.checkNumber(numClay)
 
 	var user = Meteor.users.findOne(user_id, {fields: {lord:1}})
 	if (user) {
-		receive_income(user, numGold, numGrain, numLumber, numOre, numWool, numClay, numGlass, from_vassal)
+		receive_income(user, numGold, numGrain, numLumber, numOre, numWool, numClay, numGlass)
 	}
 }
 
 
-
-receive_income = function(user, numGold, numGrain, numLumber, numOre, numWool, numClay, numGlass, from_vassal) {
+receive_income = function(user, numGold, numGrain, numLumber, numOre, numWool, numClay, numGlass) {
 	check(user, Object)
-	check(numGold, Number)
-	check(numGrain, Number)
-	check(numLumber, Number)
-	check(numOre, Number)
-	check(numWool, Number)
-	check(numClay, Number)
-	check(from_vassal, Boolean)
+	func.checkNumber(numGold)
+	func.checkNumber(numGrain)
+	func.checkNumber(numLumber)
+	func.checkNumber(numOre)
+	func.checkNumber(numWool)
+	func.checkNumber(numClay)
 
-	if (user) {
-		if (!isFinite(numGold)) { throw new Meteor.Error(0, 'number is NaN') }
-		if (!isFinite(numGrain)) { throw new Meteor.Error(0, 'number is NaN') }
-		if (!isFinite(numLumber)) { throw new Meteor.Error(0, 'number is NaN') }
-		if (!isFinite(numOre)) { throw new Meteor.Error(0, 'number is NaN') }
-		if (!isFinite(numWool)) { throw new Meteor.Error(0, 'number is NaN') }
-		if (!isFinite(numClay)) { throw new Meteor.Error(0, 'number is NaN') }
-		if (!isFinite(numGlass)) { throw new Meteor.Error(0, 'number is NaN') }
+	// get array of lord, lord's lord, his lord etc
+	var peopleAbove = getPeopleAbove(user._id)
+	var numAbove = peopleAbove.length
 
-		var has_lord = false
-		if (user.lord) {
-			var lord = Meteor.users.findOne(user.lord, {fields: {lord:1}})
-			if (lord) {
-				has_lord = true
-			} 
-		}
+	var has_lord = numAbove != 0
 
-		if (has_lord) {
-			var percentage = 1 - s.vassal_tax
-		} else {
-			var percentage = 1
-		}
-
-
-		cache_user_update(user._id,
-			numGold * percentage,
-			numGrain * percentage,
-			numLumber * percentage,
-			numOre * percentage, 
-			numWool * percentage,
-			numClay * percentage,
-			numGlass * percentage,
-			from_vassal
-			)
-
-		if (has_lord) {
-			if (
-				numGold * s.vassal_tax > 0.01 ||
-				numGrain * s.vassal_tax > 0.01 ||
-				numLumber * s.vassal_tax > 0.01 ||
-				numOre * s.vassal_tax > 0.01 ||
-				numWool * s.vassal_tax > 0.01 ||
-				numClay * s.vassal_tax > 0.01 ||
-				numGlass * s.vassal_tax > 0.01
-			) {
-				receive_income(
-					lord,
-					numGold * s.vassal_tax,
-					numGrain * s.vassal_tax,
-					numLumber * s.vassal_tax,
-					numOre * s.vassal_tax,
-					numWool * s.vassal_tax,
-					numClay * s.vassal_tax,
-					numGlass * s.vassal_tax,
-					true
-				)
-			}
-		}
-
+	if (numAbove <= 5) {
+		// 5% taken away for every lord above
+		var percentPerLord = 0.05
+		var percentageUserGets = 1 - percentPerLord * numAbove
+	} else {
+		// 25%/numberOfLords to each lord
+		var percentPerLord = 0.25 / numAbove
+		var percentageUserGets = 0.75
 	}
+
+	// give to user
+	cache_user_update(user._id,
+		numGold * percentageUserGets,
+		numGrain * percentageUserGets,
+		numLumber * percentageUserGets,
+		numOre * percentageUserGets, 
+		numWool * percentageUserGets,
+		numClay * percentageUserGets,
+		numGlass * percentageUserGets,
+		false
+		)
+
+	// give to lords
+	_.each(peopleAbove, function(personAbove) {
+		cache_user_update(
+			personAbove,
+			numGold * percentPerLord,
+			numGrain * percentPerLord,
+			numLumber * percentPerLord,
+			numOre * percentPerLord,
+			numWool * percentPerLord,
+			numClay * percentPerLord,
+			numGlass * percentPerLord,
+			true
+		)
+	})
+}
+
+
+// get array of lord, lord's lord, his lord etc
+getPeopleAbove = function(user_id) {
+	arr = _getPeopleAbove(user_id, [])
+	return arr
+}
+
+_getPeopleAbove = function(user_id, arr) {
+	var user = Meteor.users.findOne(user_id, {fields: {lord:1}})
+	if (user && user.lord) {
+		arr.push(user.lord)
+		arr.concat(_getPeopleAbove(user.lord, arr))
+	}
+	return arr
 }
