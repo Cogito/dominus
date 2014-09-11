@@ -52,17 +52,6 @@
 			</table>
 		</div>
 
-		{{#if battle}}
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					Battle
-				</div>
-				<div class="panel-body">
-					{{> battle_report battle}}
-				</div>
-			</div>
-		{{/if}}
-
 		{{#if is_owner}}
 			{{#if is_moving}}
 				<div class="panel panel-default">
@@ -242,6 +231,17 @@
 
 			<div class="pad_group">
 				<button type="button" class="btn btn-sm btn-primary btn-block" id="disband_army_button">Disband Army</button>
+			</div>
+		{{/if}}
+
+		{{#if battle}}
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Battle
+				</div>
+				<div class="panel-body">
+					{{> battle_report battle}}
+				</div>
 			</div>
 		{{/if}}
 	</div>

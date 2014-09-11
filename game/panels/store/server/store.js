@@ -42,7 +42,7 @@ Meteor.methods({
 		check(token, Object)
 
 		var fut = new Future()
-		var stripe = StripeAPI(stripe_secret_key)
+		var stripe = StripeAPI(Meteor.settings.stripe_secret_key)
 
 		var addToSet = {}
 		addToSet['purchases.'+type] = id
@@ -81,7 +81,7 @@ Meteor.methods({
 		check(token, Object)
 
 		var fut = new Future()
-		var stripe = StripeAPI(stripe_secret_key)
+		var stripe = StripeAPI(Meteor.settings.stripe_secret_key)
 
 		var charge = stripe.charges.create({
 			amount: amount_in_cents,

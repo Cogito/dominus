@@ -49,7 +49,7 @@ Template.store_panel_item.events({
 		$(button).html('<i class="fa fa-refresh fa-spin"></i> Please Wait')
 
 		var handler = StripeCheckout.configure({
-			key: stripe_publishable_key,
+			key: Meteor.settings.public.stripe_publishable_key,
 			image: '/stripe_logo.jpg',
 			token: function(token, args) {
 				Meteor.call('stripe_purchase_checkout', amount_in_cents, self.type, self.id, token, function(error, charge_id) {

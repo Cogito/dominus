@@ -17,7 +17,7 @@ Dominus is made using the web platform <a href="http://meteor.com">Meteor.js</a>
 * Duplicate the file "run_temp".  "mv run_temp run"
 * "chmod +x run"
 * Fill in the run file with your info.  This file is in the .gitignore and never checked in.
-* Do the same with "stripe_temp.js"
+* Do the same with "settings_temp.json"
 * Start game with "./run"
 
 .art/process_renders requires ImageMagick
@@ -32,7 +32,7 @@ The best way I've found to work with packages is to create a symlink to them.  I
 * <a href="https://github.com/dan335/dominus-minimap">Minimap Package</a>
 
 
-### Known Issues ###
+### Issues ###
 
-* Issues are tracked at https://bitbucket.org/daniel_phillips/gridgame/issues?status=new&status=open and should probably be moved to github.
-* There are some notes in the top of battle.js in the battle package about some things that need fixing.
+* Old issues are at https://bitbucket.org/daniel_phillips/gridgame/issues?status=new&status=open.
+* New issues are here on Github.

@@ -4,4 +4,4 @@ git_stats/
 .meteor/meteorite
 .build*
 run
-stripe.js
+settings.json

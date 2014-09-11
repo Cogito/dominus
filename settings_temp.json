@@ -1,0 +1,6 @@
+{
+	"stripe_secret_key":"sk_test",
+	"public": {
+		"stripe_publishable_key":"pk_test"
+	}
+}
