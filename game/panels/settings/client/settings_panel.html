@@ -2,12 +2,14 @@
 	<div id="settings_panel">
 		<div class="panel_title"><i class="fa fa-wrench fa-lg"></i> &nbsp;Settings</div>
 
-		<div class="pad_group">
-			<button type="button" class="btn btn-sm btn-primary btn-block" id="toggle_coords_button">Toggle Hex Coordinates</button>
-			<button type="button" class="btn btn-sm btn-primary btn-block" id="toggle_minimap_button">Toggle Mini-Map</button>
-			<br>
-			Turning hex coordinates and mini-map off improves performance.<br>
-			<br>
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<button type="button" class="btn btn-sm btn-primary btn-block" id="toggle_coords_button">Toggle Hex Coordinates</button>
+				<button type="button" class="btn btn-sm btn-primary btn-block" id="toggle_minimap_button">Toggle Mini-Map</button>
+				<br>
+				Turning hex coordinates off improves performance.<br>
+				<br>
+			</div>
 		</div>
 
 		<div class="panel panel-default">
@@ -27,16 +29,21 @@
 			</div>
 		</div>
 
-<!-- 		<br><br>
-		<button class="btn btn-primary btn-block" type="button" id="delete_account_button">Delete Account</button> -->
-
-		<!-- <div class="panel panel-default">
-			<div class="panel-heading">
-				Email Notifications
-			</div>
+		<div class="panel panel-default">
 			<div class="panel-body">
-				Disable All Notifications
+				<div id="deleteAccountConfirmationContainer" style="display:none;">
+					Are you sure you want to delete your account?  This is not un-doable.<br>
+					<br>
+					<button type="button" class="btn btn-sm btn-primary btn-block" id="deleteAccountConfirmButton">Yes, delete my account.</button>
+					<button type="button" class="btn btn-sm btn-primary btn-block" id="deleteAccountCancelButton">Cancel</button>
+				</div>
 
-			</div> -->
+				<div id="deleteAccountButtonContainer">
+					<button type="button" class="btn btn-sm btn-primary btn-block" id="deleteAccountButton">Delete Account</button>
+				</div>
+			</div>
+		</div>
+
+
 	</div>
 </template>

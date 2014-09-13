@@ -72,6 +72,26 @@ Template.settings_panel.events({
 
 	'click #delete_account_button': function(event, template) {
 		var button = template.find('#change_username_button')
+	},
+
+	'click #deleteAccountButton': function(event, template) {
+		var confirmCont = template.find('#deleteAccountConfirmationContainer')
+		var butCont = template.find('#deleteAccountButtonContainer')
+
+		$(butCont).hide()
+		$(confirmCont).show(100)
+	},
+
+	'click #deleteAccountCancelButton': function(event, template) {
+		var confirmCont = template.find('#deleteAccountConfirmationContainer')
+		var butCont = template.find('#deleteAccountButtonContainer')
+
+		$(butCont).show(100)
+		$(confirmCont).hide()
+	},
+
+	'click #deleteAccountConfirmButton': function(event, template) {
+		Meteor.call('deleteAccount')
 	}
 })
 
