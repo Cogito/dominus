@@ -174,3 +174,19 @@ update_vassal_ally_count = function(user_id) {
 	}
 }
 
+
+
+// get array of lord, lord's lord, his lord etc
+getPeopleAbove = function(user_id) {
+	arr = _getPeopleAbove(user_id, [])
+	return arr
+}
+
+_getPeopleAbove = function(user_id, arr) {
+	var user = Meteor.users.findOne(user_id, {fields: {lord:1}})
+	if (user && user.lord) {
+		arr.push(user.lord)
+		arr.concat(_getPeopleAbove(user.lord, arr))
+	}
+	return arr
+}

@@ -233,34 +233,6 @@ coords_to_id = function(x, y, type) {
 }
 
 
-
-
-
-
-
-seperate_number_with_commas = function(x) {
-    var parts = x.toString().split(".");
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return parts.join(".");
-}
-
-round_number = function(num) {
-	return seperate_number_with_commas(Math.round(num))
-}
-
-round_number_1 = function(num) {
-	return seperate_number_with_commas(Math.round(num * 10) / 10)
-}
-
-round_number_2 = function(num) {
-	return seperate_number_with_commas(Math.round(num * 100) / 100)
-}
-
-
-
-
-
-
 resource_cost_army = function(army) {
 	check(army, Object)
 
@@ -364,24 +336,4 @@ speed_of_army = function(army) {
 	})
 
 	return (60 / army_speed) * s.army_travel_multiplier
-}
-
-
-
-
-
-
-
-
-/////////////////////////////////////////////////////////////////////////////////
-// User Properties
-/////////////////////////////////////////////////////////////////////////////////
-
-get_user_property = function (property) {
-	var fields = {}
-	fields[property] = 1
-	var user = Meteor.users.findOne(Meteor.userId(), {fields: fields})
-	if (user) {
-			return user[property]
-	}
 }

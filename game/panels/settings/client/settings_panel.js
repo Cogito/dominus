@@ -79,14 +79,14 @@ Template.settings_panel.events({
 		var butCont = template.find('#deleteAccountButtonContainer')
 
 		$(butCont).hide()
-		$(confirmCont).show(100)
+		$(confirmCont).slideDown(100)
 	},
 
 	'click #deleteAccountCancelButton': function(event, template) {
 		var confirmCont = template.find('#deleteAccountConfirmationContainer')
 		var butCont = template.find('#deleteAccountButtonContainer')
 
-		$(butCont).show(100)
+		$(butCont).slideDown(100)
 		$(confirmCont).hide()
 	},
 

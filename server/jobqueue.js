@@ -49,12 +49,6 @@ jobqueue = function() {
 				created_at: new Date()
 			}
 		})
-
-		// Jobqueue.insert({
-		// 	name: name,
-		// 	params: params,
-		// 	created_at: new Date()
-		// })
 	}
 }
 
@@ -146,19 +140,6 @@ if (Meteor.isServer) {
 		enemies_together_check: function(params, done) {
 			enemies_together_check()
 			done()
-		},
-
-		// update_map_size_setting: function(params, done) {
-		// 	update_map_size_setting()
-		// 	done()
-		// },
-
-		// set_networth: function(params, done) {
-		// 	check(params.user_id, String)
-		// 	check(params.networth, Number)
-			
-		// 	set_networth(params.user_id, params.networth)
-		// 	done()
-		// }
+		}
 	})
 }

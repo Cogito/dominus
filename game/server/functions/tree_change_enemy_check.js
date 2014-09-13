@@ -65,12 +65,7 @@ enemies_together_check = function() {
 				if (user) {
 					if (_.indexOf(user.allies, other_army.user_id) == -1) {
 						// enemy here
-						// console.log('enemy')
-						// console.log(other_army.user_id)
-						// console.log(user.allies)
-						// console.log(user.siblings)
 						Battle.start_battle(army.x,army.y)
-						//battle(a._id, 'army', other_army._id, 'army')
 					}
 				}
 			}

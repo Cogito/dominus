@@ -212,9 +212,8 @@ Meteor.methods({
 		}
 		return false
 	},
-
-
 })
+
 
 
 destroy_all_armies = function() {

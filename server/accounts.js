@@ -105,26 +105,3 @@ onCreateUser = function(userId) {
 
 	subscribe_to_chatroom(userId, id)
 }
-
-
-
-// Meteor.startup(function() {
-// 	if (process.env.DOMINUS_WORKER == 'true') {
-
-// 		var currentUsers = Meteor.users.find().count();
-// 		var userCount;
-
-// 		// Begin monitoring users
-// 		Meteor.users.find({}, { limit: 1, fields: {_id:1}, sort: { createdAt: -1 } }).observe({
-// 		    added: function (doc) {
-// 		        userCount = Meteor.users.find().count();
-
-// 		        if (userCount > currentUsers) {
-// 		            currentUsers = userCount;
-// 		            onCreateUser(doc._id); // Fire the event on the server
-// 		        }
-// 		    }
-// 		});
-
-// 	}
-// })

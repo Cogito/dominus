@@ -27,6 +27,8 @@ generate_hexes = function(num_of_rings) {
 	})
 }
 
+
+
 // should move to danimal:Hx
 add_ring = function(is_border) {
 	var h = Hexes.findOne({}, {sort: {x: 1, y: -1}})

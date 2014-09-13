@@ -1,7 +1,3 @@
-// game is 42.8ms / user
-// 35.25 / user
-// 24.9 / user
-// 17.5 / user
 gather_resources_new = function() {
 	clear_cached_user_update()
 	var start_time = new Date()

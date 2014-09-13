@@ -36,14 +36,6 @@ Template.admin_panel.events({
 		Meteor.call('delete_user', user_id)
 	},
 
-	'click #toggle_debug_symbols': function(event, template) {
-		if (Session.get('show_debug_symbols')) {
-			Session.set('show_debug_symbols', false)
-		} else {
-			Session.set('show_debug_symbols', true)
-		}
-	},
-
 	'click #reset_market_button': function(event, template) {
 		Meteor.call('reset_market')
 	},
