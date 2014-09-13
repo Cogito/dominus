@@ -4,7 +4,13 @@ Meteor.methods({
 		var user = Meteor.users.findOne(Meteor.userId())
 		if (user) {
 			var appendToName = ' (deleted)'
+
 			Chats.update({user_id: user._id}, {$set: {username: user.username+appendToName}}, {multi: true})
+			
+			for (var i = 0; i < user.chatrooms.length; i++) {
+				leave_chatroom(user._id, user.chatrooms[i])
+			}
+
 			Castles.remove({user_id: user._id})
 			Villages.remove({user_id: user._id})
 			Armies.remove({user_id: user._id})
