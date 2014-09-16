@@ -1,5 +1,5 @@
 Meteor.methods({
-	get_usernames_with_same_ip: function(user_id) {
+	get_duplicate_users: function(user_id) {
 		this.unblock()
 		var dupes = []
 
@@ -37,13 +37,8 @@ Meteor.startup(function() {
 create_castle = function(user_id) {
 	console.log('creating castle')
 	
-	if (!user_id) {
-		console.log('WTF: create_castle but no params.user_id')
-		return false
-	}
-
-	if (s.down_for_maintenance) {
-		console.log('WTF: create_castle but down for down_for_maintenance')
+	check(user_id, String)
+	if (s.down_for_maintenance == true) {
 		return false
 	}
 

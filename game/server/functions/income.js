@@ -1,11 +1,11 @@
 receive_income_id = function(user_id, numGold, numGrain, numLumber, numOre, numWool, numClay, numGlass) {
 	check(user_id, String)
-	func.checkNumber(numGold)
-	func.checkNumber(numGrain)
-	func.checkNumber(numLumber)
-	func.checkNumber(numOre)
-	func.checkNumber(numWool)
-	func.checkNumber(numClay)
+	check(numGold, validNumber)
+	check(numGrain, validNumber)
+	check(numLumber, validNumber)
+	check(numOre, validNumber)
+	check(numWool, validNumber)
+	check(numClay, validNumber)
 
 	var user = Meteor.users.findOne(user_id, {fields: {lord:1}})
 	if (user) {
@@ -16,12 +16,12 @@ receive_income_id = function(user_id, numGold, numGrain, numLumber, numOre, numW
 
 receive_income = function(user, numGold, numGrain, numLumber, numOre, numWool, numClay, numGlass) {
 	check(user, Object)
-	func.checkNumber(numGold)
-	func.checkNumber(numGrain)
-	func.checkNumber(numLumber)
-	func.checkNumber(numOre)
-	func.checkNumber(numWool)
-	func.checkNumber(numClay)
+	check(numGold, validNumber)
+	check(numGrain, validNumber)
+	check(numLumber, validNumber)
+	check(numOre, validNumber)
+	check(numWool, validNumber)
+	check(numClay, validNumber)
 
 	// get array of lord, lord's lord, his lord etc
 	var peopleAbove = getPeopleAbove(user._id)

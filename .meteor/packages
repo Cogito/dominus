@@ -23,12 +23,8 @@ mizzao:user-status@0.6.0
 mrt:modernizr-meteor@2.6.2
 mrt:cookies@0.3.0
 reactive-dict
-danimal:dominus-minimap
-danimal:dominus-battle
 mrt:moment
 mizzao:timesync
-danimal:dominus-settings
 danimal:accounts-templates
 danimal:hx
 iron:router
-

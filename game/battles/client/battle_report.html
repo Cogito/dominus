@@ -1,0 +1,275 @@
+<template name="battle_report">
+	Battle at <a href="" class="battle_report_goto_hex">hex {{x}}, {{y}}</a>.<br>
+	Battle started {{date_calendar created_at}}.<br>
+	Fought {{roundNumber}} rounds.<br>
+	Next fight {{next_fight_in}}.<br>
+	<br>
+	Won last round.
+	<ul>
+		{{#each winnersLastRound}}
+			<li>{{username}}'s {{type}} {{name}}</li>
+		{{/each}}
+	</ul>
+
+	<div class="panel panel-default">
+		<div class="panel-heading" style="text-align:left;">
+			<a data-toggle="collapse" href="#losses">
+				Losses From All Rounds
+			</a>
+		</div>
+		<div id="losses" class="panel-collapse collapse">
+			<div class="panel-body">
+				{{#each deaths}}
+					{{username}}'s {{type}} {{name}}
+					<ul>
+						{{#if greater_than_zero footmen}}
+							<li>
+								Footmen: {{footmen}}
+							</li>
+						{{/if}}
+
+						{{#if greater_than_zero archers}}
+							<li>
+								Archers: {{archers}}
+							</li>
+						{{/if}}
+
+						{{#if greater_than_zero pikemen}}
+							<li>
+								Pikemen: {{pikemen}}
+							</li>
+						{{/if}}
+
+						{{#if greater_than_zero cavalry}}
+							<li>
+								Cavalry: {{cavalry}}
+							</li>
+						{{/if}}
+
+						{{#if greater_than_zero catapults}}
+							<li>
+								Catapults: {{catapults}}
+							</li>
+						{{/if}}
+					</ul>
+				{{/each}}
+			</div>
+		</div>
+	</div>
+
+	{{#each roundData}}
+		<div class="panel panel-default">
+			<div class="panel-heading" style="text-align:left;">
+				<a data-toggle="collapse" href="#results-{{roundNumber}}">
+					Round {{roundNumber}} Results
+				</a>
+			</div>
+			<div id="results-{{roundNumber}}" class="panel-collapse collapse">
+				<div class="panel-body">
+					{{#each units}}
+						{{> battle_report_unit}}
+					{{/each}}
+				</div>
+			</div>
+		</div>
+	{{/each}}
+</template>
+
+
+<template name="battle_report_unit">
+	<h4><a href="" class="battle_report_goto_user">{{username}}'s</a> {{type}} {{name}}</h4>
+	<h5>
+		Is
+		{{#if isAttacker}}
+			an <b>attacker</b>
+		{{else}}
+			a <b>defender</b>
+		{{/if}}
+		and
+		{{#if won_this_round}}
+			<b>won</b> this round.
+		{{else}}
+			<b>lost</b> this round.
+		{{/if}}
+	</h5>
+
+	<ul>
+		{{#if greater_than_zero footmen}}
+			<li>
+				Footmen: {{footmen}} &nbsp;
+				<span class="light_text">Power: {{round basePower.footmen}}</span>
+			</li>
+		{{/if}}
+		{{#if greater_than_zero archers}}
+			<li>
+				Archers: {{archers}} &nbsp;
+				<span class="light_text">Power: {{round basePower.archers}} &nbsp; Bonus: {{round bonus.archers}}</span>
+			</li>
+		{{/if}}
+		{{#if greater_than_zero pikemen}}
+			<li>
+				Pikemen: {{pikemen}} &nbsp;
+				<span class="light_text">Power: {{round basePower.pikemen}} &nbsp; Bonus: {{round bonus.pikemen}}</span>
+			</li>
+		{{/if}}
+		{{#if greater_than_zero cavalry}}
+			<li>
+				Cavalry: {{cavalry}} &nbsp;
+				<span class="light_text">Power: {{round basePower.cavalry}} &nbsp; Bonus: {{round bonus.cavalry}}</span>
+			</li>
+		{{/if}}
+		{{#if greater_than_zero catapults}}
+			<li>
+				Catapults: {{catapults}} &nbsp;
+				<span class="light_text">Power: {{round basePower.catapults}} &nbsp; Bonus: {{round bonus.catapults}}</span>
+			</li>
+		{{/if}}
+
+		{{#if castleDefenseBonus}}
+			<li>Castle {{castle_defense_bonus}}x Bonus</li>
+		{{/if}}
+		{{#if villageDefenseBonus}}
+			<li>Village {{village_defense_bonus}}x Bonus</li>
+		{{/if}}
+		{{#if onAllyCastleBonus}}
+			<li>Village {{village_defense_bonus}}x Bonus</li>
+		{{/if}}
+		{{#if onAllyVillageBonus}}
+			<li>Village {{village_defense_bonus}}x Bonus</li>
+		{{/if}}
+		<li>
+			Power: {{round final_power}}
+		</li>
+	</ul>
+
+
+
+
+	{{#if hasAllies}}
+		<h4>&nbsp;&nbsp;&nbsp;&nbsp;Allies</h4>
+		<ul>
+			{{#each allies}}
+				<li><a href="" class="battle_report_goto_user">{{username}}'s</a> {{type}} {{name}}</li>
+			{{/each}}
+		</ul>
+
+		<h4>&nbsp;&nbsp;&nbsp;&nbsp;Combined Armies</h4>
+
+		<ul>
+		{{#if greater_than_zero teamNumSoldiers.footmen}}
+			<li>
+				Footmen: {{round teamNumSoldiers.footmen}} &nbsp;
+				<span class="light_text">Power: {{round teamBasePower.footmen}}</span>
+			</li>
+		{{/if}}
+		{{#if greater_than_zero teamNumSoldiers.archers}}
+			<li>
+				Archers: {{round teamNumSoldiers.archers}} &nbsp;
+				<span class="light_text">Power: {{round teamBasePower.archers}} &nbsp; Bonus: {{round teamBonus.archers}}</span>
+			</li>
+		{{/if}}
+		{{#if greater_than_zero teamNumSoldiers.pikemen}}
+			<li>
+				Pikemen: {{round teamNumSoldiers.pikemen}} &nbsp;
+				<span class="light_text">Power: {{round teamBasePower.pikemen}} &nbsp; Bonus: {{round teamBonus.pikemen}}</span>
+			</li>
+		{{/if}}
+		{{#if greater_than_zero teamNumSoldiers.cavalry}}
+			<li>
+				Cavalry: {{round teamNumSoldiers.cavalry}} &nbsp;
+				<span class="light_text">Power: {{round teamBasePower.cavalry}} &nbsp; Bonus: {{round teamBonus.cavalry}}</span>
+			</li>
+		{{/if}}
+		{{#if greater_than_zero teamNumSoldiers.catapults}}
+			<li>
+				Catapults: {{round teamNumSoldiers.catapults}} &nbsp;
+				<span class="light_text">Power: {{round teamBasePower.catapults}} &nbsp; Bonus: {{round teamBonus.catapults}}</span>
+			</li>
+		{{/if}}
+		<li>
+			Power: {{round teamFinalPower}}
+		</li>
+	</ul>
+	{{/if}}
+
+
+
+
+	<h4>&nbsp;&nbsp;&nbsp;&nbsp;Fought with</h4>
+	<ul>
+		{{#each enemies}}
+			<li>
+				<a href="" class="battle_report_goto_user">{{username}}'s</a> {{type}} {{name}}
+			</li>
+		{{/each}}
+	</ul>
+
+	<ul>
+		{{#if greater_than_zero enemyNumSoldiers.footmen}}
+			<li>
+				Footmen: {{enemyNumSoldiers.footmen}} &nbsp;
+				<span class="light_text">Power: {{round enemyBasePower.footmen}}</span>
+			</li>
+		{{/if}}
+		{{#if greater_than_zero enemyNumSoldiers.archers}}
+			<li>
+				Archers: {{enemyNumSoldiers.archers}} &nbsp;
+				<span class="light_text">Power: {{round enemyBasePower.archers}} &nbsp; Bonus: {{round enemyBonus.archers}}</span>
+			</li>
+		{{/if}}
+		{{#if greater_than_zero enemyNumSoldiers.pikemen}}
+			<li>
+				Pikemen: {{enemyNumSoldiers.pikemen}} &nbsp;
+				<span class="light_text">Power: {{round enemyBasePower.pikemen}} &nbsp; Bonus: {{round enemyBonus.pikemen}}</span>
+			</li>
+		{{/if}}
+		{{#if greater_than_zero enemyNumSoldiers.cavalry}}
+			<li>
+				Cavalry: {{enemyNumSoldiers.cavalry}} &nbsp;
+				<span class="light_text">Power: {{round enemyBasePower.cavalry}} &nbsp; Bonus: {{round enemyBonus.cavalry}}</span>
+			</li>
+		{{/if}}
+		{{#if greater_than_zero enemyNumSoldiers.catapults}}
+			<li>
+				Catapults: {{enemyNumSoldiers.catapults}} &nbsp;
+				<span class="light_text">Power: {{round enemyBasePower.catapults}} &nbsp; Bonus: {{round enemyBonus.catapults}}</span>
+			</li>
+		{{/if}}
+		<li>
+			Power: {{round enemyFinalPower}}
+		</li>
+	</ul>
+
+	<h4>&nbsp;&nbsp;&nbsp;&nbsp;{{username}}'s Losses</h4>
+	<ul>
+		{{#with losses}}
+			{{#if greater_than_zero footmen}}
+				<li>
+					Footmen: {{footmen}}
+				</li>
+			{{/if}}
+			{{#if greater_than_zero archers}}
+				<li>
+					Archers: {{archers}}
+				</li>
+			{{/if}}
+			{{#if greater_than_zero pikemen}}
+				<li>
+					Pikemen: {{pikemen}}
+				</li>
+			{{/if}}
+			{{#if greater_than_zero cavalry}}
+				<li>
+					Cavalry: {{cavalry}}
+				</li>
+			{{/if}}
+			{{#if greater_than_zero catapults}}
+				<li>
+					Catapults: {{catapults}}
+				</li>
+			{{/if}}
+			<li>Total: {{total}}</li>
+		{{/with}}
+	</ul>
+	<br>
+</template>

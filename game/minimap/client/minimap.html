@@ -1,0 +1,49 @@
+<template name="minimap">
+	<div id="minimap_container">
+		<svg id="minimap">
+			<polygon points="{{bg_points}}" id="minimap_bg" />
+
+			<g id="minimap_armies">
+				{{#each armies}}
+					<circle cx="{{minimap_coord_to_pixel_x x y}}" cy="{{minimap_coord_to_pixel_y x y}}" r="3" class="minimap_army" />
+				{{/each}}
+			</g>
+
+			<g id="minimap_villages">
+				{{#each villages}}
+					<circle cx="{{minimap_coord_to_pixel_x x y}}" cy="{{minimap_coord_to_pixel_y x y}}" r="3" class="minimap_village" />
+				{{/each}}
+			</g>
+
+			<g id="minimap_castle">
+				{{#with castle}}
+					<circle cx="{{minimap_coord_to_pixel_x x y}}" cy="{{minimap_coord_to_pixel_y x y}}" r="3" class="minimap_castle" />
+				{{/with}}
+			</g>
+
+			<g id="minimap_lord">
+				{{#with lord}}
+					{{#if is_king}}
+						<circle cx="{{minimap_coord_to_pixel_x x y}}" cy="{{minimap_coord_to_pixel_y x y}}" r="3" class="minimap_king" />
+					{{else}}
+						<circle cx="{{minimap_coord_to_pixel_x x y}}" cy="{{minimap_coord_to_pixel_y x y}}" r="3" class="minimap_lord" />
+					{{/if}}
+				{{/with}}
+			</g>
+
+			<g id="minimap_vassals">
+				{{#each vassals}}
+					<circle cx="{{minimap_coord_to_pixel_x x y}}" cy="{{minimap_coord_to_pixel_y x y}}" r="3" class="minimap_vassal" />
+				{{/each}}
+			</g>
+
+			<rect x="{{viewport_position.x}}" y="{{viewport_position.y}}" width="{{viewport_size.width}}" height="{{viewport_size.height}}" id="minimap_viewport" clip-path="url(#minimap_clip)" />
+
+			<defs>
+				<clipPath id="minimap_clip">
+					<polygon points="{{bg_points}}" />
+				</clipPath>
+			</defs>
+		</svg>
+	</div>
+</template>

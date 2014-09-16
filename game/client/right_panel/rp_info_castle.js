@@ -143,7 +143,7 @@ Template.rp_info_castle.rendered = function() {
 		// can't use self.data here because it never changes
 		var castle = Castles.findOne(Session.get('selected_id'), {fields: {user_id:1}})
 		if (castle) {
-			Meteor.call('get_usernames_with_same_ip', castle.user_id, function(error, result) {
+			Meteor.call('get_duplicate_users', castle.user_id, function(error, result) {
 				if (!error) {
 					Session.set('dupes', result)
 				}

@@ -393,7 +393,7 @@ var hiring_maxs_dep = new Deps.Dependency
 
 var get_hiring_maxs = function() {
 	hiring_maxs_dep.depend()
-	return func.cloneObject(hiring_maxs)
+	return cloneObject(hiring_maxs)
 }
 
 var get_hiring_max = function(type) {
@@ -443,7 +443,7 @@ var hiring_final_costs_dep = new Deps.Dependency
 
 var get_hiring_final_costs = function() {
 	hiring_final_costs_dep.depend()
-	return func.cloneObject(hiring_final_costs)
+	return cloneObject(hiring_final_costs)
 }
 
 var get_hiring_final_cost = function(type) {
@@ -494,7 +494,7 @@ var hiring_army_costs_dep = new Deps.Dependency
 
 var get_hiring_army_costs = function() {
 	hiring_army_costs_dep.depend()
-	return func.cloneObject(hiring_army_costs)
+	return cloneObject(hiring_army_costs)
 }
 
 var get_hiring_army_cost = function(type) {
@@ -545,7 +545,7 @@ var hiring_costs_dep = new Deps.Dependency
 
 var get_hiring_costs = function() {
 	hiring_costs_dep.depend()
-	return func.cloneObject(hiring_costs)
+	return cloneObject(hiring_costs)
 }
 
 var get_hiring_cost = function(type) {
@@ -594,7 +594,7 @@ var hiring_current_resources_dep = new Deps.Dependency
 
 var get_hiring_current_resources = function() {
 	hiring_current_resources_dep.depend()
-	return func.cloneObject(hiring_current_resources)
+	return cloneObject(hiring_current_resources)
 }
 
 var get_hiring_current_resource = function(type) {
@@ -643,7 +643,7 @@ var selected_hiring_units_dep = new Deps.Dependency
 
 var get_selected_hiring_units = function() {
 	selected_hiring_units_dep.depend()
-	return func.cloneObject(selected_hiring_units)
+	return cloneObject(selected_hiring_units)
 }
 
 var get_selected_hiring_unit = function(type) {

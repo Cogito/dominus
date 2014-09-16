@@ -300,7 +300,7 @@ var from_coords_dep = new Deps.Dependency
 var get_from_coords = function() {
 	from_coords_dep.depend()
 	if (from_coords) {
-		return func.cloneObject(from_coords)
+		return cloneObject(from_coords)
 	} else {
 		return false
 	}
@@ -348,7 +348,7 @@ var unit_moves_dep = new Deps.Dependency
 
 var get_unit_moves = function() {
 	unit_moves_dep.depend()
-	return func.cloneArray(unit_moves)
+	return cloneArray(unit_moves)
 }
 
 var clear_unit_moves = function() {

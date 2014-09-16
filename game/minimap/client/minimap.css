@@ -1,0 +1,53 @@
+@mapsize: 300px;
+
+#minimap_container {
+	width: 300px;
+}
+
+#minimap {
+	width: 300px;
+	height: 300px;
+	position:absolute;
+	bottom:-40px;
+}
+
+#minimap_bg {
+	fill:rgba(0,0,0,0.6);
+	pointer-events: visibleFill;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.minimap_castle {
+	fill:white;
+}
+
+.minimap_village {
+	fill:#fa8e4b;
+}
+
+.minimap_army {
+	fill: #6efa4b;
+}
+
+.minimap_lord {
+	fill: #4bcefa;
+}
+
+.minimap_king {
+	fill: #9d4bfa;
+}
+
+
+.minimap_vassal {
+	fill: #fadd4b;
+}
+
+#minimap_viewport {
+	fill:none;
+	stroke-width:1px;
+	stroke:rgba(255,255,255,0.75);
+}
