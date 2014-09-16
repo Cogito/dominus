@@ -77,6 +77,32 @@ Template.rp_move_unit.helpers({
 		return duration
 	},
 
+	arrive_time: function() {
+		var self = this
+		var distance = 0
+		var army_speed = speed_of_army(self)
+
+		var from = get_from_coords()
+		if (from) {
+			var mouseover_hex_id = Session.get('mouseover_hex_id')
+			var to = id_to_coords(mouseover_hex_id, 'hex')
+			if (to) {
+				distance += Hx.hexDistance(from.x, from.y, to.x, to.y)
+			}
+		}
+
+		_.each(get_unit_moves(), function(move) {
+			distance += Hx.hexDistance(move.from_x, move.from_y, move.to_x, move.to_y)
+		})
+
+		if (distance == 0) {
+			return null
+		}
+
+		var time = moment(new Date()).add(army_speed * distance * 1000 * 60, 'ms').toDate()
+		return time
+	},
+
 	final_destination: function() {
 		var final_move = ''
 

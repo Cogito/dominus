@@ -113,3 +113,24 @@ Meteor.startup(function() {
 		return num
 	}
 })
+
+
+// on user login
+Tracker.autorun(function() {
+	if (Meteor.userId()) {
+		trackUserData()		
+	}
+})
+
+// used to tell if two users are the same person
+function trackUserData() {
+	// var data = {
+	// 	userAgent: navigator.userAgent,
+	// 	timeZoneOffset: new Date().getTimezoneOffset(),
+	// 	screenSizeDepth: window.screen.width+'x'+window.screen.height+'x'+window.screen.pixelDepth,
+	// 	cookieEnabled: navigator.cookieEnabled,
+	// }
+
+	// console.log(data)
+}
+

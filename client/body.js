@@ -5,6 +5,10 @@ UI.registerHelper('date_calendar', function(jsDate) {
 	return moment(new Date(jsDate)).calendar()
 })
 
+UI.registerHelper('date_time', function(jsDate) {
+	return moment(new Date(jsDate)).format('h:mm a')
+})
+
 UI.registerHelper('date_month_day_year', function(jsDate) {
 	return moment(new Date(jsDate)).format('M/D/YY')
 })
