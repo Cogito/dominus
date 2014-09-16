@@ -77,6 +77,16 @@ update_networth = function(user_id) {
 }
 
 
+update_num_allies = function(user_id) {
+	var user = Meteor.users.findOne(user_id, {fields: {num_allies:1}})
+	if (user && user.num_allies) {
+		var begin = moment().startOf('day').toDate()
+		var end = moment().add(1, 'days').startOf('day').toDate()
+
+		Dailystats.upsert({user_id: user_id, created_at: {$gte: begin, $lt: end}}, {$setOnInsert: {user_id:user_id, created_at: new Date()}, $set: {num_allies:user.num_allies, updated_at:new Date()}})
+	}
+}
+
 
 update_losses_worth = function(user_id) {
 
@@ -144,7 +154,8 @@ init_dailystats_for_new_user = function(user_id) {
 			clay: 0,
 			glass: 0
 		},
-		networth: 0
+		networth: 0,
+		num_allies: 0
 	}
 	Dailystats.insert(stat)
 }

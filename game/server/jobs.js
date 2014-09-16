@@ -145,6 +145,10 @@ nightly_job = function() {
 
 	delete_old_notifications()
 	delete_old_chats()
+
+	Meteor.users.find().forEach(function(user) {
+		update_num_allies(user._id)
+	})
 }
 
 

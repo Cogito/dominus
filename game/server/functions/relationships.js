@@ -171,6 +171,7 @@ update_vassal_ally_count = function(user_id) {
 		}
 
 		Meteor.users.update(user_id, {$set: {num_team:num_team, num_siblings:num_siblings, num_vassals: num_vassals, num_allies: num_allies, num_allies_above: num_allies_above, num_allies_below: num_allies_below}})
+		update_num_allies(user_id)
 	}
 }
 

@@ -163,6 +163,33 @@ Template.stats_panel.rendered = function() {
 			})
 		}
 
+
+
+
+		dailystats.rewind()
+		var nw = dailystats.map(function(value, index) {
+			return {x: value.created_at, y:value.num_allies }
+		})
+
+		if (nw.length > 0) {
+			var num_allies_data = [
+				{values: nw, key: 'Allies', color: '#5793d9'},
+			]
+
+			nv.addGraph(function() {
+				var chart = nv.models.lineChart().useInteractiveGuideline(true).showLegend(true).showYAxis(true).showXAxis(true)
+
+				chart.xAxis.tickFormat(function(d) { return d3.time.format('%b %d')(new Date(d)); })
+				chart.yAxis.tickFormat(d3.format(",.0f"))
+
+				d3.select('#num_allies_chart svg').datum(num_allies_data).transition().duration(300).call(chart)
+
+				nv.utils.windowResize(chart.update)
+
+				return chart
+			})
+		}
+
 	})
 
 	logevent('panel', 'open', 'stats')
