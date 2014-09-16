@@ -1,7 +1,9 @@
 Template.landing.helpers({
 	form: function() {
 		return Session.get('landingForm')
-	}
+	},
+
+	
 })
 
 Template.landing.rendered = function() {

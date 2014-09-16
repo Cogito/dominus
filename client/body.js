@@ -1,11 +1,19 @@
 // helpers that are used everywhere
 
+UI.registerHelper('s', function() { return s })
+
+UI.registerHelper('date_from_now', function(jsDate) {
+	Session.get('refresh_time_field')
+	return moment(new Date(jsDate)).fromNow()
+})
+
 UI.registerHelper('date_calendar', function(jsDate) {
 	Session.get('refresh_time_field')
 	return moment(new Date(jsDate)).calendar()
 })
 
 UI.registerHelper('date_time', function(jsDate) {
+	Session.get('refresh_time_field')
 	return moment(new Date(jsDate)).format('h:mm a')
 })
 
@@ -44,20 +52,6 @@ UI.registerHelper('round_2', function(num) {
 	} else {
 		return round_number_2(num)
 	}
-})
-
-
-
-
-
-// UI.registerHelper('stripe', function() {
-// 	return s.stripe
-// })
-
-
-
-UI.registerHelper('down_for_maintenance', function() {
-	return s.down_for_maintenance
 })
 
 UI.registerHelper('capitalize', function(words) {

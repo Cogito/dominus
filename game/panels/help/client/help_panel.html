@@ -50,7 +50,7 @@
 						<p>You will now have footmen inside your castle.</p>
 
 						<div class="help_section">Build a Village</div>
-						<p>Villages increase your resources.  Each village you have collects {{s_resource.gained_at_hex}} resources from the ring of hexes surrounding it.  Use an army to build a village.</p>
+						<p>Villages increase your resources.  Each village you have collects {{s.resource.gained_at_hex}} resources from the ring of hexes surrounding it.  Use an army to build a village.</p>
 						<ul>
 							<li>Find a good hex to build your village at.  You can only build villages on grain hexes, those are the light green ones.  Find a grain hex near your castle that is surrounded by hexes other than grain.</li>
 							<li>Click on your castle.</li>
@@ -111,7 +111,7 @@
 					<div class="panel-body">
 						<p>There are six different types of resources.  Grain, lumber, ore, wool, clay and glass.  Resources are used to hire soldiers and build villages.  Each hex contains a different type of resouce.</p>
 						<div class="help_section">Collecting Resources</div>
-						<p>Resources are collected at your castle and villages.  Your castle collects {{s_resource.gained_at_hex}} from the {{s_resource.num_rings_castle}} rings of hexes surrounding it.  Your villages collect {{s_resource.gained_at_hex}} from the 6 hexes surrounding it.  Your castle also collects {{s_resource.gold_gained_at_castle}} gold and your villages each collect {{s_resource.gold_gained_at_village}} gold.  Resources are collected every {{s_resource_interval}}.</p>
+						<p>Resources are collected at your castle and villages.  Your castle collects {{s.resource.gained_at_hex}} from the {{s.resource.num_rings_castle}} rings of hexes surrounding it.  Your villages collect {{s.resource.gained_at_hex}} from the 6 hexes surrounding it.  Your castle also collects {{s.resource.gold_gained_at_castle}} gold and your villages each collect {{s.resource.gold_gained_at_village}} gold.  Resources are collected every {{s.resource_interval}}.</p>
 						<p>You can see how many resources you have in the top of the summary panel.  The white number is how many you have and the grey number is how many you collected last resource update.</p>
 						<div class="help_section">The Market</div>
 						<p>The market is where you can exchange resources for gold.  Prices for resources go up and down based on demand.  If grain is in high demand and many people buy grain then the price will go up.</p>
@@ -146,24 +146,24 @@
 						<p>Use armies to protect your castle and villages and to gain vassals.</p>
 						<p>
 							<b>Footmen</b><br>
-							Offense: {{s_army.stats.footmen.offense}} &nbsp; Defense: {{s_army.stats.footmen.defense}} &nbsp; Speed: {{s_army.stats.footmen.speed}}<br>
+							Offense: {{s.army.stats.footmen.offense}} &nbsp; Defense: {{s.army.stats.footmen.defense}} &nbsp; Speed: {{s.army.stats.footmen.speed}}<br>
 							Footmen are good all-around soldiers.<br>
 							<br>
 							<b>Archers</b><br>
-							Offense: {{s_army.stats.archers.offense}} &nbsp; Defense: {{s_army.stats.archers.defense}} &nbsp; Speed: {{s_army.stats.archers.speed}}<br>
+							Offense: {{s.army.stats.archers.offense}} &nbsp; Defense: {{s.army.stats.archers.defense}} &nbsp; Speed: {{s.army.stats.archers.speed}}<br>
 							Good at defense. Bonus against footmen.<br>
 							<br>
 							<b>Pikemen</b><br>
-							Offense: {{s_army.stats.pikemen.offense}} &nbsp; Defense: {{s_army.stats.pikemen.defense}} &nbsp; Speed: {{s_army.stats.pikemen.speed}}<br>
+							Offense: {{s.army.stats.pikemen.offense}} &nbsp; Defense: {{s.army.stats.pikemen.defense}} &nbsp; Speed: {{s.army.stats.pikemen.speed}}<br>
 							Good at defense. Bonus against cavalry.<br>
 							<br>
 							<b>Cavalry</b><br>
-							Offense: {{s_army.stats.cavalry.offense}} &nbsp; Defense: {{s_army.stats.cavalry.defense}} &nbsp; Speed: {{s_army.stats.cavalry.speed}}<br>
+							Offense: {{s.army.stats.cavalry.offense}} &nbsp; Defense: {{s.army.stats.cavalry.defense}} &nbsp; Speed: {{s.army.stats.cavalry.speed}}<br>
 							Good at offense. Bonus against archers and footmen.<br>
 							<br>
 							<b>Catapults</b><br>
-							Offense: {{s_army.stats.catapults.offense}} &nbsp; Defense: {{s_army.stats.catapults.defense}} &nbsp; Speed: {{s_army.stats.catapults.speed}}<br>
-							{{s_army.stats.catapults.bonus_against_buildings}}x bonus when attacking a castle or village.<br>
+							Offense: {{s.army.stats.catapults.offense}} &nbsp; Defense: {{s.army.stats.catapults.defense}} &nbsp; Speed: {{s.army.stats.catapults.speed}}<br>
+							{{s.army.stats.catapults.bonus_against_buildings}}x bonus when attacking a castle or village.<br>
 						</p>
 						<p>If your army enters hex that is also occupied by an enemy army, village or castle then they will attack it.  You can also attack the castle of people above you in the tree but not their armies or villages.</p>
 
@@ -171,13 +171,13 @@
 						<p>There are four different kinds of soldiers.  Some gain bonuses when fighting.</p>
 						<p>Archers recieve a bonus against footmen.  Pikemen recieve a bonus against cavalry.  Calvary recieve a bonus against archers and footmen.</p>
 						<p>When an archer fights a footman because the archer has a bonus against footmen the archer is twice as powerful.</p>
-						<p>Catapults have a different kind of bonus.  Catapults have a very low offense.  When attacking a castle or village their offense is multiplied by their bonus.  If 1 catapult attacks an army it will have an offense of {{s_army.stats.catapults.offense}} but when that one catapult attacks a castle it will have an offense of {{s_army.stats.catapults.bonus_against_buildings}}.  Catapults get no bonus when defending.</p>
+						<p>Catapults have a different kind of bonus.  Catapults have a very low offense.  When attacking a castle or village their offense is multiplied by their bonus.  If 1 catapult attacks an army it will have an offense of {{s.army.stats.catapults.offense}} but when that one catapult attacks a castle it will have an offense of {{s.army.stats.catapults.bonus_against_buildings}}.  Catapults get no bonus when defending.</p>
 
 						<div class="help_section">Speed</div>
 						<p>Armies move at the speed of their slowest unit.</p>
 
-						<p>Footmen have a speed of {{s_army.stats.footmen.speed}}, archers have a speed of {{s_army.stats.archers.speed}}, pikemen have a speed of {{s_army.stats.pikemen.speed}} and cavalry have a speed of {{s_army.stats.cavalry.speed}}.</p>
-						<p>An army of cavalry will travel {{s_army.stats.cavalry.speed}} hexes per hour but an army of cavalry and footmen will travel at {{s_army.stats.footmen.speed}} hexes per hour.</p>
+						<p>Footmen have a speed of {{s.army.stats.footmen.speed}}, archers have a speed of {{s.army.stats.archers.speed}}, pikemen have a speed of {{s.army.stats.pikemen.speed}} and cavalry have a speed of {{s.army.stats.cavalry.speed}}.</p>
+						<p>An army of cavalry will travel {{s.army.stats.cavalry.speed}} hexes per hour but an army of cavalry and footmen will travel at {{s.army.stats.footmen.speed}} hexes per hour.</p>
 
 						<div class="help_section">Ally Bonuses</div>
 						<p>Armies that are on the same hex as your ally's castle or village get {{ally_castle_defense_bonus}}x bonus.  You may want to protect your vassal or ally from being taken by another player by sending an army to their castle or village.</p>
@@ -194,8 +194,8 @@
 				<div id="help-villages" class="panel-collapse collapse">
 					<div class="panel-body">
 						<p>Villages are how you gain more resources.</p>
-						<p>You can build up to {{s_village.max_can_have}} villages at a time.  Villages gain {{s_resource.gained_at_hex}} resources from the 6 surrounding hexes and {{s_resource.gold_gained_at_village}} gold every {{s_resource_interval}}.</p>
-						<p>Villages cost {{s_village.cost.grain}} grain, {{s_village.cost.lumber}} lumber, {{s_village.cost.ore}} ore, and {{s_village.cost.clay}} clay.</p>
+						<p>You can build up to {{s.village.max_can_have}} villages at a time.  Villages gain {{s.resource.gained_at_hex}} resources from the 6 surrounding hexes and {{s.resource.gold_gained_at_village}} gold every {{s.resource_interval}}.</p>
+						<p>Villages cost {{s.village.cost.grain}} grain, {{s.village.cost.lumber}} lumber, {{s.village.cost.ore}} ore, and {{s.village.cost.clay}} clay.</p>
 
 						<p>Villages have a {{village_defense_bonus}}x defense bonus.  This means one footeman inside a village can take on {{village_defense_bonus}} attacking footmen.</p>
 						<p>If an army of yours is stopped on the same hex as your village then they will join the village's garrison.</p>
@@ -274,7 +274,7 @@
 						<p>Bonuses can increase an army's power.</p>
 						<p>Archers recieve a bonus against footmen. Pikemen recieve a bonus against cavalry. Calvary recieve a bonus against archers and footmen.</p>
 						<p>When an archer fights a footman because the archer has a bonus against footmen the archer is twice as powerful.</p>
-						<p>Catapults' offense is multiplied by {{s_army.stats.catapults.bonus_against_buildings}} when attacking a castle or village.</p>
+						<p>Catapults' offense is multiplied by {{s.army.stats.catapults.bonus_against_buildings}} when attacking a castle or village.</p>
 						<p>Armies defending a castle receive a {{castle_defense_bonus}}x bonus.  Armies defending a village receive a  {{village_defense_bonus}}x bonus.  Armies at an ally's castle or village receive a {{ally_castle_defense_bonus}}x bonus.</p>
 					</div>
 				</div>

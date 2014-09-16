@@ -80,10 +80,6 @@ Template.left_panel.helpers({
 		}
 	},
 
-	max_villages: function() {
-		return s.village.max_can_have
-	},
-
 	num_villages: function() {
 		return Session.get('num_villages')
 	}

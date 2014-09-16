@@ -130,72 +130,72 @@
 								{{#if has_enough_grain}}
 									<tr>
 										<td>Grain</td>
-										<td>{{round village_cost.grain}}</td>
+										<td>{{round s.village.cost.grain}}</td>
 									</tr>
 								{{else}}
 									<tr class="danger">
 										<td>Grain</td>
-										<td>{{round village_cost.grain}}</td>
+										<td>{{round s.village.cost.grain}}</td>
 									</tr>
 								{{/if}}
 
 								{{#if has_enough_lumber}}
 									<tr>
 										<td>Lumber</td>
-										<td>{{round village_cost.lumber}}</td>
+										<td>{{round s.village.cost.lumber}}</td>
 									</tr>
 								{{else}}
 									<tr class="danger">
 										<td>Lumber</td>
-										<td>{{round village_cost.lumber}}</td>
+										<td>{{round s.village.cost.lumber}}</td>
 									</tr>
 								{{/if}}
 
 								{{#if has_enough_ore}}
 									<tr>
 										<td>Ore</td>
-										<td>{{round village_cost.ore}}</td>
+										<td>{{round s.village.cost.ore}}</td>
 									</tr>
 								{{else}}
 									<tr class="danger">
 										<td>Ore</td>
-										<td>{{round village_cost.ore}}</td>
+										<td>{{round s.village.cost.ore}}</td>
 									</tr>
 								{{/if}}
 
 								{{#if has_enough_wool}}
 									<tr>
 										<td>Wool</td>
-										<td>{{round village_cost.wool}}</td>
+										<td>{{round s.village.cost.wool}}</td>
 									</tr>
 								{{else}}
 									<tr class="danger">
 										<td>Wool</td>
-										<td>{{round village_cost.wool}}</td>
+										<td>{{round s.village.cost.wool}}</td>
 									</tr>
 								{{/if}}
 
 								{{#if has_enough_clay}}
 									<tr>
 										<td>Clay</td>
-										<td>{{round village_cost.clay}}</td>
+										<td>{{round s.village.cost.clay}}</td>
 									</tr>
 								{{else}}
 									<tr class="danger">
 										<td>Clay</td>
-										<td>{{round village_cost.clay}}</td>
+										<td>{{round s.village.cost.clay}}</td>
 									</tr>
 								{{/if}}
 
 								{{#if has_enough_glass}}
 									<tr>
 										<td>Glass</td>
-										<td>{{round village_cost.glass}}</td>
+										<td>{{round s.village.cost.glass}}</td>
 									</tr>
 								{{else}}
 									<tr class="danger">
 										<td>Glass</td>
-										<td>{{round village_cost.glass}}</td>
+										<td>{{round s.village.cost.glass}}</td>
 									</tr>
 								{{/if}}
 							</tbody>
@@ -223,7 +223,7 @@
 					{{/if}}
 				{{else}}
 					<div class="panel-body">
-						You have {{max_villages_can_have}} villages.  Cannot build anymore.  To build another village destroy one of your current villages.
+						You have {{s.village.max_can_have}} villages.  Cannot build anymore.  To build another village destroy one of your current villages.
 					</div>
 				{{/if}}
 			</div>

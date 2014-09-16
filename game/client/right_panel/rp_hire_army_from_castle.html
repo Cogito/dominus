@@ -101,51 +101,51 @@
 					<tbody>
 						<tr>
 							<td>Grain</td>
-							<td>{{price.footmen.grain}}</td>
-							<td>{{price.archers.grain}}</td>
-							<td>{{price.pikemen.grain}}</td>
-							<td>{{price.cavalry.grain}}</td>
-							<td>{{price.catapults.grain}}</td>
+							<td>{{s.army.cost.footmen.grain}}</td>
+							<td>{{s.army.cost.archers.grain}}</td>
+							<td>{{s.army.cost.pikemen.grain}}</td>
+							<td>{{s.army.cost.cavalry.grain}}</td>
+							<td>{{s.army.cost.catapults.grain}}</td>
 						</tr>
 						<tr>
 							<td>Lumber</td>
-							<td>{{price.footmen.lumber}}</td>
-							<td>{{price.archers.lumber}}</td>
-							<td>{{price.pikemen.lumber}}</td>
-							<td>{{price.cavalry.lumber}}</td>
-							<td>{{price.catapults.lumber}}</td>
+							<td>{{s.army.cost.footmen.lumber}}</td>
+							<td>{{s.army.cost.archers.lumber}}</td>
+							<td>{{s.army.cost.pikemen.lumber}}</td>
+							<td>{{s.army.cost.cavalry.lumber}}</td>
+							<td>{{s.army.cost.catapults.lumber}}</td>
 						</tr>
 						<tr>
 							<td>Ore</td>
-							<td>{{price.footmen.ore}}</td>
-							<td>{{price.archers.ore}}</td>
-							<td>{{price.pikemen.ore}}</td>
-							<td>{{price.cavalry.ore}}</td>
-							<td>{{price.catapults.ore}}</td>
+							<td>{{s.army.cost.footmen.ore}}</td>
+							<td>{{s.army.cost.archers.ore}}</td>
+							<td>{{s.army.cost.pikemen.ore}}</td>
+							<td>{{s.army.cost.cavalry.ore}}</td>
+							<td>{{s.army.cost.catapults.ore}}</td>
 						</tr>
 						<tr>
 							<td>Wool</td>
-							<td>{{price.footmen.wool}}</td>
-							<td>{{price.archers.wool}}</td>
-							<td>{{price.pikemen.wool}}</td>
-							<td>{{price.cavalry.wool}}</td>
-							<td>{{price.catapults.wool}}</td>
+							<td>{{s.army.cost.footmen.wool}}</td>
+							<td>{{s.army.cost.archers.wool}}</td>
+							<td>{{s.army.cost.pikemen.wool}}</td>
+							<td>{{s.army.cost.cavalry.wool}}</td>
+							<td>{{s.army.cost.catapults.wool}}</td>
 						</tr>
 						<tr>
 							<td>Clay</td>
-							<td>{{price.footmen.clay}}</td>
-							<td>{{price.archers.clay}}</td>
-							<td>{{price.pikemen.clay}}</td>
-							<td>{{price.cavalry.clay}}</td>
-							<td>{{price.catapults.clay}}</td>
+							<td>{{s.army.cost.footmen.clay}}</td>
+							<td>{{s.army.cost.archers.clay}}</td>
+							<td>{{s.army.cost.pikemen.clay}}</td>
+							<td>{{s.army.cost.cavalry.clay}}</td>
+							<td>{{s.army.cost.catapults.clay}}</td>
 						</tr>
 						<tr>
 							<td>Glass</td>
-							<td>{{price.footmen.glass}}</td>
-							<td>{{price.archers.glass}}</td>
-							<td>{{price.pikemen.glass}}</td>
-							<td>{{price.cavalry.glass}}</td>
-							<td>{{price.catapults.glass}}</td>
+							<td>{{s.army.cost.footmen.glass}}</td>
+							<td>{{s.army.cost.archers.glass}}</td>
+							<td>{{s.army.cost.pikemen.glass}}</td>
+							<td>{{s.army.cost.cavalry.glass}}</td>
+							<td>{{s.army.cost.catapults.glass}}</td>
 						</tr>
 					</tbody>
 				</table>
@@ -159,24 +159,24 @@
 			<div class="panel-body">
 				<p>
 					<b>Footmen</b><br>
-					Offense: {{s_army.stats.footmen.offense}} &nbsp; Defense: {{s_army.stats.footmen.defense}} &nbsp; Speed: {{s_army.stats.footmen.speed}}<br>
+					Offense: {{s.army.stats.footmen.offense}} &nbsp; Defense: {{s.army.stats.footmen.defense}} &nbsp; Speed: {{s.army.stats.footmen.speed}}<br>
 					Footmen are good all-around soldiers.<br>
 					<br>
 					<b>Archers</b><br>
-					Offense: {{s_army.stats.archers.offense}} &nbsp; Defense: {{s_army.stats.archers.defense}} &nbsp; Speed: {{s_army.stats.archers.speed}}<br>
+					Offense: {{s.army.stats.archers.offense}} &nbsp; Defense: {{s.army.stats.archers.defense}} &nbsp; Speed: {{s.army.stats.archers.speed}}<br>
 					Good at defense. Bonus against footmen.<br>
 					<br>
 					<b>Pikemen</b><br>
-					Offense: {{s_army.stats.pikemen.offense}} &nbsp; Defense: {{s_army.stats.pikemen.defense}} &nbsp; Speed: {{s_army.stats.pikemen.speed}}<br>
+					Offense: {{s.army.stats.pikemen.offense}} &nbsp; Defense: {{s.army.stats.pikemen.defense}} &nbsp; Speed: {{s.army.stats.pikemen.speed}}<br>
 					Good at defense. Bonus against cavalry.<br>
 					<br>
 					<b>Cavalry</b><br>
-					Offense: {{s_army.stats.cavalry.offense}} &nbsp; Defense: {{s_army.stats.cavalry.defense}} &nbsp; Speed: {{s_army.stats.cavalry.speed}}<br>
+					Offense: {{s.army.stats.cavalry.offense}} &nbsp; Defense: {{s.army.stats.cavalry.defense}} &nbsp; Speed: {{s.army.stats.cavalry.speed}}<br>
 					Good at offense. Bonus against archers and footmen.<br>
 					<br>
 					<b>Catapults</b><br>
-					Offense: {{s_army.stats.catapults.offense}} &nbsp; Defense: {{s_army.stats.catapults.defense}} &nbsp; Speed: {{s_army.stats.catapults.speed}}<br>
-					{{s_army.stats.catapults.bonus_against_buildings}}x bonus when attacking a castle or village.<br>
+					Offense: {{s.army.stats.catapults.offense}} &nbsp; Defense: {{s.army.stats.catapults.defense}} &nbsp; Speed: {{s.army.stats.catapults.speed}}<br>
+					{{s.army.stats.catapults.bonus_against_buildings}}x bonus when attacking a castle or village.<br>
 				</p>
 			</div>
 		</div>

@@ -145,10 +145,6 @@ Template.rp_info_army.helpers({
 		}
 	},
 
-	village_cost: function() {
-		return s.village.cost
-	},
-
 	has_enough_grain: function() {
 		var user = Meteor.users.findOne(Meteor.userId(), {fields: {grain:1}})
 		if (user && user.grain >= s.village.cost.grain) {
@@ -209,10 +205,6 @@ Template.rp_info_army.helpers({
 
 	has_less_than_max_villages: function() {
 		return (Session.get('num_villages') < s.village.max_can_have)
-	},
-
-	max_villages_can_have: function() {
-		return s.village.max_can_have
 	}
 })
 

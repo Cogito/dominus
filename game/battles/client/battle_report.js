@@ -10,22 +10,6 @@ Template.battle_report_unit.helpers({
 		return false
 	},
 
-	castle_defense_bonus: function() {
-		return s.castle.defense_bonus
-	},
-
-	village_defense_bonus: function() {
-		return s.village.defense_bonus
-	},
-
-	allyCastleBonus: function() {
-		return s.castle.ally_defense_bonus
-	},
-
-	allyVillageBonus: function() {
-		return s.village.ally_defense_bonus
-	},
-
 	won_this_round: function() {
 		return this.dif > 0
 	},

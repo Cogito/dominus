@@ -21,14 +21,6 @@ Template.rp_hire_army_from_castle.helpers({
 		return resource_cost_army(get_selected_hiring_units())
 	},
 
-	price: function() {
-		return s.army.cost
-	},
-
-	stats: function() {
-		return s.army.stats
-	},
-
 	num_units: function(type) {
 		if (type) {
 			return get_selected_hiring_unit(type)
@@ -65,10 +57,6 @@ Template.rp_hire_army_from_castle.helpers({
 		} else {
 			return false
 		}
-	},
-
-	s_army: function() {
-		return s.army
 	}
 })
 
