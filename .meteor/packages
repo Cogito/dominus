@@ -8,7 +8,6 @@ jquery
 less
 random
 accounts-password
-arunoda:npm@0.2.6
 d3
 mrt:nvd3js@0.1.0
 natestrauser:font-awesome@4.1.0
@@ -17,8 +16,6 @@ mrt:underscore-string-latest@2.3.3
 email
 accounts-ui
 mrgalaxy:stripe@1.5.5
-arunoda:subs-manager@1.0.1
-arunoda:kadira@2.4.10
 mizzao:user-status@0.6.0
 mrt:modernizr-meteor@2.6.2
 mrt:cookies@0.3.0
@@ -28,3 +25,9 @@ mizzao:timesync
 danimal:accounts-templates
 danimal:hx
 iron:router
+meteorhacks:kadira
+meteorhacks:npm
+meteorhacks:subs-manager
+
+
+npm-container

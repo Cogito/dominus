@@ -3,9 +3,6 @@ accounts-password@1.0.1
 accounts-ui-unstyled@1.1.1
 accounts-ui@1.1.0
 application-configuration@1.0.2
-arunoda:kadira@2.4.10
-arunoda:npm@0.2.6
-arunoda:subs-manager@1.0.1
 autoupdate@1.1.0
 base64@1.0.0
 binary-heap@1.0.0
@@ -44,6 +41,11 @@ localstorage@1.0.0
 logging@1.0.3
 meteor-platform@1.1.0
 meteor@1.1.0
+meteorhacks:async@1.0.0
+meteorhacks:kadira-binary-deps@1.0.1
+meteorhacks:kadira@2.8.1
+meteorhacks:npm@1.2.0
+meteorhacks:subs-manager@1.1.0
 minifiers@1.1.0
 minimongo@1.0.3
 mizzao:timesync@0.2.2
@@ -59,6 +61,7 @@ mrt:nvd3js@0.1.0
 mrt:underscore-string-latest@2.3.3
 natestrauser:font-awesome@4.2.0
 npm-bcrypt@0.7.7
+npm-container@1.0.0
 observe-sequence@1.0.2
 ordered-dict@1.0.0
 random@1.0.0
