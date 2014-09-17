@@ -27,12 +27,3 @@ Dominus is made using the web platform <a href="http://meteor.com">Meteor.js</a>
 
 * Old issues are at https://bitbucket.org/daniel_phillips/gridgame/issues?status=new&status=open.
 * New issues are here on Github.
-
-
-### License ###
-
-Copyright (C) 2014 Daniel Phillips
-
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or any later version.
