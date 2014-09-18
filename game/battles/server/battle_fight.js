@@ -160,40 +160,50 @@ Fight.prototype._killSoldiers = function(unit) {
 	})
 
 	// loop, take away at random until all dead are taken
-	// catapults are last
 	var powerTakenAway = 0
+	var numFailedTries = 0
+	var maxFailedTries = 5
 	var unitsLeft = self.unitObj.getNumSoldiers(unit)
-	var unitsLeftMinusCatapults = self.unitObj.getNumSoldiersMinusCatapults(unit)
 	check(unitsLeft, validNumber)
-	check(unitsLeftMinusCatapults, validNumber)
 
 	while (powerTakenAway < powerToLose) {
 
-		if (unitsLeftMinusCatapults > 0) {
-			var rand = Math.floor(Math.random() * (s.army.types.length-1))
-			var type = s.army.types[rand]
-			// pick another if catapults were picked
-			if (type == 'catapults') {
-				type = s.army.types[rand+1]
-			}
-		} else {
-			var type = 'catapults'
-		}
+		// pick a soldier type at random
+		if (unitsLeft > 0) {
+			// get which type of soldiers unit has
+			var survivorTypes = []
+			_.each(s.army.types, function(type) {
+				if (survivors[type] > 0) {
+					survivorTypes.push(type)
+				}
+			})
 
-		check(survivors[type], validNumber)
+			var rand = Math.floor(Math.random() * survivorTypes.length)
+			var type = survivorTypes[rand]
 
-		if (survivors[type] > 0) {
-			survivors[type]--
-			self.unitObj.addToDead(unit, type, 1)
-			powerTakenAway += soldierPower[type]
-			unitsLeft--
-			if (type != 'catapults') {
-				unitsLeftMinusCatapults--
+			check(survivors[type], validNumber)
+		
+			// take away solder if power lost less than powerToLose
+			// unit can't lose more than powerToLose
+			if (survivors[type] > 0) {
+				if (powerTakenAway + soldierPower[type] <= powerToLose) {
+					survivors[type]--
+					self.unitObj.addToDead(unit, type, 1)
+					powerTakenAway += soldierPower[type]
+					unitsLeft--
+				} else {
+					numFailedTries++
+				}
 			}
 		}
 
 		// stop if everyone is dead
 		if (unitsLeft == 0) {
+			powerTakenAway = powerToLose
+		}
+
+		// stop if failed max times
+		if (numFailedTries >= maxFailedTries) {
 			powerTakenAway = powerToLose
 		}
 	}

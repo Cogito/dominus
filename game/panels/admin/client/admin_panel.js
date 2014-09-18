@@ -20,7 +20,7 @@ Template.admin_panel.helpers({
 Template.admin_panel.events({
 	'click #gen_hexes_button': function (event, template) {
 		var num_of_rings_input = template.find('#num_of_rings_input')
-		var num_of_rings = $(num_of_rings_input).val()
+		var num_of_rings = Number($(num_of_rings_input).val())
  
 		if (!isNaN(num_of_rings) && num_of_rings > 0 && num_of_rings < 100) {
 			Meteor.call('generate_hexes', num_of_rings)
