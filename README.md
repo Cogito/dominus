@@ -1,3 +1,5 @@
+![Alt text](/public/presskit/presskit_banner.jpg?raw=true "Optional Title")
+
 ### Dominus ###
 http://dominusgame.net
 
