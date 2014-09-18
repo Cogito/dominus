@@ -113,7 +113,12 @@ Template.hover_box.helpers({
 
 						if (_.indexOf(user.allies_above, object.user_id) != -1) {
 
-							if (object.user_id == user.king) {
+							var oUser = Meteor.users.findOne(object.user_id, {fields: {is_dominus:1}})
+
+							if (oUser && oUser.is_dominus) {
+								object.flag_type = 'dominus'
+								object.flag_name = 'Dominus'
+							} else if (object.user_id == user.king) {
 								object.flag_type = 'king'
 								object.flag_name = 'King'
 							} else if (object.user_id == user.lord) {
