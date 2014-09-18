@@ -2,7 +2,7 @@
 	Battle at <a href="" class="battle_report_goto_hex">hex {{x}}, {{y}}</a>.<br>
 	Battle started {{date_calendar created_at}}.<br>
 	Fought {{roundNumber}} rounds.<br>
-	Next fight {{next_fight_in}}.<br>
+	{{#if next_fight_in}}Next fight {{next_fight_in}}.<br>{{/if}}
 	<br>
 	Won last round.
 	<ul>

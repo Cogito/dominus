@@ -1,4 +1,5 @@
 Fight = function(x, y, unitObj, battleDb) {
+	var start_time = new Date()
 	var self = this
 	self.x = x
 	self.y = y
@@ -22,7 +23,22 @@ Fight = function(x, y, unitObj, battleDb) {
 		battleDb.saveRecord()
 		self.unitObj.removeDeadSoldiers()
 		self.unitObj.removeDeadUnits()
+		self._sendEndBattleNotifications()
 		self._endBattle()
+	}
+
+	record_job_stat('battle', new Date() - start_time)
+}
+
+
+Fight.prototype._sendEndBattleNotifications = function() {
+	var self = this
+
+	if (self._isBattleOver()) {
+		// send notification to remaining units
+		_.each(self.unitObj.getAllUnits(), function(unit) {
+			self.unitObj.sendNotification(unit)
+		})
 	}
 }
 
@@ -31,11 +47,6 @@ Fight.prototype._endBattle = function() {
 	var self = this
 
 	if (self._isBattleOver()) {
-		// send notification to remaining units
-		_.each(self.unitObj.getAllUnits(), function(unit) {
-			self.unitObj.sendNotification(unit)
-		})
-
 		// is there a castle in this hex
 		// it might not be in allUnits so check mongodb
 		var castle_fields = {name:1, user_id:1, x:1, y:1, username:1, image:1}

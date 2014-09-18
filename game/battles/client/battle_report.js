@@ -22,7 +22,13 @@ Template.battle_report_unit.helpers({
 Template.battle_report.helpers({
 	next_fight_in: function() {
 		Session.get('refresh_time_field')
-		return moment(new Date(this.updated_at)).add(s.battle_interval, 'ms').fromNow()
+		var time = moment(new Date(this.updated_at)).add(s.battle_interval, 'ms')
+		if (time.isAfter(moment(new Date()))) {
+			return moment(new Date(this.updated_at)).add(s.battle_interval, 'ms').fromNow()
+		} else {
+			return null
+		}
+		
 	},
 
 	greater_than_zero: function(num) {
