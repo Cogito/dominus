@@ -1,30 +1,30 @@
 Meteor.methods({
 	
-	deleteAccount: function() {
-		var user = Meteor.users.findOne(Meteor.userId())
-		if (user) {
-			var appendToName = ' (deleted)'
+	// deleteAccount: function() {
+	// 	var user = Meteor.users.findOne(Meteor.userId())
+	// 	if (user) {
+	// 		var appendToName = ' (deleted)'
 
-			Chats.update({user_id: user._id}, {$set: {username: user.username+appendToName}}, {multi: true})
+	// 		Chats.update({user_id: user._id}, {$set: {username: user.username+appendToName}}, {multi: true})
 			
-			for (var i = 0; i < user.chatrooms.length; i++) {
-				leave_chatroom(user._id, user.chatrooms[i])
-			}
+	// 		for (var i = 0; i < user.chatrooms.length; i++) {
+	// 			leave_chatroom(user._id, user.chatrooms[i])
+	// 		}
 
-			Castles.remove({user_id: user._id})
-			Villages.remove({user_id: user._id})
-			Armies.remove({user_id: user._id})
-			Moves.remove({user_id: user._id})
-			Threads.update({user_id: user._id}, {$set: {username: user.username+appendToName}}, {multi: true})
-			Threads.update({last_post_username: user.username}, {$set: {last_post_username: user.username+appendToName}}, {multi: true})
-			Messages.update({user_id: user._id}, {$set: {username: user.username+appendToName}}, {multi: true})
-			Charges.update({user_id: user._id}, {$set: {user_username: user.username+appendToName}}, {multi: true})
+	// 		Castles.remove({user_id: user._id})
+	// 		Villages.remove({user_id: user._id})
+	// 		Armies.remove({user_id: user._id})
+	// 		Moves.remove({user_id: user._id})
+	// 		Threads.update({user_id: user._id}, {$set: {username: user.username+appendToName}}, {multi: true})
+	// 		Threads.update({last_post_username: user.username}, {$set: {last_post_username: user.username+appendToName}}, {multi: true})
+	// 		Messages.update({user_id: user._id}, {$set: {username: user.username+appendToName}}, {multi: true})
+	// 		Charges.update({user_id: user._id}, {$set: {user_username: user.username+appendToName}}, {multi: true})
 
-			Hexes.update({x:user.x, y:user.y}, {$set: {has_building:false, nearby_buildings:false}})
+	// 		Hexes.update({x:user.x, y:user.y}, {$set: {has_building:false, nearby_buildings:false}})
 
-			Meteor.users.remove({_id:user._id})
-		}
-	},
+	// 		Meteor.users.remove({_id:user._id})
+	// 	}
+	// },
 
 
 	change_username: function(username) {
