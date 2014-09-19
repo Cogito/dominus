@@ -111,7 +111,7 @@
 					<div class="panel-body">
 						<p>There are six different types of resources.  Grain, lumber, ore, wool, clay and glass.  Resources are used to hire soldiers and build villages.  Each hex contains a different type of resouce.</p>
 						<div class="help_section">Collecting Resources</div>
-						<p>Resources are collected at your castle and villages.  Your castle collects {{s.resource.gained_at_hex}} from the {{s.resource.num_rings_castle}} rings of hexes surrounding it.  Your villages collect {{s.resource.gained_at_hex}} from the 6 hexes surrounding it.  Your castle also collects {{s.resource.gold_gained_at_castle}} gold and your villages each collect {{s.resource.gold_gained_at_village}} gold.  Resources are collected every {{s.resource_interval}}.</p>
+						<p>Resources are collected at your castle and villages.  Your castle collects {{s.resource.gained_at_hex}} from the {{s.resource.num_rings_castle}} rings of hexes surrounding it.  Your villages collect {{s.resource.gained_at_hex}} from the 6 hexes surrounding it.  Your castle also collects {{s.resource.gold_gained_at_castle}} gold and your villages each collect {{s.resource.gold_gained_at_village}} gold.  Resources are collected every {{s_resource_interval}}.</p>
 						<p>You can see how many resources you have in the top of the summary panel.  The white number is how many you have and the grey number is how many you collected last resource update.</p>
 						<div class="help_section">The Market</div>
 						<p>The market is where you can exchange resources for gold.  Prices for resources go up and down based on demand.  If grain is in high demand and many people buy grain then the price will go up.</p>
@@ -128,7 +128,7 @@
 				<div id="help-castles" class="panel-collapse collapse">
 					<div class="panel-body">
 						<p>Your castle is the center of your kingdom.  It is where you hire soldiers.</p>
-						<p>Castle are very defensive.  They have a {{castle_defense_bonus}}x defense bonus.  This means that one footman can defend your castle against {{castle_defense_bonus}} footmen.</p>
+						<p>Castle are very defensive.  They have a {{castle_defense_bonus}}x defense bonus.</p>
 						<p>If you attack someone's castle and win then you become their lord and they become your vassal.</p>
 						<p>If an army of yours is stopped on the same hex as your castle then they will join your castle's garrison.</p>
 					</div>
@@ -180,7 +180,7 @@
 						<p>An army of cavalry will travel {{s.army.stats.cavalry.speed}} hexes per hour but an army of cavalry and footmen will travel at {{s.army.stats.footmen.speed}} hexes per hour.</p>
 
 						<div class="help_section">Ally Bonuses</div>
-						<p>Armies that are on the same hex as your ally's castle or village get {{ally_castle_defense_bonus}}x bonus.  You may want to protect your vassal or ally from being taken by another player by sending an army to their castle or village.</p>
+						<p>Armies that are on the same hex as your ally's castle or village get {{ally_castle_defense_bonus}}x bonus.</p>
 					</div>
 				</div>
 			</div>
@@ -193,11 +193,11 @@
 				</div>
 				<div id="help-villages" class="panel-collapse collapse">
 					<div class="panel-body">
-						<p>Villages are how you gain more resources.</p>
-						<p>You can build up to {{s.village.max_can_have}} villages at a time.  Villages gain {{s.resource.gained_at_hex}} resources from the 6 surrounding hexes and {{s.resource.gold_gained_at_village}} gold every {{s.resource_interval}}.</p>
+						<p>Villages give you resources.</p>
+						<p>You can build up to {{s.village.max_can_have}} villages at a time.  Villages gain {{s.resource.gained_at_hex}} resources from the 6 surrounding hexes and {{s.resource.gold_gained_at_village}} gold every {{s_resource_interval}}.</p>
 						<p>Villages cost {{s.village.cost.grain}} grain, {{s.village.cost.lumber}} lumber, {{s.village.cost.ore}} ore, and {{s.village.cost.clay}} clay.</p>
 
-						<p>Villages have a {{village_defense_bonus}}x defense bonus.  This means one footeman inside a village can take on {{village_defense_bonus}} attacking footmen.</p>
+						<p>Villages have a {{village_defense_bonus}}x defense bonus.</p>
 						<p>If an army of yours is stopped on the same hex as your village then they will join the village's garrison.</p>
 					</div>
 				</div>
@@ -212,8 +212,7 @@
 				<div id="help-lords" class="panel-collapse collapse">
 					<div class="panel-body">
 						<p>If you attack someone's castle and win then you become their lord and they become your vassal.</p>
-						<p>Vassals send {{vassal_tax}}% of their income to their lord.  This includes income that they receive from their vassals.</p>
-						<p>It is a good idea to protect your vassals so that you do not lose them.</p>
+						<p>Vassals send 5% of their income to each person above them in the tree.  If there are more than 5 people above them then they send 25% / number_of_people_above to each person above them.</p>
 						<p>You can send gold to your vassals and your vassal's vassals.  You cannot send gold to your enemies or your lord or anyone above your lord.  To send someone gold click on the "Send Gold" button at their castle.</p>
 						<p>If you do not have a lord then you are a king.  If you have a lord and you attack their castle and win then his lord will become your lord.</p>
 						<p>You cannot attack anyone below you in the tree.  This includes your vassals and vassals of your vassals.  These will have a yellow or orange square or flag.</p>
@@ -231,7 +230,7 @@
 				<div id="help-battles" class="panel-collapse collapse">
 					<div class="panel-body">
 						<p>When an army enters a hex that is occupied by an enemy army, village or castle they will attack them.</p>
-						<p>After a battle you will receive a notification with the results.</p>
+						<p>Battles are based on the combined power of soldiers.</p>
 						<div class="help_section">Power</div>
 						<p>Battles are decided by each army's power.</p>
 						<table class="table table-condensed">
@@ -270,6 +269,11 @@
 								</tr>
 							</tbody>
 						</table>
+
+						<p>Every {{s_battle_interval}} all units in the battle will lose soldiers until a winner is left.</p>
+						<p>If an army and their allies have more power than their enemies then they are a winner of that round.  Winners lose {{s.battle_power_lost_per_round_winner}} power worth of soldiers and losers lose {{s.battle_power_lost_per_round}} power worth of soldiers each round.</p>
+						<p>After a battle you will receive a notification with the results.  You can also see the current battles as they happen in the notifications panel.</p>
+						
 						<div class="help_section">Bonuses</div>
 						<p>Bonuses can increase an army's power.</p>
 						<p>Archers recieve a bonus against footmen. Pikemen recieve a bonus against cavalry. Calvary recieve a bonus against archers and footmen.</p>
