@@ -498,10 +498,23 @@ Units.prototype.getNumUniqueTeamMemebers = function(unit) {
 }
 
 
+// find enemies of unit's enemies who are unit's allies
+// just getting people who are allies is not enough
 Units.prototype.getAllies = function(unit) {
 	var self = this
 
-	return _.filter(self.allUnits, function(u) {
+	var enemies = self.getEnemies(unit)
+
+	var enemyOfEnemies = []
+	_.each(enemies, function(enemy) {
+		_.each(self.getEnemies(enemy), function(enemyOfEnemy) {
+			if (_.indexOf(enemyOfEnemies, enemyOfEnemy) == -1) {
+				enemyOfEnemies.push(enemyOfEnemy)
+			}
+		})
+	})
+
+	return _.filter(enemyOfEnemies, function(u) {
 		return self.isAlly(unit, u)
 	})
 }
