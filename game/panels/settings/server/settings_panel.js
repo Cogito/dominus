@@ -1,30 +1,68 @@
 Meteor.methods({
 	
-	// deleteAccount: function() {
-	// 	var user = Meteor.users.findOne(Meteor.userId())
-	// 	if (user) {
-	// 		var appendToName = ' (deleted)'
+	deleteAccount: function() {
+		this.unblock()
+		var user = Meteor.users.findOne(Meteor.userId())
+		if (user) {
 
-	// 		Chats.update({user_id: user._id}, {$set: {username: user.username+appendToName}}, {multi: true})
+			Villages.remove({user_id: user._id})
+			Armies.remove({user_id: user._id})
+			Moves.remove({user_id: user._id})
+			Threads.update({user_id: user._id}, {$set: {username: user.username+appendToName}}, {multi: true})
+			Threads.update({last_post_username: user.username}, {$set: {last_post_username: user.username+appendToName}}, {multi: true})
+			Messages.update({user_id: user._id}, {$set: {username: user.username+appendToName}}, {multi: true})
+			Charges.update({user_id: user._id}, {$set: {user_username: user.username+appendToName}}, {multi: true})
+
+			// fix tree
+			if (user.lord) {
+				var lord = Meteor.users.findOne(user.lord)
+				if (lord) {
+					// give vassals to lord
+					_.each(user.vassals, function(vassal_id) {
+						var vassal = Meteor.users.findOne(vassal_id)
+						if (vassal) {
+							set_lord_and_vassal(lord, vassal, false)
+						}
+					})
+
+					// remove from lord
+					remove_lord_and_vassal(lord._id, user._id)
+
+					// update lord's tree
+					var rf = new relation_finder(lord._id)
+					rf.start()
+				}
+			} else {
+				// make vassals kings
+				_.each(user.vassals, function(vassal_id) {
+					var vassal = Meteor.users.findOne(vassal_id)
+					if (vassal) {
+						remove_lord_and_vassal(user._id, vassal._id)
+						var rf = new relation_finder(vassal._id)
+						rf.start()
+					}
+				})
+			}
+
+			// remove from everyone's allies
+			// Meteor.users.find().forEach(function(u) {
+			// 	if (_.indexOf(u.allies))
+			// })
+
+			var appendToName = ' (deleted)'
+
+			Chats.update({user_id: user._id}, {$set: {username: user.username+appendToName}}, {multi: true})
 			
-	// 		for (var i = 0; i < user.chatrooms.length; i++) {
-	// 			leave_chatroom(user._id, user.chatrooms[i])
-	// 		}
+			for (var i = 0; i < user.chatrooms.length; i++) {
+				leave_chatroom(user._id, user.chatrooms[i])
+			}
 
-	// 		Castles.remove({user_id: user._id})
-	// 		Villages.remove({user_id: user._id})
-	// 		Armies.remove({user_id: user._id})
-	// 		Moves.remove({user_id: user._id})
-	// 		Threads.update({user_id: user._id}, {$set: {username: user.username+appendToName}}, {multi: true})
-	// 		Threads.update({last_post_username: user.username}, {$set: {last_post_username: user.username+appendToName}}, {multi: true})
-	// 		Messages.update({user_id: user._id}, {$set: {username: user.username+appendToName}}, {multi: true})
-	// 		Charges.update({user_id: user._id}, {$set: {user_username: user.username+appendToName}}, {multi: true})
+			Castles.remove({user_id: user._id})
+			Hexes.update({x:user.x, y:user.y}, {$set: {has_building:false, nearby_buildings:false}})
 
-	// 		Hexes.update({x:user.x, y:user.y}, {$set: {has_building:false, nearby_buildings:false}})
-
-	// 		Meteor.users.remove({_id:user._id})
-	// 	}
-	// },
+			Meteor.users.remove({_id:user._id})
+		}
+	},
 
 
 	change_username: function(username) {

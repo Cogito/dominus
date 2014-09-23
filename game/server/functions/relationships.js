@@ -1,4 +1,7 @@
-set_lord_and_vassal = function(winner, loser) {
+// runUpdateAllies boolean is here so that it doesn't error when calling from deleteAccount()
+set_lord_and_vassal = function(winner, loser, runUpdateAllies) {
+	if (typeof runUpdateAllies === 'undefined') { runUpdateAllies = true; }
+
 	check(winner, Object)
 	check(loser, Object)
 
@@ -76,10 +79,12 @@ set_lord_and_vassal = function(winner, loser) {
 	notification_new_vassal(winner._id, {_id: loser._id, username: loser.username, x: loser.x, y: loser.y, castle_id: loser.castle_id})
 	notification_new_lord(loser._id, {_id: winner._id, username: winner.username, x: winner.x, y: winner.y, castle_id: winner.castle_id})
 
-	worker.enqueue('update_allies', {user_id: winner._id})
+	if (runUpdateAllies) {
+		worker.enqueue('update_allies', {user_id: winner._id})
 
-	if (loser_prev_lord_id) {
-		worker.enqueue('update_allies', {user_id: loser_prev_lord_id})
+		if (loser_prev_lord_id) {
+			worker.enqueue('update_allies', {user_id: loser_prev_lord_id})
+		}
 	}
 
 	worker.enqueue('enemies_together_check', {})
