@@ -3,14 +3,6 @@ Template.not_battle_results.helpers({
 		return this.vars
 	},
 
-	greater_than_zero: function(num) {
-		if (num > 0) {
-			return true
-		} else {
-			return false
-		}
-	},
-
 	results: function() {
 		if (this.vars.dif < 0) {
 			// defender wins

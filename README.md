@@ -22,8 +22,6 @@ Dominus is made using the web platform <a href="http://meteor.com">Meteor.js</a>
 * Do the same with "settings_temp.json"
 * Start game with "./run"
 
-.art/process_renders requires ImageMagick
-
 
 ### Issues ###
 

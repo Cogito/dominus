@@ -2,19 +2,9 @@
 
 i=0
 
-result[$i]=~/meteor/gridgame/public/game_images/worker_ally_01.png
-all[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/worker_ally_01_all/render.png
-ao[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/worker_ally_01_ao/render.png
-((i++))
-
-result[$i]=~/meteor/gridgame/public/game_images/army_ally_01.png
-all[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/army_ally_01_all/render.png
-ao[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/army_ally_01_ao/render.png
-((i++))
-
-result[$i]=~/meteor/gridgame/public/game_images/worker_01.png
-all[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/worker_01_all/render.png
-ao[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/worker_01_ao/render.png
+result[$i]=~/meteor/gridgame/public/game_images/army_01.png
+all[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/army_01_all/render.png
+ao[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/army_01_ao/render.png
 ((i++))
 
 result[$i]=~/meteor/gridgame/public/game_images/hex_wool_01.png
@@ -50,11 +40,6 @@ ao[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/defau
 result[$i]=~/meteor/gridgame/public/game_images/castle_05_waterfall.png
 all[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/castle_05_waterfall_all/render.png
 ao[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/castle_05_waterfall_ao/render.png
-((i++))
-
-result[$i]=~/meteor/gridgame/public/game_images/army_01.png
-all[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/army_01_all/render.png
-ao[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/army_01_ao/render.png
 ((i++))
 
 result[$i]=~/meteor/gridgame/public/game_images/village_01.png
