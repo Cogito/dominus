@@ -83,17 +83,44 @@ notification_new_lord = function(user_id, lord) {
 	create_notification_new(user_id, 'new_lord', lord)
 }
 
-notification_sent_gold = function(user_id, from_user, amount) {
+notification_sent_gold = function(user_id, userData, amount) {
 	check(user_id, String)
-	check(from_user, Object)
-	check(from_user._id, String)
-	check(from_user.username, String)
-	check(from_user.x, Number)
-	check(from_user.y, Number)
-	check(from_user.castle_id, String)
+	check(userData, Object)
+	check(userData.to._id, String)
+	check(userData.to.username, String)
+	check(userData.to.x, Number)
+	check(userData.to.y, Number)
+	check(userData.to.castle_id, String)
+	check(userData.from._id, String)
+	check(userData.from.username, String)
+	check(userData.from.x, Number)
+	check(userData.from.y, Number)
+	check(userData.from.castle_id, String)
 	check(amount, Number)
 
-	create_notification_new(user_id, 'sent_gold', {from_id: from_user._id, from_username: from_user.username, from_castle_id: from_user.castle_id, from_x: from_user.x, from_y: from_user.y, amount: amount})
+	userData.amount = amount
+
+	create_notification_new(user_id, 'sent_gold', userData)
+}
+
+notification_sent_army = function(user_id, userData, army) {
+	check(user_id, String)
+	check(userData, Object)
+	check(userData.to._id, String)
+	check(userData.to.username, String)
+	check(userData.to.x, Number)
+	check(userData.to.y, Number)
+	check(userData.to.castle_id, String)
+	check(userData.from._id, String)
+	check(userData.from.username, String)
+	check(userData.from.x, Number)
+	check(userData.from.y, Number)
+	check(userData.from.castle_id, String)
+	check(army, Object)
+
+	userData.army = army
+
+	create_notification_new(user_id, 'sent_army', userData)
 }
 
 notification_new_chatroom_user = function(user_id, other_user) {

@@ -73,3 +73,7 @@ UI.registerHelper('army_settings', function() {
 UI.registerHelper('resource_settings', function() {
 	return s.resource
 })
+
+UI.registerHelper('greater_than_zero', function(num) {
+	return num > 0
+})

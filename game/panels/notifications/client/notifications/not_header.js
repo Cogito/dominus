@@ -93,7 +93,11 @@ Template.not_header.helpers({
 		}
 
 		if (this.type == 'sent_gold') {
-			return this.vars.from_username+' Sent You '+this.vars.amount+' Gold'
+			return this.vars.from.username+' Sent '+this.vars.to.username+' '+this.vars.amount+' Gold'
+		}
+
+		if (this.type == 'sent_army') {
+			return this.vars.from.username+' Sent '+this.vars.to.username+' an Army'
 		}
 	},
 

@@ -509,7 +509,9 @@ Units.prototype.getAllies = function(unit) {
 	_.each(enemies, function(enemy) {
 		_.each(self.getEnemies(enemy), function(enemyOfEnemy) {
 			if (_.indexOf(enemyOfEnemies, enemyOfEnemy) == -1) {
-				enemyOfEnemies.push(enemyOfEnemy)
+				if (enemyOfEnemy._id != unit._id) {
+					enemyOfEnemies.push(enemyOfEnemy)
+				}
 			}
 		})
 	})

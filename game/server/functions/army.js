@@ -119,7 +119,7 @@ Meteor.methods({
 		check(army, Object)
 		check(castle_id, String)
 
-		var user = Meteor.users.findOne(Meteor.userId(), {fields: {allies_below:1, castle_id:1, gold:1, grain:1, lumber:1, ore:1, wool:1, clay:1, glass:1}})
+		var user = Meteor.users.findOne(Meteor.userId(), {fields: {username:1, x:1, y:1, allies_below:1, castle_id:1, gold:1, grain:1, lumber:1, ore:1, wool:1, clay:1, glass:1}})
 		if (user) {
 			var fields = {user_id:1}
 			_.each(s.army.types, function(type) {
@@ -190,7 +190,7 @@ Meteor.methods({
 						})
 
 						if (!error_buying) {
-							// updat euser
+							// update user
 							var inc = {}
 							_.each(s.resource.types_plus_gold, function(type) {
 								inc[type] = cost[type] * -1
@@ -203,6 +203,17 @@ Meteor.methods({
 								inc[type] = army[type]
 							})
 							Castles.update(castle._id, {$inc: inc})
+
+							// send notification if this is not your castle
+							if (user._id != castle.user_id) {
+								var to = Meteor.users.findOne(castle.user_id, {fields: {gold:1, allies_below:1, username:1, castle_id:1, x:1, y:1}})
+								if (to) {
+									notification_sent_army(to._id, {
+										to: {_id: to._id, username: to.username, castle_id: to.castle_id, x: to.x, y: to.y},
+										from: {_id: user._id, username: user.username, castle_id: user.castle_id, x: user.x, y: user.y}
+									}, army)
+								}
+							}
 
 							return true
 						}

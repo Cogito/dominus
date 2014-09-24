@@ -1,7 +1,4 @@
 Template.battle_report_unit.helpers({
-	greater_than_zero: function(num) {
-		return num > 0
-	},
 
 	unit_type: function(name) {
 		if (this.type == name) {
@@ -29,10 +26,6 @@ Template.battle_report.helpers({
 			return null
 		}
 		
-	},
-
-	greater_than_zero: function(num) {
-		return num > 0
 	},
 
 	roundData: function() {

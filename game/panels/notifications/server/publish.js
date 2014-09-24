@@ -20,7 +20,9 @@ Meteor.publish('global_notifications', function() {
 			'battle',
 			'now_dominus',
 			'no_longer_dominus',
-			'no_longer_dominus_new_user'
+			'no_longer_dominus_new_user',
+			'sent_gold',
+			'sent_army'
 			]
 		return Notifications.find({type: {$in: types}}, {sort: {created_at: -1}, limit:80})
 	} else {
