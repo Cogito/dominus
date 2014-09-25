@@ -2,79 +2,106 @@
 
 i=0
 
-result[$i]=~/meteor/gridgame/public/game_images/army_01.png
-all[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/army_01_all/render.png
-ao[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/army_01_ao/render.png
+result[$i]=~/meteor/dominus/public/game_images/army_01.png
+all[$i]=maya/renders/army_01_all/render.png
+ao[$i]=maya/renders/army_01_ao/render.png
 ((i++))
 
-result[$i]=~/meteor/gridgame/public/game_images/hex_wool_01.png
-all[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/wool_01_all/render.png
-ao[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/wool_01_ao/render.png
+result[$i]=~/meteor/dominus/public/game_images/castle_01.png
+all[$i]=maya/renders/castle_01_all/render.png
+ao[$i]=maya/renders/castle_01_ao/render.png
 ((i++))
 
-result[$i]=~/meteor/gridgame/public/game_images/hex_glass_01.png
-all[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/glass_01_all/render.png
-ao[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/glass_01_ao/render.png
+result[$i]=~/meteor/dominus/public/game_images/castle_02_keep.png
+all[$i]=maya/renders/castle_02_keep_all/render.png
+ao[$i]=maya/renders/castle_02_keep_ao/render.png
 ((i++))
 
-result[$i]=~/meteor/gridgame/public/game_images/castle_01.png
-all[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/castle_01_all/render.png
-ao[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/castle_01_ao/render.png
+result[$i]=~/meteor/dominus/public/game_images/castle_03_skull.png
+all[$i]=maya/renders/castle_03_skull_all/render.png
+ao[$i]=maya/renders/castle_03_skull_ao/render.png
 ((i++))
 
-result[$i]=~/meteor/gridgame/public/game_images/castle_02_keep.png
-all[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/castle_02_keep_all/render.png
-ao[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/castle_02_keep_ao/render.png
+result[$i]=~/meteor/dominus/public/game_images/castle_04_arabian.png
+all[$i]=maya/renders/castle_04_arabian_all/render.png
+ao[$i]=maya/renders/castle_04_arabian_ao/render.png
 ((i++))
 
-result[$i]=~/meteor/gridgame/public/game_images/castle_03_skull.png
-all[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/castle_03_skull_all/render.png
-ao[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/castle_03_skull_ao/render.png
+result[$i]=~/meteor/dominus/public/game_images/castle_05_waterfall.png
+all[$i]=maya/renders/castle_05_waterfall_all/render.png
+ao[$i]=maya/renders/castle_05_waterfall_ao/render.png
 ((i++))
 
-result[$i]=~/meteor/gridgame/public/game_images/castle_04_arabian.png
-all[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/castle_04_arabian_all/render.png
-ao[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/castle_04_arabian_ao/render.png
+result[$i]=~/meteor/dominus/public/game_images/hex_clay_01.png
+all[$i]=maya/renders/clay_01_all/render.png
+ao[$i]=maya/renders/clay_01_ao/render.png
 ((i++))
 
-result[$i]=~/meteor/gridgame/public/game_images/castle_05_waterfall.png
-all[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/castle_05_waterfall_all/render.png
-ao[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/castle_05_waterfall_ao/render.png
+result[$i]=~/meteor/dominus/public/game_images/hex_clay_large_01.png
+all[$i]=maya/renders/clay_large_01_all/render.png
+ao[$i]=maya/renders/clay_large_01_ao/render.png
 ((i++))
 
-result[$i]=~/meteor/gridgame/public/game_images/village_01.png
-all[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/village_01_all/render.png
-ao[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/village_01_ao/render.png
+result[$i]=~/meteor/dominus/public/game_images/hex_glass_01.png
+all[$i]=maya/renders/glass_01_all/render.png
+ao[$i]=maya/renders/glass_01_ao/render.png
 ((i++))
 
-result[$i]=~/meteor/gridgame/public/game_images/hex_grain_01.png
-all[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/grain_01_all/render.png
-ao[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/grain_01_ao/render.png
+result[$i]=~/meteor/dominus/public/game_images/hex_glass_large_01.png
+all[$i]=maya/renders/glass_large_01_all/render.png
+ao[$i]=maya/renders/glass_large_01_ao/render.png
 ((i++))
 
-result[$i]=~/meteor/gridgame/public/game_images/hex_grain_02.png
-all[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/grain_02_all/render.png
-ao[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/grain_02_ao/render.png
+result[$i]=~/meteor/dominus/public/game_images/hex_grain_01.png
+all[$i]=maya/renders/grain_01_all/render.png
+ao[$i]=maya/renders/grain_01_ao/render.png
 ((i++))
 
-result[$i]=~/meteor/gridgame/public/game_images/hex_grain_03.png
-all[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/grain_03_all/render.png
-ao[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/grain_03_ao/render.png
+result[$i]=~/meteor/dominus/public/game_images/hex_grain_02.png
+all[$i]=maya/renders/grain_02_all/render.png
+ao[$i]=maya/renders/grain_02_ao/render.png
 ((i++))
 
-result[$i]=~/meteor/gridgame/public/game_images/hex_lumber_01.png
-all[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/lumber_01_all/render.png
-ao[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/lumber_01_ao/render.png
+result[$i]=~/meteor/dominus/public/game_images/hex_grain_03.png
+all[$i]=maya/renders/grain_03_all/render.png
+ao[$i]=maya/renders/grain_03_ao/render.png
 ((i++))
 
-result[$i]=~/meteor/gridgame/public/game_images/hex_ore_01.png
-all[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/ore_01_all/render.png
-ao[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/ore_01_ao/render.png
+result[$i]=~/meteor/dominus/public/game_images/hex_lumber_01.png
+all[$i]=maya/renders/lumber_01_all/render.png
+ao[$i]=maya/renders/lumber_01_ao/render.png
 ((i++))
 
-result[$i]=~/meteor/gridgame/public/game_images/hex_clay_01.png
-all[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/clay_01_all/render.png
-ao[$i]=/media/dan/166868D86868B85F/Users/danph_000/Documents/maya/projects/default/images/clay_01_ao/render.png
+result[$i]=~/meteor/dominus/public/game_images/hex_lumber_large_01.png
+all[$i]=maya/renders/lumber_large_01_all/render.png
+ao[$i]=maya/renders/lumber_large_01_ao/render.png
+((i++))
+
+result[$i]=~/meteor/dominus/public/game_images/hex_ore_01.png
+all[$i]=maya/renders/ore_01_all/render.png
+ao[$i]=maya/renders/ore_01_ao/render.png
+((i++))
+
+result[$i]=~/meteor/dominus/public/game_images/hex_ore_large_01.png
+all[$i]=maya/renders/ore_large_01_all/render.png
+ao[$i]=maya/renders/ore_large_01_ao/render.png
+((i++))
+
+
+result[$i]=~/meteor/dominus/public/game_images/village_01.png
+all[$i]=maya/renders/village_01_all/render.png
+ao[$i]=maya/renders/village_01_ao/render.png
+((i++))
+
+result[$i]=~/meteor/dominus/public/game_images/hex_wool_01.png
+all[$i]=maya/renders/wool_01_all/render.png
+ao[$i]=maya/renders/wool_01_ao/render.png
+((i++))
+
+result[$i]=~/meteor/dominus/public/game_images/hex_wool_large_01.png
+all[$i]=maya/renders/wool_large_01_all/render.png
+ao[$i]=maya/renders/wool_large_01_ao/render.png
+
 
 
 echo ""
