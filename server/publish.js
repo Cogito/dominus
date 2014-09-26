@@ -8,7 +8,8 @@ Meteor.publish('on_screen_hexes', function (x, y, hex_size, canvas_width, canvas
 			x: 1,
 			y: 1,
 			type: 1,
-			tileImage:1
+			tileImage:1,
+			large:1
 		}})
 })
 

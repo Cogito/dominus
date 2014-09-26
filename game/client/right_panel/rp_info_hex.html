@@ -6,7 +6,9 @@
 				&nbsp;
 				{{> center_on_button x=x y=y selected_type='hex' selected_id=_id}}<br>
 				
-				<span class="light_text">Resource Type:</span> {{capitalize type}}
+				<span class="light_text">Resource Type:</span> {{typeName}}<br>
+				<br>
+				Produces {{numResources}} {{type}} every {{interval}}.
 			</div>
 		</div>
 

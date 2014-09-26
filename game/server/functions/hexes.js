@@ -88,10 +88,19 @@ function assign_properties_to_hex() {
 		hex.type = 'wool'
 	}
 
+	// is it a large resource
+	if (hex.type != 'grain') {
+		hex.large = Math.random() <= s.gen.large
+	}
+
 	// pick a random number for which image to use
-	 var rand = Math.floor(Math.random() * s.resource.numTileImages[hex.type]) + 1
-	 rand = _.lpad(rand, 2, '0')
-	 hex.tileImage = rand 
+	if (hex.large) {
+		hex.tileImage = '01'
+	} else {
+		var rand = Math.floor(Math.random() * s.resource.numTileImages[hex.type]) + 1
+		rand = _.lpad(rand, 2, '0')
+		hex.tileImage = rand
+	}
 
 	return hex
 }

@@ -1,6 +1,11 @@
 Meteor.startup(function() {
 	if (process.env.DOMINUS_WORKER == 'true') {
 
+		// temp - take out after game next game starts
+		Hexes.find({large: {$exists: false}}).forEach(function(hex) {
+			Hexes.update(hex._id, {$set: {large:false}})
+		})
+
 		worker.empty_queue()
 		worker.start()
 

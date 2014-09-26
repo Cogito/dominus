@@ -148,7 +148,7 @@ Template.hexes.destroyed = function() {
 
 
 observe_hexes = function(self) {
-	var query = Hexes.find({}, {fields: {x:1, y:1, type:1, tileImage:1}})
+	var query = Hexes.find({}, {fields: {x:1, y:1, type:1, tileImage:1, large:1}})
 	self.handle = query.observe({
 		added: function(doc) {
 			var canvas_size = Session.get('canvas_size')
@@ -170,9 +170,16 @@ observe_hexes = function(self) {
 			hex_image.setAttribute('y', y)
 			hex_image.setAttribute('height', 83)
 			hex_image.setAttribute('width', 126)
+			hex_image.setAttribute('data-large', doc.large)
 			hex_image.setAttribute('data-id', doc._id)
 
-			hex_image.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '/game_images/hex_'+doc.type+'_'+doc.tileImage+'.png')
+			if (doc.large) {
+				var filename = 'hex_'+doc.type+'_large_'+doc.tileImage+'.png'
+			} else {
+				var filename = 'hex_'+doc.type+'_'+doc.tileImage+'.png'
+			}
+
+			hex_image.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '/game_images/'+filename)
 			
 			container.appendChild(hex_image)
 
@@ -184,10 +191,12 @@ observe_hexes = function(self) {
 			hex_polygon.setAttribute('data-x', doc.x)
 			hex_polygon.setAttribute('data-y', doc.y)
 			hex_polygon.setAttribute('data-type', doc.type)
+			hex_polygon.setAttribute('data-large', doc.large)
 
 			container.appendChild(hex_polygon)
 		},
 		changed: function(doc) {
+			console.table(doc)
 			console.log('hex changed')
 		},
 		removed: function(doc) {

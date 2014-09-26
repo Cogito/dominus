@@ -3,13 +3,6 @@ Template.rp_info_hex.helpers({
 		return Battles.findOne({x:this.x, y:this.y})
 	},
 
-	is_grain: function() {
-		if (this.type == 'grain') {
-			return true
-		}
-		return false
-	},
-
 	has_armies: function() {
 		if (Armies.find({x:this.x, y:this.y}).count() > 0) {
 			return true
@@ -20,6 +13,26 @@ Template.rp_info_hex.helpers({
 	armies: function() {
 		return Armies.find({ x: this.x, y: this.y })
 	},
+
+	typeName: function() {
+		if (this.large) {
+			return _.titleize('large '+this.type)
+		} else {
+			return _.titleize(this.type)
+		}
+	},
+
+	numResources: function() {
+		if (this.large) {
+			return s.resource.gained_at_hex * s.resource.large_resource_multiplier
+		} else {
+			return s.resource.gained_at_hex
+		}
+	},
+
+	interval: function() {
+		return moment.duration(s.resource.interval).humanize()
+	}
 
 })
 
