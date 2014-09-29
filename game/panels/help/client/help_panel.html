@@ -22,7 +22,7 @@
 							<span style="font-size:120%;">Vassal</span> &nbsp; /ˈva-səl/<br>
 							A person in the past who received protection and land from a lord in return for loyalty and service.
 						</blockquote>
-						<p>To gain a vassal attack someone's castle.  If you win then you become their lord and they become your vassal.  Vassals send their lord {{vassal_tax}}% of their income.</p>
+						<p>To gain a vassal attack someone's castle.  If you win then you become their lord and they become your vassal.  Vassals send their lord part of their income.</p>
 					</div>
 				</div>
 			</div>
@@ -113,6 +113,8 @@
 						<div class="help_section">Collecting Resources</div>
 						<p>Resources are collected at your castle and villages.  Your castle collects {{s.resource.gained_at_hex}} from the {{s.resource.num_rings_castle}} rings of hexes surrounding it.  Your villages collect {{s.resource.gained_at_hex}} from the 6 hexes surrounding it.  Your castle also collects {{s.resource.gold_gained_at_castle}} gold and your villages each collect {{s.resource.gold_gained_at_village}} gold.  Resources are collected every {{s_resource_interval}}.</p>
 						<p>You can see how many resources you have in the top of the summary panel.  The white number is how many you have and the grey number is how many you collected last resource update.</p>
+						<div class="help_section">Large Resource Hexes</div>
+						<p>Some hexes produce {{resources_at_large_hexes}} resources instead of {{s.resource.gained_at_hex}} like most hexes.  These hexes look different than the others.</p>
 						<div class="help_section">The Market</div>
 						<p>The market is where you can exchange resources for gold.  Prices for resources go up and down based on demand.  If grain is in high demand and many people buy grain then the price will go up.</p>
 					</div>
@@ -212,7 +214,9 @@
 				<div id="help-lords" class="panel-collapse collapse">
 					<div class="panel-body">
 						<p>If you attack someone's castle and win then you become their lord and they become your vassal.</p>
+
 						<p>Vassals send 5% of their income to each person above them in the tree.  If there are more than 5 people above them then they send 25% / number_of_people_above to each person above them.</p>
+
 						<p>You can send gold to your vassals and your vassal's vassals.  You cannot send gold to your enemies or your lord or anyone above your lord.  To send someone gold click on the "Send Gold" button at their castle.</p>
 						<p>If you do not have a lord then you are a king.  If you have a lord and you attack their castle and win then his lord will become your lord.</p>
 						<p>You cannot attack anyone below you in the tree.  This includes your vassals and vassals of your vassals.  These will have a yellow or orange square or flag.</p>
@@ -229,10 +233,16 @@
 				</div>
 				<div id="help-battles" class="panel-collapse collapse">
 					<div class="panel-body">
-						<p>When an army enters a hex that is occupied by an enemy army, village or castle they will attack them.</p>
-						<p>Battles are based on the combined power of soldiers.</p>
+						<p>When a unit is in the same hex as an enemy they will battle.  Every {{s_battle_interval}} all units in the battle will lose soldiers.  Winners lose {{s.battle_power_lost_per_round_winner}} power worth of soldiers and losers lose {{s.battle_power_lost_per_round}} power worth of soldiers.</p>
+
+						<div class="help_section">Attackers and Defender</div>
+						<p>In a battle there is always one defender.  All other units are attackers.  If there is a castle or village in the battle then they are defender.  Otherwise the defender is the first army to arrive at the hex.</p>
+
 						<div class="help_section">Power</div>
-						<p>Battles are decided by each army's power.</p>
+						<p>Every round if your unit's power + your ally's power is greater than your enemies' combined power then you are a winner that round.</p>
+
+						<p>If you are a defender then your soldiers use their defend power.  If you're an attacker then they use their attack power.</p>
+
 						<table class="table table-condensed">
 							<thead>
 								<tr>
@@ -269,17 +279,37 @@
 								</tr>
 							</tbody>
 						</table>
-
-						<p>Every {{s_battle_interval}} all units in the battle will lose soldiers until a winner is left.</p>
-						<p>If an army and their allies have more power than their enemies then they are a winner of that round.  Winners lose {{s.battle_power_lost_per_round_winner}} power worth of soldiers and losers lose {{s.battle_power_lost_per_round}} power worth of soldiers each round.</p>
-						<p>After a battle you will receive a notification with the results.  You can also see the current battles as they happen in the notifications panel.</p>
 						
 						<div class="help_section">Bonuses</div>
 						<p>Bonuses can increase an army's power.</p>
 						<p>Archers recieve a bonus against footmen. Pikemen recieve a bonus against cavalry. Calvary recieve a bonus against archers and footmen.</p>
 						<p>When an archer fights a footman because the archer has a bonus against footmen the archer is twice as powerful.</p>
 						<p>Catapults' offense is multiplied by {{s.army.stats.catapults.bonus_against_buildings}} when attacking a castle or village.</p>
-						<p>Armies defending a castle receive a {{castle_defense_bonus}}x bonus.  Armies defending a village receive a  {{village_defense_bonus}}x bonus.  Armies at an ally's castle or village receive a {{ally_castle_defense_bonus}}x bonus.</p>
+						<p>Armies defending a castle receive a {{castle_defense_bonus}}x bonus.  Armies defending a village receive a  {{village_defense_bonus}}x bonus.  Only armies inside the castle or village get this bonus.</p>
+
+						<p>Armies at an ally's castle or village receive a {{ally_castle_defense_bonus}}x bonus.</p>
+
+						<div class="help_section">Notifications</div>
+						<p>After a battle you will receive a notification with the results.  You can also see battles as they happen in the notifications panel.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<a data-toggle="collapse" data-parent="#accordion_help" href="#help-dupes">
+						Duplicate Accounts
+					</a>
+				</div>
+				<div id="help-dupes" class="panel-collapse collapse">
+					<div class="panel-body">
+						<p>Duplicate accounts are not allowed.  Players are able to gain an un-fair advantage by having more than one account.</p>
+						<p>The castle's info panel lists players who have the same IP address as the castle owner.  This is visible to everyone.</p>
+						<p>Gold transfers and buying soldiers for vassals are public.  Everyone can see notifications for these in the global notifications panel.</p>
+						<p>If you suspect someone as having a duplicate account please report them.</p>
+						<p>If someone is activly playing more than one account then both accounts will probably be deleted.</p>
+						<p>If you wish to start another account please first delete your current account.</p>
+						<p>To delete your account click the "Delete Account" button in the settings.</p>
 					</div>
 				</div>
 			</div>
@@ -294,13 +324,9 @@
 					<div class="panel-body">
 						<p>Follow <a href="https://twitter.com/DominusGame">@DominusGame</a> on Twitter.</p>
 						<p>Dominus on <a href="https://www.facebook.com/dominusgame">Facebook</a></p>
-						<p>Dominus <a href="http://livewakes.com/Dan/dominus">livewakes development feed</a></p>
 						<p>Dominus <a href="https://medium.com/@Dominus">Blog</a> on Medium</p>
-						<p><a href="https://bitbucket.org/daniel_phillips/gridgame/issues">Issue Tracker</a> - Report bugs, suggest new features and vote for issues.</p>
-						<p><a href="/presskit">Press Kit</a></p>
 						<p><a href="https://docs.google.com/spreadsheets/d/1TBZwucFoGp8xyaaNmGaHzI_-KO5N2zg4knNRwR8-e8w/edit?usp=sharing" target="_blank">Battle and Trade Calculator by Cogito</a></p>
 						<p><a href="https://docs.google.com/spreadsheets/d/1I8_87eal1dDPt1Niu1vuJbngRGsYxJhX7JSJXNKaJpI/edit#gid=0" target="_blank">Battle Calculator by Ollyfg</a></p>
-						<p><a href="http://www.reddit.com/r/Dominus/">Dominus on Reddit</a></p>
 					</div>
 				</div>
 			</div>

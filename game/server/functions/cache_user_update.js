@@ -99,7 +99,9 @@ run_cached_user_update = function() {
 			market[res.type] = res.price
 		})
 	} else {
-		throw new Meteor.Error(404, "Can't get market")
+		// no market? exit
+		// happens when in new game
+		return false
 	}
 
 	_.each(cached_user_changes, function(arr) {
