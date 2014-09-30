@@ -1,4 +1,4 @@
-Fight = function(x, y, unitObj, battleDb) {
+Fight = function (x, y, unitObj, battleDb) {
 	var start_time = new Date()
 	var self = this
 	self.x = x

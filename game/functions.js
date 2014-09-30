@@ -76,6 +76,32 @@ is_hex_empty_coords = function(x,y) {
 	return true
 }
 
+is_hex_empty_except_allies_coords = function(x,y) {
+    check(x, Number)
+    check(y, Number)
+    
+    if (Castles.find({x:x, y:y}).count() > 0) {
+		return false
+	}
+
+	if (Villages.find({x:x, y:y}).count() > 0) {
+		return false
+	}
+    
+    var user = Meteor.users.findOne(Meteor.userId(), {fields: {allies:1}})
+    if (user) {
+        var allies = user.allies
+        allies.push(user._id)
+        check(allies, Array)
+        var numFound = Armies.find({x: x, y: y, user_id: {$nin: allies} }).count()
+        if (numFound > 0) { return false }
+        
+        return true
+    }
+    
+    return false
+}
+
 
 
 // it might be faster to just query minimongo instead of trying jquery

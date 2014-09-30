@@ -26,7 +26,7 @@ Meteor.methods({
 						return {result:false, msg: 'Must be a grain hex.'}
 					}
 
-					if (is_hex_empty_coords(x, y)) {
+					if (is_hex_empty_except_allies_coords(x, y)) {
 						var name = names.towns.part1[_.random(names.towns.part1.length-1)] + names.towns.part2[_.random(names.towns.part2.length-1)]
 
 						var fields = {
@@ -109,3 +109,4 @@ Meteor.methods({
 destroy_all_villages = function() {
 	Villages.remove({})
 }
+
