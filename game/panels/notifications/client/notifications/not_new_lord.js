@@ -1,10 +1,6 @@
 Template.not_new_lord.helpers({
 	vars: function() {
 		return this.vars
-	},
-
-	vassal_tax: function() {
-		return s.vassal_tax * 100
 	}
 })
 
