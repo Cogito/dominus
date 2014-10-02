@@ -50,7 +50,7 @@
 						<p>You will now have footmen inside your castle.</p>
 
 						<div class="help_section">Build a Village</div>
-						<p>Villages increase your resources.  Each village you have collects {{s.resource.gained_at_hex}} resources from the ring of hexes surrounding it.  Use an army to build a village.</p>
+						<p>Villages increase your resources.  Each village you have collects {{s.resource.gained_at_hex}} or {{resources_at_large_hexes}} resources from the ring of hexes surrounding it.  Use an army to build a village.</p>
 						<ul>
 							<li>Find a good hex to build your village at.  You can only build villages on grain hexes, those are the light green ones.  Find a grain hex near your castle that is surrounded by hexes other than grain.</li>
 							<li>Click on your castle.</li>
@@ -111,7 +111,7 @@
 					<div class="panel-body">
 						<p>There are six different types of resources.  Grain, lumber, ore, wool, clay and glass.  Resources are used to hire soldiers and build villages.  Each hex contains a different type of resouce.</p>
 						<div class="help_section">Collecting Resources</div>
-						<p>Resources are collected at your castle and villages.  Your castle collects {{s.resource.gained_at_hex}} from the {{s.resource.num_rings_castle}} rings of hexes surrounding it.  Your villages collect {{s.resource.gained_at_hex}} from the 6 hexes surrounding it.  Your castle also collects {{s.resource.gold_gained_at_castle}} gold and your villages each collect {{s.resource.gold_gained_at_village}} gold.  Resources are collected every {{s_resource_interval}}.</p>
+						<p>Resources are collected at your castle and villages.  Your castle collects resources from the {{s.resource.num_rings_castle}} rings of hexes surrounding it.  Your villages collect resources {{s.resource.gained_at_hex}} from the 6 hexes surrounding it.  Your castle also collects {{s.resource.gold_gained_at_castle}} gold and your villages each collect {{s.resource.gold_gained_at_village}} gold.  Resources are collected every {{s_resource_interval}}.</p>
 						<p>You can see how many resources you have in the top of the summary panel.  The white number is how many you have and the grey number is how many you collected last resource update.</p>
 						<div class="help_section">Large Resource Hexes</div>
 						<p>Some hexes produce {{resources_at_large_hexes}} resources instead of {{s.resource.gained_at_hex}} like most hexes.  These hexes look different than the others.</p>
@@ -130,9 +130,9 @@
 				<div id="help-castles" class="panel-collapse collapse">
 					<div class="panel-body">
 						<p>Your castle is the center of your kingdom.  It is where you hire soldiers.</p>
-						<p>Castle are very defensive.  They have a {{castle_defense_bonus}}x defense bonus.</p>
+						<p>Castles are very defensive.  They have a {{castle_defense_bonus}}x defense bonus.</p>
 						<p>If you attack someone's castle and win then you become their lord and they become your vassal.</p>
-						<p>If an army of yours is stopped on the same hex as your castle then they will join your castle's garrison.</p>
+						<p>If an army of yours stops on the same hex as your castle then they will join your castle's garrison.</p>
 					</div>
 				</div>
 			</div>
@@ -196,7 +196,7 @@
 				<div id="help-villages" class="panel-collapse collapse">
 					<div class="panel-body">
 						<p>Villages give you resources.</p>
-						<p>You can build up to {{s.village.max_can_have}} villages at a time.  Villages gain {{s.resource.gained_at_hex}} resources from the 6 surrounding hexes and {{s.resource.gold_gained_at_village}} gold every {{s_resource_interval}}.</p>
+						<p>You can build up to {{s.village.max_can_have}} villages at a time.  Villages gain resources from the 6 surrounding hexes and {{s.resource.gold_gained_at_village}} gold every {{s_resource_interval}}.</p>
 						<p>Villages cost {{s.village.cost.grain}} grain, {{s.village.cost.lumber}} lumber, {{s.village.cost.ore}} ore, and {{s.village.cost.clay}} clay.</p>
 
 						<p>Villages have a {{village_defense_bonus}}x defense bonus.</p>
@@ -303,11 +303,11 @@
 				</div>
 				<div id="help-dupes" class="panel-collapse collapse">
 					<div class="panel-body">
-						<p>Duplicate accounts are not allowed.  Players are able to gain an un-fair advantage by having more than one account.</p>
+						<p>Duplicate accounts are not allowed.</p>
 						<p>The castle's info panel lists players who have the same IP address as the castle owner.  This is visible to everyone.</p>
 						<p>Gold transfers and buying soldiers for vassals are public.  Everyone can see notifications for these in the global notifications panel.</p>
 						<p>If you suspect someone as having a duplicate account please report them.</p>
-						<p>If someone is activly playing more than one account then both accounts will probably be deleted.</p>
+						<p>If someone is actively playing more than one account then both accounts will probably be deleted.</p>
 						<p>If you wish to start another account please first delete your current account.</p>
 						<p>To delete your account click the "Delete Account" button in the settings.</p>
 					</div>
