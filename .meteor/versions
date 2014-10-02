@@ -46,8 +46,8 @@ logging@1.0.3
 meteor-platform@1.1.1
 meteor@1.1.1
 meteorhacks:async@1.0.0
-meteorhacks:kadira-binary-deps@1.0.1
-meteorhacks:kadira@2.9.7
+meteorhacks:kadira-binary-deps@1.2.0
+meteorhacks:kadira@2.10.1
 meteorhacks:npm@1.2.0
 meteorhacks:subs-manager@1.1.0
 minifiers@1.1.0
