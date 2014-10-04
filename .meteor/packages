@@ -25,11 +25,9 @@ mizzao:timesync
 danimal:accounts-templates
 danimal:hx
 iron:router
-meteorhacks:kadira
 meteorhacks:npm
 meteorhacks:subs-manager
 
 
-browser-policy
 
 npm-container
