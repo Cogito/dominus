@@ -61,6 +61,7 @@ create_castle = function(user_id) {
 		generate_hexes(4)
 		reset_market()
 		Settings.upsert({name: 'gameEndDate'}, {$set: {name: 'gameEndDate', value: null}})
+		Settings.upsert({name: 'lastDominusUserId'}, {$set: {name: 'lastDominusUserId', value: null}})
 	}
 
 	var found = false

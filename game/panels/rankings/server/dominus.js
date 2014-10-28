@@ -27,7 +27,7 @@ check_for_dominus = function() {
 	// there is a new dominus
 	if (dominus) {
 		if (!is_still_dominus) {
-			notification_no_longer_dominus(dominus_user._id)
+			notification_no_longer_dominus(dominus._id)
 		}
 	}
 }
@@ -44,13 +44,25 @@ remove_dominus = function() {
 
 // happens when there is a new dominus
 new_dominus_event = function(dominus_user) {
-	console.log('new dominus event')
 	check(dominus_user, Object)
+	check(dominus_user._id, String)
 
 	// send notification
 	notification_are_now_dominus(dominus_user._id)
 
-	// set game end date
-	var endDate = moment(new Date()).add(s.time_til_game_end_when_new_dominus, 'ms').toDate()
-	Settings.upsert({name: 'gameEndDate'}, {$set: {name: 'gameEndDate', value: endDate}})
+	// make sure dominus and last dominus are not the same
+	var lastDominus = Settings.findOne({name: 'lastDominusUserId'})
+
+	if (lastDominus) {
+		var lastDominusUserId = lastDominus.value
+	} else {
+		var lastDominusUserId = null
+	}
+
+	if (dominus_user._id != lastDominusUserId) {
+		// set game end date
+		var endDate = moment(new Date()).add(s.time_til_game_end_when_new_dominus, 'ms').toDate()
+		Settings.upsert({name: 'gameEndDate'}, {$set: {name: 'gameEndDate', value: endDate}})
+		Settings.upsert({name: 'lastDominusUserId'}, {$set: {name: 'lastDominusUserId', value: dominus_user._id}})
+	}
 }
