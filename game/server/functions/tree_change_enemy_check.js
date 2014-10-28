@@ -61,11 +61,16 @@ enemies_together_check = function() {
 			// make sure army still exists
 			var a = Armies.findOne(army._id, {fields: {user_id:1}})
 			if (a) {
-				var user = Meteor.users.findOne(a.user_id, {fields: {allies:1}})
+				var user = Meteor.users.findOne(a.user_id, {fields: {allies:1, is_dominus:1}})
 				if (user) {
-					if (_.indexOf(user.allies, other_army.user_id) == -1) {
-						// enemy here
+					if (user.is_dominus) {
+						// dominus' armies can attack any army
 						Battle.start_battle(army.x,army.y)
+					} else {
+						if (_.indexOf(user.allies, other_army.user_id) == -1) {
+							// enemy here
+							Battle.start_battle(army.x,army.y)
+						}
 					}
 				}
 			}

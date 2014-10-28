@@ -16,17 +16,18 @@ check_for_dominus = function() {
 			if (d._id == dominus._id) {
 				is_still_dominus = true
 			} else {
-				notification_are_now_dominus(d._id)
+				new_dominus_event(d)
 			}
 		} else {
-			notification_are_now_dominus(d._id)
+			new_dominus_event(d)
 		}
 	})
 
 	// if old dominus is no longer dominus
+	// there is a new dominus
 	if (dominus) {
 		if (!is_still_dominus) {
-			notification_no_longer_dominus(dominus._id)
+			notification_no_longer_dominus(dominus_user._id)
 		}
 	}
 }
@@ -38,4 +39,18 @@ remove_dominus = function() {
 		notification_no_longer_dominus_new_user(u._id)
 		Meteor.users.update(u._id, {$set: {is_dominus: false}})
 	})
+}
+
+
+// happens when there is a new dominus
+new_dominus_event = function(dominus_user) {
+	console.log('new dominus event')
+	check(dominus_user, Object)
+
+	// send notification
+	notification_are_now_dominus(dominus_user._id)
+
+	// set game end date
+	var endDate = moment(new Date()).add(s.time_til_game_end_when_new_dominus, 'ms').toDate()
+	Settings.upsert({name: 'gameEndDate'}, {$set: {name: 'gameEndDate', value: endDate}})
 }

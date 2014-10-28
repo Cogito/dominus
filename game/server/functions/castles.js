@@ -55,10 +55,12 @@ create_castle = function(user_id) {
 
 	// if there are no hexes then this is a new game
 	// create a new map and reset market
+	// set game end date to null
 	if (Hexes.find().count() == 0) {
-		console.log('creating map and market')
+		console.log('creating new game')
 		generate_hexes(4)
 		reset_market()
+		Settings.upsert({name: 'gameEndDate'}, {$set: {name: 'gameEndDate', value: null}})
 	}
 
 	var found = false

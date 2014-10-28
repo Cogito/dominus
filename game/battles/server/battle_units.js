@@ -576,34 +576,44 @@ Units.prototype.isEnemy = function(unit, otherUnit) {
 	}
 
 	var isEnemy = false
-	var user = Meteor.users.findOne(unit.user_id, {fields: {allies:1, team:1, allies_below:1, allies_above:1}})
+	var user = Meteor.users.findOne(unit.user_id, {fields: {allies:1, team:1, allies_below:1, allies_above:1, is_dominus:1}})
 	if (user) {
 
-		switch (unit.type) {
-			case 'castle':
-				
-				if (_.indexOf(user.allies_above, otherUnit.user_id) == -1) {
-					isEnemy = true
-				}
-				break
+		// dominus' armies can attack all other armies
+		if (user.is_dominus) {
+			if (unit.type == 'army' && otherUnit.type == 'army') {
+				isEnemy = true	
+			}
+		}
 
-			case 'village':
-			case 'army':
-				if (otherUnit.type == 'castle') {
-					if (_.indexOf(user.team, otherUnit.user_id) == -1) {
+		if (!isEnemy) {
+			switch (unit.type) {
+				case 'castle':
+					
+					if (_.indexOf(user.allies_above, otherUnit.user_id) == -1) {
 						isEnemy = true
+					}
+					break
+
+				case 'village':
+				case 'army':
+					if (otherUnit.type == 'castle') {
+						if (_.indexOf(user.team, otherUnit.user_id) == -1) {
+							isEnemy = true
+						} else {
+							if (_.indexOf(user.allies_below, otherUnit.user_id) == -1) {
+								isEnemy = true
+							}
+						}
 					} else {
-						if (_.indexOf(user.allies_below, otherUnit.user_id) == -1) {
+						if (_.indexOf(user.allies, otherUnit.user_id) == -1) {
 							isEnemy = true
 						}
 					}
-				} else {
-					if (_.indexOf(user.allies, otherUnit.user_id) == -1) {
-						isEnemy = true
-					}
-				}
-				break
+					break
+			}
 		}
+		
 	}
 
 	return isEnemy

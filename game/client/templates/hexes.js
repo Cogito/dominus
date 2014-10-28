@@ -196,8 +196,9 @@ observe_hexes = function(self) {
 			container.appendChild(hex_polygon)
 		},
 		changed: function(doc) {
-			console.table(doc)
-			console.log('hex changed')
+			// shouldn't be called
+			//console.table(doc)
+			//console.log('hex changed')
 		},
 		removed: function(doc) {
 			$('#hex_container').find('[data-id='+doc._id+']').remove()

@@ -35,6 +35,24 @@ Template.notifications_panel.helpers({
 	time_until_game_end: function() {
 		Session.get('refresh_time_field')
 		return moment.duration(moment(new Date(s.game_end)) - moment()).humanize()
+	},
+
+	is_game_end_set: function() {
+		var end = Settings.findOne({name: 'gameEndDate'})
+		if (end && end.value != null) {
+			return true
+		} else {
+			return false
+		}
+	},
+
+	time_til_game_end_when_new_dominus: function() {
+		return moment.duration(s.time_til_game_end_when_new_dominus).humanize()
+	},
+
+	game_end_date: function() {
+		var end = Settings.findOne({name: 'gameEndDate'})
+		return end.value
 	}
 })
 
@@ -57,4 +75,7 @@ Template.notifications_panel.events({
 Template.notifications_panel.rendered = function() {
 	Session.set('notifications_show_mine', true)
 	logevent('panel', 'open', 'notifications')
+	this.autorun(function() {
+		Meteor.subscribe('gameEndDate')
+	})
 }

@@ -37,3 +37,11 @@ Meteor.publish('battle_notifications', function() {
 		this.ready()
 	}
 })
+
+Meteor.publish('gameEndDate', function() {
+	if(this.userId) {
+		return Settings.find({name: 'gameEndDate'})
+	} else {
+		this.ready()
+	}
+})

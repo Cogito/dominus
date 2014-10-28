@@ -55,7 +55,7 @@ Meteor.methods({
 
 		var name = names.armies.part1[_.random(names.armies.part1.length-1)] +' '+ names.armies.part2[_.random(names.armies.part2.length-1)]
 
-		var user = Meteor.users.findOne(Meteor.userId(), {fields: {username:1, x:1, y:1, castle_id:1, allies:1}})
+		var user = Meteor.users.findOne(Meteor.userId(), {fields: {username:1, x:1, y:1, castle_id:1, allies:1, is_dominus:1}})
 
 		var fields = {
 			name: name,
@@ -90,13 +90,21 @@ Meteor.methods({
 			var eas = Armies.find({x:x, y:y, user_id: {$ne:user._id}}, {fields: {_id:1, user_id:1}})
 			if (eas) {
 				eas.forEach(function(ea) {
-					if (_.indexOf(user.allies, ea.user_id) == -1) {
-						// army is enemy
+					// dominus' armies can attack any army
+					if (user.is_dominus) {
 						// make sure army is still alive
 						var attacker = Armies.findOne(id)
 						if (attacker) {
 							Battle.start_battle(x,y)
-							//battle(attacker._id, 'army', ea._id, 'army')
+						}
+					} else {
+						if (_.indexOf(user.allies, ea.user_id) == -1) {
+							// army is enemy
+							// make sure army is still alive
+							var attacker = Armies.findOne(id)
+							if (attacker) {
+								Battle.start_battle(x,y)
+							}
 						}
 					}
 				})
@@ -311,20 +319,25 @@ move_army_to_hex = function(army_id, x, y) {
 	if (!has_merged) {
 
 		// get user info for later
-		var user = Meteor.users.findOne(unit.user_id, {fields: {allies:1, team:1, allies_below:1}})
+		var user = Meteor.users.findOne(unit.user_id, {fields: {allies:1, team:1, allies_below:1, is_dominus:1}})
 
 		// check for armies
 		var armies = Armies.find({x:x, y:y, user_id: {$ne: unit.user_id}}, {fields: {user_id:1}})
 		if (armies.count() > 0) {
 			armies.forEach(function(a) {
-				if (_.indexOf(user.allies, a.user_id) != -1) {
-					// army is an ally
-				// } else if (_.indexOf(user.siblings, a.user_id) != -1) {
-				// 	// sibling
-				} else {
-					// army is enemy
+				if (user.is_dominus) {
+					// dominus' armies can attack any army
 					Battle.start_battle(x,y)
-					//battle(unit._id, 'army', a._id, 'army')
+				} else {
+					if (_.indexOf(user.allies, a.user_id) != -1) {
+						// army is an ally
+					// } else if (_.indexOf(user.siblings, a.user_id) != -1) {
+					// 	// sibling
+					} else {
+						// army is enemy
+						Battle.start_battle(x,y)
+						//battle(unit._id, 'army', a._id, 'army')
+					}
 				}
 			})
 		}
