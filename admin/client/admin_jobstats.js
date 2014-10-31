@@ -1,4 +1,4 @@
-Template.admin_jobstats.helpers({
+Template.adminJobstats.helpers({
 	jobstats: function() {
 		return Jobstats.find({}, {sort: {time: -1}})
 	}

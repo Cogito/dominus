@@ -1,4 +1,4 @@
-Template.admin_charges.helpers({
+Template.adminCharges.helpers({
 	charges: function() {
 		return Charges.find()
 	}

@@ -1,4 +1,4 @@
-Template.admin_commands.events({
+Template.adminCommands.events({
 	'click #update_allies_user_button': function(event, template) {
 		var input = template.find('#update_allies_username_input')
 		if ($(input).length > 0) {

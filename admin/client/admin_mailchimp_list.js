@@ -1,4 +1,4 @@
-Template.admin_mailchimp_list.helpers({
+Template.adminMailchimpList.helpers({
 	users: function() {
 		return Meteor.users.find()
 	}

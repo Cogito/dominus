@@ -1,10 +1,10 @@
-Template.admin_forums.helpers({
+Template.adminForums.helpers({
 	forums: function() {
 		return Forums.find({}, {sort: {order: 1}})
 	}
 })
 
-Template.admin_forums.events({
+Template.adminForums.events({
 	'click #add_forum_button': function(event, template) {
 		var input = template.find('#add_forum_input')
 		var desc = template.find('#add_form_description')
