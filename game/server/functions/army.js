@@ -90,8 +90,10 @@ Meteor.methods({
 			var eas = Armies.find({x:x, y:y, user_id: {$ne:user._id}}, {fields: {_id:1, user_id:1}})
 			if (eas) {
 				eas.forEach(function(ea) {
+					
 					// dominus' armies can attack any army
-					if (user.is_dominus) {
+					var otherUser = Meteor.users.findOne(ea.user_id, {fields: {is_dominus:1}})
+					if (user.is_dominus || otherUser.is_dominus) {
 						// make sure army is still alive
 						var attacker = Armies.findOne(id)
 						if (attacker) {
@@ -325,7 +327,8 @@ move_army_to_hex = function(army_id, x, y) {
 		var armies = Armies.find({x:x, y:y, user_id: {$ne: unit.user_id}}, {fields: {user_id:1}})
 		if (armies.count() > 0) {
 			armies.forEach(function(a) {
-				if (user.is_dominus) {
+				var otherUser = Meteor.users.findOne(a.user_id, {fields: {is_dominus:1}})
+				if (user.is_dominus || otherUser.is_dominus) {
 					// dominus' armies can attack any army
 					Battle.start_battle(x,y)
 				} else {

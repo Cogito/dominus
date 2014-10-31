@@ -577,10 +577,11 @@ Units.prototype.isEnemy = function(unit, otherUnit) {
 
 	var isEnemy = false
 	var user = Meteor.users.findOne(unit.user_id, {fields: {allies:1, team:1, allies_below:1, allies_above:1, is_dominus:1}})
-	if (user) {
+	var otherUser = Meteor.users.findOne(otherUnit.user_id, {fields: {is_dominus:1}})
+	if (user && otherUser) {
 
 		// dominus' armies can attack all other armies
-		if (user.is_dominus) {
+		if (user.is_dominus || otherUser.is_dominus) {
 			if (unit.type == 'army' && otherUnit.type == 'army') {
 				isEnemy = true	
 			}

@@ -62,8 +62,9 @@ enemies_together_check = function() {
 			var a = Armies.findOne(army._id, {fields: {user_id:1}})
 			if (a) {
 				var user = Meteor.users.findOne(a.user_id, {fields: {allies:1, is_dominus:1}})
+				var otherUser = Meteor.users.findOne(other_army.user_id, {fields: {is_dominus:1}})
 				if (user) {
-					if (user.is_dominus) {
+					if (user.is_dominus || otherUser.is_dominus) {
 						// dominus' armies can attack any army
 						Battle.start_battle(army.x,army.y)
 					} else {
