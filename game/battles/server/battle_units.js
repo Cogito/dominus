@@ -735,6 +735,12 @@ Units.prototype._computeFinalPower = function() {
 Units.prototype._computeBonus = function() {
 	var self = this
 
+	// used for catapult bonus
+	var castle_fields = {name:1, user_id:1, x:1, y:1, username:1, image:1}
+	var village_fields = {name:1, user_id:1, x:1, y:1, username:1, castle_x:1, castle_y:1, castle_id:1}
+	var castle = Castles.findOne({x:self.x, y:self.y}, {fields: castle_fields})
+	var village = Villages.findOne({x:self.x, y:self.y}, {fields: village_fields})
+
 	_.each(self.allUnits, function(unit) {
 		var enemy_percentage = self._getEnemyPercentage(unit)
 
@@ -747,12 +753,35 @@ Units.prototype._computeBonus = function() {
 		unit.bonus.catapults = 0
 
 		// catapults
-		var defender = self.getDefender()
-		if (unit.isAttacker) {
-			if (defender.type == 'castle' || defender.type == 'village') {
-				unit.bonus.catapults = unit.basePower.catapults * s.army.stats.catapults.bonus_against_buildings
+		// if there is an enemy castle of village in this hex then catapults get bonus
+
+		var isEnemyCastleOrVillageHere = false
+
+		if (castle) {
+			if (self.isEnemy(unit, castle)) {
+				isEnemyCastleOrVillageHere = true
 			}
 		}
+
+		if (village) {
+			if (self.isEnemy(unit, village)) {
+				isEnemyCastleOrVillageHere = true
+			}
+		}
+
+		if (isEnemyCastleOrVillageHere) {
+			unit.bonus.catapults = unit.basePower.catapults * s.army.stats.catapults.bonus_against_buildings
+		}
+
+		// old way to say if catapult gets bonus
+		// castle could send all units outside of castle and catapults would lose bonus
+		
+		// var defender = self.getDefender()
+		// if (unit.isAttacker) {
+		// 	if (defender.type == 'castle' || defender.type == 'village') {
+		// 		unit.bonus.catapults = unit.basePower.catapults * s.army.stats.catapults.bonus_against_buildings
+		// 	}
+		// }
 
 		// total bonus
 		unit.bonus.total = 0
