@@ -54,7 +54,10 @@ Units = function(x, y, battleDb) {
 		})
 	})
 
-	self._removeUnitsWithNoEnemies()
+	if (self.allUnits.length > 1) {
+		// if there is only 1 unit then it could be an army attacking an empty castle
+		self._removeUnitsWithNoEnemies()
+	}
 	self._findAttackersAndDefender()
 	self._setArmyInfo()
 	self._computeBonus()
@@ -775,7 +778,7 @@ Units.prototype._computeBonus = function() {
 
 		// old way to say if catapult gets bonus
 		// castle could send all units outside of castle and catapults would lose bonus
-		
+
 		// var defender = self.getDefender()
 		// if (unit.isAttacker) {
 		// 	if (defender.type == 'castle' || defender.type == 'village') {
