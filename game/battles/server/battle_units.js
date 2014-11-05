@@ -855,7 +855,12 @@ Units.prototype._findArmyThatArrivedFirst = function() {
 
 	_.each(this.allUnits, function(unit) {
 		if (unit.type == 'army') {
-			var last_move_at = moment(new Date(unit.last_move_at))
+			if (unit.last_move_at) {
+				var last_move_at = moment(new Date(unit.last_move_at))
+			} else {
+				var last_move_at = moment(new Date())
+			}
+			
 			if (last_move_at.isBefore(oldest_date)) {
 				oldest_date = last_move_at
 				firstArmy = unit

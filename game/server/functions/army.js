@@ -62,6 +62,7 @@ Meteor.methods({
 			x: x,
 			y: y,
 			created_at: new Date(),
+			last_move_at: new Date(),
 			user_id: Meteor.userId(),
 			username: user.username,
 			castle_x: user.x,
