@@ -54,6 +54,7 @@ Units = function(x, y, battleDb) {
 		})
 	})
 
+	self._removeUnitsWithNoEnemies()
 	self._findAttackersAndDefender()
 	self._setArmyInfo()
 	self._computeBonus()
@@ -65,6 +66,16 @@ Units = function(x, y, battleDb) {
 
 
 
+// unit must have an enemy to be in the battle
+Units.prototype._removeUnitsWithNoEnemies = function() {
+	var self = this
+
+	_.each(self.allUnits, function(unit) {
+		if (!self.hasEnemies(unit)) {
+			self._removeFromAllUnits(unit)
+		}
+	})
+}
 
 
 
