@@ -87,13 +87,21 @@ BattleDb.prototype.addToLosses = function(unit, armyType, numDead) {
 
 	// is unit already in deaths array
 	var existsInDeaths = _.find(self.record.deaths, function(d) {
-		return d.user_id == unit.user_id
+		if (d.user_id == unit.user_id && d.name == unit.name) {
+			return true
+		} else {
+			return false
+		}
 	})
 
 	if (existsInDeaths) {
 		// already in deaths array
 		self.record.deaths = _.reject(self.record.deaths, function(d) {
-			return d.user_id == unit.user_id
+			if (d.user_id == unit.user_id && d.name == unit.name) {
+				return true
+			} else {
+				return false
+			}
 		})
 
 		existsInDeaths[armyType] += numDead
