@@ -761,12 +761,14 @@ Units.prototype._computeBonus = function() {
 		var isEnemyCastleOrVillageHere = false
 
 		if (castle) {
+			castle.type = 'castle'
 			if (self.isEnemy(unit, castle)) {
 				isEnemyCastleOrVillageHere = true
 			}
 		}
 
 		if (village) {
+			village.type = 'village'
 			if (self.isEnemy(unit, village)) {
 				isEnemyCastleOrVillageHere = true
 			}
