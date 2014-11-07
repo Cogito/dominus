@@ -487,9 +487,9 @@ Units.prototype.getNumUniqueEnemies = function(unit) {
 	var numUnique = 0
 	var checked = []
 	_.each(units, function(u) {
-		if (_.indexOf(checked, u._id) == -1) {
+		if (_.indexOf(checked, u.user_id) == -1) {
 			numUnique++
-			checked.push(u._id)
+			checked.push(u.user_id)
 		}
 	})
 	return numUnique
@@ -503,9 +503,9 @@ Units.prototype.getNumUniqueTeamMemebers = function(unit) {
 	var numUnique = 0
 	var checked = []
 	_.each(units, function(u) {
-		if (_.indexOf(checked, u._id) == -1) {
+		if (_.indexOf(checked, u.user_id) == -1) {
 			numUnique++
-			checked.push(u._id)
+			checked.push(u.user_id)
 		}
 	})
 	return numUnique
