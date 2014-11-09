@@ -8,9 +8,7 @@ Fight = function (x, y, unitObj, battleDb) {
 
 	var units = self.unitObj.getAllUnits()
 
-	if (units.length < 2) {
-		self._endBattle()
-	} else {
+	if (self.unitObj._someoneHasEnemies()) {
 		_.each(units, function(unit) {
 			if (self.unitObj.hasSoldiers(unit)) {
 				if (self.unitObj.hasEnemies(unit)) {
@@ -24,6 +22,8 @@ Fight = function (x, y, unitObj, battleDb) {
 		self.unitObj.removeDeadSoldiers()
 		self.unitObj.removeDeadUnits()
 		self._sendEndBattleNotifications()
+		self._endBattle()
+	} else {
 		self._endBattle()
 	}
 

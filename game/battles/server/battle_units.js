@@ -54,8 +54,9 @@ Units = function(x, y, battleDb) {
 		})
 	})
 
-	if (self.allUnits.length > 1) {
-		// if there is only 1 unit then it could be an army attacking an empty castle
+	// if nobody has enemies then keep everyone
+	// if someone has an enemy then remove everyone with no enemies
+	if (self._someoneHasEnemies()) {
 		self._removeUnitsWithNoEnemies()
 	}
 	self._findAttackersAndDefender()
@@ -68,6 +69,19 @@ Units = function(x, y, battleDb) {
 
 
 
+
+Units.prototype._someoneHasEnemies = function() {
+	var self = this
+
+	var hasEnemy = false
+	_.each(self.allUnits, function(unit) {
+		if (self.hasEnemies(unit)) {
+			hasEnemy = true
+		}
+	})
+
+	return hasEnemy
+}
 
 // unit must have an enemy to be in the battle
 Units.prototype._removeUnitsWithNoEnemies = function() {
