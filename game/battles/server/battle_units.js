@@ -772,24 +772,26 @@ Units.prototype._computeBonus = function() {
 		// catapults
 		// if there is an enemy castle of village in this hex then catapults get bonus
 
-		var isEnemyCastleOrVillageHere = false
+		if (unit.isAttacker) {
+			var isEnemyCastleOrVillageHere = false
 
-		if (castle) {
-			castle.type = 'castle'
-			if (self.isEnemy(unit, castle)) {
-				isEnemyCastleOrVillageHere = true
+			if (castle) {
+				castle.type = 'castle'
+				if (self.isEnemy(unit, castle)) {
+					isEnemyCastleOrVillageHere = true
+				}
 			}
-		}
 
-		if (village) {
-			village.type = 'village'
-			if (self.isEnemy(unit, village)) {
-				isEnemyCastleOrVillageHere = true
+			if (village) {
+				village.type = 'village'
+				if (self.isEnemy(unit, village)) {
+					isEnemyCastleOrVillageHere = true
+				}
 			}
-		}
 
-		if (isEnemyCastleOrVillageHere) {
-			unit.bonus.catapults = unit.basePower.catapults * s.army.stats.catapults.bonus_against_buildings
+			if (isEnemyCastleOrVillageHere) {
+				unit.bonus.catapults = unit.basePower.catapults * s.army.stats.catapults.bonus_against_buildings
+			}
 		}
 
 		// old way to say if catapult gets bonus
