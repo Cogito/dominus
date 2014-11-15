@@ -1,18 +1,30 @@
 // these functions are so that things like email alsets can happen when you get a notification
 
-notification_no_longer_dominus = function(user_id) {
+notification_no_longer_dominus = function(user_id, user) {
 	check(user_id, String)
-	create_notification_new(user_id, 'no_longer_dominus', {})
+	create_notification_new(user_id,
+		'no_longer_dominus',
+		{_id:user._id, username: user.username, x:user.x, y:user.y, castle_id:user.castle_id},
+		user.username+' is no longer the Dominus'
+		)
 }
 
-notification_no_longer_dominus_new_user = function(user_id) {
+notification_no_longer_dominus_new_user = function(user_id, user) {
 	check(user_id, String)
-	create_notification_new(user_id, 'no_longer_dominus_new_user', {})
+	create_notification_new(user_id,
+		'no_longer_dominus_new_user',
+		{_id:user._id, username: user.username, x:user.x, y:user.y, castle_id:user.castle_id},
+		user.username+' is no longer the Dominus'
+		)
 }
 
-notification_are_now_dominus = function(user_id) {
+notification_are_now_dominus = function(user_id, user) {
 	check(user_id, String)
-	create_notification_new(user_id, 'now_dominus', {})
+	create_notification_new(user_id,
+		'now_dominus',
+		{_id:user._id, username: user.username, x:user.x, y:user.y, castle_id:user.castle_id},
+		user.username+' is the new Dominus'
+		)
 }
 
 notification_now_a_king = function(user_id, conquered_lord) {
@@ -24,7 +36,7 @@ notification_now_a_king = function(user_id, conquered_lord) {
 	check(conquered_lord.y, Number)
 	check(conquered_lord.castle_id, String)
 
-	create_notification_new(user_id, 'now_a_king', conquered_lord)
+	create_notification_new(user_id, 'now_a_king', conquered_lord, 'You are now a King')
 }
 
 notification_no_longer_a_king = function(user_id, king) {
@@ -36,7 +48,7 @@ notification_no_longer_a_king = function(user_id, king) {
 	check(king.y, Number)
 	check(king.castle_id, String)
 
-	create_notification_new(user_id, 'no_longer_a_king', king)
+	create_notification_new(user_id, 'no_longer_a_king', king, 'You are no longer a King')
 }
 
 notification_lost_vassal_to_another = function(user_id, lost_vassal, vassals_new_lord) {
@@ -56,7 +68,11 @@ notification_lost_vassal_to_another = function(user_id, lost_vassal, vassals_new
 	check(vassals_new_lord.y, Number)
 	check(vassals_new_lord.castle_id, String)
 
-	create_notification_new(user_id, 'lost_vassal_to_another', {lost_vassal: lost_vassal, vassals_new_lord: vassals_new_lord})
+	create_notification_new(user_id,
+		'lost_vassal_to_another',
+		{lost_vassal: lost_vassal, vassals_new_lord: vassals_new_lord},
+		lost_vassal.username+' is no longer your vassal'
+		)
 }
 
 notification_new_vassal = function(user_id, vassal) {
@@ -68,7 +84,11 @@ notification_new_vassal = function(user_id, vassal) {
 	check(vassal.y, Number)
 	check(vassal.castle_id, String)
 
-	create_notification_new(user_id, 'new_vassal', vassal)
+	create_notification_new(user_id,
+		'new_vassal',
+		vassal,
+		vassal.username+' is now your vassal'
+		)
 }
 
 notification_new_lord = function(user_id, lord) {
@@ -80,7 +100,11 @@ notification_new_lord = function(user_id, lord) {
 	check(lord.y, Number)
 	check(lord.castle_id, String)
 
-	create_notification_new(user_id, 'new_lord', lord)
+	create_notification_new(user_id,
+		'new_lord',
+		lord,
+		lord.username+' is your new lord'
+		)
 }
 
 notification_sent_gold = function(user_id, userData, amount) {
@@ -100,7 +124,11 @@ notification_sent_gold = function(user_id, userData, amount) {
 
 	userData.amount = amount
 
-	create_notification_new(user_id, 'sent_gold', userData)
+	create_notification_new(user_id,
+		'sent_gold',
+		userData,
+		userData.from.username+' sent '+userData.to.username+' '+amount+' Gold'
+		)
 }
 
 notification_sent_army = function(user_id, userData, army) {
@@ -120,7 +148,11 @@ notification_sent_army = function(user_id, userData, army) {
 
 	userData.army = army
 
-	create_notification_new(user_id, 'sent_army', userData)
+	create_notification_new(user_id,
+		'sent_army',
+		userData,
+		userData.from.username+' sent '+userData.to.username+' an army'
+		)
 }
 
 notification_new_chatroom_user = function(user_id, other_user) {
@@ -132,40 +164,64 @@ notification_new_chatroom_user = function(user_id, other_user) {
 	check(other_user.y, Number)
 	check(other_user.castle_id, String)
 
-	create_notification_new(user_id, 'new_chatroom_user', other_user)
+	create_notification_new(user_id,
+		'new_chatroom_user',
+		other_user,
+		'New chatroom with '+other_user.username
+		)
 }
 
 notification_new_chatroom_kings_room = function(user_id) {
 	check(user_id, String)
-	create_notification_new(user_id, 'new_chatroom_kings_room', {})
+	create_notification_new(user_id,
+		'new_chatroom_kings_room',
+		{},
+		'New chatroom'
+		)
 }
 
 notification_new_chatroom_kings = function(user_id) {
 	check(user_id, String)
-	create_notification_new(user_id, 'new_chatroom_kings', {})
+	create_notification_new(user_id,
+		'new_chatroom_kings',
+		{},
+		'New chatroom'
+		)
 }
 
 notification_battle = function(user_id, battle) {
 	check(user_id, String)
 	check(battle, Object)
 
-	create_notification_new(user_id, 'battle', {battle:battle})
+	if (battle.unit.dif > 0) {
+		var str = ' won '
+	} else {
+		var str = ' lost '
+	}
+
+	create_notification_new(user_id,
+		'battle',
+		{battle:battle},
+		battle.unit.username+"'s "+battle.unit.type+str+' a battle at '+battle.unit.x+', '+battle.unit.y
+		)
 }
 
 
 ///////////////////////////////////////////////////////
 
-create_notification_new = function(user_id, type, vars) {
+create_notification_new = function(user_id, type, vars, title) {
 	check(user_id, String)
 	check(type, String)
 	check(vars, Object)
+	check(title, String)
 	
 	Notifications.insert({
 		user_id: user_id,
 		created_at: new Date(),
 		read: false,
 		type: type,
-		vars: vars
+		vars: vars,
+		title:title
 	})
 }
 

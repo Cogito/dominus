@@ -27,7 +27,7 @@ check_for_dominus = function() {
 	// there is a new dominus
 	if (dominus) {
 		if (!is_still_dominus) {
-			notification_no_longer_dominus(dominus._id)
+			notification_no_longer_dominus(dominus._id, dominus)
 		}
 	}
 }
@@ -36,7 +36,7 @@ check_for_dominus = function() {
 // called when new user joins the game
 remove_dominus = function() {
 	Meteor.users.find({is_dominus: true}).forEach(function(u) {
-		notification_no_longer_dominus_new_user(u._id)
+		notification_no_longer_dominus_new_user(u._id, u)
 		Meteor.users.update(u._id, {$set: {is_dominus: false}})
 	})
 }
@@ -48,7 +48,7 @@ new_dominus_event = function(dominus_user) {
 	check(dominus_user._id, String)
 
 	// send notification
-	notification_are_now_dominus(dominus_user._id)
+	notification_are_now_dominus(dominus_user._id, dominus_user)
 
 	// make sure dominus and last dominus are not the same
 	var lastDominus = Settings.findOne({name: 'lastDominusUserId'})

@@ -1,6 +1,10 @@
 Template.notifications_mine.helpers({
-	notifications: function() {
-		return Notifications.find({}, {sort: {created_at: -1}})
+	notification_titles_mine: function() {
+		return NotificationsTitlesMine.find({}, {sort: {created_at: -1}})
+	},
+
+	notification_data: function() {
+		return Notifications.findOne()
 	},
 
 	notification_type: function() {
@@ -34,15 +38,12 @@ Template.notifications_mine.events({
 
 Template.notifications_mine.rendered = function() {
 	Session.set('current_notification_id', undefined)
-	this.deps_subscribe_mine = Deps.autorun(function() {
-		Meteor.subscribe('my_notifications')
+
+	this.autorun(function() {
+		Meteor.subscribe('notifications_titles_mine')
+
+		if (Session.get('current_notification_id')) {
+			Meteor.subscribe('a_notification', Session.get('current_notification_id'))
+		}
 	})
-}
-
-
-
-Template.notifications_mine.destroyed = function() {
-	if (this.deps_subscribe_mine) {
-		this.deps_subscribe_mine.stop()
-	}
 }

@@ -1,22 +1,21 @@
-Meteor.publish('my_notifications', function() {
+Meteor.publish('a_notification', function(id) {
 	if(this.userId) {
-		return Notifications.find({user_id: this.userId}, {sort: {created_at: -1}, limit: 60})
+		return Notifications.find(id)
 	} else {
 		this.ready()
 	}
 })
 
-Meteor.publish('my_unread_notifications', function() {
-	if(this.userId) {
-		return Notifications.find({user_id: this.userId, read:false}, {fields: {_id:1, user_id:1, read:1}, sort: {created_at: -1}, limit: 20})
-	} else {
-		this.ready()
-	}
+Meteor.publish('notifications_titles_mine', function() {
+	var sub = this
+	var cur = Notifications.find({user_id: this.userId}, {fields: {read:1, title:1, created_at:1, type:1}, sort: {created_at: -1}, limit: 150})
+	Mongo.Collection._publishCursor(cur, sub, 'notifications_titles_mine')
+	return sub.ready();
 })
 
-Meteor.publish('global_notifications', function() {
-	if (this.userId) {
-		var types = [
+Meteor.publish('notifications_titles_global', function() {
+	var sub = this
+	var types = [
 			'battle',
 			'now_dominus',
 			'no_longer_dominus',
@@ -24,10 +23,16 @@ Meteor.publish('global_notifications', function() {
 			'sent_gold',
 			'sent_army'
 			]
-		return Notifications.find({type: {$in: types}}, {sort: {created_at: -1}, limit:80})
-	} else {
-		this.ready()
-	}
+	var cur = Notifications.find({type: {$in: types}}, {fields: {read:1, title:1, created_at:1, type:1}, sort: {created_at: -1}, limit:150})
+	Mongo.Collection._publishCursor(cur, sub, 'notifications_titles_global')
+	return sub.ready();
+})
+
+Meteor.publish('notifications_unread', function() {
+	var sub = this
+	var cur = Notifications.find({user_id: this.userId, read:false}, {fields: {_id:1}})
+	Mongo.Collection._publishCursor(cur, sub, 'notifications_unread')
+	return sub.ready()
 })
 
 Meteor.publish('battle_notifications', function() {

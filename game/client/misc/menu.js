@@ -4,11 +4,11 @@ Template.menu.helpers({
 	},
 
 	has_notifications: function() {
-		return Notifications.find({user_id:Meteor.userId(), read: false}).count() > 0
+		return NotificationsUnread.find().count() > 0
 	},
 
 	num_notifications: function() {
-		return Notifications.find({user_id:Meteor.userId(), read: false}).count()
+		return NotificationsUnread.find().count()
 	},
 
 	notifications_active: function() {
@@ -254,14 +254,18 @@ Template.menu.rendered = function() {
 
 	this.deps_subscribe = Deps.autorun(function() {
 		Meteor.subscribe('market')
-		if (!Session.get('show_notifications_panel')) {
-			Meteor.subscribe('my_unread_notifications')
-		}
+		// if (!Session.get('show_notifications_panel')) {
+		// 	Meteor.subscribe('my_unread_notifications')
+		// }
 		var user = Meteor.users.findOne(Meteor.userId(), {fields: {chatrooms:1}})
 		if (user && user.chatrooms) {
 			Meteor.subscribe('latest_chats', user.chatrooms)
 		}
 		Meteor.subscribe('latest_forum_posts')
+	})
+
+	this.autorun(function() {
+		Meteor.subscribe('notifications_unread')
 	})
 }
 
