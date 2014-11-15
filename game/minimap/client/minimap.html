@@ -23,7 +23,7 @@
 
 			<g id="minimap_lords">
 				{{#each lords}}
-					{{#if is_dominus}}
+					{{#if is_king}}
 						<circle cx="{{minimap_coord_to_pixel_x x y}}" cy="{{minimap_coord_to_pixel_y x y}}" r="3" class="minimap_dominus" />
 					{{else}}
 						{{#if my_lord}}

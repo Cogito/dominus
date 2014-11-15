@@ -25,7 +25,8 @@ Meteor.publish('left_panel_lords', function() {
 				x:1,
 				y:1,
 				networth:1,
-				is_dominus:1
+				is_dominus:1,
+				is_king:1
 			}})
 		Mongo.Collection._publishCursor(cur, sub, 'left_panel_lords')
 		return sub.ready();

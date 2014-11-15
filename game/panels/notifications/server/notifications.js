@@ -51,44 +51,46 @@ notification_no_longer_a_king = function(user_id, king) {
 	create_notification_new(user_id, 'no_longer_a_king', king, 'You are no longer a King')
 }
 
+// no longer sent
 notification_lost_vassal_to_another = function(user_id, lost_vassal, vassals_new_lord) {
-	check(user_id, String)
+	// check(user_id, String)
 
-	check(lost_vassal, Object)
-	check(lost_vassal._id, String)
-	check(lost_vassal.username, String)
-	check(lost_vassal.x, Number)
-	check(lost_vassal.y, Number)
-	check(lost_vassal.castle_id, String)
+	// check(lost_vassal, Object)
+	// check(lost_vassal._id, String)
+	// check(lost_vassal.username, String)
+	// check(lost_vassal.x, Number)
+	// check(lost_vassal.y, Number)
+	// check(lost_vassal.castle_id, String)
 
-	check(vassals_new_lord, Object)
-	check(vassals_new_lord._id, String)
-	check(vassals_new_lord.username, String)
-	check(vassals_new_lord.x, Number)
-	check(vassals_new_lord.y, Number)
-	check(vassals_new_lord.castle_id, String)
+	// check(vassals_new_lord, Object)
+	// check(vassals_new_lord._id, String)
+	// check(vassals_new_lord.username, String)
+	// check(vassals_new_lord.x, Number)
+	// check(vassals_new_lord.y, Number)
+	// check(vassals_new_lord.castle_id, String)
 
-	create_notification_new(user_id,
-		'lost_vassal_to_another',
-		{lost_vassal: lost_vassal, vassals_new_lord: vassals_new_lord},
-		lost_vassal.username+' is no longer your vassal'
-		)
+	// create_notification_new(user_id,
+	// 	'lost_vassal_to_another',
+	// 	{lost_vassal: lost_vassal, vassals_new_lord: vassals_new_lord},
+	// 	lost_vassal.username+' is no longer your vassal'
+	// 	)
 }
 
+// no longer sent
 notification_new_vassal = function(user_id, vassal) {
-	check(user_id, String)
-	check(vassal, Object)
-	check(vassal._id, String)
-	check(vassal.username, String)
-	check(vassal.x, Number)
-	check(vassal.y, Number)
-	check(vassal.castle_id, String)
+	// check(user_id, String)
+	// check(vassal, Object)
+	// check(vassal._id, String)
+	// check(vassal.username, String)
+	// check(vassal.x, Number)
+	// check(vassal.y, Number)
+	// check(vassal.castle_id, String)
 
-	create_notification_new(user_id,
-		'new_vassal',
-		vassal,
-		vassal.username+' is now your vassal'
-		)
+	// create_notification_new(user_id,
+	// 	'new_vassal',
+	// 	vassal,
+	// 	vassal.username+' is now your vassal'
+	// 	)
 }
 
 notification_new_lord = function(user_id, lord) {

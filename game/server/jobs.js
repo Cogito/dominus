@@ -2,9 +2,6 @@ Meteor.startup(function() {
 	if (process.env.DOMINUS_WORKER == 'true') {
 
 
-		// temp
-		Meteor.users.update({}, {$set: {lp_show_lords:true, lp_show_allies:true}}, {multi:true})
-
 		worker.empty_queue()
 		worker.start()
 
