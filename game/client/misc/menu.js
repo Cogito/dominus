@@ -254,9 +254,6 @@ Template.menu.rendered = function() {
 
 	this.deps_subscribe = Deps.autorun(function() {
 		Meteor.subscribe('market')
-		// if (!Session.get('show_notifications_panel')) {
-		// 	Meteor.subscribe('my_unread_notifications')
-		// }
 		var user = Meteor.users.findOne(Meteor.userId(), {fields: {chatrooms:1}})
 		if (user && user.chatrooms) {
 			Meteor.subscribe('latest_chats', user.chatrooms)
