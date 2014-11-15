@@ -1,6 +1,7 @@
 Template.tree_panel_vassals.helpers({
 	vassals: function() {
-		var vassals = Meteor.users.find({lord: this._id})
+		var vassals = TreePanelUsers.find({lord: this._id})
+
 		var user = Meteor.users.findOne(Meteor.userId(), {fields: {team:1,allies_above:1,allies_below:1,lord:1,vassals:1}})
 
 		vassals = vassals.map(function(v) {
