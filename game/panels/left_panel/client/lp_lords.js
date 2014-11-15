@@ -1,5 +1,5 @@
 Template.lp_lords.helpers({
 	lords: function() {
-		return LeftPanelLords.find({}, {sort:{networth:-1}})
+		return LeftPanelLords.find({}, {sort:{income:-1}})
 	}
 })

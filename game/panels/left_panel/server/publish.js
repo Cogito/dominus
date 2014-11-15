@@ -6,7 +6,7 @@ Meteor.publish('left_panel_allies', function() {
 				castle_id:1,
 				x:1,
 				y:1,
-				networth:1
+				income:1
 			}})
 		Mongo.Collection._publishCursor(cur, sub, 'left_panel_allies')
 		return sub.ready();
@@ -24,7 +24,7 @@ Meteor.publish('left_panel_lords', function() {
 				castle_id:1,
 				x:1,
 				y:1,
-				networth:1,
+				income:1,
 				is_dominus:1,
 				is_king:1
 			}})

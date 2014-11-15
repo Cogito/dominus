@@ -173,7 +173,7 @@ Template.stats_panel.rendered = function() {
 
 		if (nw.length > 0) {
 			var num_allies_data = [
-				{values: nw, key: 'Allies', color: '#5793d9'},
+				{values: nw, key: 'Vassals', color: '#5793d9'},
 			]
 
 			nv.addGraph(function() {
