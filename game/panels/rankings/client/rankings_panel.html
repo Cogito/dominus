@@ -4,16 +4,18 @@
 
 		<div class="panel panel-default">
 			<div class="panel-body" style="text-align: center;">
-				{{#each dominus}}
-					{{username}} is the Dominus. {{> center_on_button x=x y=y selected_type='castle' selected_id=castle_id}}
+				{{#if dominus}}
+					{{#with dominus}}
+						{{username}} is the Dominus {{> center_on_button x=x y=y selected_type='castle' selected_id=castle_id}}
+					{{/with}}
 				{{else}}
 					Nobody is the Dominus.
-				{{/each}}
+				{{/if}}
 			</div>
 		</div>
 
 		<div class="panel panel-default">
-			<div class="panel-heading">Top 15 by Allies<br><small>Vassals and Vassals of Vassals</small></div>
+			<div class="panel-heading">Top 15 by Allies<br><small>People below you in the tree.</small></div>
 			<div class="panel-body">
 				<table class="table table-condensed rank_start">
 					<tbody>
@@ -28,33 +30,6 @@
 								</td>
 								<td style="text-align:right;">
 									{{num_allies_below}}
-								</td>
-								<td style="text-align:right;">
-									{{> center_on_button x=x y=y selected_type='castle' selected_id=castle_id}}
-								</td>
-							</tr>
-						{{/each}}
-					</tbody>
-				</table>
-			</div>
-		</div>
-
-		<div class="panel panel-default">
-			<div class="panel-heading">Top 15 by Vassals</div>
-			<div class="panel-body">
-				<table class="table table-condensed rank_start">
-					<tbody>
-						{{#each top10_vassals}}
-							<tr>
-								<td class="rank_username">
-									{{#if is_me}}
-										<strong>{{username}}</strong>
-									{{else}}
-										{{username}}
-									{{/if}}
-								</td>
-								<td style="text-align:right;">
-									{{num_vassals}}
 								</td>
 								<td style="text-align:right;">
 									{{> center_on_button x=x y=y selected_type='castle' selected_id=castle_id}}
