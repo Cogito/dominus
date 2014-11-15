@@ -113,6 +113,7 @@
 						<div class="help_section">Collecting Resources</div>
 						<p>Resources are collected at your castle and villages.  Your castle collects resources from the {{s.resource.num_rings_castle}} rings of hexes surrounding it.  Your villages collect resources {{s.resource.gained_at_hex}} from the 6 hexes surrounding it.  Your castle also collects {{s.resource.gold_gained_at_castle}} gold and your villages each collect {{s.resource.gold_gained_at_village}} gold.  Resources are collected every {{s_resource_interval}}.</p>
 						<p>You can see how many resources you have in the top of the summary panel.  The white number is how many you have and the grey number is how many you collected last resource update.</p>
+						<p>Castles and villages collect from the hexes surrounding even if there is another building on the hex.  It is ok to build villages and castles next to each other.</p>
 						<div class="help_section">Large Resource Hexes</div>
 						<p>Some hexes produce {{resources_at_large_hexes}} resources instead of {{s.resource.gained_at_hex}} like most hexes.  These hexes look different than the others.</p>
 						<div class="help_section">The Market</div>
@@ -284,13 +285,16 @@
 						<p>Bonuses can increase an army's power.</p>
 						<p>Archers recieve a bonus against footmen. Pikemen recieve a bonus against cavalry. Calvary recieve a bonus against archers and footmen.</p>
 						<p>When an archer fights a footman because the archer has a bonus against footmen the archer is twice as powerful.</p>
-						<p>Catapults' offense is multiplied by {{s.army.stats.catapults.bonus_against_buildings}} when attacking a castle or village.</p>
+						<p>Catapults' offense is multiplied by {{s.army.stats.catapults.bonus_against_buildings}} when attacking a castle or village.  They must be on the same hex as an enemy castle or village and be an attacker.</p>
 						<p>Armies defending a castle receive a {{castle_defense_bonus}}x bonus.  Armies defending a village receive a  {{village_defense_bonus}}x bonus.  Only armies inside the castle or village get this bonus.</p>
 
 						<p>Armies at an ally's castle or village receive a {{ally_castle_defense_bonus}}x bonus.</p>
 
 						<div class="help_section">Notifications</div>
 						<p>After a battle you will receive a notification with the results.  You can also see battles as they happen in the notifications panel.</p>
+
+						<div class="help_section">Who Gets the Spoils</div>
+						<p>Multiple armies can attack a castle at the same time.  If they win the castle will go to the first army to arrive that is still alive.</p>
 					</div>
 				</div>
 			</div>
@@ -310,6 +314,7 @@
 						<p>If someone is actively playing more than one account then both accounts will probably be deleted.</p>
 						<p>If you wish to start another account please first delete your current account.</p>
 						<p>To delete your account click the "Delete Account" button in the settings.</p>
+						<p>If you have the same IP address as someone please post in the forum to let people know and don't do anything that looks like cheating like sending money and troops to each other.</p>
 					</div>
 				</div>
 			</div>
@@ -322,11 +327,15 @@
 				</div>
 				<div id="help-etc" class="panel-collapse collapse">
 					<div class="panel-body">
+						<p>Dominus on <a href="https://github.com/dan335/dominus">Github</a>.</p>
 						<p>Follow <a href="https://twitter.com/DominusGame">@DominusGame</a> on Twitter.</p>
 						<p>Dominus on <a href="https://www.facebook.com/dominusgame">Facebook</a></p>
 						<p>Dominus <a href="https://medium.com/@Dominus">Blog</a> on Medium</p>
-<!-- 						<p><a href="https://docs.google.com/spreadsheets/d/1TBZwucFoGp8xyaaNmGaHzI_-KO5N2zg4knNRwR8-e8w/edit?usp=sharing" target="_blank">Battle and Trade Calculator by Cogito</a></p>
-						<p><a href="https://docs.google.com/spreadsheets/d/1I8_87eal1dDPt1Niu1vuJbngRGsYxJhX7JSJXNKaJpI/edit#gid=0" target="_blank">Battle Calculator by Ollyfg</a></p> -->
+					
+						<br>
+						These may no longer be correct<br>
+						<a href="https://docs.google.com/spreadsheets/d/1TBZwucFoGp8xyaaNmGaHzI_-KO5N2zg4knNRwR8-e8w/edit?usp=sharing" target="_blank">Battle and Trade Calculator by Cogito</a><br>
+						<a href="https://docs.google.com/spreadsheets/d/1I8_87eal1dDPt1Niu1vuJbngRGsYxJhX7JSJXNKaJpI/edit#gid=0" target="_blank">Battle Calculator by Ollyfg</a><br>
 					</div>
 				</div>
 			</div>
