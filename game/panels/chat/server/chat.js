@@ -122,7 +122,7 @@ setup_king_chatroom = function(king_id) {
 		if (king.king_chatroom) {
 			var king_chatroom = king.king_chatroom
 		} else {
-			var king_chatroom = create_chat("King "+king.username+" and Allies", false, king_id)
+			var king_chatroom = create_chat("King "+king.username+" and Vassals", false, king_id)
 			subscribe_to_chatroom(king_id, king_chatroom)
 			Meteor.users.update(king_id, {$set: {king_chatroom: king_chatroom}})
 			notification_new_chatroom_kings_room(king_id)

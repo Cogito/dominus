@@ -23,19 +23,19 @@ Meteor.methods({
 		Meteor.users.update(Meteor.userId(), {$set: {lp_show_armies: false}})
 	},
 
-	show_lord: function() {
-		Meteor.users.update(Meteor.userId(), {$set: {lp_show_lord: true}})
+	show_lords: function() {
+		Meteor.users.update(Meteor.userId(), {$set: {lp_show_lords: true}})
 	},
 
-	hide_lord: function() {
-		Meteor.users.update(Meteor.userId(), {$set: {lp_show_lord: false}})
+	hide_lords: function() {
+		Meteor.users.update(Meteor.userId(), {$set: {lp_show_lords: false}})
 	},
 
-	show_vassals: function() {
-		Meteor.users.update(Meteor.userId(), {$set: {lp_show_vassals: true}})
+	show_allies: function() {
+		Meteor.users.update(Meteor.userId(), {$set: {lp_show_allies: true}})
 	},
 
-	hide_vassals: function() {
-		Meteor.users.update(Meteor.userId(), {$set: {lp_show_vassals: false}})
+	hide_allies: function() {
+		Meteor.users.update(Meteor.userId(), {$set: {lp_show_allies: false}})
 	},
 })

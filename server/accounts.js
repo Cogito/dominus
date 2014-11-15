@@ -46,8 +46,8 @@ Accounts.onCreateUser(function(options, user) {
 		glass: 0
 	}
 	user.lp_show_armies = true
-	user.lp_show_lord = true
-	user.lp_show_vassals = true
+	user.lp_show_lords = true
+	user.lp_show_allies = true
 	user.hex_scale = 1
 	user.income = 0
 	user.purchases = {

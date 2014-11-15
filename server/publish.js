@@ -87,55 +87,55 @@ Meteor.publish('my_villages', function() {
 	}
 })
 
-Meteor.publish('my_vassals', function(array) {
-	check(array, Array)
+// Meteor.publish('my_vassals', function(array) {
+// 	check(array, Array)
 
-	if(this.userId && array.length > 0) {
-		return Meteor.users.find({_id: {$in: array}}, {fields: {
-			username: 1,
-			x: 1,
-			y: 1,
-			castle_id: 1,
-			networth:1,
-			num_vassals:1,
-			num_allies: 1,
-			num_allies_below:1,
-			is_dominus:1,
-			income:1,
-			networth:1,
-			lord:1,
-			losses_worth:1
-		}})
-	} else {
-		this.ready()
-	}
-})
+// 	if(this.userId && array.length > 0) {
+// 		return Meteor.users.find({_id: {$in: array}}, {fields: {
+// 			username: 1,
+// 			x: 1,
+// 			y: 1,
+// 			castle_id: 1,
+// 			networth:1,
+// 			num_vassals:1,
+// 			num_allies: 1,
+// 			num_allies_below:1,
+// 			is_dominus:1,
+// 			income:1,
+// 			networth:1,
+// 			lord:1,
+// 			losses_worth:1
+// 		}})
+// 	} else {
+// 		this.ready()
+// 	}
+// })
 
-Meteor.publish('my_lord', function(id) {
-	if(this.userId) {
-		if (id) {
-			check(id, String)
+// Meteor.publish('my_lord', function(id) {
+// 	if(this.userId) {
+// 		if (id) {
+// 			check(id, String)
 
-			return Meteor.users.find(id, {fields: {
-				username: 1,
-				x: 1,
-				y: 1,
-				castle_id: 1,
-				networth:1,
-				num_vassals:1,
-				num_allies: 1,
-				num_allies_below:1,
-				is_dominus:1,
-				income:1,
-				networth:1,
-				lord:1,
-				losses_worth:1
-			}})
-		}
-	} else {
-		this.ready()
-	}
-})
+// 			return Meteor.users.find(id, {fields: {
+// 				username: 1,
+// 				x: 1,
+// 				y: 1,
+// 				castle_id: 1,
+// 				networth:1,
+// 				num_vassals:1,
+// 				num_allies: 1,
+// 				num_allies_below:1,
+// 				is_dominus:1,
+// 				income:1,
+// 				networth:1,
+// 				lord:1,
+// 				losses_worth:1
+// 			}})
+// 		}
+// 	} else {
+// 		this.ready()
+// 	}
+// })
 
 Meteor.publish('user_data', function () {
 	if (this.userId) {
@@ -173,8 +173,8 @@ Meteor.publish('user_data', function () {
 			lp_show_castle:1,
 			lp_show_villages:1,
 			lp_show_armies:1,
-			lp_show_lord:1,
-			lp_show_vassals:1,
+			lp_show_lords:1,
+			lp_show_allies:1,
 			hex_scale:1,
 			income:1,
 			purchases:1,

@@ -63,12 +63,12 @@ Template.left_panel.helpers({
 		return get_user_property("lp_show_armies")
 	},
 
-	show_lord_group: function() {
-		return get_user_property("lp_show_lord")
+	show_lords_group: function() {
+		return get_user_property("lp_show_lords")
 	},
 
-	show_vassals_group: function() {
-		return get_user_property("lp_show_vassals")
+	show_allies_group: function() {
+		return get_user_property("lp_show_allies")
 	},
 
 	time_til_update: function() {
@@ -82,7 +82,17 @@ Template.left_panel.helpers({
 
 	num_villages: function() {
 		return Session.get('num_villages')
-	}
+	},
+
+	lords: function() {
+		var user = Meteor.users.findOne(Meteor.userId(), {fields: {allies_above:1}})
+		if (user) {
+			return LeftPanelUsers.find({_id: {$in:user.allies_above}})
+		}
+		return null
+	},
+
+	
 })
 
 
@@ -111,19 +121,19 @@ Template.left_panel.events({
 		}
 	},
 
-	'click #lord_group_link': function(event, template) {
-		if (get_user_property("lp_show_lord")) {
-			Meteor.call('hide_lord')
+	'click #lords_group_link': function(event, template) {
+		if (get_user_property("lp_show_lords")) {
+			Meteor.call('hide_lords')
 		} else {
-			Meteor.call('show_lord')
+			Meteor.call('show_lords')
 		}
 	},
 
-	'click #vassals_group_link': function(event, template) {
-		if (get_user_property("lp_show_vassals")) {
-			Meteor.call('hide_vassals')
+	'click #allies_group_link': function(event, template) {
+		if (get_user_property("lp_show_allies")) {
+			Meteor.call('hide_allies')
 		} else {
-			Meteor.call('show_vassals')
+			Meteor.call('show_allies')
 		}
 	},
 
@@ -158,17 +168,10 @@ Template.left_panel.events({
 
 
 
-Template.left_panel.destroyed = function() {
-	if (this.deps_subscribe) {
-		this.deps_subscribe.stop()
-	}
-}
-
-
 Template.left_panel.rendered = function() {
-	this.deps_subscribe = Deps.autorun(function() {
+	this.autorun(function() {
 		if (Meteor.userId()) {
-			var user = Meteor.users.findOne(Meteor.userId(), {fields: {lord:1, vassals:1, lp_show_armies:1, lp_show_lord:1, lp_show_vassals:1}})
+			var user = Meteor.users.findOne(Meteor.userId(), {fields: {lord:1, vassals:1, lp_show_armies:1, lp_show_lords:1, lp_show_allies:1}})
 			if (user) {
 				Meteor.subscribe('gather_resources_jobstat')
 
@@ -180,12 +183,12 @@ Template.left_panel.rendered = function() {
 					Meteor.subscribe('user_moves')
 				}
 
-				if (user.lp_show_lord) {
-					Meteor.subscribe('my_lord', user.lord)
+				if (user.lp_show_lords) {
+					Meteor.subscribe('left_panel_lords')
 				}
 
-				if (user.lp_show_vassals) {
-					Meteor.subscribe('my_vassals', user.vassals)
+				if (user.lp_show_allies) {
+					Meteor.subscribe('left_panel_allies')
 				}
 			}
 		}

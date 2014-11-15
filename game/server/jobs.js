@@ -1,10 +1,9 @@
 Meteor.startup(function() {
 	if (process.env.DOMINUS_WORKER == 'true') {
 
-		// temp - take out after game next game starts
-		Hexes.find({large: {$exists: false}}).forEach(function(hex) {
-			Hexes.update(hex._id, {$set: {large:false}})
-		})
+
+		// temp
+		Meteor.users.update({}, {$set: {lp_show_lords:true, lp_show_allies:true}}, {multi:true})
 
 		worker.empty_queue()
 		worker.start()

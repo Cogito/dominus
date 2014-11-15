@@ -33,16 +33,24 @@
 	fill: #6efa4b;
 }
 
-.minimap_lord {
+.minimap_lords {
+	fill: #4d97ff;
+}
+
+.minimap_my_lord {
 	fill: #4bcefa;
 }
 
-.minimap_king {
+.minimap_dominus {
 	fill: #9d4bfa;
 }
 
 
 .minimap_vassal {
+	fill: #faa24b;
+}
+
+.minimap_direct_vassal {
 	fill: #fadd4b;
 }
 

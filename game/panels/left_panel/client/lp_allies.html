@@ -1,0 +1,12 @@
+<template name="lp_allies">
+	<table class="table table-condensed">
+		<tbody>
+			{{#each allies}}
+				<tr>
+					<td>{{username}}</td>
+					<td style="text-align: right;">{{> center_on_button x=x y=y selected_type='castle' selected_id=castle_id}}</td>
+				</tr>
+			{{/each}}
+		</tbody>
+	</table>
+</template>

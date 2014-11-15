@@ -21,19 +21,27 @@
 				{{/with}}
 			</g>
 
-			<g id="minimap_lord">
-				{{#with lord}}
-					{{#if is_king}}
-						<circle cx="{{minimap_coord_to_pixel_x x y}}" cy="{{minimap_coord_to_pixel_y x y}}" r="3" class="minimap_king" />
+			<g id="minimap_lords">
+				{{#each lords}}
+					{{#if is_dominus}}
+						<circle cx="{{minimap_coord_to_pixel_x x y}}" cy="{{minimap_coord_to_pixel_y x y}}" r="3" class="minimap_dominus" />
 					{{else}}
-						<circle cx="{{minimap_coord_to_pixel_x x y}}" cy="{{minimap_coord_to_pixel_y x y}}" r="3" class="minimap_lord" />
+						{{#if my_lord}}
+							<circle cx="{{minimap_coord_to_pixel_x x y}}" cy="{{minimap_coord_to_pixel_y x y}}" r="3" class="minimap_my_lord" />
+						{{else}}
+							<circle cx="{{minimap_coord_to_pixel_x x y}}" cy="{{minimap_coord_to_pixel_y x y}}" r="3" class="minimap_lords" />
+						{{/if}}
 					{{/if}}
-				{{/with}}
+				{{/each}}
 			</g>
 
 			<g id="minimap_vassals">
-				{{#each vassals}}
-					<circle cx="{{minimap_coord_to_pixel_x x y}}" cy="{{minimap_coord_to_pixel_y x y}}" r="3" class="minimap_vassal" />
+				{{#each allies}}
+					{{#if direct_vassal}}
+						<circle cx="{{minimap_coord_to_pixel_x x y}}" cy="{{minimap_coord_to_pixel_y x y}}" r="3" class="minimap_direct_vassal" />
+					{{else}}
+						<circle cx="{{minimap_coord_to_pixel_x x y}}" cy="{{minimap_coord_to_pixel_y x y}}" r="3" class="minimap_vassal" />
+					{{/if}}
 				{{/each}}
 			</g>
 

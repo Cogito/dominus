@@ -7,10 +7,6 @@ Minimap = {
 	}
 }
 
-Meteor.publish('minimap_map_size', function() {
-	return Settings.find({name:'map_size'})
-})
-
 
 Meteor.startup(function() {
 	if (process.env.DOMINUS_WORKER == 'true') {

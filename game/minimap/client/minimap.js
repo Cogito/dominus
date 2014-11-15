@@ -31,26 +31,35 @@ Template.minimap.helpers({
 		return Armies.find({user_id: Meteor.userId()}, {fields: {x:1, y:1}})
 	},
 
-	lord: function() {
-		var user = Meteor.users.findOne(Meteor.userId(), {fields: {lord:1, king:1}})
+	lords: function() {
+		var user = Meteor.users.findOne(Meteor.userId(), {fields: {lord:1}})
 		if (user) {
-			var lord = Meteor.users.findOne({_id: user.lord}, {fields: {x:1, y:1}})
-			if (lord) {
-				if (user.lord == user.king) {
-					lord.is_king = true
+			return LeftPanelLords.find().map(function(u) {
+				if (user.lord == u._id) {
+					u.my_lord = true
 				} else {
-					lord.is_king = false
+					u.my_lord = false
 				}
-				return lord
-			}
+				return u
+			})
 		}
 	},
 
-	vassals: function() {
+	allies: function() {
 		var user = Meteor.users.findOne(Meteor.userId(), {fields: {vassals:1}})
-		if (user && user.vassals) {
-			return Meteor.users.find({_id: {$in: user.vassals}}, {fields: {x:1, y:1}})
+		if (user) {
+			return LeftPanelAllies.find().map(function(u) {
+				if (_.indexOf(user.vassals, u._id) == -1) {
+					u.direct_vassal = false
+				} else {
+					u.direct_vassal = true
+				}
+				return u
+			})
 		}
+
+
+		return LeftPanelAllies.find()
 	},
 
 	minimap_coord_to_pixel_x: function(x,y) {
@@ -94,7 +103,7 @@ Template.minimap.events({
 Template.minimap.rendered = function() {
 	var self = this
 
-	self.deps_subscribe = Deps.autorun(function() {
+	this.autorun(function() {
 		Meteor.subscribe('minimap_map_size')
 	})
 
@@ -133,9 +142,6 @@ Template.minimap.rendered = function() {
 Template.minimap.destroyed = function() {
 	var self = this
 
-	if (self.deps_subscribe) {
-		self.deps_subscribe.stop()
-	}
 	if (self.deps_set_map_max_x) {
 		self.deps_set_hex_size.stop()
 	}
