@@ -21,6 +21,10 @@ UI.registerHelper('date_month_day_year', function(jsDate) {
 	return moment(new Date(jsDate)).format('M/D/YY')
 })
 
+UI.registerHelper('date_duration_humanize', function(ms) {
+	return moment.duration(ms).humanize()
+})
+
 
 
 
