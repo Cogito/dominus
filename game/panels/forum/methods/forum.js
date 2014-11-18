@@ -68,6 +68,7 @@ Meteor.methods({
 
 		message = message.replace(/\r?\n/g, '<br />');
 
+		// sanitize-html has been removed
 		// this won't work anymore?
 		// var sanitizeHtml = Meteor.require('sanitize-html')
 		// var clean_message = sanitizeHtml(message, {
