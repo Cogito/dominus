@@ -705,8 +705,8 @@ Units.prototype._computeLocationBonus = function() {
 
 Units.prototype._isOnAllyCastle = function(unit) {
 	check(unit.user_id, String)
-	
-	var user = this.getUserOfUnit(unit)
+
+	var user = this.getUserOfUnit(unit._id)
 	if (user) {
 		check(user.allies_below, Array)
 		if (user.allies_below.length > 0) {
@@ -723,7 +723,7 @@ Units.prototype._isOnAllyCastle = function(unit) {
 Units.prototype._isOnAllyVillage = function(unit) {
 	check(unit.user_id, String)
 	
-	var user = this.getUserOfUnit(unit)
+	var user = this.getUserOfUnit(unit._id)
 	if (user) {
 		check(user.allies_below, Array)
 		if (user.allies_below.length > 0) {
