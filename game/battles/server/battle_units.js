@@ -60,6 +60,7 @@ Units = function(x, y, battleDb) {
 		self._removeUnitsWithNoEnemies()
 	}
 	self._findAttackersAndDefender()
+	self._setAlliesOfDefenderAsDefenders()
 	self._setArmyInfo()
 	self._computeBonus()
 	self._computeFinalPower()
@@ -67,6 +68,16 @@ Units = function(x, y, battleDb) {
 }
 
 
+
+
+Units.prototype._setAlliesOfDefenderAsDefenders = function() {
+	var self = this
+	var defender = self.getDefender()
+	var allies = self.getAllies(defender)
+	_.each(allies, function(unit) {
+		unit.isAttacker = false
+	})
+}
 
 
 
