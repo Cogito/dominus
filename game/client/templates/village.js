@@ -98,7 +98,7 @@ draw_village_highlight = function(id, draw_resource_hexes) {
 	check(coords.y, Number)
 
 	var grid = Hx.coordinatesToPos(coords.x, coords.y, s.hex_size, s.hex_squish)
-	var points = calculate_hex_polygon_points(grid.x, grid.y, s.hex_size * 0.95)
+	var points = Hx.getHexPolygonVerts(grid.x, grid.y, s.hex_size * 0.95)
 	if (points != false) {
 		var polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
 		polygon.setAttribute('class', 'village_highlight')
@@ -110,7 +110,7 @@ draw_village_highlight = function(id, draw_resource_hexes) {
 		var hexes = Hx.getSurroundingHexes(coords.x, coords.y, s.resource.num_rings_village)
 		_.each(hexes, function(hex) {
 			var grid = Hx.coordinatesToPos(hex.x, hex.y, s.hex_size, s.hex_squish)
-			var points = calculate_hex_polygon_points(grid.x, grid.y, s.hex_size * 0.95)
+			var points = Hx.getHexPolygonVerts(grid.x, grid.y, s.hex_size * 0.95)
 			if (points != false) {
 				var polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
 				polygon.setAttribute('class', 'village_resource_highlight')

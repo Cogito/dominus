@@ -27,7 +27,6 @@ Accounts.onCreateUser(function(options, user) {
 	user.allies_below = []
 	user.allies_above = []
 	user.chatrooms = []
-	//user.lord_chatroom = null
 	user.king_chatroom = null
 	user.is_king = true
 	user.is_dominus = false

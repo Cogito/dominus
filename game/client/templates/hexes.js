@@ -62,16 +62,19 @@ Template.hexes.events({
 Template.hexes.rendered = function() {
 	var self = this
 
+	// draw hexes
 	observe_hexes(self)
 
-	self.dep_hex_scale = Deps.autorun(function() {
+	// update hexes when player zooms in/out
+	this.autorun(function() {
 		var user = Meteor.users.findOne(Meteor.userId(), {fields: {hex_scale:1}})
 		if (user && user.hex_scale) {
 			set_hex_scale(user.hex_scale)
 		}
 	})
 
-	self.dep_restart_hexes = Deps.autorun(function() {
+	// if canvas size changes redraw hexes
+	this.autorun(function() {
 		Session.get('canvas_size')
 		self.handle.stop()
 		$('#hex_container').empty()
@@ -79,19 +82,21 @@ Template.hexes.rendered = function() {
 	})
 
 	// hex selection
-	self.deps_selection = Deps.autorun(function() {
+	// update when selected session variable changes
+	this.autorun(function() {
 		Session.get('update_highlight')
 		if (Session.get('selected_type') == 'hex') {
 				remove_all_highlights()
 				var id = Session.get('selected_id')
 				highlight_hex_id(id)
-				var hex = Hexes.findOne(id)
+				//var hex = Hexes.findOne(id)	// not needed?
 				Session.set('rp_template', 'rp_info_hex')
 		}
 	})
 
 	// set canvas size
-	self.deps_canvasSize = Deps.autorun(function() {
+	// update size of map when window size changes
+	this.autorun(function() {
 		var canvas_size = Session.get('canvas_size')
 		$('#svg_container').css('height', canvas_size.height)
 		$('#svg_container').css('width', canvas_size.width)
@@ -100,15 +105,11 @@ Template.hexes.rendered = function() {
 
 	// update session with which hex is at the center of the screen
 	// used to subscribe to hexes onscreen
-	self.deps_centerOfScreen = Deps.autorun(function() {
+	this.autorun(function() {
 		if (!Session.get('is_dragging_hexes')){
 			if (typeof Session.get('hexes_pos') != 'undefined') {
 				var hexes_pos = Session.get('hexes_pos')
 				var canvas_size = Session.get('canvas_size')
-
-				// convert grid pos to screen pixel space
-				// hexes_pos.x -= canvas_size.half_width
-				// hexes_pos.y -= canvas_size.half_height
 
 				var pixel = grid_to_pixel(hexes_pos.x, hexes_pos.y)
 
@@ -122,7 +123,7 @@ Template.hexes.rendered = function() {
 	})
 
 
-	self.deps_hex_scale_change = Deps.autorun(function() {
+	this.autorun(function() {
 		var hex_scale = get_hex_scale()
 		Deps.nonreactive(function() {
 			var center_hex = Session.get('center_hex')
@@ -137,12 +138,6 @@ Template.hexes.rendered = function() {
 
 Template.hexes.destroyed = function() {
 	var self = this
-	if (self.deps_selection) { self.deps_selection.stop() }
-	if (self.deps_selection) { self.deps_canvasSize.stop() }
-	if (self.deps_selection) { self.deps_centerOfScreen.stop() }
-	if (self.deps_hex_scale_change) { self.deps_hex_scale_change.stop() }
-	if (self.handle) { self.handle.stop() }
-	if (self.dep_hex_scale) { self.dep_hex_scale.stop() }
 }
 
 
@@ -185,7 +180,7 @@ observe_hexes = function(self) {
 
 			var hex_polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
 			hex_polygon.setAttribute('class', 'hex')
-			var points = calculate_hex_polygon_points(grid.x, grid.y, s.hex_size)
+			var points = Hx.getHexPolygonVerts(grid.x, grid.y, s.hex_size)
 			hex_polygon.setAttribute('points', points)
 			hex_polygon.setAttribute('data-id', doc._id)
 			hex_polygon.setAttribute('data-x', doc.x)
@@ -218,7 +213,7 @@ highlight_hex_coords = function(x, y) {
 	check(y, Number)
 
 	var pixel = Hx.coordinatesToPos(x, y, s.hex_size, s.hex_squish)
-	var points = calculate_hex_polygon_points(pixel.x, pixel.y, s.hex_size * 0.95)
+	var points = Hx.getHexPolygonVerts(pixel.x, pixel.y, s.hex_size * 0.95)
 
 	if (points != false) {
 		var polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
@@ -244,27 +239,6 @@ highlight_hex_id = function(hex_id) {
 	highlight_hex_coords(coords.x, coords.y)
 }
 
-calculate_hex_polygon_points = function(center_x, center_y, hex_size) {
-	check(center_x, Number)
-	check(center_y, Number)
-	check(hex_size, Number)
-	
-	var points = ''
-	for (var i = 0; i < 6; i++) {
-		var angle = 2 * Math.PI / 6 * i
-
-		var point_x = (hex_size * Math.cos(angle)) + center_x
-		var point_y = (hex_size * Math.sin(angle) * s.hex_squish) + center_y
-
-		if (isNaN(point_x)) {
-			return false
-		}
-
-		if (i != 0) { points = points + ' '; }		// add space in-between if not first
-		points = points + point_x.toString() + ',' + point_y.toString()		// concat into string
-	}
-	return points
-}
 
 hex_remove_highlights = function() {
 	$('polygon.hex_highlight').remove()

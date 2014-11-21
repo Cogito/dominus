@@ -104,118 +104,38 @@ is_hex_empty_except_allies_coords = function(x,y) {
 
 
 
-// it might be faster to just query minimongo instead of trying jquery
-// would definatly be simpler
+
 id_to_coords = function(id, type) {
 	check(id, String)
 	check(type, String)
 
+	var coords = false
+
 	switch (type) {
 		case 'hex':
-			var found = false
-
-			if (Meteor.isClient) {
-				var hex = $('.hex[data-id='+id+']')
-				if (hex.length > 0) {
-					var x = Number(hex.attr('data-x'))
-					var y = Number(hex.attr('data-y'))
-
-					if (!isNaN(x) && isFinite(x) && !isNaN(y) && isFinite(y)) {
-						found = true
-						var coords = {
-							x: x,
-							y:y
-						}
-					}
-				}
-			}
-
-			if (!found) {
-				var h = Hexes.findOne(id, {fields: {x:1, y:1}})
-				if (h) {
-					var coords = {
-						x: h.x,
-						y: h.y
-					}
-					found = true
-				}
+			var h = Hexes.findOne(id, {fields: {x:1, y:1}})
+			if (h) {
+				coords = {x: h.x, y: h.y }
 			}
 
 			break;
 
 		case 'castle':
-			var found = false
-
-			if (Meteor.isClient) {
-				var castle = $('.castle[data-id='+id+']')
-				if (castle.length > 0) {
-					var x = Number(castle.attr('data-x'))
-					var y = Number(castle.attr('data-y'))
-
-					if (!isNaN(x) && isFinite(x) && !isNaN(y) && isFinite(y)) {
-						found = true
-						var coords = {
-							x: x,
-							y: y
-						}
-					}
-				}
-			}
-
-			if (!found) {
-				var res = Castles.findOne(id, {fields: {x:1, y:1}})
-				if (res) {
-					var coords = {
-						x: res.x,
-						y: res.y
-					}
-					found = true
-				}
+			var res = Castles.findOne(id, {fields: {x:1, y:1}})
+			if (res) {
+				coords = {x: res.x, y: res.y}
 			}
 			break;
 
 		case 'village':
-			var found = false
-
-			if (Meteor.isClient) {
-				var village = $('.village[data-id='+id+']')
-				if (village.length > 0) {
-					var x = Number(village.attr('data-x'))
-					var y = Number(village.attr('data-y'))
-
-					if (!isNaN(x) && isFinite(x) && !isNaN(y) && isFinite(y)) {
-						found = true
-						var coords = {
-							x: x,
-							y: y
-						}
-					}
-				}
-			}
-
-			if (!found) {
-				var res = Villages.findOne(id, {fields: {x:1, y:1}})
-				if (res) {
-					var coords = {
-						x: res.x,
-						y: res.y
-					}
-					fount = true
-				}
+			var res = Villages.findOne(id, {fields: {x:1, y:1}})
+			if (res) {
+				coords = {x: res.x, y: res.y}
 			}
 			break;
 	}
 
-	if (!found) {
-		return false
-	}
-
-	if (coords) {
-		return coords
-	} else {
-		throw new Meteor.Error(404, "couldn't find coordinats")
-	}
-	return false
+	return coords
 }
 
 
@@ -225,37 +145,19 @@ coords_to_id = function(x, y, type) {
 	check(y, Number)
 	check(type, String)
 
+	var id = false
+
 	switch (type) {
 		case 'hex':
-			var found = false
-
-			if (Meteor.isClient) {
-				var hex = $('.hex[data-x='+x+'][data-y='+y+']')
-				if (hex.length > 0) {
-					found = true
-					var id = hex.attr('data-id')
-				}
-			}
-
-			if (!found) {
-				var h = Hexes.findOne({x: x, y: y}, {fields: {_id:1}})
-				if (h) {
-					var id = h._id
-					found = true
-				}
+			var h = Hexes.findOne({x: x, y: y}, {fields: {_id:1}})
+			if (h) {
+				var id = h._id
+				found = true
 			}
 			break;
 	}
 
-	if (!found) {
-		return false
-	}
-
-	if (id) {
-		return id
-	}
-
-	return false
+	return id
 }
 
 
