@@ -108,6 +108,10 @@ Template.rp_info_castle.helpers({
 
 	dupes: function() {
 		return Session.get('dupes')
+	},
+
+	user: function() {
+		return Meteor.users.findOne(this.user_id)
 	}
 })
 
@@ -144,7 +148,9 @@ Template.rp_info_castle.rendered = function() {
 
 	this.autorun(function() {
 		Session.set('dupes', [])
-		// can't use self.data here because it never changes
+
+		// can't use self.data here because it does change if you have a castle selected and you click on another castle
+		// the template wasn't destroyed so self.data doesn't update
 		var castle = Castles.findOne(Session.get('selected_id'), {fields: {user_id:1}})
 		if (castle) {
 			Meteor.call('get_duplicate_users', castle.user_id, function(error, result) {
@@ -152,10 +158,11 @@ Template.rp_info_castle.rendered = function() {
 					Session.set('dupes', result)
 				}
 			})
-		}
 
-		if (self.data) {
-			Meteor.subscribe('battle_notifications_at_hex', self.data.x, self.data.y)
+			// get networth, income... for right panel
+			Meteor.subscribe('castle_user', castle.user_id)
+
+			Meteor.subscribe('battle_notifications_at_hex', castle.x, castle.y)
 		}
 	})
 

@@ -15,6 +15,10 @@
 					&nbsp;&nbsp;
 					{{> center_on_button x=x y=y selected_type='castle' selected_id=_id}}
 					<br>
+					<span class="light_text">Vassals:</span> {{round user.num_allies_below}}<br>
+					<span class="light_text">Networth:</span> {{round user.networth}}<br>
+					<span class="light_text">Income:</span> {{round user.income}}<br>
+					<span class="light_text">Lost Soldiers:</span> {{round user.losses_worth}}<br>
 				{{/unless}}
 
 				{{> hex_location}} &nbsp;&nbsp; {{> center_on_button x=x y=y selected_type='castle' selected_id=_id}}
