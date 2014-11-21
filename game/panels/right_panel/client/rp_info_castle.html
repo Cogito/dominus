@@ -1,7 +1,56 @@
 <template name="rp_info_castle">
 	<div class="rp_content" id="rp_info_castle">
 		<div class="panel panel-default" style="margin-top:0;">
-			<div class="panel-body">
+			{{#if is_owner}}
+
+				<div class="panel-heading">
+					<h4>
+						<span class="light_text">Castle</span> {{name}}
+						&nbsp;
+						{{> edit_name_button}}
+					</h4>
+					{{> hex_location}} &nbsp;&nbsp; {{> center_on_button x=x y=y selected_type='castle' selected_id=_id}}
+				</div>
+
+			{{else}}
+
+				<div class="panel-heading">
+					<h4>
+						<div style="margin-bottom:8px;">
+							<span class="light_text">Castle</span> {{name}}
+						</div>
+						<span class="light_text">Lord</span> {{username}}
+					</h4>
+				</div>
+				<table class="table table-condensed table-striped">
+					<tbody>
+						<tr>
+							<td>Vassals</td>
+							<td style="text-align:right;">{{round user.num_allies_below}}</td>
+						</tr>
+						<tr>
+							<td>Networth</td>
+							<td style="text-align:right;">{{round user.networth}}</td>
+						</tr>
+						<tr>
+							<td>Income</td>
+							<td style="text-align:right;">{{round user.income}}</td>
+						</tr>
+						<tr>
+							<td>Lost Soldiers</td>
+							<td style="text-align:right;">{{round user.losses_worth}}</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="panel-body" style="text-align:center;">
+					{{> hex_location}} &nbsp;&nbsp; {{> center_on_button x=x y=y selected_type='castle' selected_id=_id}}
+				</div>
+
+			{{/if}}
+
+
+
+<!-- 			<div class="panel-body">
 				<h4>
 					<span class="light_text">Castle</span> {{name}}
 					&nbsp;
@@ -11,10 +60,9 @@
 				</h4>
 
 				{{#unless is_owner}}
-					<span class="light_text">Lord</span> {{username}}
-					&nbsp;&nbsp;
-					{{> center_on_button x=x y=y selected_type='castle' selected_id=_id}}
-					<br>
+					<h4>
+						<span class="light_text">Lord</span> {{username}}
+					</h4>
 					<span class="light_text">Vassals:</span> {{round user.num_allies_below}}<br>
 					<span class="light_text">Networth:</span> {{round user.networth}}<br>
 					<span class="light_text">Income:</span> {{round user.income}}<br>
@@ -22,7 +70,7 @@
 				{{/unless}}
 
 				{{> hex_location}} &nbsp;&nbsp; {{> center_on_button x=x y=y selected_type='castle' selected_id=_id}}
-			</div>
+			</div> -->
 		</div>
 
 
