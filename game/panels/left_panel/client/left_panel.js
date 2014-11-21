@@ -92,6 +92,13 @@ Template.left_panel.helpers({
 		return null
 	},
 
+	num_vassals: function() {
+		var res = Meteor.users.findOne(Meteor.userId(), {fields: {num_allies_below: 1}})
+		if (res) {
+			return res.num_allies_below
+		}
+	}
+
 	
 })
 
