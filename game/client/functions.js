@@ -2,7 +2,8 @@
 // hex functions
 ////////////////////////////////////////////////////////////
 
-// offset from current  25,-39
+// offset your position on the map
+// this is pixel position not coordinates
 offset_hexes = function(offset_x, offset_y) {
 	check(offset_x, Number)
 	check(offset_y, Number)
@@ -16,7 +17,8 @@ offset_hexes = function(offset_x, offset_y) {
 }
 
 
-// give pixel to move to  300,285
+// move the map to a position
+// this is pixel position not coordinates
 move_hexes_to = function(pixel_x, pixel_y) {
 	check(pixel_x, Number)
 	check(pixel_y, Number)
@@ -31,6 +33,7 @@ move_hexes_to = function(pixel_x, pixel_y) {
 	Session.set('hexes_pos', {x:pixel_x, y:pixel_y})
 }
 
+// center the map on a hex
 // give coors of a hex 3,-5
 // why * -1 ?????
 center_on_hex = function(x, y) {
@@ -55,10 +58,6 @@ highlight_hex_path = function(from_x, from_y, to_x, to_y) {
 	check(from_y, Number)
 	check(to_x, Number)
 	check(to_y, Number)
-	
-	// hex_remove_highlights()
-	// remove_castle_highlights()
-	// remove_village_highlights()
 
 	var from_pos = Hx.coordinatesToPos(from_x, from_y, s.hex_size, s.hex_squish)
 	var to_pos = Hx.coordinatesToPos(to_x, to_y, s.hex_size, s.hex_squish)

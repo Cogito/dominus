@@ -114,14 +114,6 @@ Template.navigation_panel.rendered = function() {
 			}, 75)
 		}
 	})
-
-
-
-
-	// mousewheel to zoom
-	// disable for now
-	//document.addEventListener("mousewheel", MouseWheelHandler, false)
-	//document.addEventListener("DOMMouseScroll", MouseWheelHandler, false)
 }
 
 
@@ -130,30 +122,6 @@ Template.navigation_panel.destroyed = function() {
 	$(document).unbind('keyup')
 	if (this.deps_move_map) {
 		this.deps_move_map.stop()
-	}
-}
-
-
-
-var MouseWheelHandler = function(event) {
-	// if (Session.get('show_summary_panel') ||
-	// 	Session.get('show_notifications_panel') ||
-	// 	Session.get('show_market_panel') || 
-	// 	Session.get('show_stats_panel') ||
-	// 	Session.get('show_chat_panel') || 
-	// 	Session.get('show_forum_panel') ||
-	// 	Session.get('show_rankings_panel') ||
-	// 	Session.get('show_help_panel') ||
-	// 	Session.get('show_settings_panel')) {
-	// 	return false
-	// }
-
-	var event = window.event || event
-	var delta = Math.max(-1, Math.min(1, (event.wheelDelta || -event.detail)))
-	if (delta > 0) {
-		decrease_hex_scale()
-	} else {
-		increase_hex_scale()
 	}
 }
 

@@ -73,7 +73,6 @@ Template.notifications_panel.events({
 
 
 Template.notifications_panel.rendered = function() {
-	Session.set('notifications_show_mine', true)
 	logevent('panel', 'open', 'notifications')
 	this.autorun(function() {
 		Meteor.subscribe('gameEndDate')

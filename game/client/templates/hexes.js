@@ -1,4 +1,6 @@
 Template.hexes.helpers({
+	// this is only used for the hex coordinates
+	// not used to draw the hexes
 	hexes: function() {
 		Session.get('subscription_ready')
 		return Hexes.find({}, {fields: {x:1, y:1, type:1}})
@@ -15,8 +17,6 @@ Template.hexes.helpers({
 	villages: function() {
 		return Villages.find({}, {fields: {x:1, y:1, user_id:1}})
 	},
-
-	//is_type_grain: function() { return this.type == 'grain' ? true: false },
 
 	show_coords: function() {
 		return get_user_property("sp_show_coords")

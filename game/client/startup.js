@@ -1,13 +1,16 @@
-
 // hexes and grid
-Session.setDefault('hexes_pos', {x: 0, y: 0})	//	x,y that the hex group is translated
+Session.setDefault('hexes_pos', {x: 0, y: 0})	//	x,y that the svg hex group #hexes is translated to
 Session.setDefault('canvas_size', {width: 0, height: 0, half_width: 0, half_height: 0})
-Session.setDefault('center_hex', {x: 0, y: 0})
+Session.setDefault('center_hex', {x: 0, y: 0})	// the hex that is in the center of the screen
 
+// set these to select something
+// this is the only thing you need to do to select something
 Session.setDefault('selected_type', undefined)
 Session.setDefault('selected_id', undefined)
 
-Session.setDefault('mouseover_hex_id', '')
+Session.setDefault('mouseover_hex_id', '')	// the id of the hex the mouse is over
+
+// used when selecting army path
 Session.setDefault('finding_path_target_id', '')	// target that path goes to
 Session.setDefault('finding_path_target_x', '')
 Session.setDefault('finding_path_target_y', '')
@@ -39,9 +42,9 @@ Session.setDefault('show_summary_hover_box', false)
 Session.setDefault('summary_hover_box_top', 0)
 Session.setDefault('summary_hover_box_contents', '')
 
-Session.setDefault('subscription_ready', false)
-
-Session.setDefault('user_ids_onscreen', [])
+// true when the onscreen subscription is ready
+// used to draw loading alert
+Session.setDefault('subscription_ready', false)	
 
 // flag box
 Session.setDefault('hover_box_data', null)
@@ -50,35 +53,21 @@ Session.setDefault('hover_on_hover_box', false)
 Session.setDefault('draw_hover_box', false)
 Session.setDefault('hover_on_object_timer', null)
 
-//Session.setDefault('left_panel_rendered', false) // used to tell when someone is logging in
-
 Session.setDefault('show_building_castle_modal', false)
 Session.setDefault('show_connection_lost_modal', false)
 
+// refresh templates that use time
 Meteor.setInterval(function() {
 	Session.set('refresh_time_field', Random.fraction())
 }, 5000)
 
-// left panel
-Session.setDefault('show_castle_group', true)
-Session.setDefault('show_armies_group', true)
-Session.setDefault('show_villages_group', true)
-Session.setDefault('show_lord_group', true)
-Session.setDefault('show_vassals_group', true)
+Session.setDefault('num_villages', null)	// the number of villages that player has
 
-Session.setDefault('current_notification_id', undefined)
-
-Session.setDefault('num_villages', null)
-
-Session.setDefault('page_title_alert', null)
-
-Session.setDefault('notifications_show_mine', true)
-
-Session.setDefault('dupes', [])
+Session.setDefault('dupes', [])	// duplicate users
 
 
 // selected units reactive variable
-
+// can't use reactive div, reactive div doesn't support objects
 Meteor.startup(function() {
 	var selected_units = {}
 	var selected_units_dep = new Deps.Dependency

@@ -70,20 +70,8 @@ Template.game.events({
 	'touchmove': function(event, template) { dragger.hexes_mouse_move(event, true) }
 })
 
-Template.game.destroyed = function() {
-	if (this.deps_noUser) {
-		this.deps_noUser.stop()
-	}
-	if (this.deps_showLoading) {
-		this.deps_showLoading.stop()
-	}
-	if (this.deps_onscreenSubscribe) {
-		this.deps_onscreenSubscribe.stop()
-	}
-	if (this.deps_num_villages) {
-		this.deps_num_villages.stop()
-	}
-}
+
+
 
 var width = $(window).outerWidth(true)
 var height = $(window).outerHeight(true)
@@ -98,14 +86,6 @@ Template.game.rendered = function() {
 		Session.set('canvas_size', {width: width, height: height, half_width: width/2, half_height: height/2})
 	}
 
-	this.deps_noUser = Deps.autorun(function() {
-		if (!Meteor.userId()) {
-			Session.set('mouse_mode', 'modal')
-		} else {
-			Session.set('mouse_mode', 'default')
-		}
-	})
-
 
 	// show loading map panel
 	this.deps_showLoading = Deps.autorun(function() {
@@ -117,19 +97,15 @@ Template.game.rendered = function() {
 	})
 
 
+	// subscribe to what's onscreen
+	// uses meteorhacks:subs-manager
 	this.deps_onscreenSubscribe = Deps.autorun(function() {
 		if (!Session.get('is_dragging_hexes')){
 			var center_hex = Session.get('center_hex')
 			var canvas_size = Session.get('canvas_size')
 			var hex_scale = get_hex_scale()
-			if (s.use_onscreen_subscribe_delay) {
-				on_screen_subscribe_delay()
-				var sub = subs.subscribe('on_screen', Session.get('on_screen_delayed').x, Session.get('on_screen_delayed').y, s.hex_size, canvas_size.width, canvas_size.height, hex_scale)
-				var sub_hexes = subs.subscribe('on_screen_hexes', Session.get('on_screen_delayed').x, Session.get('on_screen_delayed').y, s.hex_size,canvas_size.width, canvas_size.height, hex_scale)
-			} else {
-				var sub = subs.subscribe('on_screen', center_hex.x, center_hex.y, s.hex_size, canvas_size.width, canvas_size.height, hex_scale)
-				var sub_hexes = subs.subscribe('on_screen_hexes', center_hex.x, center_hex.y, s.hex_size, canvas_size.width, canvas_size.height, hex_scale)
-			}
+			var sub = subs.subscribe('on_screen', center_hex.x, center_hex.y, s.hex_size, canvas_size.width, canvas_size.height, hex_scale)
+			var sub_hexes = subs.subscribe('on_screen_hexes', center_hex.x, center_hex.y, s.hex_size, canvas_size.width, canvas_size.height, hex_scale)
 			if (sub_hexes.ready()) {
 				Session.set('subscription_ready', true)
 			} else {
@@ -138,6 +114,7 @@ Template.game.rendered = function() {
 		}
 	})
 
+	// keep track of how many villages you have
 	this.deps_num_villages = Deps.autorun(function() {
 		var num_villages = Villages.find({user_id: Meteor.userId()}).count()
 		if (num_villages) {
@@ -151,7 +128,8 @@ Template.game.rendered = function() {
 
 
 
-
+// hexes subscription manager
+// uses meteor package meteorhacks:subs-manager
 subs = new SubsManager()
 
 // subscribe to what's onscreen but with a rate limit
