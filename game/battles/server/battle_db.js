@@ -1,6 +1,6 @@
-BattleDb = function(x,y) {
+BattleDb = function(x,y, unitObj) {
 	var self = this
-	self.unitObj = null		// set this
+	self.unitObj = unitObj
 
 	// get battle here
 	self.record = Battles.findOne({x:x, y:y})
@@ -16,21 +16,21 @@ BattleDb = function(x,y) {
 			updated_at:new Date(),
 			roundNumber: 1,
 			deaths: [],
-			roundData: []
+			roundData: [],
+			currentUnits: self.getCurrentUnits()
 		}
 		self.record._id = Battles.insert(self.record)
+
+		// send new battle notification
+		_.each(self.unitObj.getAllUnits(), function(unit) {
+			self.record.unit = unit
+			notification_battle_start(unit.user_id, self.record)
+		})
 	}
 }
 
 
-
-BattleDb.prototype.endBattle = function() {
-	this._trackLosses()
-	Battles.remove(this.record._id)
-}
-
-
-BattleDb.prototype.saveRecord = function() {
+BattleDb.prototype.getCurrentUnits = function() {
 	var self = this
 
 	var allUnits = []
@@ -58,16 +58,55 @@ BattleDb.prototype.saveRecord = function() {
 		}
 	})
 
+	return allUnits
+}
+
+
+
+BattleDb.prototype.endBattle = function() {
+	this._trackLosses()
+	Battles.remove(this.record._id)
+}
+
+
+BattleDb.prototype.saveRecord = function() {
+	var self = this
+
+	// var allUnits = []
+
+	// _.each(self.unitObj.getAllUnits(), function(unit) {
+	// 	if (self.unitObj.hasSoldiers(unit)) {
+	// 		if (self.unitObj.hasEnemies(unit)) {
+	// 			var cloned = cloneObject(unit)
+	// 			cloned.allies = self.unitObj.getAllies(unit)
+	// 			cloned.teamFinalPower = self.unitObj.getTeamFinalPower(unit)
+	// 			cloned.teamBasePower = self.unitObj.getTeamBasePower(unit)
+	// 			cloned.teamBonus = self.unitObj.getTeamBonus(unit)
+	// 			cloned.teamNumSoldiers = self.unitObj.getTeamNumSoldiers(unit)
+	// 			cloned.enemies = self.unitObj.getEnemies(unit)
+	// 			cloned.enemyFinalPower = self.unitObj.getEnemyFinalPower(unit)
+	// 			cloned.enemyBasePower = self.unitObj.getEnemyBasePower(unit)
+	// 			cloned.enemyBonus = self.unitObj.getEnemyBonus(unit)
+	// 			cloned.enemyNumSoldiers = self.unitObj.getEnemyNumSoldiers(unit)
+	// 			cloned.castleDefenseBonus = unit.castleDefenseBonus
+	// 			cloned.villageDefenseBonus = unit.villageDefenseBonus
+	// 			cloned.onAllyCastleBonus = unit.onAllyCastleBonus
+	// 			cloned.onAllyVillageBonus = unit.onAllyVillageBonus
+	// 			allUnits.push(cloned)
+	// 		}
+	// 	}
+	// })
+
 	var roundData = {
 		roundNumber: self.record.roundNumber,
-		units: allUnits
+		units: self.getCurrentUnits()
 	}
 
 	var set = {
 		updated_at:new Date(),
 		roundNumber: self.record.roundNumber,
 		deaths: self.record.deaths,
-		currentUnits: allUnits
+		currentUnits: self.getCurrentUnits()
 	}
 
 	Battles.update(self.record._id, {$set: set, $addToSet: {roundData: roundData}})

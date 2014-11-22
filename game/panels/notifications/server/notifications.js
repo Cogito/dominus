@@ -184,7 +184,8 @@ notification_new_chatroom_kings_room = function(user_id) {
 
 notification_new_chatroom_kings = function(user_id) {
 	check(user_id, String)
-	create_notification_new(user_id,
+	create_notification_new(
+		user_id,
 		'new_chatroom_kings',
 		{},
 		'New chatroom'
@@ -201,10 +202,24 @@ notification_battle = function(user_id, battle) {
 		var str = ' lost '
 	}
 
-	create_notification_new(user_id,
+	create_notification_new(
+		user_id,
 		'battle',
 		{battle:battle},
 		battle.unit.username+"'s "+battle.unit.type+str+' a battle at '+battle.unit.x+', '+battle.unit.y
+		)
+}
+
+notification_battle_start = function(user_id, battle) {
+	check(user_id, String)
+	check(battle, Object)
+	check(battle.unit, Object)
+
+	create_notification_new(
+		user_id,
+		'battle_start',
+		{battle:battle},
+		battle.unit.username+"'s "+battle.unit.type+' entered a battle at '+battle.unit.x+', '+battle.unit.y
 		)
 }
 

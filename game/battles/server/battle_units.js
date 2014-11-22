@@ -1,6 +1,6 @@
-Units = function(x, y, battleDb) {
+Units = function(x, y) {
 	var self = this
-	self.battleDb = battleDb
+	self.battleDb = null	// set this
 	self.allUnits = []
 	self.x = x
 	self.y = y
