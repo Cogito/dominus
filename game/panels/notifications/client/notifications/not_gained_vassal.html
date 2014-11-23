@@ -1,0 +1,7 @@
+<template name="not_gained_vassal">
+	{{#if is_direct_vassal}}
+		<a href="" class="not_gained_vassal_goto">{{vars.new_vassal.username}}</a> is now your vassal.  You will receive part of their income.
+	{{else}}
+		<a href="" class="not_gained_vassal_goto_lord">{{vars.vassals_new_lord.username}}</a> gained <a href="" class="not_gained_vassal_goto">{{vars.new_vassal.username}}</a> as a vassal.  You will receive part of their income.
+	{{/if}}
+</template>

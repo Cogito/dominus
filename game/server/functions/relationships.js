@@ -9,6 +9,31 @@ set_lord_and_vassal = function(winner, loser, runUpdateAllies) {
 	var loser_prev_lord_id = null
 
 
+
+	// lost/gained vassal notifications
+	// compare people above loser to people above winner
+	// if someone above loser is not above winner then they lost a vassal
+	// do opposite for gained
+	var above_winner = getPeopleAbove(winner._id)
+	var above_loser = getPeopleAbove(loser._id)
+
+	_.each(above_loser, function(above_loser_lord_id) {
+		if (_.indexOf(above_winner, above_loser_lord_id) == -1) {
+			notification_lost_vassal(above_loser_lord_id, loser, winner)
+		}
+	})
+
+	_.each(above_winner, function(above_winner_lord_id) {
+		if (_.indexOf(above_loser, above_winner_lord_id) == -1) {
+			notification_gained_vassal(above_winner_lord_id, loser, winner)
+		}
+	})
+
+	// send notification to winner
+	notification_gained_vassal(winner._id, loser, winner)
+
+
+
 	// vassal is no longer a king, he had no lord, now he does
 	// destroy king chatroom
 	// send notification
@@ -44,12 +69,6 @@ set_lord_and_vassal = function(winner, loser, runUpdateAllies) {
 
 		remove_lord_and_vassal(loser.lord, loser._id)
 
-		notification_lost_vassal_to_another(
-			loser.lord,
-			{_id: loser._id, username: loser.username, x: loser.x, y: loser.y, castle_id: loser.castle_id},
-			{_id: winner._id, username: winner.username, x: winner.x, y: winner.y, castle_id: winner.castle_id}
-			)
-
 		// used later to update his allies
 		loser_prev_lord_id = loser.lord
 
@@ -76,7 +95,6 @@ set_lord_and_vassal = function(winner, loser, runUpdateAllies) {
 
 
 	// send notification
-	notification_new_vassal(winner._id, {_id: loser._id, username: loser.username, x: loser.x, y: loser.y, castle_id: loser.castle_id})
 	notification_new_lord(loser._id, {_id: winner._id, username: winner.username, x: winner.x, y: winner.y, castle_id: winner.castle_id})
 
 	if (runUpdateAllies) {
@@ -185,8 +203,9 @@ update_vassal_ally_count = function(user_id) {
 
 
 // get array of lord, lord's lord, his lord etc
+// returns array of IDs
 getPeopleAbove = function(user_id) {
-	arr = _getPeopleAbove(user_id, [])
+	var arr = _getPeopleAbove(user_id, [])
 	return arr
 }
 

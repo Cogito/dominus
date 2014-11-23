@@ -1,5 +1,3 @@
-// these functions are so that things like email alsets can happen when you get a notification
-
 notification_no_longer_dominus = function(user_id, user) {
 	check(user_id, String)
 	create_notification_new(user_id,
@@ -36,7 +34,12 @@ notification_now_a_king = function(user_id, conquered_lord) {
 	check(conquered_lord.y, Number)
 	check(conquered_lord.castle_id, String)
 
-	create_notification_new(user_id, 'now_a_king', conquered_lord, 'You are now a King')
+	create_notification_new(
+		user_id,
+		'now_a_king',
+		filter_user_for_public_notification(conquered_lord),
+		'You are now a King'
+		)
 }
 
 notification_no_longer_a_king = function(user_id, king) {
@@ -48,50 +51,47 @@ notification_no_longer_a_king = function(user_id, king) {
 	check(king.y, Number)
 	check(king.castle_id, String)
 
-	create_notification_new(user_id, 'no_longer_a_king', king, 'You are no longer a King')
+	create_notification_new(
+		user_id,
+		'no_longer_a_king',
+		filter_user_for_public_notification(king),
+		'You are no longer a King'
+		)
 }
 
-// no longer sent
-notification_lost_vassal_to_another = function(user_id, lost_vassal, vassals_new_lord) {
-	// check(user_id, String)
+notification_lost_vassal = function(user_id, lost_vassal, vassals_new_lord) {
+	check(user_id, String)
+	check(lost_vassal, Object)
+	check(vassals_new_lord, Object)
 
-	// check(lost_vassal, Object)
-	// check(lost_vassal._id, String)
-	// check(lost_vassal.username, String)
-	// check(lost_vassal.x, Number)
-	// check(lost_vassal.y, Number)
-	// check(lost_vassal.castle_id, String)
-
-	// check(vassals_new_lord, Object)
-	// check(vassals_new_lord._id, String)
-	// check(vassals_new_lord.username, String)
-	// check(vassals_new_lord.x, Number)
-	// check(vassals_new_lord.y, Number)
-	// check(vassals_new_lord.castle_id, String)
-
-	// create_notification_new(user_id,
-	// 	'lost_vassal_to_another',
-	// 	{lost_vassal: lost_vassal, vassals_new_lord: vassals_new_lord},
-	// 	lost_vassal.username+' is no longer your vassal'
-	// 	)
+	create_notification_new(
+		user_id,
+		'lost_vassal',
+		{
+			lost_vassal:filter_user_for_public_notification(lost_vassal),
+			vassals_new_lord:filter_user_for_public_notification(vassals_new_lord)
+		},
+		lost_vassal.username+' is no longer your vassal'
+		)
 }
 
-// no longer sent
-notification_new_vassal = function(user_id, vassal) {
-	// check(user_id, String)
-	// check(vassal, Object)
-	// check(vassal._id, String)
-	// check(vassal.username, String)
-	// check(vassal.x, Number)
-	// check(vassal.y, Number)
-	// check(vassal.castle_id, String)
 
-	// create_notification_new(user_id,
-	// 	'new_vassal',
-	// 	vassal,
-	// 	vassal.username+' is now your vassal'
-	// 	)
+notification_gained_vassal = function(user_id, new_vassal, vassals_new_lord) {
+	check(user_id, String)
+	check(new_vassal, Object)
+	check(vassals_new_lord, Object)
+
+	create_notification_new(
+		user_id,
+		'gained_vassal',
+		{
+			new_vassal:filter_user_for_public_notification(new_vassal),
+			vassals_new_lord:filter_user_for_public_notification(vassals_new_lord)
+		},
+		new_vassal.username+' is now your vassal'
+		)
 }
+
 
 notification_new_lord = function(user_id, lord) {
 	check(user_id, String)
@@ -104,10 +104,11 @@ notification_new_lord = function(user_id, lord) {
 
 	create_notification_new(user_id,
 		'new_lord',
-		lord,
+		filter_user_for_public_notification(lord),
 		lord.username+' is your new lord'
 		)
 }
+
 
 notification_sent_gold = function(user_id, userData, amount) {
 	check(user_id, String)
@@ -128,7 +129,7 @@ notification_sent_gold = function(user_id, userData, amount) {
 
 	create_notification_new(user_id,
 		'sent_gold',
-		userData,
+		filter_user_for_public_notification(userData),
 		userData.from.username+' sent '+userData.to.username+' '+amount+' Gold'
 		)
 }
@@ -152,7 +153,7 @@ notification_sent_army = function(user_id, userData, army) {
 
 	create_notification_new(user_id,
 		'sent_army',
-		userData,
+		filter_user_for_public_notification(userData),
 		userData.from.username+' sent '+userData.to.username+' an army'
 		)
 }
@@ -168,7 +169,7 @@ notification_new_chatroom_user = function(user_id, other_user) {
 
 	create_notification_new(user_id,
 		'new_chatroom_user',
-		other_user,
+		filter_user_for_public_notification(other_user),
 		'New chatroom with '+other_user.username
 		)
 }
@@ -201,6 +202,8 @@ notification_battle = function(user_id, battle) {
 	} else {
 		var str = ' lost '
 	}
+
+
 
 	create_notification_new(
 		user_id,
@@ -238,7 +241,7 @@ create_notification_new = function(user_id, type, vars, title) {
 		read: false,
 		type: type,
 		vars: vars,
-		title:title
+		title: title
 	})
 }
 
@@ -247,4 +250,34 @@ create_notification_new = function(user_id, type, vars, title) {
 delete_old_notifications = function() {
 	var begin = moment().add(-15, 'days').toDate()
 	Notifications.remove({read: true, created_at: {$lt: begin}})
+}
+
+
+
+// make sure notifications don't include secret user attributes
+filter_user_for_public_notification = function(user) {
+
+	var user_field_whitelist = [
+		'allies',
+		'allies_above',
+		'allies_below',
+		'castle_id',
+		'is_dominus',
+		'is_king',
+		'lord',
+		'num_allies',
+		'num_allies_above',
+		'num_allies_below',
+		'num_vassals',
+		'vassals',
+		'x',
+		'y',
+		'king',
+		'siblings',
+		'team',
+		'username',
+		'_id'
+		]
+
+	return _.pick(user, user_field_whitelist)
 }
