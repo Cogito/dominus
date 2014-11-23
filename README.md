@@ -3,9 +3,9 @@
 ### Dominus ###
 http://dominusgame.net
 
-Dominus is a multiplayer browser strategy game.  Players grow in power by attacking another player's castle.  Conquering someone's castle makes them your vassal.  Vassals send their lord part of their income.  If everyone in the game is your vassal or a vassal of your vassal then you are the Dominus.
+Dominus is a multiplayer browser strategy game.  Grow in power by conquering castles.   Make everyone in the game your vassal to become the Dominus.
 
-Dominus is a slow strategy game that is designed to not require a lot of time to play.  Army movement and resource gathering happen slowly over time.  Login, give your armies their orders then check back in a few hours.
+Dominus is a slow strategy game.  Army movement and resource gathering happen slowly over time.  Login, give your armies their orders then check back in a few hours.
 
 The game is able to support any number of people.  As more people join the map grows creating a larger gameplay space.
 
