@@ -21,9 +21,3 @@ Dominus is made using the web platform <a href="http://meteor.com">Meteor</a>.
 * Fill in the run file with your info.  This file is in the .gitignore and never checked in.
 * Do the same with "settings_temp.json and name it "settings.json".
 * Start game with "./run"
-
-
-### Issues ###
-
-* Old issues are at https://bitbucket.org/daniel_phillips/gridgame/issues?status=new&status=open.
-* New issues are here on Github.
