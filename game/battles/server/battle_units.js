@@ -72,9 +72,15 @@ Units = function(x, y) {
 
 Units.prototype._setAlliesOfDefenderAsDefenders = function() {
 	var self = this
+	
 	var defender = self.getDefender()
 	var allies = self.getAllies(defender)
+
 	_.each(allies, function(unit) {
+		unit.isAttacker = false
+	})
+
+	_.each(self.getUnitsWithSameOwner(defender), function(unit) {
 		unit.isAttacker = false
 	})
 }
@@ -557,6 +563,15 @@ Units.prototype.getAllies = function(unit) {
 
 	return _.filter(enemyOfEnemies, function(u) {
 		return self.isAlly(unit, u)
+	})
+}
+
+
+Units.prototype.getUnitsWithSameOwner = function(unit) {
+	var self = this
+
+	return _.filter(self.getAllUnits(), function(otherUnit) {
+		return unit.user_id == otherUnit.user_id
 	})
 }
 
