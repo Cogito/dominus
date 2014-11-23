@@ -32,6 +32,10 @@ Template.notifications_global.helpers({
 		}
 		return false
 	},
+
+	icon_name: function() {
+		return get_notification_icon(this.type)
+	}
 })
 
 Template.notifications_global.events({

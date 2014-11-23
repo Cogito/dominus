@@ -3,11 +3,6 @@ Template.notifications_battles.helpers({
 		return Battles.find()
 	},
 
-	date_nice: function() {
-		Session.get('refresh_time_field')
-		return moment(new Date(this.created_at)).calendar()
-	},
-
 	title: function() {
 		return 'Battle at '+this.x+', '+this.y
 	},
@@ -18,6 +13,10 @@ Template.notifications_battles.helpers({
 		}
 		return false
 	},
+
+	icon_name: function() {
+		return get_notification_icon('battle')
+	}
 })
 
 

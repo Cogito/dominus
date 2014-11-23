@@ -78,3 +78,40 @@ Template.notifications_panel.rendered = function() {
 		Meteor.subscribe('gameEndDate')
 	})
 }
+
+
+
+get_notification_icon = function(notification_type) {
+	switch (notification_type) {
+		case 'battle':
+			return 'fa-shield'
+		case 'battle_start':
+			return 'fa-shield'
+		case 'gained_vassal':
+			return 'fa-sign-in'
+		case 'lost_vassal':
+			return 'fa-sign-out'
+		case 'new_chatroom_kings':
+			return 'fa-comment'
+		case 'new_chatroom_lords':
+			return 'fa-comment'
+		case 'new_chatroom_user':
+			return 'fa-comment'
+		case 'new_lord':
+			return 'fa-sitemap'
+		case 'no_longer_a_king':
+			return 'fa-sitemap'
+		case 'no_longer_dominus':
+			return 'fa-sitemap'
+		case 'no_longer_dominus_new_user':
+			return 'fa-sitemap'
+		case 'now_a_king':
+			return 'fa-sitemap'
+		case 'now_dominus':
+			return 'fa-sitemap'
+		case 'sent_army':
+			return 'fa-envelope'
+		case 'sent_gold':
+			return 'fa-money'
+	}
+}

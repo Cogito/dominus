@@ -17,6 +17,10 @@ Template.notifications_mine.helpers({
 		}
 		return false
 	},
+
+	icon_name: function() {
+		return get_notification_icon(this.type)
+	}
 })
 
 

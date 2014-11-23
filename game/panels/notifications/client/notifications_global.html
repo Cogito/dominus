@@ -2,7 +2,24 @@
 	<div class="panel-group" id="notifications">
 		{{#each notification_titles_global}}
 			<div class="panel panel-default">
-				{{> not_header}}
+
+				<div class="panel-heading notifications_title">
+					<table style="width:100%;">
+						<tr>
+							<td style="width:32px;">
+								<i class="fa {{icon_name}} fa-2x"></i>
+							</td>
+							<td>
+								<a href="" data-id="{{_id}}" class="read_notification_button">
+									{{title}}
+								</a>
+								<br>
+								<small class="light_text">{{date_calendar created_at}}</small>
+							</td>
+						</tr>
+					</table>
+				</div>
+
 				{{#if show_notification}}
 					<div id="notifications-{{_id}}">
 						<div class="panel-body">
