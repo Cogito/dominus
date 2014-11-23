@@ -275,7 +275,7 @@ old_battle = function(attacker_id, attacker_type, defender_id, defender_type) {
 			}
 
 			if (defender_type == 'castle') {
-				set_lord_and_vassal(a.user, d.user)
+				set_lord_and_vassal(a.user, d.user, true)
 
 				d.survivors = {}
 				// if castle loses then castle only loses half

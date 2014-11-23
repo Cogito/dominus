@@ -1,5 +1,10 @@
 // update relationships for user and everyone in his king's branch
-
+// allies - everyone above and below you in tree
+// allies_below - everyone below
+// allies_above - everyone above
+// king - your king
+// siblings - vassals of your lord
+// team - everyone under your king
 
 relation_finder = function(user_id) {
 	check(user_id, String)

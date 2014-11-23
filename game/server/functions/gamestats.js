@@ -13,16 +13,57 @@ gamestats_job = function() {
 		stat._id = Gamestats.insert(stat)
 	}
 
+
 	// num users
 	stat.num_users = Meteor.users.find().count()
 
-	// total gold held
-	var total_gold = 0
-	Meteor.users.find().forEach(function(user) {
-		total_gold += user.gold
+	// total resources held
+	var total_res = {}
+	_.each(s.resource.types_plus_gold, function(type) {
+		total_res[type] = 0
 	})
-	check(total_gold, Number)
-	stat.total_gold = total_gold
+
+	Meteor.users.find().forEach(function(user) {
+		_.each(s.resource.types_plus_gold, function(type) {
+			total_res[type] += user[type]
+		})
+	})
+
+	_.each(s.resource.types_plus_gold, function(type) {
+		check(total_res[type], Number)
+		stat['total_'+type] = total_res[type]
+	})
+
+
+	// total army held
+	var total_army = {}
+	_.each(s.army.types, function(type) {
+		total_army[type] = 0
+	})
+
+	Castles.find().forEach(function(res) {
+		_.each(s.army.types, function(type) {
+			total_army[type] += res[type]
+		})
+	})
+
+	Villages.find().forEach(function(res) {
+		_.each(s.army.types, function(type) {
+			total_army[type] += res[type]
+		})
+	})
+
+	Armies.find().forEach(function(res) {
+		_.each(s.army.types, function(type) {
+			total_army[type] += res[type]
+		})
+	})
+
+	_.each(s.army.types, function(type) {
+		check(total_army[type], Number)
+		stat['total_'+type] = total_army[type]
+	})
+
 
 	// active users past 2 days
 	var cutoff = moment().subtract(2, 'days').toDate()

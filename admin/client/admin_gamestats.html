@@ -3,17 +3,31 @@
 		<div id="admin_container">
 			{{> admin_menu}}
 
-			<table class="table">
+			<table class="table table-striped" id="gamestatsTable">
 				<thead>
 					<tr>
 						<td>Date</td>
-						<td>Num Users</td>
-						<td>Active Users Past 2 Days</td>
-						<td>Total Gold</td>
+						<td>Users</td>
+						<td>Active Users<br>Past 2 Days</td>
+
+						<td>Gold</td>
+						<td>Grain</td>
+						<td>Lumber</td>
+						<td>Ore</td>
+						<td>Wool</td>
+						<td>Clay</td>
+						<td>Glass</td>
+
+						<td>Footmen</td>
+						<td>Archers</td>
+						<td>Pikemen</td>
+						<td>Cavalry</td>
+						<td>Catapults</td>
+					
 						<td>Avg Market Price</td>
 						<td>Num Chats</td>
 						<td>Money Earned</td>
-						<td>Users with Duplicate IP</td>
+						<td>Users with<br>Duplicate IP</td>
 					</tr>
 				</thead>
 				<tbody>
@@ -22,7 +36,21 @@
 							<td>{{date_calendar created_at}}</td>
 							<td>{{round num_users}}</td>
 							<td>{{round num_active_users}}</td>
+
 							<td>{{round total_gold}}</td>
+							<td>{{round total_grain}}</td>
+							<td>{{round total_lumber}}</td>
+							<td>{{round total_ore}}</td>
+							<td>{{round total_wool}}</td>
+							<td>{{round total_clay}}</td>
+							<td>{{round total_glass}}</td>
+
+							<td>{{round total_footmen}}</td>
+							<td>{{round total_archers}}</td>
+							<td>{{round total_pikemen}}</td>
+							<td>{{round total_cavalry}}</td>
+							<td>{{round total_catapults}}</td>
+
 							<td>{{round_2 avg_market_price}}</td>
 							<td>{{num_chats}}</td>
 							<td>${{round_2 money_earned}}</td>

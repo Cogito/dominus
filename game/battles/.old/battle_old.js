@@ -837,7 +837,7 @@ Fight = function(x, y) {
 					var lord = Meteor.users.findOne(winner.user_id)
 					var vassal = Meteor.users.findOne(self.castle.user_id)
 					if (lord && vassal) {
-						set_lord_and_vassal(lord, vassal)
+						set_lord_and_vassal(lord, vassal, true)
 					} else {
 						console.log(lord)
 						console.log(vassal)

@@ -110,6 +110,8 @@ remove_lord_and_vassal = function(lord_id, vassal_id) {
 	update_vassal_ally_count(vassal_id)
 }
 
+
+
 create_lord_and_vassal = function(lord_id, vassal_id) {
 	check(lord_id, String)
 	check(vassal_id, String)
