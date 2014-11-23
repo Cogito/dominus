@@ -126,7 +126,7 @@ Template.hover_box.helpers({
 								object.flag_name = 'Lord'
 							} else {
 								object.flag_type = 'above'
-								object.flag_name = 'Upper Ally'
+								object.flag_name = 'Upper Lord'
 							}
 
 						} else if (_.indexOf(user.allies_below, object.user_id) != -1) {
@@ -136,7 +136,7 @@ Template.hover_box.helpers({
 								object.flag_name = 'Vassal'
 							} else {
 								object.flag_type = 'below'
-								object.flag_name = 'Lower Ally'
+								object.flag_name = 'Lower Vassal'
 							}
 
 						// } else if (_.indexOf(user.siblings, object.user_id) != -1) {
