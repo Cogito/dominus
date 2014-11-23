@@ -7,29 +7,20 @@
 			A free <a href="https://github.com/dan335/dominus">open source</a> multiplayer strategy game.
 		</div>
 	</div>
+
 	<div id="landingContent">
 		<div class="landingPad">
 			<div class="landingLargeText">
 				Grow in power by conquering castles. &nbsp; Make everyone in the game your vassal to become the Dominus.
 			</div>
-
 			<br>
-			Conquering someone's castle makes them your vassal. Vassals send their lord part of their income. If everyone in the game is your vassal or a vassal of your vassal then you are the Dominus.
-			<br><br>
-
-			Game {{s.game_number}} is currently running.  It started {{date_from_now s.game_start_date}}.
-		</div>
-
-		<div class="landingDarkerBg">
-			{{> UI.dynamic template=form}}
+			Game {{s.game_number}} started {{date_from_now s.game_start_date}}.
 		</div>
 	</div>
 
-	<div id="landingContentBottom">
+	<div id="landingForm">
 		<div class="landingPad">
-			Dominus is a slow strategy game that does not require a lot of time to play. Army movement and resource gathering happen slowly over time. Give your armies their orders then check back in a few hours.<br>
-			<br>
-			Made with <a href="http://meteor.com">Meteor</a>.
+			{{> UI.dynamic template=form}}
 		</div>
 	</div>
 
@@ -40,29 +31,29 @@
 
 
 <template name="landingCreateAccount">
-	<div class="landingLargerText">Create an an account to start playing.</div>
+	<div class="loginTitle">Create an an account to start playing.</div>
 	<br>
 	{{> aCreateAccount}}
 	<br>
-	<div class="landingLargeText"><a href="" id="landingSigninLink">Sign In</a></div>
+	<div class="loginLink"><a href="" id="landingSigninLink">Sign In</a></div>
 </template>
 
 
 <template name="landingSignin">
-	<div class="landingLargerText">Sign In</div>
+	<div class="loginTitle">Sign In</div>
 	<br>
 	{{> aSignin}}
 	<br>
-	<div class="landingLargeText"><a href="" id="landingCreateAccountLink">Create Account</a></div>
-	<div class="landingLargeText"><a href="" id="landingForgotPasswordLink">Forgot Password</a></div>
+	<div class="loginLink"><a href="" id="landingCreateAccountLink">Create Account</a></div>
+	<div class="loginLink"><a href="" id="landingForgotPasswordLink">Forgot Password</a></div>
 </template>
 
 
 <template name="landingForgotPassword">
-	<div class="landingLargerText">Reset Password</div>
+	<div class="loginTitle">Reset Password</div>
 	<br>
 	{{> aForgotPassword}}
 	<br>
-	<div class="landingLargeText"><a href="" id="landingCreateAccountLink">Create Account</a></div>
-	<div class="landingLargeText"><a href="" id="landingSigninLink">Sign In</a></div>
+	<div class="loginLink"><a href="" id="landingCreateAccountLink">Create Account</a></div>
+	<div class="loginLink"><a href="" id="landingSigninLink">Sign In</a></div>
 </template>
