@@ -11,6 +11,13 @@
 		{{/each}}
 	</ul>
 
+	Lost last round.
+	<ul>
+		{{#each lostLastRound}}
+			<li>{{username}}'s {{type}} {{name}}</li>
+		{{/each}}
+	</ul>
+
 	<div class="panel panel-default">
 		<div class="panel-heading" style="text-align:left;">
 			<a data-toggle="collapse" href="#losses">
@@ -77,21 +84,30 @@
 
 
 <template name="battle_report_unit">
-	<h4><a href="" class="battle_report_goto_user">{{username}}'s</a> {{type}} {{name}}</h4>
-	<h5>
-		Is
-		{{#if isAttacker}}
-			an <b>attacker</b>
-		{{else}}
-			a <b>defender</b>
-		{{/if}}
-		and
-		{{#if won_this_round}}
-			<b>won</b> this round.
-		{{else}}
-			<b>lost</b> this round.
-		{{/if}}
-	</h5>
+	<table style="width:100%;">
+		<tr>
+			<td style="width:35px;">
+				<i class="fa {{icon_name}} fa-2x"></i>
+			</td>
+			<td>
+				<h4><a href="" class="battle_report_goto_user">{{username}}'s</a> {{type}} {{name}}</h4>
+				<h5>
+					Is
+					{{#if isAttacker}}
+						an <b>attacker</b>
+					{{else}}
+						a <b>defender</b>
+					{{/if}}
+					and
+					{{#if won_this_round}}
+						<b class="battle_won_color">won</b> this round.
+					{{else}}
+						<b class="battle_lost_color">lost</b> this round.
+					{{/if}}
+				</h5>
+			</td>
+		</tr>
+	</table>
 
 	<ul>
 		{{#if greater_than_zero footmen}}

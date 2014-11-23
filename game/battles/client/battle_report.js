@@ -13,6 +13,15 @@ Template.battle_report_unit.helpers({
 
 	hasAllies: function() {
 		return this.allies.length > 0
+	},
+
+	icon_name: function() {
+		if (this.isAttacker) {
+			return 'fa-gavel'
+		} else {
+			return 'fa-shield'
+		}
+		
 	}
 })
 
@@ -40,6 +49,15 @@ Template.battle_report.helpers({
 		if (data) {
 			return _.filter(this.roundData[this.roundData.length-1].units, function(unit) {
 				return unit.dif > 0
+			})
+		}
+	},
+
+	lostLastRound: function() {
+		var data = this.roundData[this.roundData.length-1]
+		if (data) {
+			return _.filter(this.roundData[this.roundData.length-1].units, function(unit) {
+				return unit.dif < 0
 			})
 		}
 	}
