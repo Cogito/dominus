@@ -1,9 +1,10 @@
 Template.stats_panel.destroyed = function() {
-	if (this.deps_subscribe) {
-		this.deps_subscribe.stop()
-	}
 	if (this.deps_chart1) {
 		this.deps_chart1.stop()
+	}
+
+	if (this.deps_chart2) {
+		this.deps_chart2.stop()
 	}
 }
 
@@ -11,8 +12,9 @@ Template.stats_panel.destroyed = function() {
 Template.stats_panel.rendered = function() {
 
 	// subscribe
-	this.deps_subscribe = Deps.autorun(function() {
+	this.autorun(function() {
 		Meteor.subscribe('my_dailystats')
+		Meteor.subscribe('stats_gamestats')
 	})
 
 
@@ -22,27 +24,27 @@ Template.stats_panel.rendered = function() {
 		var i_gold = dailystats.map(function(value, index) {
 			return {x: value.created_at, y:value.income.gold }
 		})
-		dailystats.rewind()
+
 		var i_grain = dailystats.map(function(value, index) {
 			return {x: value.created_at, y:value.income.grain }
 		})
-		dailystats.rewind()
+
 		var i_lumber = dailystats.map(function(value, index) {
 			return {x: value.created_at, y:value.income.lumber }
 		})
-		dailystats.rewind()
+
 		var i_ore = dailystats.map(function(value, index) {
 			return {x: value.created_at, y:value.income.ore }
 		})
-		dailystats.rewind()
+
 		var i_wool = dailystats.map(function(value, index) {
 			return {x: value.created_at, y:value.income.wool }
 		})
-		dailystats.rewind()
+
 		var i_clay = dailystats.map(function(value, index) {
 			return {x: value.created_at, y:value.income.clay }
 		})
-		dailystats.rewind()
+
 		var i_glass = dailystats.map(function(value, index) {
 			return {x: value.created_at, y:value.income.glass }
 		})
@@ -78,31 +80,30 @@ Template.stats_panel.rendered = function() {
 
 
 
-		dailystats.rewind()
 		var vi_gold = dailystats.map(function(value, index) {
 			return {x: value.created_at, y:value.vassal_income.gold }
 		})
-		dailystats.rewind()
+
 		var vi_grain = dailystats.map(function(value, index) {
 			return {x: value.created_at, y:value.vassal_income.grain }
 		})
-		dailystats.rewind()
+
 		var vi_lumber = dailystats.map(function(value, index) {
 			return {x: value.created_at, y:value.vassal_income.lumber }
 		})
-		dailystats.rewind()
+
 		var vi_ore = dailystats.map(function(value, index) {
 			return {x: value.created_at, y:value.vassal_income.ore }
 		})
-		dailystats.rewind()
+
 		var vi_wool = dailystats.map(function(value, index) {
 			return {x: value.created_at, y:value.vassal_income.wool }
 		})
-		dailystats.rewind()
+
 		var vi_clay = dailystats.map(function(value, index) {
 			return {x: value.created_at, y:value.vassal_income.clay }
 		})
-		dailystats.rewind()
+
 		var vi_glass = dailystats.map(function(value, index) {
 			return {x: value.created_at, y:value.vassal_income.glass }
 		})
@@ -139,7 +140,6 @@ Template.stats_panel.rendered = function() {
 
 
 
-		dailystats.rewind()
 		var nw = dailystats.map(function(value, index) {
 			return {x: value.created_at, y:value.networth }
 		})
@@ -166,7 +166,6 @@ Template.stats_panel.rendered = function() {
 
 
 
-		dailystats.rewind()
 		var nw = dailystats.map(function(value, index) {
 			return {x: value.created_at, y:value.num_allies }
 		})
@@ -183,6 +182,40 @@ Template.stats_panel.rendered = function() {
 				chart.yAxis.tickFormat(d3.format(",.0f"))
 
 				d3.select('#num_allies_chart svg').datum(num_allies_data).transition().duration(300).call(chart)
+
+				nv.utils.windowResize(chart.update)
+
+				return chart
+			})
+		}
+
+	})
+
+
+	this.deps_chart2 = Deps.autorun(function() {
+		var gamestats = Gamestats.find()
+
+		var num_users = gamestats.map(function(value, index) {
+			return {x: value.created_at, y:value.num_users }
+		})
+
+		var num_active_users = gamestats.map(function(value, index) {
+			return {x: value.created_at, y:value.num_active_users }
+		})
+
+		if (num_users.length > 0 && num_active_users.length > 0) {
+			var user_data = [
+				{values: num_users, key: 'Players', color: '#82d957'},
+				{values: num_active_users, key: 'Active Players', color: '#5793d9'}
+			]
+
+			nv.addGraph(function() {
+				var chart = nv.models.lineChart().useInteractiveGuideline(true).showLegend(true).showYAxis(true).showXAxis(true)
+
+				chart.xAxis.tickFormat(function(d) { return d3.time.format('%b %d')(new Date(d)); })
+				chart.yAxis.tickFormat(d3.format(",.0f"))
+
+				d3.select('#users_chart svg').datum(user_data).transition().duration(300).call(chart)
 
 				nv.utils.windowResize(chart.update)
 

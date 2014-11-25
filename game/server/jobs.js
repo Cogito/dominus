@@ -110,16 +110,16 @@ Meteor.startup(function() {
 
 
 
-		// hourly job
-		var endOfHour = moment().endOf('hour').add(2, 'minutes')
-		var timeUntilNextHour = endOfHour - moment()
+		// every 10 minute job
+		var minute = moment().get('minute') % 10
+		var time_til_next_tenMin = moment().add(10 - minute, 'minutes').seconds(0)
 
 		Meteor.setTimeout(function() {
-			hourly_job()
+			tenMin_job()
 			Meteor.setInterval(function() {
-				hourly_job()
-			}, 1000 * 60 * 60)
-		}, timeUntilNextHour)
+				tenMin_job()
+			}, 1000 * 60 * 10)
+		}, time_til_next_tenMin)
 
 	}
 })
@@ -154,8 +154,6 @@ nightly_job = function() {
 
 
 
-hourly_job = function() {
-	console.log('running hourly job at '+moment().format("dddd, MMMM Do YYYY, h:mm:ss a"))
-
+tenMin_job = function() {
 	gamestats_job()
 }

@@ -1,5 +1,7 @@
 // admin game stats
 gamestats_job = function() {
+	var start_time = new Date()
+
 	var begin = moment().startOf('day').toDate()
 	var end = moment().add(1, 'days').startOf('day').toDate()
 
@@ -107,4 +109,6 @@ gamestats_job = function() {
 	stat.users_with_duplicate_ip = users_with_same
 
 	Gamestats.update(stat._id, stat)
+
+	record_job_stat('gamestats', new Date() - start_time)
 }

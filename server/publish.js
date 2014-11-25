@@ -149,13 +149,7 @@ Meteor.publish('market', function() {
 
 
 
-Meteor.publish('my_dailystats', function() {
-	if(this.userId) {
-		return Dailystats.find({user_id: this.userId})
-	} else {
-		this.ready()
-	}
-})
+
 
 Meteor.publish('markethistory', function() {
 	if(this.userId) {
