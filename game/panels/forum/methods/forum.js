@@ -16,8 +16,6 @@ Meteor.methods({
 			return false
 		}
 
-		message = message.replace(/\r?\n/g, '<br />');
-
 		var user = Meteor.users.findOne(Meteor.userId(), {fields: {username:1, x:1, y:1, castle_id:1}})
 
 		var id = Threads.insert({
@@ -39,7 +37,7 @@ Meteor.methods({
 			username: user.username,
 			created_at: new Date(),
 			updated_at: new Date(),
-			message: message,
+			message: prepareTextForForum(message),
 			castle_x: user.x,
 			castle_y: user.y,
 			castle_id: user.castle_id
@@ -66,18 +64,6 @@ Meteor.methods({
 			return false
 		}
 
-		message = message.replace(/\r?\n/g, '<br />');
-
-		// sanitize-html has been removed
-		// this won't work anymore?
-		// var sanitizeHtml = Meteor.require('sanitize-html')
-		// var clean_message = sanitizeHtml(message, {
-		// 	allowedTags: sanitizeHtml.defaults.allowedTags.concat([ 'img' ]),
-		// })
-
-		// trying this instead of above
-		clean_message = message.replace(/<(?!br\s*\/?)[^>]+>/g, '')
-
 		Messages.insert({
 			forum_id: forum_id,
 			thread_id: thread_id,
@@ -85,7 +71,7 @@ Meteor.methods({
 			username: get_user_property("username"),
 			created_at: new Date(),
 			updated_at: new Date(),
-			message: clean_message,
+			message: prepareTextForForum(message),
 			castle_x: get_user_property("x"),
 			castle_y: get_user_property("y"),
 			castle_id: get_user_property("castle_id")
