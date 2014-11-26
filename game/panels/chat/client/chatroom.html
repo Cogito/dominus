@@ -27,7 +27,7 @@
 				<div class="chats_container">
 					{{#each chats}}
 						<div class="chat_line">
-							<a href="" class="username_click_link">{{username}}</a> : <span data-toggle="tooltip" data-placement="right" title="{{date_calendar created_at}}">{{text}}</span>
+							<a href="" class="username_click_link">{{username}}</a> : <span data-toggle="tooltip" data-placement="right" title="{{date_calendar created_at}}">{{autolink text}}</span>
 						</div>
 					{{else}}
 						<div>
@@ -35,7 +35,7 @@
 						</div>
 					{{/each}}
 				</div>
-				
+
 			</div>
 		</div>
 	</div>
