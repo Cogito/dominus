@@ -61,3 +61,12 @@ UI.registerHelper('round_2', function(num) {
 UI.registerHelper('capitalize', function(words) {
 	return _.capitalize(words)
 })
+
+UI.registerHelper('autolink', function(text, escape) {
+	if (escape || escape === undefined){
+		text = UI._escape(text)
+	}
+	return new Spacebars.SafeString(
+		Autolinker.link(text, {twitter: false})
+	)
+})
