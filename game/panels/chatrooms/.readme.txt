@@ -1,5 +1,6 @@
 owner and admins can make people admins
 owner and admins can invite people
+owner can rename chatroom
 
 type of chatrooms
 	everyone - can't leave, can only be one, owner and admins are empty

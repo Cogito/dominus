@@ -1,6 +1,6 @@
 Template.chatrooms_panel.helpers({
 	chatroomSubscriptionReady: function() {
-		return Session.get('chatroomSubscriptionReady')
+		return Template.instance().chatroomSubscriptionReady.get()
 	},
 
 	normalChatrooms: function() {
@@ -53,11 +53,14 @@ Template.chatrooms_panel.events({
 
 
 
-Template.chatrooms_panel.rendered = function() {
-	Session.set('chatroomSubscriptionReady', false)
+Template.chatrooms_panel.created = function() {
+	var self = this
+
+	self.chatroomSubscriptionReady = new ReactiveVar(false)
+	Session.set('selectedChatroomId', null)
 
 	this.autorun(function() {
 		var normalChatroomsHandle = Meteor.subscribe('myNormalChatrooms')
-		Session.set('chatroomSubscriptionReady', normalChatroomsHandle.ready())
+		self.chatroomSubscriptionReady.set(normalChatroomsHandle.ready())
 	})
 }

@@ -1,5 +1,7 @@
 Meteor.methods({
 	startChatroomWith: function(username) {
+		check(username, String)
+
 		var user = Meteor.users.findOne(Meteor.userId(), {fields: {username:1, x:1, y:1, castle_id:1 }})
 
 		if (user) {
@@ -29,6 +31,8 @@ Meteor.methods({
 
 
 	leaveChatroom: function(room_id) {
+		check(room_id, String)
+
 		var user_id = Meteor.userId()
 
 		var room = Rooms.findOne({_id:room_id, members:user_id, type:'normal'})
@@ -56,10 +60,76 @@ Meteor.methods({
 					if (highest_id) {
 						Rooms.update(room_id, {$set: {owner:highest_id}})
 					} else {
-						throw new Meteor.Error('cannot find someone to give room to')
+						throw new Meteor.Error('Cannot find someone make owner of room.')
 					}
 				}
 			}
+
+		} else {
+			throw new Meteor.Error("Can't find room.")
+		}
+	},
+
+
+	renameChatroom: function(room_id, name) {
+		check(room_id, String)
+		check(name, String)
+
+		var chatroomMaxNameLength = 22
+
+		var user_id = Meteor.userId()
+		var room = Rooms.findOne(room_id)
+
+		if (room) {
+			if (room.owner == user_id) {
+				if (name.length < 1) {
+					throw new Meteor.Error("New name is not long enough.")
+				}
+
+				if (name.length >= chatroomMaxNameLength) {
+					throw new Meteor.Error("Must be less than "+chatroomMaxNameLength+" characters.")
+				}
+
+				Rooms.update(room_id, {$set: {name:name}})
+				return true
+
+			} else {
+				throw new Meteor.Error("Only the owner can rename a chatroom.")
+			}
+		} else {
+			throw new Meteor.Error("Error renaming room.")
+		}
+	},
+
+
+	inviteToChatroom: function(room_id, name) {
+		check(room_id, String)
+		check(name, String)
+
+		var user_id = Meteor.userId()
+		var room = Rooms.findOne(room_id)
+
+		if (room) {
+			if (room.owner == user_id || _.contains(room.admins, user_id)) {
+				var member = Meteor.users.findOne({username:name}, {fields: {username:1}})
+
+				if (member) {
+					if (_.contains(room.members, member._id)) {
+						throw new Meteor.Error(name+" is already in this chatroom.")
+					}
+
+					Rooms.update(room_id, {$addToSet: {members:member._id}})
+
+				} else {
+					throw new Meteor.Error("Can't find anyone named "+name+".")
+				}
+
+			} else {
+				throw new Meteor.Error('Only the room owner and admins can invite users.')
+			}
+
+		} else {
+			throw new Meteor.Error('Error inviting user.')
 		}
 	}
 })

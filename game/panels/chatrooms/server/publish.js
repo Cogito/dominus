@@ -6,9 +6,9 @@ Meteor.publish('myNormalChatrooms', function() {
 	}
 })
 
-Meteor.publish('roomText', function(chatroom_id) {
+Meteor.publish('roomchats', function(chatroom_id) {
 	if(this.userId) {
-		return Roomtext.find({room_id: chatroom_id}, {sort: {created_at: -1}, limit: 100})
+		return Roomchats.find({members:this.userId, room_id: chatroom_id}, {sort: {created_at: -1}, limit: 100})
 	} else {
 		this.ready()
 	}

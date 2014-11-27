@@ -1,2 +1,8 @@
 Rooms = new Meteor.Collection('rooms')
-Roomtext = new Meteor.Collection('roomtext')
+Roomchats = new Meteor.Collection('roomchats')
+
+if (Meteor.isServer) {
+	Meteor.startup(function () {  
+	  Rooms._ensureIndex({members:1, type:1})
+	})
+}

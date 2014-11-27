@@ -5,31 +5,56 @@
 				<tbody>
 					<tr>
 						<td style="text-align:left;font-size:80%;">
-							<a data-toggle="collapse" data-parent="#accordion_chat" href="#chat_{{_id}}" style="font-size:130%;">
+							<a href="" style="font-size:130%;" class="openChatroomButton">
 								{{name}}
 							</a>
 							<br>
 							<span class="light_text">{{numPeople}} members</span>
 						</td>
 						<td style="text-align:right;">
-							<a href="" class="showMembersButton"><i class="fa fa-group"></i></a>
+							<a href="" class="showMembersButton" data-toggle="tooltip" title="Show Members"><i class="fa fa-group"></i></a>
 							&nbsp;
-							<a href="" class="inviteButton"><i class="fa fa-plus-circle"></i></a>
+							<a href="" class="inviteButton" data-toggle="tooltip" title="Invite Someone"><i class="fa fa-plus-circle"></i></a>
 							&nbsp;
-							<a href="" class="renameButton"><i class="fa fa-pencil"></i></a>
+							<a href="" class="renameButton" data-toggle="tooltip" title="Rename Chatroom"><i class="fa fa-pencil"></i></a>
 							&nbsp;
-							<a href="" class="leaveChatroomButton"><i class="fa fa-times-circle"></i></a>
+							<a href="" class="leaveChatroomButton" data-toggle="tooltip" title="Leave Chatroom"><i class="fa fa-times-circle"></i></a>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 
-		<div class="chatroomEditName"></div>
+		<div class="chatroomInvite"  style="display:{{showInviteBox}};">
+			<div class="pad_group">
+				<h4>Invite someone to this chatroom.</h4>
+				<br>
+				<div class="alert alert-danger inviteErrorAlert" style="display:none;"></div>
+				<label for="inviteInput">Enter User's Name</label>
+				<input type="text" class="form-control inviteInput" value="">
+				<br>
+				<button class="btn btn-primary btn-block inviteSaveButton" type="button">Invite User</button>
+				<button class="btn btn-primary btn-block inviteCancelButton" type="button">Cancel</button>
+				<br>
+			</div>
+		</div>
 
-		<div class="chatroomInvite"></div>
+		<div class="chatroomRename" style="display:{{showRenameBox}};">
+			<div class="pad_group">
+				<h4>Rename Chatroom</h4>
+				<br>
+				<div class="alert alert-danger renameErrorAlert" style="display:none;"></div>
 
-		<div class="chatroomLeaveConfirm" style="display:{{leaveChatroomConfirmDisplay}};">
+				<label for="renameInput">Enter New Name</label>
+				<input type="text" class="form-control renameInput" value="{{name}}">
+				<br>
+				<button class="btn btn-primary btn-block renameSaveButton" type="button">Save New Name</button>
+				<button class="btn btn-primary btn-block renameCancelButton" type="button">Cancel</button>
+				<br>
+			</div>
+		</div>
+
+		<div class="chatroomLeaveConfirm" style="display:{{showLeaveConfirm}};">
 			<div class="pad_group">
 				<div style="text-align:center;font-size:130%;">Leave this chatroom?</div>
 				<br>
@@ -39,10 +64,10 @@
 			</div>
 		</div>
 
-		<div id="chat_{{_id}}" class="panel-collapse collapse">
+		{{#if openChatroom}}
 			<div class="panel-body">
 
 			</div>
-		</div>
+		{{/if}}
 	</div>
 </template>
