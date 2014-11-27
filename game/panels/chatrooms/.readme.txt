@@ -1,0 +1,10 @@
+owner and admins can make people admins
+owner and admins can invite people
+
+type of chatrooms
+	everyone - can't leave, can only be one, owner and admins are empty
+	king - can't leave, owner is king, admins are empty
+	normal - can leave, owner and admins can add admins and invite people
+
+members array includes everyone including admins and owner
+admin array does not include owner

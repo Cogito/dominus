@@ -27,6 +27,10 @@ Template.menu.helpers({
 		if (Session.get('show_chat_panel')) { return 'active' } else { return '' }
 	},
 
+	chatrooms_active: function() {
+		if (Session.get('show_chatrooms_panel')) { return 'active' } else { return '' }
+	},
+
 	forum_active: function() {
 		if (Session.get('show_forum_panel')) { return 'active' } else { return '' }
 	},
@@ -142,6 +146,14 @@ Template.menu.events({
 		}
 	},
 
+	'click #show_chatrooms_panel_button': function(event, template) {
+		if (Session.get('show_chatrooms_panel')) {
+			Session.set('show_chatrooms_panel', false)
+		} else {
+			Session.set('show_chatrooms_panel', true)
+		}
+	},
+
 	'click #show_forum_panel_button': function(event, template) {
 		if (Session.get('show_forum_panel')) {
 			Session.set('show_forum_panel', false)
@@ -204,6 +216,21 @@ Template.menu.events({
 
 
 Template.menu.rendered = function() {
+	Session.setDefault('show_summary_panel', true)
+	Session.setDefault('show_help_panel', false)
+	Session.setDefault('show_notifications_panel', false)
+	Session.setDefault('show_admin_panel', false)
+	Session.setDefault('show_market_panel', false)
+	Session.setDefault('show_settings_panel', false)
+	Session.setDefault('show_forum_panel', false)
+	Session.setDefault('show_chat_panel', false)
+	Session.setDefault('show_chatrooms_panel', false)
+	Session.setDefault('show_rankings_panel', false)
+	Session.setDefault('show_stats_panel', false)
+	Session.setDefault('show_store_panel', false)
+	Session.setDefault('show_tree_panel', false)
+	Session.setDefault('show_coords', false)
+
 	if (typeof Session.get('canvas_size') != 'undefined') {
 		$('#left_panels').css('height', Session.get('canvas_size').height - 40)
 		$('#right_panel').css('height', Session.get('canvas_size').height - 40)

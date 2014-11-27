@@ -27,4 +27,5 @@ danimal:hx
 iron:router
 meteorhacks:subs-manager
 underscore
+reactive-var
 

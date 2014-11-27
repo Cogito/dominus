@@ -1,4 +1,4 @@
-Template.chatroom.helpers({
+Template.chat.helpers({
 	name_is_everyone: function() {
 		return this.name == 'Everyone'
 	},
@@ -27,7 +27,7 @@ Template.chatroom.helpers({
 
 
 
-Template.chatroom.events({
+Template.chat.events({
 	'click .chat_send_button': function(event, template) {
 		event.preventDefault()
 		event.stopPropagation()
@@ -143,7 +143,7 @@ Template.chatroom.events({
 
 
 
-Template.chatroom.rendered = function() {
+Template.chat.rendered = function() {
 	var self = this
 
 	this.deps_resize = Deps.autorun(function() {
@@ -157,7 +157,7 @@ Template.chatroom.rendered = function() {
 	})
 }
 
-Template.chatroom.destroyed = function() {
+Template.chat.destroyed = function() {
 	if (this.deps_resize) {
 		this.deps_resize.stop()
 	}

@@ -1,0 +1,48 @@
+<template name="chatroom">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<table style="width:100%;">
+				<tbody>
+					<tr>
+						<td style="text-align:left;font-size:80%;">
+							<a data-toggle="collapse" data-parent="#accordion_chat" href="#chat_{{_id}}" style="font-size:130%;">
+								{{name}}
+							</a>
+							<br>
+							<span class="light_text">{{numPeople}} members</span>
+						</td>
+						<td style="text-align:right;">
+							<a href="" class="showMembersButton"><i class="fa fa-group"></i></a>
+							&nbsp;
+							<a href="" class="inviteButton"><i class="fa fa-plus-circle"></i></a>
+							&nbsp;
+							<a href="" class="renameButton"><i class="fa fa-pencil"></i></a>
+							&nbsp;
+							<a href="" class="leaveChatroomButton"><i class="fa fa-times-circle"></i></a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="chatroomEditName"></div>
+
+		<div class="chatroomInvite"></div>
+
+		<div class="chatroomLeaveConfirm" style="display:{{leaveChatroomConfirmDisplay}};">
+			<div class="pad_group">
+				<div style="text-align:center;font-size:130%;">Leave this chatroom?</div>
+				<br>
+				<button type="button" class="btn btn-primary btn-block chatroomLeaveYesButton">Yes</button>
+				<button type="button" class="btn btn-primary btn-block chatroomLeaveNoButton">No</button>
+				<br>
+			</div>
+		</div>
+
+		<div id="chat_{{_id}}" class="panel-collapse collapse">
+			<div class="panel-body">
+
+			</div>
+		</div>
+	</div>
+</template>

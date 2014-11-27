@@ -40,6 +40,12 @@
 				</div>
 
 				<div class="left_panel_content">
+					{{#if show_chatrooms_panel}}
+						{{> chatrooms_panel}}
+					{{/if}}
+				</div>
+
+				<div class="left_panel_content">
 					{{#if show_forum_panel}}
 						{{> forum_panel}}
 					{{/if}}
