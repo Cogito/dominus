@@ -95,6 +95,8 @@ Template.settings_panel.events({
 	}
 })
 
+
+
 Template.settings_panel.rendered = function() {
 	logevent('panel', 'open', 'settings')
 }

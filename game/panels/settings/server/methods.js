@@ -113,5 +113,5 @@ Meteor.methods({
 
 	hide_minimap: function() {
 		Meteor.users.update(Meteor.userId(), {$set: {sp_show_minimap: false}})
-	},
+	}
 })
