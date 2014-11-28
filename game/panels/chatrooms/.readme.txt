@@ -19,19 +19,19 @@ todo
 everyone chat
 king chat
 cleanup when user deletes account
+notifications
+	when someone invites you
+	when you're kicked
+	when you're made admin
+	when you're removed from admin
+	when you're made owner
+new chat alert
+
+todo later
+---
 invite someone, confirm button in notification
 	maybe it shouldn't be a notification? or also a notification
 	have a yes/no box at top of chat panel asking if you want to join
 	show pending members
-make someone admin
-make someone owner
-	you are now admin
 add invite to chatroom button to castle
 	do later?
-change format to be
-	invite box
-	list of chatrooms
-	box with chats of selected chatroom
-set size of chatroom in settings
-clean up settings
-	add checks

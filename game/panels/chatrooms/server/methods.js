@@ -131,5 +131,139 @@ Meteor.methods({
 		} else {
 			throw new Meteor.Error('Error inviting user.')
 		}
-	}
+	},
+
+
+	// must be owner
+	// owner is now admin
+	chatroomMakeOwner: function(room_id, member_id) {
+		check(room_id, String)
+		check(member_id, String)
+
+		var user_id = Meteor.userId()
+
+		// make sure member exists
+		if (Meteor.users.find(member_id).count() != 1) {
+			return false
+		}
+
+		var room = Rooms.findOne({_id:room_id, owner:user_id})
+		if (room) {
+			// make sure member_id is a member of room
+			if (!_.contains(room.members, member_id)) {
+				return false
+			}
+
+			Rooms.update(room_id, {
+				$set: {owner:member_id},
+				$addToSet: {admins:user_id}
+			})
+
+			Rooms.update(room_id, {
+				$pull: {admins:member_id}
+			})
+		}
+	},
+
+
+	// if I am owner or admin and other user is not admin or owner
+	chatroomMakeAdmin: function(room_id, member_id) {
+		check(room_id, String)
+		check(member_id, String)
+
+		var user_id = Meteor.userId()
+
+		// make sure member exists
+		if (Meteor.users.find(member_id).count() != 1) {
+			return false
+		}
+
+		var room = Rooms.findOne(room_id)
+		if (room) {
+			// make sure member_id is a member of room
+			if (!_.contains(room.members, member_id)) {
+				return false
+			}
+
+			if (room.owner == user_id || _.contains(room.admins, user_id)) {
+				if (room.owner != member_id) {
+					if (!_.contains(room.admins, member_id)) {
+						Rooms.update(room_id, {$addToSet: {admins:member_id}})						
+					}
+				}
+			}
+		}
+	},
+
+
+	// if i am owner and user is admin
+	chatroomRemoveAdmin: function(room_id, member_id) {
+		check(room_id, String)
+		check(member_id, String)
+
+		var user_id = Meteor.userId()
+
+		// make sure member exists
+		if (Meteor.users.find(member_id).count() != 1) {
+			return false
+		}
+
+		var room = Rooms.findOne(room_id)
+		if (room) {
+			// make sure member_id is a member of room
+			if (!_.contains(room.members, member_id)) {
+				return false
+			}
+
+			// i am owner
+			if (room.owner != user_id) {
+				return false
+			}
+
+			if (!_.contains(room.admins, member_id)) {
+				return false
+			}
+
+			Rooms.update(room_id, {$pull: {admins:member_id}})
+		}
+	},
+
+
+	// if i am owner - can kick anyone
+	// if i am admin - can kick not admin
+	kickFromChatroom: function(room_id, member_id) {
+		check(room_id, String)
+		check(member_id, String)
+
+		var user_id = Meteor.userId()
+
+		// make sure member exists
+		if (Meteor.users.find(member_id).count() != 1) {
+			return false
+		}
+
+		var room = Rooms.findOne(room_id)
+		if (room) {
+			// make sure member_id is a member of room
+			if (!_.contains(room.members, member_id)) {
+				return false
+			}
+
+			// i am owner
+			if (room.owner == user_id) {
+				Rooms.update(room_id, {$pull: {admins:member_id, members:member_id}})
+			}
+
+			// i am admin
+			if (_.contains(room.admins, user_id)) {
+				// member is not owner
+				if (room.owner != member_id) {
+					// member is not an admin
+					if (!_.contains(room.admins, member_id)) {
+						Rooms.update(room_id, {$pull: {members:member_id}})
+					}
+				}
+			}
+		}
+	},
 })

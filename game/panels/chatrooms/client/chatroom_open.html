@@ -11,12 +11,21 @@
 						</td>
 						<td style="text-align:right;">
 							<a href="" class="showMembersButton" data-toggle="tooltip" title="Show Members"><i class="fa fa-group"></i></a>
-							&nbsp;
-							<a href="" class="inviteButton" data-toggle="tooltip" title="Invite Someone"><i class="fa fa-plus-circle"></i></a>
-							&nbsp;
-							<a href="" class="renameButton" data-toggle="tooltip" title="Rename Chatroom"><i class="fa fa-pencil"></i></a>
-							&nbsp;
-							<a href="" class="leaveChatroomButton" data-toggle="tooltip" title="Leave Chatroom"><i class="fa fa-times-circle"></i></a>
+
+							{{#if showInviteButton}}
+								&nbsp;
+								<a href="" class="inviteButton" data-toggle="tooltip" title="Invite Someone"><i class="fa fa-plus-circle"></i></a>
+							{{/if}}
+							
+							{{#if showRenameButton}}
+								&nbsp;
+								<a href="" class="renameButton" data-toggle="tooltip" title="Rename Chatroom"><i class="fa fa-pencil"></i></a>
+							{{/if}}
+							
+							{{#if showLeaveButton}}
+								&nbsp;
+								<a href="" class="leaveChatroomButton" data-toggle="tooltip" title="Leave Chatroom"><i class="fa fa-times-circle"></i></a>
+							{{/if}}
 						</td>
 					</tr>
 				</tbody>
@@ -66,10 +75,10 @@
 
 
 		<div style="display:{{showChatBox}};">
-		<table style="width:100%;margin-top:12px;">
+		<table style="width:100%;">
 			<tbody>
 				<tr>
-					<td style="padding-left:15px;padding-right:15px;vertical-align:top;">
+					<td style="padding-left:15px;padding-right:15px;padding-top:12px;vertical-align:top;">
 						<div class="input-group" style="width:100%;">
 							<input type="text" class="form-control chatInput">
 							<span class="input-group-btn">
@@ -95,31 +104,34 @@
 					{{#if showMembers}}
 						<td class="memberBox">
 							{{#if membersReady}}
-								<div class="memberBoxTitle">
-									Members
-								</div>
-								{{#each roomMembers}}
+
+								{{#if roomOwner}}
 									<div>
-										<table style="width:100%;">
-											<tbody>
-												<tr>
-													<td>
-														<a href="" class="usernameLink">
-															{{username}}
-														</a>
-													</td>
-													<td style="text-align:right;padding-left:10px;padding-right:10px;white-space:nowrap;">
-														<i class="fa fa-group"></i>
-														&nbsp;
-														<i class="fa fa-group"></i>
-														&nbsp;
-														<i class="fa fa-group"></i>
-													</td>
-												</tr>
-											</tbody>
-										</table>
+										Owner
 									</div>
-								{{/each}}
+									{{#with roomOwner}}
+										{{> chatroom_member}}
+									{{/with}}
+								{{/if}}
+
+								{{#if roomAdmins}}
+									<div style="margin-top:10px;">
+										Admins
+									</div>
+									{{#each roomAdmins}}
+										{{> chatroom_member}}
+									{{/each}}
+								{{/if}}
+
+								{{#if roomMembers}}
+									<div style="margin-top:10px;">
+										Members
+									</div>
+									{{#each roomMembers}}
+										{{> chatroom_member}}
+									{{/each}}
+								{{/if}}
+
 							{{else}}
 								Loading...
 							{{/if}}							

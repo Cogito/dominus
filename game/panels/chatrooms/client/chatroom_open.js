@@ -8,7 +8,7 @@ Template.chatroom_open.helpers({
 	},
 
 	numPeople: function() {
-		return this.members.length
+		return Template.currentData().members.length
 	},
 
 	showLeaveConfirm: function() {
@@ -42,12 +42,75 @@ Template.chatroom_open.helpers({
 		})
 	},
 
+	roomOwner: function() {
+		if (Template.currentData().type != 'everyone') {
+			if (Template.currentData().owner) {
+				return RoomMembers.findOne(Template.currentData().owner)
+			}
+		}
+	},
+
+	roomAdmins: function() {
+		if (Template.currentData().type == 'normal') {
+			if (Template.currentData().admins.length > 0) {
+				return RoomMembers.find({_id: {$in:Template.currentData().admins}})
+			}
+		}
+	},
+
 	roomMembers: function() {
-		return RoomMembers.find()
+		if (Template.currentData().type == 'everyone') {
+			// return everyone
+			return RoomMembers.find()
+		} else {
+			// reject admins and owner
+			var members = RoomMembers.find().fetch()
+			return members.filter(function(member) {
+				if (member._id != Template.currentData().owner) {
+					if (!_.contains(Template.currentData().admins, member._id)) {
+						return true
+					}
+				}
+				return false
+			})
+		}
 	},
 
 	showMembers: function() {
 		return Template.instance().showMembers.get()
+	},
+
+	// admins and owner can invite people
+	showInviteButton: function() {
+		var user_id = Meteor.userId()
+
+		// if owner
+		if (user_id == Template.currentData().owner) {
+			return true
+		}
+
+		// if admin
+		if (_.contains(Template.currentData().admins, user_id)) {
+			return true
+		}
+
+		return false
+	},
+
+	// owner can rename room
+	showRenameButton: function() {
+		var user_id = Meteor.userId()
+
+		// if owner
+		if (user_id == Template.currentData().owner) {
+			return true
+		}
+
+		return false
+	},
+
+	showLeaveButton: function() {
+		return Template.currentData().type == 'normal'
 	}
 })
 
@@ -218,7 +281,7 @@ Template.chatroom_open.created = function() {
 
 	self.chatroomMembersReady = new ReactiveVar(false)
 	this.autorun(function() {
-		var roomMembersHandle = Meteor.subscribe('room_members', Template.instance().data.members)
+		var roomMembersHandle = Meteor.subscribe('room_members', Template.currentData().members)
 		self.chatroomMembersReady.set(roomMembersHandle.ready())
 	})
 }
