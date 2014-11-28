@@ -159,30 +159,6 @@ Meteor.publish('markethistory', function() {
 	}
 })
 
-
-
-
-
-Meteor.publish('admin_mailchimp_list', function() {
-	if(this.userId) {
-		return Meteor.users.find({}, {fields: {username:1, emails:1}})
-	} else {
-		this.ready()
-	}
-})
-
-Meteor.publish('admin_users_online', function() {
-	if(this.userId) {
-		return Meteor.users.find({"status.online":true}, {fields: {username:1, "status.lastLogin.date":1, "status.online":1}})
-	} else {
-		this.ready()
-	}
-})
-
-
-
-
-
 Meteor.publish('gather_resources_jobstat', function() {
 	if (this.userId) {
 		return Jobstats.find({job_name:"gather_resources_new"}, {fields: {updated_at:1}})
