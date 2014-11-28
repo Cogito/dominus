@@ -9,7 +9,7 @@
 			<div class="input-group">
 				<input type="text" class="form-control" placeholder="Enter someone's name here." id="chat_start_with_name">
 				<span class="input-group-btn">
-					<button class="btn btn-primary" type="button" id="chat_start_with_button">Start Chat</button>
+					<button class="btn btn-primary" type="button" id="chat_start_with_button">Create Chatroom</button>
 				</span>
 			</div>
 		</div>
@@ -19,7 +19,6 @@
 			{{#each normalChatrooms}}
 				{{> chatroom_list}}
 			{{/each}}
-			<br>
 
 			{{#if selectedChatroom}}
 				{{#with selectedChatroom}}

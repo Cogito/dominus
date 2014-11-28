@@ -48,6 +48,7 @@ Template.chatrooms_panel.events({
 					if (result) {
 						$(success_alert).show()
 						$(success_alert).html("Chatroom created.")
+						Session.set('selectedChatroomId', result)
 					} else {
 						$(error_alert).show()
 						$(error_alert).html("Could not find a user by that name.")
