@@ -96,7 +96,11 @@ setupKingChatroom = function(king_id) {
 	var king = Meteor.users.findOne(king_id, {fields: {is_king:1, team:1, username:1}})
 	if (king && king.is_king) {
 
-		var members = king.team
+		if (king.team) {
+			var members = king.team
+		} else {
+			var members = []
+		}
 		members.push(king._id)
 		
 		// does king already have a chatroom
@@ -146,10 +150,3 @@ setupEveryoneChatroom = function() {
 	}
 }
 
-
-
-// temp
-Meteor.users.find({is_king:true}).forEach(function(user) {
-	setupKingChatroom(user._id)
-})
-setupEveryoneChatroom()

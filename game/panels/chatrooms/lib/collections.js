@@ -26,3 +26,13 @@ if (Meteor.isServer) {
 		} 
 	}, update: false, remove: false})
 }
+
+
+
+// TEMP
+// remove this
+// if (Meteor.isServer) {
+// 	Meteor.users.find().forEach(function(user) {
+// 		Meteor.users.update(user._id, {$set: {max_chatroom_height:500}})
+// 	})
+// }
