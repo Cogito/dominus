@@ -23,10 +23,6 @@ Template.menu.helpers({
 		if (Session.get('show_stats_panel')) { return 'active' } else { return '' }
 	},
 
-	chat_active: function() {
-		if (Session.get('show_chat_panel')) { return 'active' } else { return '' }
-	},
-
 	chatrooms_active: function() {
 		if (Session.get('show_chatrooms_panel')) { return 'active' } else { return '' }
 	},
@@ -131,16 +127,6 @@ Template.menu.events({
 		}
 	},
 
-	'click #show_chat_panel_button': function(event, template) {
-		if (Session.get('show_chat_panel')) {
-			Session.set('show_chat_panel', false)
-			Cookie.set('chat_panel_close', new Date(), {years: 10})
-		} else {
-			Session.set('show_chat_panel', true)
-			Cookie.clear('chat_panel_close')
-		}
-	},
-
 	'click #show_chatrooms_panel_button': function(event, template) {
 		if (Session.get('show_chatrooms_panel')) {
 			Session.set('show_chatrooms_panel', false)
@@ -218,7 +204,6 @@ Template.menu.rendered = function() {
 	Session.setDefault('show_market_panel', false)
 	Session.setDefault('show_settings_panel', false)
 	Session.setDefault('show_forum_panel', false)
-	Session.setDefault('show_chat_panel', false)
 	Session.setDefault('show_chatrooms_panel', false)
 	Session.setDefault('show_rankings_panel', false)
 	Session.setDefault('show_stats_panel', false)

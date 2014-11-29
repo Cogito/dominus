@@ -49,7 +49,6 @@ set_lord_and_vassal = function(winner, loser, runUpdateAllies) {
 	if (_.indexOf(winner.allies_above, loser._id) != -1) {
 
 		// winner is conquering his lord, moving up the tree
-		// chatrooms stay the same
 		remove_lord_and_vassal(winner.lord, winner._id)
 
 		// loser's lord is now winner's lord

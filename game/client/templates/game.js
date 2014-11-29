@@ -30,7 +30,6 @@ Template.game.helpers({
 	show_admin_panel: function() { return Session.get('show_admin_panel') },
 	show_market_panel: function() { return Session.get('show_market_panel') },
 	show_settings_panel: function() { return Session.get('show_settings_panel') },
-	show_chat_panel: function() { return Session.get('show_chat_panel') },
 	show_chatrooms_panel: function() { return Session.get('show_chatrooms_panel') },
 	show_forum_panel: function() { return Session.get('show_forum_panel') },
 	show_rankings_panel: function() { return Session.get('show_rankings_panel') },

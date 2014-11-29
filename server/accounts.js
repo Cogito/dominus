@@ -26,7 +26,6 @@ Accounts.onCreateUser(function(options, user) {
 	user.allies = []
 	user.allies_below = []
 	user.allies_above = []
-	user.chatrooms = []		// this is old, remove when removing old chatrooms
 	user.is_king = true
 	user.is_dominus = false
 	user.show_welcome_screen = true
@@ -55,9 +54,6 @@ Accounts.onCreateUser(function(options, user) {
 	user.losses_worth = 0
 	user.sp_show_coords = false
 	user.sp_show_minimap = true
-
-	// var everyone = Chatrooms.findOne({name: 'Everyone'}, {fields: {_id:1}})
-	// user.chatrooms = [everyone._id]
 
 	// set game winner
 	// xom from game 1

@@ -84,7 +84,7 @@ gamestats_job = function() {
 	check(stat.avg_market_price, Number)
 
 	// number of chats
-	stat.num_chats = Chats.find().count()
+	stat.num_chats = Roomchats.find().count()
 
 	// money earned
 	var money = 0

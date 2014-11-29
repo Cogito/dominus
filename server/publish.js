@@ -96,7 +96,6 @@ Meteor.publish('user_data', function () {
 			allies_above:1,
 			allies_below:1,
 			castle_id:1,
-			chatrooms:1,
 			clay:1,
 			created_at:1,
 			glass:1,
