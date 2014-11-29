@@ -26,8 +26,6 @@ Accounts.onCreateUser(function(options, user) {
 	user.allies = []
 	user.allies_below = []
 	user.allies_above = []
-	user.chatrooms = []
-	user.king_chatroom = null
 	user.is_king = true
 	user.is_dominus = false
 	user.show_welcome_screen = true
@@ -56,9 +54,6 @@ Accounts.onCreateUser(function(options, user) {
 	user.losses_worth = 0
 	user.sp_show_coords = false
 	user.sp_show_minimap = true
-
-	// var everyone = Chatrooms.findOne({name: 'Everyone'}, {fields: {_id:1}})
-	// user.chatrooms = [everyone._id]
 
 	// set game winner
 	// xom from game 1
@@ -92,15 +87,5 @@ onCreateUser = function(userId) {
 	//worker.enqueue('inc_daily_stats', {user_id: userId, new_stats: {}, add_to: false})
 	init_dailystats_for_new_user(userId)
 
-	// subscribe to everyone chat
-	var everyone = Chatrooms.findOne({name: 'Everyone'}, {fields: {_id:1}})
-
-	// if not one create it
-	if (!everyone) {
-		var id = create_chat('Everyone', false, null)
-	} else {
-		var id = everyone._id
-	}
-
-	subscribe_to_chatroom(userId, id)
+	setupEveryoneChatroom()
 }

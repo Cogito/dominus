@@ -13,6 +13,21 @@ Meteor.methods({
 			Messages.update({user_id: user._id}, {$set: {username: user.username+appendToName}}, {multi: true})
 			Charges.update({user_id: user._id}, {$set: {user_username: user.username+appendToName}}, {multi: true})
 
+
+			// fix chat
+			Roomchats.remove({user_id:user._id})
+			Rooms.find({members:user._id}).forEach(function(room) {
+				// remove from admins and members
+				Rooms.update(room._id, {$pull: {admins:user._id, members:user._id}})
+
+				// is user owner?
+				// give owner to someone else
+				if (room.owner == user._id) {
+					removeOwnerFromRoom(room._id)
+				}
+			})
+
+
 			// fix tree
 			if (user.lord) {
 				var lord = Meteor.users.findOne(user.lord)
@@ -49,54 +64,63 @@ Meteor.methods({
 			// 	if (_.indexOf(u.allies))
 			// })
 
-			var appendToName = ' (deleted)'
-
-			Chats.update({user_id: user._id}, {$set: {username: user.username+appendToName}}, {multi: true})
-			
-			for (var i = 0; i < user.chatrooms.length; i++) {
-				leave_chatroom(user._id, user.chatrooms[i])
-			}
 
 			Castles.remove({user_id: user._id})
 			Hexes.update({x:user.x, y:user.y}, {$set: {has_building:false, nearby_buildings:false}})
 
 			Meteor.users.remove({_id:user._id})
+
+			setupEveryoneChatroom()
+			worker.enqueue('check_for_dominus', {})
 		}
 	},
 
 
 	change_username: function(username) {
-		username = _.clean(username)
-		username = username.replace(/\W/g, '')
+		check(username, String)
+
+		var user = Meteor.users.findOne(Meteor.userId(), {fields: {is_king:1}})
+		if (user) {
+			username = _.clean(username)
+			username = username.replace(/\W/g, '')
+			
+			if (username.length < 3) {
+				return {result: false, msg: 'New username must be at least 3 characters long.'}
+			}
+
+			if (username.length > 30) {
+				return {result: false, msg: 'New username is too long.'}
+			}
+
+			if (Meteor.users.find({username: username}).count() > 0) {
+				return {result: false, msg: 'A user exists with this username, try another.'}
+			}
+
+			// if (username == 'danimal' || username == 'danlmal' || username == 'Danlmal' || username.indexOf('danimal') > -1 || username.indexOf('Danimal') > -1) {
+			// 	return {result: false, msg: 'Username not allowed.'}
+			// }
+
+			// name of king's chatroom
+			if (user.is_king) {
+				var room = Rooms.findOne({type:'king', owner:user._id})
+				if (room) {
+					Rooms.update(room._id, {$set: {name:'King '+username+' and Vassals'}})
+				}
+			}
+			
+			Castles.update({user_id: Meteor.userId()}, {$set: {username: username}})
+			Villages.update({user_id: Meteor.userId()}, {$set: {username: username}}, {multi: true})
+			Armies.update({user_id: Meteor.userId()}, {$set: {username: username}}, {multi: true})
+			Threads.update({user_id: Meteor.userId()}, {$set: {username: username}}, {multi: true})
+			Threads.update({last_post_username: get_user_property("username")}, {$set: {last_post_username: username}}, {multi: true})
+			Messages.update({user_id: Meteor.userId()}, {$set: {username: username}}, {multi: true})
+			Charges.update({user_id: Meteor.userId()}, {$set: {user_username: username}}, {multi: true})
+			Meteor.users.update(Meteor.userId(), {$set: {username: username}})
+
+			return {result: true}
+		}
+
 		
-		if (username.length < 3) {
-			return {result: false, msg: 'New username must be at least 3 characters long.'}
-		}
-
-		if (username.length > 30) {
-			return {result: false, msg: 'New username is too long.'}
-		}
-
-		if (Meteor.users.find({username: username}).count() > 0) {
-			return {result: false, msg: 'A user exists with this username, try another.'}
-		}
-
-		// if (username == 'danimal' || username == 'danlmal' || username == 'Danlmal' || username.indexOf('danimal') > -1 || username.indexOf('Danimal') > -1) {
-		// 	return {result: false, msg: 'Username not allowed.'}
-		// }
-
-		
-		Chats.update({user_id: Meteor.userId()}, {$set: {username: username}}, {multi: true})
-		Castles.update({user_id: Meteor.userId()}, {$set: {username: username}})
-		Villages.update({user_id: Meteor.userId()}, {$set: {username: username}}, {multi: true})
-		Armies.update({user_id: Meteor.userId()}, {$set: {username: username}}, {multi: true})
-		Threads.update({user_id: Meteor.userId()}, {$set: {username: username}}, {multi: true})
-		Threads.update({last_post_username: get_user_property("username")}, {$set: {last_post_username: username}}, {multi: true})
-		Messages.update({user_id: Meteor.userId()}, {$set: {username: username}}, {multi: true})
-		Charges.update({user_id: Meteor.userId()}, {$set: {user_username: username}}, {multi: true})
-		Meteor.users.update(Meteor.userId(), {$set: {username: username}})
-
-		return {result: true}
 	},
 
 	show_coords: function () {
@@ -113,5 +137,5 @@ Meteor.methods({
 
 	hide_minimap: function() {
 		Meteor.users.update(Meteor.userId(), {$set: {sp_show_minimap: false}})
-	},
+	}
 })

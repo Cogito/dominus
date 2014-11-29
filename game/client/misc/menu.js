@@ -23,8 +23,8 @@ Template.menu.helpers({
 		if (Session.get('show_stats_panel')) { return 'active' } else { return '' }
 	},
 
-	chat_active: function() {
-		if (Session.get('show_chat_panel')) { return 'active' } else { return '' }
+	chatrooms_active: function() {
+		if (Session.get('show_chatrooms_panel')) { return 'active' } else { return '' }
 	},
 
 	forum_active: function() {
@@ -72,30 +72,25 @@ Template.menu.helpers({
 		return false
 	},
 
-
 	is_new_chat: function() {
-		var is_new = false
+		var isNew = false
 		var page_title = s.game_name
-		var user = Meteor.users.findOne(Meteor.userId(), {fields: {chatrooms:1}})
-		if (user) {
-			_.each(user.chatrooms, function(room_id) {
-				var latest_chat = Latestchats.findOne({room_id: room_id})
-				if (latest_chat) {
-					var latest_open = Cookie.get('room_'+room_id+'_open')
-					if (latest_open) {
-						if (moment(new Date(latest_chat.updated_at)).isAfter(moment(new Date(latest_open)))) {
-							is_new = true
-							page_title = '! '+s.game_name
-						}
-					} else {
-						is_new = true
-						page_title = '! '+s.game_name
+
+		Roomlist.find().forEach(function(room) {
+			var recent = Recentchats.findOne({room_id:room._id})
+			if (recent) {
+				var latest_open = Cookie.get('room_'+room._id+'_open')
+				if (latest_open) {
+					if (moment(new Date(recent.updated_at)).isAfter(moment(new Date(latest_open)))) {
+						console.log('newer')
+						document.title = page_title
+						isNew = true
 					}
 				}
-			})
-		}
-		document.title = page_title
-		return is_new
+			}
+		})
+
+		return isNew
 	}
 })
 
@@ -132,13 +127,11 @@ Template.menu.events({
 		}
 	},
 
-	'click #show_chat_panel_button': function(event, template) {
-		if (Session.get('show_chat_panel')) {
-			Session.set('show_chat_panel', false)
-			Cookie.set('chat_panel_close', new Date(), {years: 10})
+	'click #show_chatrooms_panel_button': function(event, template) {
+		if (Session.get('show_chatrooms_panel')) {
+			Session.set('show_chatrooms_panel', false)
 		} else {
-			Session.set('show_chat_panel', true)
-			Cookie.clear('chat_panel_close')
+			Session.set('show_chatrooms_panel', true)
 		}
 	},
 
@@ -204,6 +197,20 @@ Template.menu.events({
 
 
 Template.menu.rendered = function() {
+	Session.setDefault('show_summary_panel', true)
+	Session.setDefault('show_help_panel', false)
+	Session.setDefault('show_notifications_panel', false)
+	Session.setDefault('show_admin_panel', false)
+	Session.setDefault('show_market_panel', false)
+	Session.setDefault('show_settings_panel', false)
+	Session.setDefault('show_forum_panel', false)
+	Session.setDefault('show_chatrooms_panel', false)
+	Session.setDefault('show_rankings_panel', false)
+	Session.setDefault('show_stats_panel', false)
+	Session.setDefault('show_store_panel', false)
+	Session.setDefault('show_tree_panel', false)
+	Session.setDefault('show_coords', false)
+
 	if (typeof Session.get('canvas_size') != 'undefined') {
 		$('#left_panels').css('height', Session.get('canvas_size').height - 40)
 		$('#right_panel').css('height', Session.get('canvas_size').height - 40)
@@ -251,26 +258,17 @@ Template.menu.rendered = function() {
 		}
 	})
 
-
-	this.deps_subscribe = Deps.autorun(function() {
-		Meteor.subscribe('market')
-		var user = Meteor.users.findOne(Meteor.userId(), {fields: {chatrooms:1}})
-		if (user && user.chatrooms) {
-			Meteor.subscribe('latest_chats', user.chatrooms)
-		}
-		Meteor.subscribe('latest_forum_posts')
-	})
-
 	this.autorun(function() {
 		Meteor.subscribe('notifications_unread')
+		Meteor.subscribe('room_list')
+		Meteor.subscribe('market')
+		Meteor.subscribe('recentchats')
+		Meteor.subscribe('latest_forum_posts')
 	})
 }
 
 
 Template.menu.destroyed = function() {
-	if (this.deps_subscribe) {
-		this.deps_subscribe.stop()
-	}
 	if (this.deps_newuser) {
 		this.deps_newuser.stop()
 	}

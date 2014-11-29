@@ -23,19 +23,7 @@ Session.setDefault('mouse_mode', 'default')	// used when selecting a hex to send
 
 Session.setDefault('rp_template', 'none')	// what to show in right panel
 
-Session.setDefault('show_summary_panel', true)
-Session.setDefault('show_help_panel', false)
-Session.setDefault('show_notifications_panel', false)
-Session.setDefault('show_admin_panel', false)
-Session.setDefault('show_market_panel', false)
-Session.setDefault('show_settings_panel', false)
-Session.setDefault('show_forum_panel', false)
-Session.setDefault('show_chat_panel', false)
-Session.setDefault('show_rankings_panel', false)
-Session.setDefault('show_stats_panel', false)
-Session.setDefault('show_store_panel', false)
-Session.setDefault('show_tree_panel', false)
-Session.setDefault('show_coords', false)
+
 
 // summary box
 Session.setDefault('show_summary_hover_box', false)

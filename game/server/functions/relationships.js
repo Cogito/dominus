@@ -38,10 +38,8 @@ set_lord_and_vassal = function(winner, loser, runUpdateAllies) {
 	// destroy king chatroom
 	// send notification
 	if (loser.is_king) {
-		if (loser.king_chatroom) {
-			destroy_chatroom(loser.king_chatroom)
-		}
-		Meteor.users.update(loser._id, {$set: {is_king: false, king_chatroom:null}})
+		destroyKingChatroom(loser._id)
+		Meteor.users.update(loser._id, {$set: {is_king: false}})
 		notification_no_longer_a_king(loser._id, {_id:winner._id, username:winner.username, x:winner.x, y:winner.y, castle_id:winner.castle_id})
 	}
 	
@@ -51,7 +49,6 @@ set_lord_and_vassal = function(winner, loser, runUpdateAllies) {
 	if (_.indexOf(winner.allies_above, loser._id) != -1) {
 
 		// winner is conquering his lord, moving up the tree
-		// chatrooms stay the same
 		remove_lord_and_vassal(winner.lord, winner._id)
 
 		// loser's lord is now winner's lord
@@ -64,21 +61,12 @@ set_lord_and_vassal = function(winner, loser, runUpdateAllies) {
 	// winner is stealing loser from another lord
 	// remove connection between loser and his lord
 	// create notification for old lord that he lost a vassal
-	// remove loser from old king's chatroom
 	} else if (loser.lord) {
 
 		remove_lord_and_vassal(loser.lord, loser._id)
 
 		// used later to update his allies
 		loser_prev_lord_id = loser.lord
-
-		// remove loser from old king's chatroom if king is different
-		if (!loser.is_king && loser.king && loser.king != winner.king) {
-			var loser_king = Meteor.users.findOne(loser.king, {fields: {king_chatroom:1}})
-			if (loser_king) {
-				leave_chatroom(loser._id, loser_king.king_chatroom)
-			}
-		}
 	}
 
 
