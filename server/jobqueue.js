@@ -125,10 +125,10 @@ if (Meteor.isServer) {
 			done()
 		},
 
-		setup_king_chatroom: function(params, done) {
+		setupKingChatroom: function(params, done) {
 			check(params.king_id, String)
 
-			setup_king_chatroom(params.king_id)
+			setupKingChatroom(params.king_id)
 			done()
 		},
 

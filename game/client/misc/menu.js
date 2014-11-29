@@ -76,30 +76,25 @@ Template.menu.helpers({
 		return false
 	},
 
-
 	is_new_chat: function() {
-		var is_new = false
+		var isNew = false
 		var page_title = s.game_name
-		var user = Meteor.users.findOne(Meteor.userId(), {fields: {chatrooms:1}})
-		if (user) {
-			_.each(user.chatrooms, function(room_id) {
-				var latest_chat = Latestchats.findOne({room_id: room_id})
-				if (latest_chat) {
-					var latest_open = Cookie.get('room_'+room_id+'_open')
-					if (latest_open) {
-						if (moment(new Date(latest_chat.updated_at)).isAfter(moment(new Date(latest_open)))) {
-							is_new = true
-							page_title = '! '+s.game_name
-						}
-					} else {
-						is_new = true
-						page_title = '! '+s.game_name
+
+		Roomlist.find().forEach(function(room) {
+			var recent = Recentchats.findOne({room_id:room._id})
+			if (recent) {
+				var latest_open = Cookie.get('room_'+room._id+'_open')
+				if (latest_open) {
+					if (moment(new Date(recent.updated_at)).isAfter(moment(new Date(latest_open)))) {
+						console.log('newer')
+						document.title = page_title
+						isNew = true
 					}
 				}
-			})
-		}
-		document.title = page_title
-		return is_new
+			}
+		})
+
+		return isNew
 	}
 })
 
@@ -278,26 +273,17 @@ Template.menu.rendered = function() {
 		}
 	})
 
-
-	this.deps_subscribe = Deps.autorun(function() {
-		Meteor.subscribe('market')
-		var user = Meteor.users.findOne(Meteor.userId(), {fields: {chatrooms:1}})
-		if (user && user.chatrooms) {
-			Meteor.subscribe('latest_chats', user.chatrooms)
-		}
-		Meteor.subscribe('latest_forum_posts')
-	})
-
 	this.autorun(function() {
 		Meteor.subscribe('notifications_unread')
+		Meteor.subscribe('room_list')
+		Meteor.subscribe('market')
+		Meteor.subscribe('recentchats')
+		Meteor.subscribe('latest_forum_posts')
 	})
 }
 
 
 Template.menu.destroyed = function() {
-	if (this.deps_subscribe) {
-		this.deps_subscribe.stop()
-	}
 	if (this.deps_newuser) {
 		this.deps_newuser.stop()
 	}

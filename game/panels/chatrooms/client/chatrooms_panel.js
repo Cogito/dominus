@@ -6,6 +6,14 @@ Template.chatrooms_panel.helpers({
 	normalChatrooms: function() {
 		return Rooms.find({type:'normal'})
 	},
+	
+	kingChatrooms: function() {
+		return Rooms.find({type:'king'})
+	},
+
+	everyoneChatrooms: function() {
+		return Rooms.find({type:'everyone'})
+	},
 
 	selectedChatroom: function() {
 		var selected_id = Session.get('selectedChatroomId')
@@ -49,6 +57,7 @@ Template.chatrooms_panel.events({
 						$(success_alert).show()
 						$(success_alert).html("Chatroom created.")
 						Session.set('selectedChatroomId', result)
+						$(name).val('')
 					} else {
 						$(error_alert).show()
 						$(error_alert).html("Could not find a user by that name.")
@@ -69,6 +78,25 @@ Template.chatrooms_panel.created = function() {
 	self.chatroomSubscriptionsReady = new ReactiveVar(false)
 	this.autorun(function() {
 		var normalChatroomsHandle = Meteor.subscribe('myNormalChatrooms')
-		self.chatroomSubscriptionsReady.set(normalChatroomsHandle.ready())
+		var kingChatroomsHandle = Meteor.subscribe('myKingChatrooms')
+		var everyoneChatroomHandle = Meteor.subscribe('everyoneChatroom')
+
+		if (normalChatroomsHandle.ready() && kingChatroomsHandle.ready() && everyoneChatroomHandle.ready()) {
+			self.chatroomSubscriptionsReady.set(true)
+		} else {
+			self.chatroomSubscriptionsReady.set(false)
+		}
+	})
+}
+
+
+Template.chatrooms_panel.rendered = function() {
+	// on window gain focus, if a chatroom is open hide alert
+	$(window).focus(function(event) {
+		var room_id = Session.get('selectedChatroomId')
+		if (room_id) {
+			var date = new Date(TimeSync.serverTime())
+			Cookie.set('room_'+room_id+'_open', date, {years: 10})
+		}
 	})
 }

@@ -16,6 +16,14 @@
 
 		<br>
 		{{#if chatroomSubscriptionsReady}}
+			{{#each everyoneChatrooms}}
+				{{> chatroom_list}}
+			{{/each}}
+
+			{{#each kingChatrooms}}
+				{{> chatroom_list}}
+			{{/each}}
+			
 			{{#each normalChatrooms}}
 				{{> chatroom_list}}
 			{{/each}}

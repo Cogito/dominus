@@ -82,6 +82,11 @@ Template.chatroom_open.helpers({
 
 	// admins and owner can invite people
 	showInviteButton: function() {
+		var room_type = Template.currentData().type
+		if (room_type == 'king' || room_type == 'everyone') {
+			return false
+		}
+		
 		var user_id = Meteor.userId()
 
 		// if owner
@@ -99,6 +104,11 @@ Template.chatroom_open.helpers({
 
 	// owner can rename room
 	showRenameButton: function() {
+		var room_type = Template.currentData().type
+		if (room_type == 'king' || room_type == 'everyone') {
+			return false
+		}
+
 		var user_id = Meteor.userId()
 
 		// if owner
@@ -111,6 +121,19 @@ Template.chatroom_open.helpers({
 
 	showLeaveButton: function() {
 		return Template.currentData().type == 'normal'
+	},
+
+	showNewNotification: function() {
+		var recent = Recentchats.findOne({room_id:Template.currentData()._id})
+		if (recent) {
+			var latest_open = Cookie.get('room_'+this._id+'_open')
+			if (latest_open) {
+				if (moment(new Date(recent.updated_at)).isAfter(moment(new Date(latest_open)))) {
+					return true
+				}
+			}
+		}
+		return false
 	}
 })
 
@@ -248,6 +271,9 @@ Template.chatroom_open.events({
 		})
 
 		$(input).val('')
+
+		Meteor.call('updateRecentChat', template.data._id)
+		Cookie.set('room_'+this._id+'_open', moment(date).add(1, 's').toDate(), {years: 10})
 	},
 
 	'click .usernameLink': function(event, template) {
@@ -256,6 +282,36 @@ Template.chatroom_open.events({
 		center_on_hex(this.x, this.y)
 		Session.set('selected_type', 'castle')
 		Session.set('selected_id', this.castle_id)
+	},
+
+	// same as click function
+	'keyup .chatInput': function(event, template) {
+		if (event.keyCode === 13) {
+			event.preventDefault()
+			event.stopPropagation()
+
+			var input = template.find('.chatInput')
+
+			var message = _.clean($(input).val())
+
+			if (message.length == 0) {
+				return
+			}
+
+			var date = new Date(TimeSync.serverTime())
+
+			Roomchats.insert({
+				room_id: template.data._id,
+				created_at: date,
+				user_id: Meteor.userId(),
+				text: message
+			})
+
+			$(input).val('')
+
+			Meteor.call('updateRecentChat', template.data._id)
+			Cookie.set('room_'+this._id+'_open', moment(date).add(1, 's').toDate(), {years: 10})
+		}
 	}
 })
 

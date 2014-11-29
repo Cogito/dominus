@@ -5,6 +5,11 @@ Template.chatroom_member.helpers({
 		var member_id = Template.currentData()._id
 		var owner_id = Template.parentData(1).owner
 		var admins = Template.parentData(1).admins
+		var room_type = Template.parentData(1).type
+
+		if (room_type == 'king' || room_type == 'everyone') {
+			return false
+		}
 
 		if (user_id == member_id) {
 			return false
@@ -25,6 +30,11 @@ Template.chatroom_member.helpers({
 		var member_id = Template.currentData()._id
 		var owner_id = Template.parentData(1).owner
 		var admins = Template.parentData(1).admins
+		var room_type = Template.parentData(1).type
+
+		if (room_type == 'king' || room_type == 'everyone') {
+			return false
+		}
 
 		if (user_id == member_id) {
 			return false
@@ -50,6 +60,11 @@ Template.chatroom_member.helpers({
 		var member_id = Template.currentData()._id
 		var owner_id = Template.parentData(1).owner
 		var admins = Template.parentData(1).admins
+		var room_type = Template.parentData(1).type
+
+		if (room_type == 'king' || room_type == 'everyone') {
+			return false
+		}
 
 		if (user_id == member_id) {
 			return false
@@ -72,6 +87,11 @@ Template.chatroom_member.helpers({
 		var member_id = Template.currentData()._id
 		var owner_id = Template.parentData(1).owner
 		var admins = Template.parentData(1).admins
+		var room_type = Template.parentData(1).type
+
+		if (room_type == 'king' || room_type == 'everyone') {
+			return false
+		}
 
 		if (user_id == member_id) {
 			return false

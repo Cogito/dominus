@@ -41,28 +41,9 @@ Meteor.methods({
 			Rooms.update(room_id, {$pull: {members:user_id, admins:user_id}})
 
 			// if user is owner give room to person with most income
+			// if user is only person this will delete it
 			if (room.owner == user_id) {
-				if (room.members.length == 1) {
-					Rooms.update(room_id, {$set: {owner:room.members[0]}})
-
-				} else {
-					// find member with highest income
-					var highest = 0
-					var highest_id = null
-					_.each(room.members, function(member) {
-						var user = Meteor.users.findOne(member, {fields: {income:1}})
-						if (user && user.income > highest) {
-							highest_id = user._id
-							highest = user.income
-						}
-					})
-
-					if (highest_id) {
-						Rooms.update(room_id, {$set: {owner:highest_id}})
-					} else {
-						throw new Meteor.Error('Cannot find someone make owner of room.')
-					}
-				}
+				removeOwnerFromRoom(room._id)
 			}
 
 		} else {
@@ -154,6 +135,9 @@ Meteor.methods({
 				return false
 			}
 
+			// can't do these two updates at the same time
+			// MongoError: Field name duplication not allowed with modifiers
+			// mongo bug?
 			Rooms.update(room_id, {
 				$set: {owner:member_id},
 				$addToSet: {admins:user_id}
@@ -266,4 +250,16 @@ Meteor.methods({
 			}
 		}
 	},
+
+
+
+	// call this when someone types a new chat
+	// used for new chat notification
+	// keeps track of the timestamps of most recent chats
+	updateRecentChat: function(room_id) {
+		var latestchat = Roomchats.findOne({room_id:room_id}, {fields: {created_at:1}, sort: {created_at:-1}})
+		if (latestchat) {
+			Recentchats.upsert({room_id:room_id}, {$set: {room_id:room_id, updated_at:latestchat.created_at}})
+		}
+	}
 })

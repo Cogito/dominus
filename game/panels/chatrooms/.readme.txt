@@ -16,22 +16,18 @@ owner is an id not an array
 
 todo
 ---
-everyone chat
-king chat
-cleanup when user deletes account
 notifications
 	when someone invites you
 	when you're kicked
 	when you're made admin
 	when you're removed from admin
 	when you're made owner
-new chat alert
+	when you're made owner when owner deletes their account
 
-todo later
----
 invite someone, confirm button in notification
 	maybe it shouldn't be a notification? or also a notification
 	have a yes/no box at top of chat panel asking if you want to join
 	show pending members
+	
 add invite to chatroom button to castle
 	do later?

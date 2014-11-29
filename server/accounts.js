@@ -26,8 +26,7 @@ Accounts.onCreateUser(function(options, user) {
 	user.allies = []
 	user.allies_below = []
 	user.allies_above = []
-	user.chatrooms = []
-	user.king_chatroom = null
+	user.chatrooms = []		// this is old, remove when removing old chatrooms
 	user.is_king = true
 	user.is_dominus = false
 	user.show_welcome_screen = true
@@ -92,15 +91,5 @@ onCreateUser = function(userId) {
 	//worker.enqueue('inc_daily_stats', {user_id: userId, new_stats: {}, add_to: false})
 	init_dailystats_for_new_user(userId)
 
-	// subscribe to everyone chat
-	var everyone = Chatrooms.findOne({name: 'Everyone'}, {fields: {_id:1}})
-
-	// if not one create it
-	if (!everyone) {
-		var id = create_chat('Everyone', false, null)
-	} else {
-		var id = everyone._id
-	}
-
-	subscribe_to_chatroom(userId, id)
+	setupEveryoneChatroom()
 }

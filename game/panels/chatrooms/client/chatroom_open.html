@@ -10,6 +10,11 @@
 							<span class="light_text">{{numPeople}} members</span>
 						</td>
 						<td style="text-align:right;">
+							{{#if showNewNotification}}
+								<i class="fa fa-exclamation-circle"></i>
+								&nbsp;
+							{{/if}}
+
 							<a href="" class="showMembersButton" data-toggle="tooltip" title="Show Members"><i class="fa fa-group"></i></a>
 
 							{{#if showInviteButton}}

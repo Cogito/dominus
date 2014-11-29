@@ -105,7 +105,6 @@ Meteor.publish('user_data', function () {
 			is_dominus:1,
 			is_king:1,
 			lord:1,
-			king_chatroom:1,
 			lumber:1,
 			num_allies:1,
 			num_allies_above:1,
