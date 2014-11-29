@@ -15,11 +15,17 @@
 		</div>
 
 		<div class="pad_group">
-			<ul class="nav nav-tabs nav-justified" role="tablist">
-				<li class="{{mine_active}}"><a href="" id="show_mine_tab">My Notifications</a></li>
-				<li class="{{global_active}}"><a href="" id="show_global_tab">Global</a></li>
-				<li class="{{battls_active}}"><a href="" id="show_battles_tab">Battles</a></li>
-			</ul>
+			<div class="btn-group btn-group-justified" role="group">
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-default btn-primary {{mine_active}}" id="show_mine_tab">My Notifications</button>
+				</div>
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-default btn-primary {{global_active}}" id="show_global_tab">Global</button>
+				</div>
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-default btn-primary {{battles_active}}" id="show_battles_tab">Battles</button>
+				</div>
+			</div>
 		</div>
 
 		{{> UI.dynamic template=notifications_type}}

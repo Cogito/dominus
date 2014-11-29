@@ -19,7 +19,7 @@ Template.notifications_panel.helpers({
 		}
 	},
 
-	battls_active: function() {
+	battles_active: function() {
 		if (Session.get('notifications_type') == 'notifications_battles') {
 			return 'active'
 		} else {
