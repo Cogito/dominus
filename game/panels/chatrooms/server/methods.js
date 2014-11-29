@@ -17,7 +17,8 @@ Meteor.methods({
 					throw new Meteor.Error("You already have a chatroom with "+username+".")
 				}
 
-				var id = createChatroom('Chatroom', 'normal', user._id, [user._id, other_user._id])
+				var name = user.username+' and '+other_user.username
+				var id = createChatroom(name, 'normal', user._id, [user._id, other_user._id])
 				notification_new_chatroom_user(other_user._id, {_id: user._id, username: user.username, x: user.x, y: user.y, castle_id: user.castle_id})
 				return id
 				
@@ -56,7 +57,7 @@ Meteor.methods({
 		check(room_id, String)
 		check(name, String)
 
-		var chatroomMaxNameLength = 22
+		var chatroomMaxNameLength = 35
 
 		var user_id = Meteor.userId()
 		var room = Rooms.findOne(room_id)

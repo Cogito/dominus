@@ -15,6 +15,8 @@ Template.chatroom_list.helpers({
 				if (moment(new Date(recent.updated_at)).isAfter(moment(new Date(latest_open)))) {
 					return true
 				}
+			} else {
+				return true
 			}
 		}
 		return false

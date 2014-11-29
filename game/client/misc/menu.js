@@ -82,14 +82,17 @@ Template.menu.helpers({
 				var latest_open = Cookie.get('room_'+room._id+'_open')
 				if (latest_open) {
 					if (moment(new Date(recent.updated_at)).isAfter(moment(new Date(latest_open)))) {
-						console.log('newer')
 						document.title = page_title
 						isNew = true
 					}
+				} else {
+					// they don't have a cookie so give them one
+					var date = new Date(TimeSync.serverTime())
+					Cookie.set('room_'+room._id+'_open', moment(date).subtract(1, 's').toDate(), {years: 10})
+					isNew = true
 				}
 			}
 		})
-
 		return isNew
 	}
 })
