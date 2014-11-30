@@ -83,11 +83,11 @@ remove_castle_highlights = function() {
 
 
 
-Template.castle.rendered = function() {
+Template.castle.created = function() {
 	var self = this
 
 	// highlight castle if selected
-	self.deps_highlight = Deps.autorun(function() {
+	this.autorun(function() {
 		Session.get('update_highlight')
 		if (Session.get('selected_type') == 'castle') {
 			if (Session.get('selected_id') == self.data._id) {
@@ -97,11 +97,4 @@ Template.castle.rendered = function() {
 			}
 		}
 	})
-}
-
-Template.castle.destroyed = function() {
-	var self = this
-	if (self.deps_highlight) {
-		self.deps_highlight.stop()
-	}
 }

@@ -113,15 +113,17 @@
 		{{/if}}
 
 
-		{{#if battle}}
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					Battle
+		{{#if battleInfoLoaded}}
+			{{#if battle}}
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Battle
+					</div>
+					<div class="panel-body">
+						{{> battle_report battle}}
+					</div>
 				</div>
-				<div class="panel-body">
-					{{> battle_report battle}}
-				</div>
-			</div>
+			{{/if}}
 		{{/if}}
 
 

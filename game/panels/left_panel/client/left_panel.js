@@ -175,7 +175,7 @@ Template.left_panel.events({
 
 
 
-Template.left_panel.rendered = function() {
+Template.left_panel.created = function() {
 	this.autorun(function() {
 		if (Meteor.userId()) {
 			var user = Meteor.users.findOne(Meteor.userId(), {fields: {lord:1, vassals:1, lp_show_armies:1, lp_show_lords:1, lp_show_allies:1}})

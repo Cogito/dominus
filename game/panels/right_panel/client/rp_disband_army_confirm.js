@@ -1,6 +1,5 @@
 Template.rp_disband_army_confirm.events({
 	'click #disband_army_button_yes': function(event, template) {
-		logevent('right_panel', 'complete', 'disband_army')
 		$('#disband_army_button_yes').attr('disabled', true)
 		$('#disband_army_button_yes').html('Please Wait')
 		var id = Session.get('selected_id')
@@ -15,6 +14,6 @@ Template.rp_disband_army_confirm.events({
 })
 
 
-Template.rp_disband_army_confirm.rendered = function() {
+Template.rp_disband_army_confirm.created = function() {
 	Session.set('mouse_mode', 'modal')
 }

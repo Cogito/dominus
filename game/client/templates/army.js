@@ -20,7 +20,7 @@ Template.army.events({
 
 			if (Session.get('mouse_mode') == 'default') {
 				Session.set('selected_type', 'army')
-				Session.set('selected_id', this._id)
+				Session.set('selected_id', Template.currentData()._id)
 			}
 
 		}
@@ -28,7 +28,7 @@ Template.army.events({
 
 	'mouseenter .army': function(event, template) {
 		//if (Session.get('mouse_mode') == 'default') {
-			Session.set('hover_box_data', {type: 'army', x: this.x, y: this.y})
+			Session.set('hover_box_data', {type: 'army', x: Template.currentData().x, y: Template.currentData().y})
 			Meteor.clearTimeout(Session.get('hover_on_object_timer'))
 			Session.set('hover_on_object', true)
 		//}
@@ -41,10 +41,10 @@ Template.army.events({
 })
 
 
-Template.army.rendered = function() {
+Template.army.created = function() {
 	var self = this
 
-	self.deps_army_highlight = Deps.autorun(function() {
+	this.autorun(function() {
 		Session.get('update_highlight')
 		var mouse_mode = Deps.nonreactive(function () { return Session.get('mouse_mode'); })
 		if (mouse_mode != 'finding_path') {
@@ -56,13 +56,6 @@ Template.army.rendered = function() {
 			}
 		}
 	})
-}
-
-Template.army.destroyed = function() {
-	var self = this
-	if (self.deps_army_highlight) {
-		self.deps_army_highlight.stop()
-	}
 }
 
 

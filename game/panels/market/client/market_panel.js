@@ -83,7 +83,6 @@ Template.market_panel.events({
 								$('#market_buy_button').html(button_html)
 							} else {
 								if (result.result) {
-									logevent('right_panel', 'complete', 'buy_resources')
 									$('#market_success_alert').text('Bought '+quantity+' '+type+' for '+round_number_1(result.cost)+' gold.')
 									$('#market_buy_button').attr('disabled', false)
 									$('#market_buy_button').html(button_html)
@@ -140,7 +139,6 @@ Template.market_panel.events({
 								$('#market_sell_button').html(button_html)
 							} else {
 								if (result.result) {
-									logevent('right_panel', 'complete', 'sell_resources')
 									$('#market_success_alert').text('Sold '+quantity+' '+type+' for '+round_number_1(result.total)+' gold.')
 									$('#market_sell_button').attr('disabled', false)
 									$('#market_sell_button').html(button_html)
@@ -343,6 +341,4 @@ Template.market_panel.rendered = function() {
 
 		}
 	})
-
-	logevent('panel', 'open', 'market')
 }

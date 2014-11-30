@@ -31,7 +31,7 @@ Template.notifications_battles.events({
 })
 
 
-Template.notifications_battles.rendered = function() {
+Template.notifications_battles.created = function() {
 	this.autorun(function() {
 		Meteor.subscribe('battle_notifications')
 	})

@@ -59,14 +59,8 @@ Template.store_panel.events({
 
 
 
-Template.store_panel.rendered = function() {
-	this.deps_store_charges = Deps.autorun(function() {
+Template.store_panel.created = function() {
+	this.autorun(function() {
 		Meteor.subscribe('store_charges')
 	})
-}
-
-Template.store_panel.destroyed = function() {
-	if (this.deps_store_charges) {
-		this.deps_store_charges.stop()
-	}
 }

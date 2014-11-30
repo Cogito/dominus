@@ -1,6 +1,5 @@
 Template.rp_destroy_village_confirm.events({
 	'click #destroy_village_button_yes': function(event, template) {
-		logevent('right_panel', 'complete', 'destroy_village')
 		$('#destroy_village_button_yes').attr('disabled', true)
 		$('#destroy_village_button_yes').html('Please Wait')
 		var id = Session.get('selected_id')
@@ -15,6 +14,6 @@ Template.rp_destroy_village_confirm.events({
 })
 
 
-Template.rp_destroy_village_confirm.rendered = function() {
+Template.rp_destroy_village_confirm.created = function() {
 	Session.set('mouse_mode', 'modal')
 }

@@ -1,10 +1,14 @@
 Template.rp_info_village.helpers({
+	battleInfoLoaded: function() {
+		return Template.instance().battleInfoLoaded.get()
+	},
+
 	battle: function() {
-		return Battles.findOne({x:this.x, y:this.y})
+		return Battles.findOne({x:Template.currentData().x, y:Template.currentData().y})
 	},
 	
 	is_owner: function() {
-		if (this.user_id == Meteor.userId()) {
+		if (Template.currentData().user_id == Meteor.userId()) {
 			return true
 		} else {
 			return false
@@ -16,7 +20,7 @@ Template.rp_info_village.helpers({
 		var count = 0
 
 		_.each(s.army.types, function(type) {
-			count += self[type]
+			count += Template.currentData()[type]
 		})
 
 		return (count == 0)
@@ -33,7 +37,7 @@ Template.rp_info_village.helpers({
 			glass:0
 		}
 		
-		var hexes = Hx.getSurroundingHexes(this.x, this.y, s.resource.num_rings_village)
+		var hexes = Hx.getSurroundingHexes(Template.currentData().x, Template.currentData().y, s.resource.num_rings_village)
 		_.each(hexes, function(hex) {
 			var h = Hexes.findOne({x:hex.x, y:hex.y}, {fields:{type:1, large:1}})
 			if (h) {
@@ -68,17 +72,17 @@ Template.rp_info_village.events({
 
 
 
-Template.rp_info_village.rendered = function() {
+Template.rp_info_village.created = function() {
+	var self = this
+
 	Session.set('mouse_mode', 'default')
 	Session.set('update_highlight', Random.fraction())
-
-	logevent('right_panel', 'open', 'info_village')
+	self.battleInfoLoaded = new ReactiveVar(false)
 
 	this.autorun(function() {
-		// if (self.data) is a hack, shouldn't be run until it's loaded
-		// this probably makes the autorun run everytime anything in data is changed
-		if (self.data) {
-			Meteor.subscribe('battle_notifications_at_hex', self.data.x, self.data.y)
+		if (Template.currentData()) {
+			var battleInfoHandle = Meteor.subscribe('battle_notifications_at_hex', Template.currentData().x, Template.currentData().y)
+			self.battleInfoLoaded.set(battleInfoHandle.ready())
 		}
 	})
 }

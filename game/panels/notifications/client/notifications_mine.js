@@ -40,7 +40,7 @@ Template.notifications_mine.events({
 })
 
 
-Template.notifications_mine.rendered = function() {
+Template.notifications_mine.created = function() {
 	Session.set('current_notification_id', undefined)
 
 	this.autorun(function() {

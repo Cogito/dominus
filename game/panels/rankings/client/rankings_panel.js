@@ -58,7 +58,7 @@ Template.rankings_panel.helpers({
 
 
 
-Template.rankings_panel.rendered = function() {
+Template.rankings_panel.created = function() {
 	this.autorun(function() {
 		Meteor.subscribe('networth_rankings')
 		Meteor.subscribe('ally_rankings')
@@ -66,6 +66,4 @@ Template.rankings_panel.rendered = function() {
 		Meteor.subscribe('losses_rankings')
 		Meteor.subscribe('dominus_rankings')
 	})
-
-	logevent('panel', 'open', 'rankings')
 }

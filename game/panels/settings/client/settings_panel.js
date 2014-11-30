@@ -56,13 +56,11 @@ Template.settings_panel.events({
 			$(button).html('Please Wait')
 
 			Meteor.apply('change_username', [username], {wait:false, onResultReceived:function(error, result){
-				if (result) {
-					if (result.result) {
-						$(input).val(username)
-					} else {
-						$(alert).show()
-						$(alert).html(result.msg)
-					}
+				if (error) {
+					$(alert).show()
+					$(alert).html(error.error)
+				} else {
+					$(input).val(username)
 				}
 				$(button).attr('disabled', false)
 				$(button).html(button_html)
@@ -94,9 +92,3 @@ Template.settings_panel.events({
 		Meteor.call('deleteAccount')
 	}
 })
-
-
-
-Template.settings_panel.rendered = function() {
-	logevent('panel', 'open', 'settings')
-}

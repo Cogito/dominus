@@ -129,11 +129,11 @@ remove_village_highlights = function() {
 
 
 
-Template.village.rendered = function() {
+Template.village.created = function() {
 	var self = this
 
 	// highlight castle if selected
-	self.deps_highlight = Deps.autorun(function() {
+	this.autorun(function() {
 		Session.get('update_highlight')
 		if (Session.get('selected_type') == 'village') {
 			if (Session.get('selected_id') == self.data._id) {
@@ -143,10 +143,4 @@ Template.village.rendered = function() {
 			}
 		}
 	})
-}
-
-Template.village.destroyed = function() {
-	if (this.deps_highlight) {
-		this.deps_highlight.stop()
-	}
 }

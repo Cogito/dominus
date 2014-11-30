@@ -204,7 +204,7 @@ Template.rp_move_unit.rendered = function() {
 		}
 	})
 
-	self.deps_highlight_paths = Deps.autorun(function() {
+	this.autorun(function() {
 		hex_remove_highlights()
 		remove_castle_highlights()
 		remove_village_highlights()
@@ -230,10 +230,6 @@ Template.rp_move_unit.destroyed = function() {
 	var self = this
 
 	Session.set('mouse_mode', 'default')
-
-	if (self.deps_highlight_paths) {
-		self.deps_highlight_paths.stop()
-	}
 
 	clear_unit_moves()
 }

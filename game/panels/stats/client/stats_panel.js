@@ -224,6 +224,4 @@ Template.stats_panel.rendered = function() {
 		}
 
 	})
-
-	logevent('panel', 'open', 'stats')
 }

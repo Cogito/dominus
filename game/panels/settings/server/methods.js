@@ -85,15 +85,15 @@ Meteor.methods({
 			username = username.replace(/\W/g, '')
 			
 			if (username.length < 3) {
-				return {result: false, msg: 'New username must be at least 3 characters long.'}
+				throw new Meteor.Error('New username must be at least 3 characters long.')
 			}
 
 			if (username.length > 30) {
-				return {result: false, msg: 'New username is too long.'}
+				throw new Meteor.Error('New username is too long.')
 			}
 
 			if (Meteor.users.find({username: username}).count() > 0) {
-				return {result: false, msg: 'A user exists with this username, try another.'}
+				throw new Meteor.Error('A user exists with this username, try another.')
 			}
 
 			// if (username == 'danimal' || username == 'danlmal' || username == 'Danlmal' || username.indexOf('danimal') > -1 || username.indexOf('Danimal') > -1) {
@@ -117,11 +117,12 @@ Meteor.methods({
 			Charges.update({user_id: Meteor.userId()}, {$set: {user_username: username}}, {multi: true})
 			Meteor.users.update(Meteor.userId(), {$set: {username: username}})
 
-			return {result: true}
+			return true
+		} else {
+			throw new Meteor.Error("Can't find user.  This shouldn't happen, please report it.")
 		}
-
-		
 	},
+
 
 	show_coords: function () {
 		Meteor.users.update(Meteor.userId(), {$set: {sp_show_coords: true}})

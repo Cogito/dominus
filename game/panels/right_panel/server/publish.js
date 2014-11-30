@@ -7,3 +7,17 @@ Meteor.publish('castle_user', function(user_id) {
 		this.ready()
 	}
 })
+
+Meteor.publish('castleForHexInfo', function(castle_id) {
+	var castle_fields = {name:1, user_id:1, x:1, y:1, username:1, image:1}
+
+	_.each(s.army.types, function(type) {
+		castle_fields[type] = 1
+	})
+
+	if(this.userId) {
+		return Castles.find(castle_id, {fields:castle_fields})
+	} else {
+		this.ready()
+	}
+})

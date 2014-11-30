@@ -28,8 +28,6 @@ Template.rp_edit_name.events({
 				$('#edit_name_button').attr('disabled', false)
 				$('#edit_name_button').html(button_html)
 
-				logevent('right_panel', 'complete', 'edit_name')
-
 				if (result) {
 					switch(Session.get('selected_type')) {
 						case 'castle':

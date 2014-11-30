@@ -289,13 +289,13 @@ Template.rp_info_army.events({
 
 
 
-Template.rp_info_army.rendered = function() {
+Template.rp_info_army.created = function() {
 	var self = this
 
-	if (self.data) {
+	if (Template.currentData()) {
 		this.autorun(function() {
-			Meteor.subscribe('army_moves', self.data._id)
-			Meteor.subscribe('battle_notifications_at_hex', self.data.x, self.data.y)
+			Meteor.subscribe('army_moves', Template.currentData()._id)
+			Meteor.subscribe('battle_notifications_at_hex', Template.currentData().x, Template.currentData().y)
 		})
 
 		Session.set('mouse_mode', 'default')
@@ -320,8 +320,6 @@ Template.rp_info_army.rendered = function() {
 				remove_all_highlights()
 			}
 		})
-
-		logevent('right_panel', 'open', 'info_army')
 	}
 
 }

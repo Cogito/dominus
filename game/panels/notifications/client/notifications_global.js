@@ -48,7 +48,7 @@ Template.notifications_global.events({
 	},
 })
 
-Template.notifications_global.rendered = function() {
+Template.notifications_global.created = function() {
 	var self = this
 	Session.set('current_notification_id', undefined)
 

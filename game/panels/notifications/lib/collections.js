@@ -1,5 +1,4 @@
 Notifications = new Meteor.Collection('notificationsnew')
-Battles = new Meteor.Collection('battles')
 
 if (Meteor.isClient) {
 	NotificationsTitlesMine = new Mongo.Collection('notifications_titles_mine')

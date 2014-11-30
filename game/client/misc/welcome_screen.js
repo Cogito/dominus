@@ -1,7 +1,6 @@
 Template.welcome_screen.events({
 	'click #close_welcome_screen_button': function(event, template) {
 		Meteor.call('hide_welcome_screen')
-		logevent('user', 'closed_welcome_screen')
 	}
 })
 

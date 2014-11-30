@@ -77,7 +77,6 @@ Template.rp_hire_army_from_castle.events({
 
 			Meteor.call('hire_army', get_selected_hiring_units(), this._id, function(error, result) {
 				if (result) {
-					logevent('right_panel', 'complete', 'hire_army')
 					Session.set('rp_template', 'rp_info_castle')
 				} else {
 					$('#hire_error').show(100)
@@ -108,12 +107,12 @@ Template.rp_hire_army_from_castle.events({
 })
 
 
-Template.rp_hire_army_from_castle.rendered = function() {
+Template.rp_hire_army_from_castle.created = function() {
 	var self = this
 	reset_selected_hiring_units()
 
 	// current
-	self.deps_set_current_resources = Deps.autorun(function() {
+	this.autorun(function() {
 		var fields = {}
 		_.each(s.resource.types_plus_gold, function(type) {
 			fields[type] = 1
@@ -136,7 +135,7 @@ Template.rp_hire_army_from_castle.rendered = function() {
 
 
 	// compute slider max
-	self.deps_compute_maxs = Deps.autorun(function() {
+	this.autorun(function() {
 
 		_.each(s.army.types, function(type) {
 			// get current market prices for loop
@@ -258,7 +257,7 @@ Template.rp_hire_army_from_castle.rendered = function() {
 
 
 	// cost
-	self.deps_update_cost_on_selected_units_change = Deps.autorun(function() {
+	this.autorun(function() {
 		var res_cost = resource_cost_army(get_selected_hiring_units())
 		res_cost.gold = 0
 
@@ -296,7 +295,7 @@ Template.rp_hire_army_from_castle.rendered = function() {
 
 
 	// clamp selected to max
-	self.deps_clamp_to = Deps.autorun(function() {
+	this.autorun(function() {
 		var max = get_hiring_maxs()
 		var sel = get_selected_hiring_units()
 
@@ -311,7 +310,7 @@ Template.rp_hire_army_from_castle.rendered = function() {
 
 
 	// final
-	self.deps_set_final = Deps.autorun(function() {
+	this.autorun(function() {
 		var final_costs = {}
 
 		_.each(s.resource.types_plus_gold, function(type) {
@@ -325,7 +324,7 @@ Template.rp_hire_army_from_castle.rendered = function() {
 
 
 	// set slider max
-	self.deps_update_slider_maxs = Deps.autorun(function() {
+	this.autorun(function() {
 		_.each(get_hiring_maxs(), function(max, type) {
 			check(max, Number)
 			var new_slider = $('.hire_units_new_slider[data-type='+type+']')
@@ -333,36 +332,6 @@ Template.rp_hire_army_from_castle.rendered = function() {
 			new_slider.attr('min', 0)
 		})
 	})
-
-	logevent('right_panel', 'open', 'hire_army_from_castle')
-}
-
-
-
-Template.rp_hire_army_from_castle.destroyed = function() {
-	var self = this
-
-	if (self.deps_setSliderMax) {
-		self.deps_setSliderMax.stop()
-	}
-	if (self.deps_set_current_resources) {
-		self.deps_set_current_resources.stop()
-	}
-	if (self.deps_set_final) {
-		self.deps_set_final.stop()
-	}
-	if (self.deps_update_cost_on_selected_units_change) {
-		self.deps_update_cost_on_selected_units_change.stop()
-	}
-	if (self.deps_compute_maxs) {
-		self.deps_compute_maxs.stop()
-	}
-	if (self.deps_update_slider_maxs) {
-		self.deps_update_slider_maxs.stop()
-	}
-	if (self.deps_clamp_to_max) {
-		self.deps_clamp_to_max.stop()
-	}
 }
 
 

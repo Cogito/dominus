@@ -1,7 +1,7 @@
 Template.top_panel.rendered = function() {
 	var self = this
 
-	self.deps_setCanvasSize = Deps.autorun(function() {
+	this.autorun(function() {
 		if (Meteor.userId()) {
 			if (typeof Session.get('canvas_size') != 'undefined') {
 				$('#left_panels').css('height', Session.get('canvas_size').height - 40)
@@ -11,7 +11,7 @@ Template.top_panel.rendered = function() {
 		}
 	})
 
-	self.deps_hide_velocity = Deps.autorun(function() {
+	this.autorun(function() {
 		var hide = true
 		var user = Meteor.users.findOne(Meteor.userId(), {fields: {admin:1}})
 		if (user && user.admin) {
@@ -23,18 +23,4 @@ Template.top_panel.rendered = function() {
 			$('#velocity-status-widget').show()
 		}
 	})
-}
-
-
-
-Template.top_panel.destroyed = function() {
-	var self = this
-
-	if (self.deps_setCanvasSize) {
-		self.deps_setCanvasSize.stop()
-	}
-
-	if (self.deps_hide_velocity) {
-		self.deps_hide_velocity.stop()
-	}
 }

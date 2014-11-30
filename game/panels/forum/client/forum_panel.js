@@ -199,38 +199,24 @@ Template.forum_panel.events({
 
 
 
-Template.forum_panel.rendered = function() {
+Template.forum_panel.created = function() {
 	Session.set('forum_current_forum', undefined)
 	Session.set('forum_current_thread', undefined)
 	
 	// subscribe
-	this.deps_forums_subscribe = Deps.autorun(function() {
+	this.autorun(function() {
 		Meteor.subscribe('forums')
 	})
 
-	this.deps_threads_subscribe = Deps.autorun(function() {
+	this.autorun(function() {
 		if (Session.get('forum_current_forum')) {
 			Meteor.subscribe('threads', Session.get('forum_current_forum'))
 		}
 	})
 
-	this.deps_messages_subscribe = Deps.autorun(function() {
+	this.autorun(function() {
 		if (Session.get('forum_current_thread')) {
 			Meteor.subscribe('messages', Session.get('forum_current_thread'))
 		}
 	})
-
-	logevent('panel', 'open', 'forums')
-}
-
-Template.forum_panel.destroyed = function() {
-	if (this.deps_forums_subscribe) {
-		this.deps_forums_subscribe.stop()
-	}
-	if (this.deps_threads_subscribe) {
-		this.deps_threads_subscribe.stop()
-	}
-	if (this.deps_messages_subscribe) {
-		this.deps_messages_subscribe.stop()
-	}
 }

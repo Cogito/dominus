@@ -100,14 +100,14 @@ Template.minimap.events({
 })
 
 
-Template.minimap.rendered = function() {
+Template.minimap.created = function() {
 	var self = this
 
 	this.autorun(function() {
 		Meteor.subscribe('minimap_map_size')
 	})
 
-	self.deps_set_hex_size = Deps.autorun(function() {
+	this.autorun(function() {
 		var map_size = Settings.findOne({name:'map_size'})
 		if (map_size && map_size.value) {
 			var hex_size = ((minimap_size / 2) / map_size.value) / 2
@@ -115,7 +115,7 @@ Template.minimap.rendered = function() {
 		}
 	})
 
-	self.deps_viewport_size = Deps.autorun(function() {
+	this.autorun(function() {
 		var mini_hex_size = get_hex_size()
 		var canvas_size = Session.get('canvas_size')
 		var hex_scale = get_hex_scale()
@@ -136,18 +136,6 @@ Template.minimap.rendered = function() {
 
 		 set_viewport_size(mini_canvas_width, mini_canvas_height)
 	})
-}
-
-
-Template.minimap.destroyed = function() {
-	var self = this
-
-	if (self.deps_set_map_max_x) {
-		self.deps_set_hex_size.stop()
-	}
-	if (self.deps_viewport_size) {
-		self.deps_viewport_size.stop()
-	}
 }
 
 

@@ -27,7 +27,7 @@ Template.tree_panel.helpers({
 	}
 })
 
-Template.tree_panel.rendered = function() {
+Template.tree_panel.created = function() {
 	this.autorun(function() {
 		Meteor.subscribe('tree_panel_users')
 	})

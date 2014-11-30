@@ -55,8 +55,6 @@ Template.rp_send_gold.events({
 		Meteor.apply('send_gold_to', [castle.user_id, num], {wait:true, onResultReceived: function(error, result) {
 			$('#send_gold_submit_button').attr('disabled', false)
 			$('#send_gold_submit_button').html(button_html)
-			
-			logevent('right_panel', 'complete', 'send_gold')
 
 			Session.set('rp_template', 'rp_info_castle')
 		}})

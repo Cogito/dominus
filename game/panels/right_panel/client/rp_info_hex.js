@@ -48,17 +48,13 @@ Template.rp_info_hex.events({
 
 
 
-Template.rp_info_hex.rendered = function() {
-	var self = this
-
+Template.rp_info_hex.created = function() {
 	Session.set('mouse_mode', 'default')
 	Session.set('update_highlight', Random.fraction())
 
-	logevent('right_panel', 'open', 'info_hex')
-
-	self.autorun(function() {
-		if (self.data) {
-			Meteor.subscribe('battle_notifications_at_hex', self.data.x, self.data.y)
+	this.autorun(function() {
+		if (Template.currentData()) {
+			Meteor.subscribe('battle_notifications_at_hex', Template.currentData().x, Template.currentData().y)
 		}
 	})
 	

@@ -76,7 +76,7 @@ Template.rp_split_armies.events({
 	}
 })
 
-Template.rp_split_armies.rendered = function() {
+Template.rp_split_armies.created = function() {
 	var self = this
 
 	_.each(s.army.types, function(type) {
@@ -84,7 +84,7 @@ Template.rp_split_armies.rendered = function() {
 	})
 
 
-	this.deps_setSliderMax = Deps.autorun(function() {
+	this.autorun(function() {
 		var fields = {}
 		_.each(s.army.types, function(type) {
 			fields[type] = 1
@@ -108,10 +108,4 @@ Template.rp_split_armies.rendered = function() {
 			})
 		}
 	})
-}
-
-Template.rp_split_armies.destroyed = function() {
-	if(this.deps_setSliderMax) {
-		this.deps_setSliderMax.stop()
-	}
 }

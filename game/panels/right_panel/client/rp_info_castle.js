@@ -1,10 +1,22 @@
 Template.rp_info_castle.helpers({
+	castleUserLoaded: function() {
+		return Template.instance().castleUserLoaded.get()
+	},
+
+	castleInfoLoaded: function() {
+		return Template.instance().castleInfoLoaded.get()
+	},
+
+	battleInfoLoaded: function() {
+		return Template.instance().battleInfoLoaded.get()
+	},
+
 	battle: function() {
 		return Battles.findOne({x:this.x, y:this.y})
 	},
 	
 	image_radio_is_checked: function() {
-		if (UI._parentData(1).image == this.toString()) {
+		if (Template.parentData(1).image == this.toString()) {
 			return 'checked'
 		}
 	},
@@ -28,7 +40,7 @@ Template.rp_info_castle.helpers({
 	},
 
 	is_owner: function() {
-		if (this.user_id == Meteor.userId()) {
+		if (Template.currentData().user_id == Meteor.userId()) {
 			return true
 		} else {
 			return false
@@ -57,7 +69,7 @@ Template.rp_info_castle.helpers({
 			glass:0
 		}
 
-		var hexes = Hx.getSurroundingHexes(this.x, this.y, s.resource.num_rings_castle)
+		var hexes = Hx.getSurroundingHexes(Template.currentData().x, Template.currentData().y, s.resource.num_rings_castle)
 		_.each(hexes, function(hex) {
 			var h = Hexes.findOne({x:hex.x, y:hex.y}, {fields:{type:1, large:1}})
 			if (h) {
@@ -75,7 +87,7 @@ Template.rp_info_castle.helpers({
 	is_vassal: function() {
 		var res = Meteor.users.findOne(Meteor.userId(), {fields: {vassals: 1}})
 		if (res) {
-			if (_.indexOf(res.vassals, this.user_id) != -1) {
+			if (_.indexOf(res.vassals, Template.currentData().user_id) != -1) {
 				return true
 			}
 		}
@@ -85,7 +97,7 @@ Template.rp_info_castle.helpers({
 	is_ally_below: function() {
 		var res = Meteor.users.findOne(Meteor.userId(), {fields: {allies_below: 1}})
 		if (res) {
-			if (_.indexOf(res.allies_below, this.user_id) != -1) {
+			if (_.indexOf(res.allies_below, Template.currentData().user_id) != -1) {
 				return true
 			}
 		}
@@ -95,7 +107,7 @@ Template.rp_info_castle.helpers({
 	is_lord: function() {
 		var res = Meteor.users.findOne(Meteor.userId(), {fields: {lord: 1}})
 		if (res) {
-			if (this.user_id == res.lord) {
+			if (Template.currentData().user_id == res.lord) {
 				return true
 			}
 		}
@@ -107,7 +119,7 @@ Template.rp_info_castle.helpers({
 	},
 
 	dupes: function() {
-		return Session.get('dupes')
+		return Template.instance().dupes.get()
 	},
 
 	user: function() {
@@ -138,32 +150,35 @@ Template.rp_info_castle.events({
 })
 
 
-Template.rp_info_castle.rendered = function() {
+Template.rp_info_castle.created = function() {
 	var self = this
 
 	Session.set('mouse_mode', 'default')
 	Session.set('update_highlight', Random.fraction())
 
-	logevent('right_panel', 'open', 'info_castle')
+	self.dupes = new ReactiveVar(false)
+	self.castleUserLoaded = new ReactiveVar(false)
+	self.battleInfoLoaded = new ReactiveVar(false)
+	self.castleInfoLoaded = new ReactiveVar(false)
 
 	this.autorun(function() {
-		Session.set('dupes', [])
-
-		// can't use self.data here because it does change if you have a castle selected and you click on another castle
-		// the template wasn't destroyed so self.data doesn't update
-		var castle = Castles.findOne(Session.get('selected_id'), {fields: {user_id:1}})
-		if (castle) {
-			Meteor.call('get_duplicate_users', castle.user_id, function(error, result) {
+		if (Template.currentData()) {
+			Meteor.call('get_duplicate_users', Template.currentData().user_id, function(error, result) {
 				if (!error) {
-					Session.set('dupes', result)
+					self.dupes.set(result)
 				}
 			})
 
-			// get networth, income... for right panel
-			Meteor.subscribe('castle_user', castle.user_id)
+			if (Template.currentData().user_id != Meteor.userId()) {
+				// get networth, income... for right panel
+				var castleUserHandle = Meteor.subscribe('castle_user', Template.currentData().user_id)
+				self.castleUserLoaded.set(castleUserHandle.ready())
+			}
 
-			Meteor.subscribe('battle_notifications_at_hex', castle.x, castle.y)
+			var battleInfoHandle = Meteor.subscribe('battle_notifications_at_hex', Template.currentData().x, Template.currentData().y)
+			var castleInfoHandle = Meteor.subscribe('castleForHexInfo', Session.get('selected_id'))
+			self.battleInfoLoaded.set(battleInfoHandle.ready())
+			self.castleInfoLoaded.set(castleInfoHandle.ready())
 		}
 	})
-
 }
