@@ -22,16 +22,14 @@ Template.rp_info_castle.helpers({
 	},
 
 	more_than_one_owned_image: function() {
-		var user = Meteor.users.findOne(Meteor.userId(), {fields: {'purchases.castles':1}})
-		if (user && user.purchases && user.purchases.castles) {
-			return user.purchases.castles.length > 1
+		if (Template.instance().userData) {
+			return Template.instance().userData.purchases.castles.length > 1
 		}
 	},
 
 	owned_images: function() {
-		var user = Meteor.users.findOne(Meteor.userId(), {fields: {'purchases.castles':1}})
-		if (user && user.purchases && user.purchases.castles) {
-			return user.purchases.castles
+		if (Template.instance().userData) {
+			return Template.instance().userData.purchases.castles
 		}
 	},
 
@@ -40,10 +38,12 @@ Template.rp_info_castle.helpers({
 	},
 
 	is_owner: function() {
-		if (Template.currentData().user_id == Meteor.userId()) {
-			return true
-		} else {
-			return false
+		if (Template.instance().userData) {
+			if (Template.currentData().user_id == Template.instance().userData._id) {
+				return true
+			} else {
+				return false
+			}
 		}
 	},
 
@@ -71,7 +71,7 @@ Template.rp_info_castle.helpers({
 
 		var hexes = Hx.getSurroundingHexes(Template.currentData().x, Template.currentData().y, s.resource.num_rings_castle)
 		_.each(hexes, function(hex) {
-			var h = Hexes.findOne({x:hex.x, y:hex.y}, {fields:{type:1, large:1}})
+			var h = Hexes.findOne({x:hex.x, y:hex.y}, {fields:{type:1, large:1}, reactive:false})
 			if (h) {
 				if (h.large) {
 					res[h.type] += s.resource.gained_at_hex * s.resource.large_resource_multiplier
@@ -85,9 +85,8 @@ Template.rp_info_castle.helpers({
 	},
 
 	is_vassal: function() {
-		var res = Meteor.users.findOne(Meteor.userId(), {fields: {vassals: 1}})
-		if (res) {
-			if (_.indexOf(res.vassals, Template.currentData().user_id) != -1) {
+		if (Template.instance().userData) {
+			if (_.indexOf(Template.instance().userData.vassals, Template.currentData().user_id) != -1) {
 				return true
 			}
 		}
@@ -95,9 +94,8 @@ Template.rp_info_castle.helpers({
 	},
 
 	is_ally_below: function() {
-		var res = Meteor.users.findOne(Meteor.userId(), {fields: {allies_below: 1}})
-		if (res) {
-			if (_.indexOf(res.allies_below, Template.currentData().user_id) != -1) {
+		if (Template.instance().userData) {
+			if (_.indexOf(Template.instance().userData.allies_below, Template.currentData().user_id) != -1) {
 				return true
 			}
 		}
@@ -105,9 +103,8 @@ Template.rp_info_castle.helpers({
 	},
 
 	is_lord: function() {
-		var res = Meteor.users.findOne(Meteor.userId(), {fields: {lord: 1}})
-		if (res) {
-			if (Template.currentData().user_id == res.lord) {
+		if (Template.instance().userData) {
+			if (Template.currentData().user_id == Template.instance().userData.lord) {
 				return true
 			}
 		}
@@ -120,10 +117,6 @@ Template.rp_info_castle.helpers({
 
 	dupes: function() {
 		return Template.instance().dupes.get()
-	},
-
-	user: function() {
-		return Meteor.users.findOne(this.user_id)
 	}
 })
 
@@ -183,6 +176,15 @@ Template.rp_info_castle.created = function() {
 			var battleInfoHandle = Meteor.subscribe('battle_notifications_at_hex', Template.currentData().x, Template.currentData().y)
 			self.battleInfoLoaded.set(battleInfoHandle.ready())
 			
+		}
+	})
+
+	self.userData = new ReactiveVar(null)
+	this.autorun(function() {
+		var fields = {'purchases.castles':1, vassals: 1, allies_below: 1, lord: 1}
+		var user = Meteor.users.findOne(Meteor.userId(), {fields: fields})
+		if (user) {
+			self.userData.set(user)
 		}
 	})
 }

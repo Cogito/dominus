@@ -43,7 +43,7 @@ Template.rp_info_village.helpers({
 		
 		var hexes = Hx.getSurroundingHexes(Template.currentData().x, Template.currentData().y, s.resource.num_rings_village)
 		_.each(hexes, function(hex) {
-			var h = Hexes.findOne({x:hex.x, y:hex.y}, {fields:{type:1, large:1}})
+			var h = Hexes.findOne({x:hex.x, y:hex.y}, {fields:{type:1, large:1}, reactive:false})
 			if (h) {
 				if (h.large) {
 					res[h.type] += s.resource.gained_at_hex * s.resource.large_resource_multiplier

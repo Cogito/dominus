@@ -89,12 +89,13 @@ Template.castle.created = function() {
 	// highlight castle if selected
 	this.autorun(function() {
 		Session.get('update_highlight')
-		if (Session.get('selected_type') == 'castle') {
-			if (Session.get('selected_id') == self.data._id) {
-				remove_all_highlights()
-				draw_castle_highlight(Session.get('selected_id'), (self.data.user_id == Meteor.userId()))
-				Session.set('rp_template', 'rp_info_castle')
-			}
+
+		var selected_id = Session.get('selected_id')
+		var selected_type = Session.get('selected_type')
+		if (selected_id && selected_type == 'castle' && Template.currentData()) {
+			remove_all_highlights()
+			draw_castle_highlight(selected_id, (Template.currentData().user_id == Meteor.userId()))
+			Session.set('rp_template', 'rp_info_castle')
 		}
 	})
 }
