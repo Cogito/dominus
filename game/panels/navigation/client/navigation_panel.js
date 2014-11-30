@@ -78,6 +78,10 @@ Template.navigation_panel.rendered = function() {
 			return false
 		}
 
+		if (Session.get('rp_template') == 'rp_hire_army_from_castle' || Session.get('rp_template') == 'rp_move_unit' || Session.get('rp_template') == 'rp_split_armies') {
+			return false
+		}
+
 		// watch for when move_map changes
 		var direction = Session.get('move_map')
 

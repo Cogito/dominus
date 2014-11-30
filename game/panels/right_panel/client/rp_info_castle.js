@@ -57,30 +57,12 @@ Template.rp_info_castle.helpers({
 		return (count == 0)
 	},
 
+	resInfoLoaded: function() {
+		return Template.instance().resInfoLoaded.get()
+	},
+
 	resources_per_interval: function() {
-		var res = {
-			gold:s.resource.gold_gained_at_castle,
-			grain:0,
-			lumber:0,
-			ore:0,
-			wool:0,
-			clay:0,
-			glass:0
-		}
-
-		var hexes = Hx.getSurroundingHexes(Template.currentData().x, Template.currentData().y, s.resource.num_rings_castle)
-		_.each(hexes, function(hex) {
-			var h = Hexes.findOne({x:hex.x, y:hex.y}, {fields:{type:1, large:1}, reactive:false})
-			if (h) {
-				if (h.large) {
-					res[h.type] += s.resource.gained_at_hex * s.resource.large_resource_multiplier
-				} else {
-					res[h.type] += s.resource.gained_at_hex
-				}
-			}
-		})
-
-		return res
+		return Template.instance().resInfo.get()
 	},
 
 	is_vassal: function() {
@@ -177,6 +159,40 @@ Template.rp_info_castle.created = function() {
 			
 		}
 	})
+
+
+	self.resInfoLoaded = new ReactiveVar(false)
+	self.resInfo = new ReactiveVar(false)
+	this.autorun(function() {
+		if (Template.currentData()) {
+			var res = {
+				gold:s.resource.gold_gained_at_castle,
+				grain:0,
+				lumber:0,
+				ore:0,
+				wool:0,
+				clay:0,
+				glass:0
+			}
+
+			var hexes = Hx.getSurroundingHexes(Template.currentData().x, Template.currentData().y, s.resource.num_rings_castle)
+			_.each(hexes, function(hex) {
+				var h = Hexes.findOne({x:hex.x, y:hex.y}, {fields:{type:1, large:1}, reactive:false})
+				if (h) {
+					if (h.large) {
+						res[h.type] += s.resource.gained_at_hex * s.resource.large_resource_multiplier
+					} else {
+						res[h.type] += s.resource.gained_at_hex
+					}
+				}
+			})
+
+			self.resInfo.set(res)
+			self.resInfoLoaded.set(true)
+		}
+	})
+
+
 
 	self.userData = new ReactiveVar(null)
 	this.autorun(function() {
