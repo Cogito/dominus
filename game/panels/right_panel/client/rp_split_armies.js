@@ -76,7 +76,7 @@ Template.rp_split_armies.events({
 	}
 })
 
-Template.rp_split_armies.created = function() {
+Template.rp_split_armies.rendered = function() {
 	var self = this
 
 	_.each(s.army.types, function(type) {

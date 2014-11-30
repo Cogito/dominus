@@ -11,3 +11,7 @@ Template.help_panel.helpers({
 		return s.resource.large_resource_multiplier * s.resource.gained_at_hex
 	}
 })
+
+Template.help_panel.rendered = function() {
+	this.firstNode.parentNode._uihooks = leftPanelAnimation
+}

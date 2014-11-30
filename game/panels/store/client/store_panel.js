@@ -64,3 +64,8 @@ Template.store_panel.created = function() {
 		Meteor.subscribe('store_charges')
 	})
 }
+
+
+Template.store_panel.rendered = function() {
+	this.firstNode.parentNode._uihooks = leftPanelAnimation
+}

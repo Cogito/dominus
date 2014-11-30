@@ -92,3 +92,7 @@ Template.settings_panel.events({
 		Meteor.call('deleteAccount')
 	}
 })
+
+Template.settings_panel.rendered = function() {
+	this.firstNode.parentNode._uihooks = leftPanelAnimation
+}

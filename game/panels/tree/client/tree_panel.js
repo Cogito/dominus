@@ -32,3 +32,7 @@ Template.tree_panel.created = function() {
 		Meteor.subscribe('tree_panel_users')
 	})
 }
+
+Template.tree_panel.rendered = function() {
+	this.firstNode.parentNode._uihooks = leftPanelAnimation
+}

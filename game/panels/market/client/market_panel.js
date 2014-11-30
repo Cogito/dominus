@@ -212,6 +212,8 @@ Template.market_panel.destroyed = function() {
 
 
 Template.market_panel.rendered = function() {
+	this.firstNode.parentNode._uihooks = leftPanelAnimation
+
 	Session.set('temp_market_type', '')
 	Session.set('temp_market_quantity', 0)
 

@@ -10,7 +10,8 @@ Template.stats_panel.destroyed = function() {
 
 
 Template.stats_panel.rendered = function() {
-
+	this.firstNode.parentNode._uihooks = leftPanelAnimation
+	
 	// subscribe
 	this.autorun(function() {
 		Meteor.subscribe('my_dailystats')

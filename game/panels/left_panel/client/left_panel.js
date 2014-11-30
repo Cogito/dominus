@@ -198,3 +198,7 @@ Template.left_panel.created = function() {
 		}
 	})
 }
+
+Template.left_panel.rendered = function() {
+	this.firstNode.parentNode._uihooks = leftPanelAnimation
+}

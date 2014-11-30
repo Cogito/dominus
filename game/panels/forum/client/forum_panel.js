@@ -220,3 +220,7 @@ Template.forum_panel.created = function() {
 		}
 	})
 }
+
+Template.forum_panel.rendered = function() {
+	this.firstNode.parentNode._uihooks = leftPanelAnimation
+}

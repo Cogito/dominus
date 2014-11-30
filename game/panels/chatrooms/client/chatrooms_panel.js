@@ -91,6 +91,8 @@ Template.chatrooms_panel.created = function() {
 
 
 Template.chatrooms_panel.rendered = function() {
+	this.firstNode.parentNode._uihooks = leftPanelAnimation
+	
 	// on window gain focus, if a chatroom is open hide alert
 	$(window).focus(function(event) {
 		var room_id = Session.get('selectedChatroomId')

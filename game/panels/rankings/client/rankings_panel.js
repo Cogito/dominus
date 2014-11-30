@@ -67,3 +67,8 @@ Template.rankings_panel.created = function() {
 		Meteor.subscribe('dominus_rankings')
 	})
 }
+
+
+Template.rankings_panel.rendered = function() {
+	this.firstNode.parentNode._uihooks = leftPanelAnimation
+}

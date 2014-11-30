@@ -79,6 +79,10 @@ Template.notifications_panel.created = function() {
 }
 
 
+Template.notifications_panel.rendered = function() {
+	this.firstNode.parentNode._uihooks = leftPanelAnimation
+}
+
 
 get_notification_icon = function(notification_type) {
 	switch (notification_type) {
