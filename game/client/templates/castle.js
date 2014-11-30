@@ -91,8 +91,7 @@ Template.castle.created = function() {
 		Session.get('update_highlight')
 
 		var selected_id = Session.get('selected_id')
-		var selected_type = Session.get('selected_type')
-		if (selected_id && selected_type == 'castle' && Template.currentData()) {
+		if (Template.currentData() && selected_id == Template.currentData()._id) {
 			remove_all_highlights()
 			draw_castle_highlight(selected_id, (Template.currentData().user_id == Meteor.userId()))
 			Session.set('rp_template', 'rp_info_castle')

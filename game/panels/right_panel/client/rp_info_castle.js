@@ -23,13 +23,13 @@ Template.rp_info_castle.helpers({
 
 	more_than_one_owned_image: function() {
 		if (Template.instance().userData) {
-			return Template.instance().userData.purchases.castles.length > 1
+			return Template.instance().userData.get().purchases.castles.length > 1
 		}
 	},
 
 	owned_images: function() {
 		if (Template.instance().userData) {
-			return Template.instance().userData.purchases.castles
+			return Template.instance().userData.get().purchases.castles
 		}
 	},
 
@@ -39,12 +39,11 @@ Template.rp_info_castle.helpers({
 
 	is_owner: function() {
 		if (Template.instance().userData) {
-			if (Template.currentData().user_id == Template.instance().userData._id) {
+			if (Template.currentData().user_id == Template.instance().userData.get()._id) {
 				return true
-			} else {
-				return false
 			}
 		}
+		return false
 	},
 
 	no_soldiers: function() {
@@ -86,7 +85,7 @@ Template.rp_info_castle.helpers({
 
 	is_vassal: function() {
 		if (Template.instance().userData) {
-			if (_.indexOf(Template.instance().userData.vassals, Template.currentData().user_id) != -1) {
+			if (_.indexOf(Template.instance().userData.get().vassals, Template.currentData().user_id) != -1) {
 				return true
 			}
 		}
@@ -95,7 +94,7 @@ Template.rp_info_castle.helpers({
 
 	is_ally_below: function() {
 		if (Template.instance().userData) {
-			if (_.indexOf(Template.instance().userData.allies_below, Template.currentData().user_id) != -1) {
+			if (_.indexOf(Template.instance().userData.get().allies_below, Template.currentData().user_id) != -1) {
 				return true
 			}
 		}
@@ -104,7 +103,7 @@ Template.rp_info_castle.helpers({
 
 	is_lord: function() {
 		if (Template.instance().userData) {
-			if (Template.currentData().user_id == Template.instance().userData.lord) {
+			if (Template.currentData().user_id == Template.instance().userData.get().lord) {
 				return true
 			}
 		}
@@ -117,6 +116,12 @@ Template.rp_info_castle.helpers({
 
 	dupes: function() {
 		return Template.instance().dupes.get()
+	},
+
+	user: function() {
+		if (Template.instance().userData) {
+			return Meteor.users.findOne(Template.currentData().user_id)
+		}
 	}
 })
 
