@@ -162,6 +162,11 @@ Template.rp_info_castle.created = function() {
 	self.castleInfoLoaded = new ReactiveVar(false)
 
 	this.autorun(function() {
+		var castleInfoHandle = Meteor.subscribe('castleForHexInfo', Session.get('selected_id'))
+		self.castleInfoLoaded.set(castleInfoHandle.ready())
+	})
+
+	this.autorun(function() {
 		if (Template.currentData()) {
 			Meteor.call('get_duplicate_users', Template.currentData().user_id, function(error, result) {
 				if (!error) {
@@ -176,9 +181,8 @@ Template.rp_info_castle.created = function() {
 			}
 
 			var battleInfoHandle = Meteor.subscribe('battle_notifications_at_hex', Template.currentData().x, Template.currentData().y)
-			var castleInfoHandle = Meteor.subscribe('castleForHexInfo', Session.get('selected_id'))
 			self.battleInfoLoaded.set(battleInfoHandle.ready())
-			self.castleInfoLoaded.set(castleInfoHandle.ready())
+			
 		}
 	})
 }

@@ -1,4 +1,8 @@
 Template.rp_info_hex.helpers({
+	battleInfoLoaded: function() {
+		return Template.instance().battleInfoLoaded.get()
+	},
+
 	battle: function() {
 		return Battles.findOne({x:this.x, y:this.y})
 	},
@@ -49,13 +53,16 @@ Template.rp_info_hex.events({
 
 
 Template.rp_info_hex.created = function() {
+	var self = this
+
 	Session.set('mouse_mode', 'default')
 	Session.set('update_highlight', Random.fraction())
 
+	self.battleInfoLoaded = new ReactiveVar(false)
 	this.autorun(function() {
 		if (Template.currentData()) {
-			Meteor.subscribe('battle_notifications_at_hex', Template.currentData().x, Template.currentData().y)
+			var battleInfoHandle = Meteor.subscribe('battle_notifications_at_hex', Template.currentData().x, Template.currentData().y)
+			self.battleInfoLoaded.set(battleInfoHandle.ready())
 		}
 	})
-	
 }

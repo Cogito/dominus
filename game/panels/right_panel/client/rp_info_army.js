@@ -1,4 +1,8 @@
 Template.rp_info_army.helpers({
+	infoLoaded: function() {
+		return Template.instance().infoLoaded.get()
+	},
+
 	battle: function() {
 		return Battles.findOne({x:this.x, y:this.y})
 	},
@@ -292,16 +296,21 @@ Template.rp_info_army.events({
 Template.rp_info_army.created = function() {
 	var self = this
 
-	if (Template.currentData()) {
-		this.autorun(function() {
+	self.infoLoaded = new ReactiveVar(false)
+	this.autorun(function() {
+		var infoHandle = Meteor.subscribe('armyForHexInfo', Session.get('selected_id'))
+		self.infoLoaded.set(infoHandle.ready())
+	})
+
+	
+	this.autorun(function() {
+		if (Template.currentData()) {
 			Meteor.subscribe('army_moves', Template.currentData()._id)
 			Meteor.subscribe('battle_notifications_at_hex', Template.currentData().x, Template.currentData().y)
-		})
 
-		Session.set('mouse_mode', 'default')
-		Session.set('update_highlight', Random.fraction())
+			Session.set('mouse_mode', 'default')
+			Session.set('update_highlight', Random.fraction())
 
-		this.autorun(function() {
 			Session.get('update_highlight')
 			if (Session.get('mouse_mode') != 'finding_path') {
 				if (Session.get('selected_type') == 'army') {
@@ -319,7 +328,7 @@ Template.rp_info_army.created = function() {
 				// if army dies remove highlights
 				remove_all_highlights()
 			}
-		})
-	}
+		}
+	})
 
 }

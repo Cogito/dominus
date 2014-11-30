@@ -12,17 +12,6 @@
 			</div>
 		</div>
 
-		{{#if battle}}
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					Battle
-				</div>
-				<div class="panel-body">
-					{{> battle_report battle}}
-				</div>
-			</div>
-		{{/if}}
-
 		{{#if armies}}
 			{{#each armies}}
 				<div class="panel panel-default">
@@ -63,6 +52,19 @@
 					</div>
 				</div>
 			{{/each}}
+		{{/if}}
+
+		{{#if battleInfoLoaded}}
+			{{#if battle}}
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Battle
+					</div>
+					<div class="panel-body">
+						{{> battle_report battle}}
+					</div>
+				</div>
+			{{/if}}
 		{{/if}}
 
 	</div>
