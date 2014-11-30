@@ -182,9 +182,6 @@ Template.left_panel.created = function() {
 			if (user) {
 				Meteor.subscribe('gather_resources_jobstat')
 
-				Meteor.subscribe('my_castle')
-				Meteor.subscribe('my_villages')
-
 				if (user.lp_show_armies) {
 					Meteor.subscribe('my_armies')
 					Meteor.subscribe('user_moves')

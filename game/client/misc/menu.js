@@ -267,6 +267,8 @@ Template.menu.rendered = function() {
 		Meteor.subscribe('market')
 		Meteor.subscribe('recentchats')
 		Meteor.subscribe('latest_forum_posts')
+		Meteor.subscribe('my_castle')
+		Meteor.subscribe('my_villages')
 	})
 }
 

@@ -81,14 +81,14 @@ Template.rp_info_village.created = function() {
 
 	Session.set('mouse_mode', 'default')
 	Session.set('update_highlight', Random.fraction())
-	self.battleInfoLoaded = new ReactiveVar(false)
-
+	
 	self.infoLoaded = new ReactiveVar(false)
 	this.autorun(function() {
 		var infoHandle = Meteor.subscribe('villageForHexInfo', Session.get('selected_id'))
 		self.infoLoaded.set(infoHandle.ready())
 	})
-	
+
+	self.battleInfoLoaded = new ReactiveVar(false)
 	this.autorun(function() {
 		if (Template.currentData()) {
 			var battleInfoHandle = Meteor.subscribe('battle_notifications_at_hex', Template.currentData().x, Template.currentData().y)
