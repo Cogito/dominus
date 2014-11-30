@@ -11,32 +11,34 @@ Meteor.methods({
 		}
 
 		var army = Armies.findOne({_id:army_id, user_id:Meteor.userId()}, {fields: {x:1, y:1}})
+		if (army) {
 
-		// make sure army is at start of first move
-		if (army.x != moves[0].from_x && army.y != moves[0].from_y) {
-			return false
-		}
+			// make sure army is at start of first move
+			if (army.x != moves[0].from_x && army.y != moves[0].from_y) {
+				return false
+			}
 
-		// delete old moves
-		Moves.remove({army_id:army._id, user_id:Meteor.userId()})
+			// delete old moves
+			Moves.remove({army_id:army._id, user_id:Meteor.userId()})
 
-		_.each(moves, function(move, index) {
-			check(move.from_x, Number)
-			check(move.from_y, Number)
-			check(move.to_x, Number)
-			check(move.to_y, Number)
-			Moves.insert({
-				from_x:move.from_x,
-				from_y:move.from_y,
-				to_x:move.to_x,
-				to_y:move.to_y,
-				index:index,
-				army_id:army._id,
-				user_id:Meteor.userId(),
-				created_at:new Date(),
-				last_move_at:new Date()
+			_.each(moves, function(move, index) {
+				check(move.from_x, Number)
+				check(move.from_y, Number)
+				check(move.to_x, Number)
+				check(move.to_y, Number)
+				Moves.insert({
+					from_x:move.from_x,
+					from_y:move.from_y,
+					to_x:move.to_x,
+					to_y:move.to_y,
+					index:index,
+					army_id:army._id,
+					user_id:Meteor.userId(),
+					created_at:new Date(),
+					last_move_at:new Date()
+				})
 			})
-		})
+		}
 	},
 
 

@@ -322,6 +322,11 @@ Template.rp_hire_army_from_castle.created = function() {
 		set_hiring_final_costs(final_costs)
 	})
 
+}
+
+
+Template.rp_hire_army_from_castle.rendered = function() {
+	var self = this
 
 	// set slider max
 	this.autorun(function() {
