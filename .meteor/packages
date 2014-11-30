@@ -28,4 +28,5 @@ iron:router
 meteorhacks:subs-manager
 underscore
 reactive-var
+spiderable
 

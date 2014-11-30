@@ -20,7 +20,7 @@ jobqueue = function() {
 
 				func(job.params, function() {
 					var run_time = new Date() - start_time
-					console.log('job '+job.name+' '+run_time+'ms '+EJSON.stringify(job.params))
+					//console.log('job '+job.name+' '+run_time+'ms '+EJSON.stringify(job.params))
 					Jobqueue.remove(job._id)
 					record_job_stat(job.name, run_time)
 					self.is_busy = false
