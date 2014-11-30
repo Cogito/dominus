@@ -270,6 +270,30 @@ Template.menu.rendered = function() {
 		Meteor.subscribe('my_castle')
 		Meteor.subscribe('my_villages')
 	})
+
+
+	Session.setDefault('rightPanelInfoLoaded', false)
+	this.autorun(function() {
+		var selected_id = Session.get('selected_id')
+		var selected_type = Session.get('selected_type')
+
+		if (selected_id && selected_type) {
+			switch (selected_type) {
+				case 'castle':
+					var infoHandle = Meteor.subscribe('castleForHexInfo', Session.get('selected_id'))
+					Session.set('rightPanelInfoLoaded', infoHandle.ready())
+					break
+				case 'army':
+					var infoHandle = Meteor.subscribe('armyForHexInfo', Session.get('selected_id'))
+					Session.set('rightPanelInfoLoaded', infoHandle.ready())
+					break
+				case 'village':
+					var infoHandle = Meteor.subscribe('villageForHexInfo', Session.get('selected_id'))
+					Session.set('rightPanelInfoLoaded', infoHandle.ready())
+					break
+			}
+		}
+	})
 }
 
 

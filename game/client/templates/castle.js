@@ -90,11 +90,12 @@ Template.castle.created = function() {
 	this.autorun(function() {
 		Session.get('update_highlight')
 
-		var selected_id = Session.get('selected_id')
-		if (Template.currentData() && selected_id == Template.currentData()._id) {
-			remove_all_highlights()
-			draw_castle_highlight(selected_id, (Template.currentData().user_id == Meteor.userId()))
-			Session.set('rp_template', 'rp_info_castle')
+		if (Session.get('selected_type') == 'castle') {
+			if (Session.get('selected_id') == self.data._id){
+				remove_all_highlights()
+				draw_castle_highlight(Session.get('selected_id'), (self.data.user_id == Meteor.userId()))
+				Session.set('rp_template', 'rp_info_castle')
+			}
 		}
 	})
 }

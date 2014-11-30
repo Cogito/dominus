@@ -24,7 +24,6 @@ Meteor.methods({
 
 	admin_delete_forum: function(id) {
 		if (get_user_property("admin")) {
-			console.log(id)
 			Forums.remove(id)
 			Latestmessages.remove({forum_id:id})
 		}

@@ -4,7 +4,7 @@ Template.rp_info_castle.helpers({
 	},
 
 	castleInfoLoaded: function() {
-		return Template.instance().castleInfoLoaded.get()
+		return Session.get('rightPanelInfoLoaded')
 	},
 
 	battleInfoLoaded: function() {
@@ -38,7 +38,7 @@ Template.rp_info_castle.helpers({
 	},
 
 	is_owner: function() {
-		if (Template.instance().userData) {
+		if (Template.instance().userData && Template.currentData()) {
 			if (Template.currentData().user_id == Template.instance().userData.get()._id) {
 				return true
 			}
@@ -84,7 +84,7 @@ Template.rp_info_castle.helpers({
 	},
 
 	is_vassal: function() {
-		if (Template.instance().userData) {
+		if (Template.instance().userData && Template.currentData()) {
 			if (_.indexOf(Template.instance().userData.get().vassals, Template.currentData().user_id) != -1) {
 				return true
 			}
@@ -93,7 +93,7 @@ Template.rp_info_castle.helpers({
 	},
 
 	is_ally_below: function() {
-		if (Template.instance().userData) {
+		if (Template.instance().userData && Template.currentData()) {
 			if (_.indexOf(Template.instance().userData.get().allies_below, Template.currentData().user_id) != -1) {
 				return true
 			}
@@ -102,7 +102,7 @@ Template.rp_info_castle.helpers({
 	},
 
 	is_lord: function() {
-		if (Template.instance().userData) {
+		if (Template.instance().userData && Template.currentData()) {
 			if (Template.currentData().user_id == Template.instance().userData.get().lord) {
 				return true
 			}
@@ -119,7 +119,7 @@ Template.rp_info_castle.helpers({
 	},
 
 	user: function() {
-		if (Template.instance().userData) {
+		if (Template.currentData()) {
 			return Meteor.users.findOne(Template.currentData().user_id)
 		}
 	}
@@ -157,12 +157,6 @@ Template.rp_info_castle.created = function() {
 	self.dupes = new ReactiveVar(false)
 	self.castleUserLoaded = new ReactiveVar(false)
 	self.battleInfoLoaded = new ReactiveVar(false)
-	self.castleInfoLoaded = new ReactiveVar(false)
-
-	this.autorun(function() {
-		var castleInfoHandle = Meteor.subscribe('castleForHexInfo', Session.get('selected_id'))
-		self.castleInfoLoaded.set(castleInfoHandle.ready())
-	})
 
 	this.autorun(function() {
 		if (Template.currentData()) {

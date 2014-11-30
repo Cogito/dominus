@@ -1,6 +1,6 @@
 Template.rp_info_army.helpers({
 	infoLoaded: function() {
-		return Template.instance().infoLoaded.get()
+		return Session.get('rightPanelInfoLoaded')
 	},
 
 	battle: function() {
@@ -295,12 +295,6 @@ Template.rp_info_army.events({
 
 Template.rp_info_army.created = function() {
 	var self = this
-
-	self.infoLoaded = new ReactiveVar(false)
-	this.autorun(function() {
-		var infoHandle = Meteor.subscribe('armyForHexInfo', Session.get('selected_id'))
-		self.infoLoaded.set(infoHandle.ready())
-	})
 
 	
 	this.autorun(function() {

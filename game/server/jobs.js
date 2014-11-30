@@ -145,7 +145,6 @@ nightly_job = function() {
 	console.log('running nightly job at '+moment().format("dddd, MMMM Do YYYY, h:mm:ss a"))
 
 	delete_old_notifications()
-	delete_old_chats()
 
 	Meteor.users.find().forEach(function(user) {
 		update_num_allies(user._id)
