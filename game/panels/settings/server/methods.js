@@ -5,6 +5,8 @@ Meteor.methods({
 		var user = Meteor.users.findOne(Meteor.userId())
 		if (user) {
 
+			var appendToName = '(deleted)'
+
 			Villages.remove({user_id: user._id})
 			Armies.remove({user_id: user._id})
 			Moves.remove({user_id: user._id})
