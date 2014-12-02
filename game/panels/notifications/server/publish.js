@@ -23,7 +23,7 @@ Meteor.publish('notifications_titles_global', function() {
 			'sent_gold',
 			'sent_army'
 			]
-	var cur = Notifications.find({type: {$in: types}}, {fields: {read:1, title:1, created_at:1, type:1}, sort: {created_at: -1}, limit:150})
+	var cur = Notifications.find({type: {$in: types}}, {fields: {user_id:1, read:1, title:1, created_at:1, type:1}, sort: {created_at: -1}, limit:150})
 	Mongo.Collection._publishCursor(cur, sub, 'notifications_titles_global')
 	return sub.ready();
 })
