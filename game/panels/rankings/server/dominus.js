@@ -11,7 +11,7 @@ check_for_dominus = function() {
 	// find dominus
 	Meteor.users.find({num_allies_below: num_users-1}).forEach(function(d) {
 		Meteor.users.update(d._id, {$set: {is_dominus: true}})
-	
+
 		if (dominus) {
 			if (d._id == dominus._id) {
 				is_still_dominus = true
@@ -47,8 +47,8 @@ new_dominus_event = function(dominus_user) {
 	check(dominus_user, Object)
 	check(dominus_user._id, String)
 
-	// send notification
-	notification_new_dominus(dominus_user._id, dominus_user)
+	// send notifications
+	notification_new_dominus(dominus_user)
 
 	// make sure dominus and last dominus are not the same
 	var lastDominus = Settings.findOne({name: 'lastDominusUserId'})

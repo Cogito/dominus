@@ -16,9 +16,9 @@ notification_no_longer_dominus_new_user = function(user_id, user) {
 		)
 }
 
-notification_new_dominus = function(user_id, user) {
-	check(user_id, String)
-	create_notification_new(user_id,
+notification_new_dominus = function(user) {
+	check(user, Object)
+	create_notification_for_all_players(
 		'new_dominus',
 		{_id:user._id, username: user.username, x:user.x, y:user.y, castle_id:user.castle_id},
 		user.username+' is the new Dominus'
@@ -234,7 +234,7 @@ create_notification_new = function(user_id, type, vars, title) {
 	check(type, String)
 	check(vars, Object)
 	check(title, String)
-	
+
 	Notifications.insert({
 		user_id: user_id,
 		created_at: new Date(),
