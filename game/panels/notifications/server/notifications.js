@@ -245,6 +245,12 @@ create_notification_new = function(user_id, type, vars, title) {
 	})
 }
 
+create_notification_for_all_players = function(type, vars, title) {
+	Meteor.users.find({}, {fields: {_id:1}}).forEach(function(user) {
+		create_notification_new(user._id, type, vars, title)
+	})
+}
+
 
 
 delete_old_notifications = function() {
