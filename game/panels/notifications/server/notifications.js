@@ -16,10 +16,10 @@ notification_no_longer_dominus_new_user = function(user_id, user) {
 		)
 }
 
-notification_are_now_dominus = function(user_id, user) {
+notification_new_dominus = function(user_id, user) {
 	check(user_id, String)
 	create_notification_new(user_id,
-		'now_dominus',
+		'new_dominus',
 		{_id:user._id, username: user.username, x:user.x, y:user.y, castle_id:user.castle_id},
 		user.username+' is the new Dominus'
 		)

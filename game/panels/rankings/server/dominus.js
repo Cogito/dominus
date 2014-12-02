@@ -48,7 +48,7 @@ new_dominus_event = function(dominus_user) {
 	check(dominus_user._id, String)
 
 	// send notification
-	notification_are_now_dominus(dominus_user._id, dominus_user)
+	notification_new_dominus(dominus_user._id, dominus_user)
 
 	// make sure dominus and last dominus are not the same
 	var lastDominus = Settings.findOne({name: 'lastDominusUserId'})

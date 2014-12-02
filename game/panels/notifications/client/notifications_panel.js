@@ -110,7 +110,7 @@ get_notification_icon = function(notification_type) {
 			return 'fa-sitemap'
 		case 'now_a_king':
 			return 'fa-sitemap'
-		case 'now_dominus':
+		case 'new_dominus':
 			return 'fa-sitemap'
 		case 'sent_army':
 			return 'fa-envelope'

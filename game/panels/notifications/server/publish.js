@@ -17,7 +17,7 @@ Meteor.publish('notifications_titles_global', function() {
 	var sub = this
 	var types = [
 			'battle',
-			'now_dominus',
+			'new_dominus',
 			'no_longer_dominus',
 			'no_longer_dominus_new_user',
 			'sent_gold',
