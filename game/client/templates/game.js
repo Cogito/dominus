@@ -132,23 +132,6 @@ Template.game.rendered = function() {
 // uses meteor package meteorhacks:subs-manager
 subs = new SubsManager()
 
-// subscribe to what's onscreen but with a rate limit
-on_screen_last_subscribed_at = new Date(0)
-on_screen_subscribe_timer = ''
-Session.set('on_screen_delayed', Session.get('center_hex'))
-on_screen_subscribe_delay = function() {
-	Meteor.clearTimeout(on_screen_subscribe_timer)
-
-	if (new Date() - on_screen_last_subscribed_at > 200) {
-		Session.set('on_screen_delayed', Session.get('center_hex'))
-		on_screen_last_subscribed_at = new Date()
-	} else {
-		on_screen_subscribe_timer = Meteor.setTimeout(function() {
-			on_screen_subscribe_delay()
-		}, 50)
-	}
-
-}
 
 Meteor.startup(function () {
 	Meteor.subscribe('user_data')

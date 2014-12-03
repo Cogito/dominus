@@ -59,6 +59,11 @@ Router.map(function() {
 		path: '/admin/admin_commands',
 	})
 
+	this.route('adminChatrooms', {
+		path: '/admin/admin_chatrooms',
+		waitOn: function() { return Meteor.subscribe('admin_chatrooms')}
+	})
+
 	this.route('presskit', {
 		path: '/presskit'
 	})

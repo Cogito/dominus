@@ -1,0 +1,11 @@
+<template name="adminChatrooms">
+	{{#if currentUser.admin}}
+		<div id="admin_container">
+			{{> admin_menu}}
+
+			{{#each chatrooms}}
+				<div>{{name}} &nbsp; {{numMembers}}</div>
+			{{/each}}
+		</div>
+	{{/if}}
+</template>
