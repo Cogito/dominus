@@ -1,6 +1,12 @@
 #!/bin/bash
+# requires imagemagick
 
 i=0
+
+result[$i]=~/meteor/dominus/public/game_images/village_construction_01.png
+all[$i]=maya/renders/village_construction_01_all/render.png
+ao[$i]=maya/renders/village_construction_01_ao/render.png
+((i++))
 
 result[$i]=~/meteor/dominus/public/game_images/army_01.png
 all[$i]=maya/renders/army_01_all/render.png
