@@ -12,7 +12,7 @@ Template.rp_move_unit.helpers({
 			var to = id_to_coords(mouseover_hex_id, 'hex')
 			if (to) {
 				var distance = Hx.hexDistance(from.x, from.y, to.x, to.y)
-				var army_speed = speed_of_army(get_selected_units())
+				var army_speed = Template.instance().armySpeed.get()
 				var duration = ms_to_short_time_string(army_speed * distance * 1000 * 60)
 				return {from_x:from.x, from_y:from.y, to_x:to.x, to_y:to.y, distance:distance, duration:duration, num:length_of_queue()+1}
 			}
@@ -23,7 +23,7 @@ Template.rp_move_unit.helpers({
 	queued_moves: function() {
 		var self = this
 		var moves = get_unit_moves()
-		var army_speed = speed_of_army(self)
+		var army_speed = Template.instance().armySpeed.get()
 		var index = 0
 		moves = _.map(moves, function(move) {
 			move.distance = Hx.hexDistance(move.from_x, move.from_y, move.to_x, move.to_y)
@@ -37,70 +37,15 @@ Template.rp_move_unit.helpers({
 	},
 
 	total_distance: function() {
-		var distance = 0
-
-		var from = get_from_coords()
-		if (from) {
-			var mouseover_hex_id = Session.get('mouseover_hex_id')
-			var to = id_to_coords(mouseover_hex_id, 'hex')
-			if (to) {
-				distance += Hx.hexDistance(from.x, from.y, to.x, to.y)
-			}
-		}
-
-		_.each(get_unit_moves(), function(move) {
-			distance += Hx.hexDistance(move.from_x, move.from_y, move.to_x, move.to_y)
-		})
-
-		return distance
+		return Template.instance().totalDistance.get()
 	},
 
 	total_duration: function() {
-		var self = this
-		var distance = 0
-		var army_speed = speed_of_army(self)
-
-		var from = get_from_coords()
-		if (from) {
-			var mouseover_hex_id = Session.get('mouseover_hex_id')
-			var to = id_to_coords(mouseover_hex_id, 'hex')
-			if (to) {
-				distance += Hx.hexDistance(from.x, from.y, to.x, to.y)
-			}
-		}
-
-		_.each(get_unit_moves(), function(move) {
-			distance += Hx.hexDistance(move.from_x, move.from_y, move.to_x, move.to_y)
-		})
-
-		var duration = ms_to_short_time_string(army_speed * distance * 1000 * 60)
-		return duration
+		return duration = ms_to_short_time_string(Template.instance().armySpeed.get() * Template.instance().totalDistance.get() * 1000 * 60)
 	},
 
 	arrive_time: function() {
-		var self = this
-		var distance = 0
-		var army_speed = speed_of_army(self)
-
-		var from = get_from_coords()
-		if (from) {
-			var mouseover_hex_id = Session.get('mouseover_hex_id')
-			var to = id_to_coords(mouseover_hex_id, 'hex')
-			if (to) {
-				distance += Hx.hexDistance(from.x, from.y, to.x, to.y)
-			}
-		}
-
-		_.each(get_unit_moves(), function(move) {
-			distance += Hx.hexDistance(move.from_x, move.from_y, move.to_x, move.to_y)
-		})
-
-		if (distance == 0) {
-			return null
-		}
-
-		var time = moment(new Date()).add(army_speed * distance * 1000 * 60, 'ms').toDate()
-		return time
+		return moment(new Date()).add(Template.instance().armySpeed.get() * Template.instance().totalDistance.get() * 1000 * 60, 'ms').toDate()
 	},
 
 	final_destination: function() {
@@ -126,8 +71,7 @@ Template.rp_move_unit.helpers({
 
 	// TODO: do this next meteor version
 	max_units: function(type) {
-		var self = UI._parentData(1)
-		return self[type]
+		return Template.parentData(1)[type]
 	}
 })
 
@@ -183,28 +127,42 @@ Template.rp_move_unit.events({
 
 
 
-Template.rp_move_unit.rendered = function() {
+Template.rp_move_unit.created = function() {
 	var self = this
 
 	Session.set('mouse_mode', 'finding_path')
-	if (this.data) {
-		set_from_coords(this.data.x, this.data.y)
-	}
 
-	_.each(s.army.types, function(type) {
-		set_selected_unit(type, 0)
-
-		this.$('.send_units_slider[data-type='+type+']').attr('max', self.data[type])
-		this.$('.send_units_slider[data-type='+type+']').attr('min', 0)
-
-		if (self.data[type] == 0) {
-			this.$('.send_units_slider[data-type='+type+']').prop('disabled', true)
-		} else {
-			this.$('.send_units_slider[data-type='+type+']').prop('disabled', false)
-		}
+	self.armySpeed = new ReactiveVar(0)
+	self.autorun(function() {
+		var speed = speed_of_army(get_selected_units())
+		self.armySpeed.set(speed)
 	})
 
-	this.autorun(function() {
+	self.totalDistance = new ReactiveVar(0)
+	self.autorun(function() {
+		var distance = 0
+
+		var from = get_from_coords()
+		if (from) {
+			var mouseover_hex_id = Session.get('mouseover_hex_id')
+			var to = id_to_coords(mouseover_hex_id, 'hex')
+			if (to) {
+				distance += Hx.hexDistance(from.x, from.y, to.x, to.y)
+			}
+		}
+
+		_.each(get_unit_moves(), function(move) {
+			distance += Hx.hexDistance(move.from_x, move.from_y, move.to_x, move.to_y)
+		})
+
+		self.totalDistance.set(distance)
+	})
+
+	self.autorun(function() {
+		set_from_coords(Template.currentData().x, Template.currentData().y)
+	})
+
+	self.autorun(function() {
 		hex_remove_highlights()
 		remove_castle_highlights()
 		remove_village_highlights()
@@ -226,9 +184,25 @@ Template.rp_move_unit.rendered = function() {
 	})
 }
 
-Template.rp_move_unit.destroyed = function() {
-	var self = this
 
+Template.rp_move_unit.rendered = function() {
+	var self = this
+	_.each(s.army.types, function(type) {
+		set_selected_unit(type, 0)
+
+		this.$('.send_units_slider[data-type='+type+']').attr('max', Template.currentData()[type])
+		this.$('.send_units_slider[data-type='+type+']').attr('min', 0)
+
+		if (Template.currentData()[type] == 0) {
+			this.$('.send_units_slider[data-type='+type+']').prop('disabled', true)
+		} else {
+			this.$('.send_units_slider[data-type='+type+']').prop('disabled', false)
+		}
+	})
+}
+
+
+Template.rp_move_unit.destroyed = function() {
 	Session.set('mouse_mode', 'default')
 
 	clear_unit_moves()
@@ -249,41 +223,6 @@ click_on_tile_while_finding_path = function() {
 
 	add_move_to_queue(target_coords.x, target_coords.y)
 }
-
-
-
-// // called in hex and castle
-// click_on_tile_while_finding_path = function() {
-// 	var hex = Hexes.findOne(Session.get('mouseover_hex_id'), {fields: {x:1, y:1}})
-
-// 	Session.set('finding_path_target_id', hex._id)
-// 	Session.set('finding_path_target_x', hex.x)
-// 	Session.set('finding_path_target_y', hex.y)
-
-// 	// make sure we're not clicking starting point
-// 	if (Session.get('finding_path_from_x') == Session.get('finding_path_target_x') && Session.get('finding_path_from_y') == Session.get('finding_path_target_y')) { } else {
-
-// 		var units = get_selected_units()
-// 		var num_units = 0
-// 		_.each(units, function(unit) {
-// 			num_units += unit
-// 		})
-
-// 		if (Session.get('selected_type') == 'castle' || Session.get('selected_type') == 'village') {
-
-// 			if (num_units == 0) {
-// 				$('#send_army_error').show(100)
-// 			} else {
-// 				Session.set('rp_template', 'rp_send_units_from_building_confirm')
-// 			}
-
-// 		} else if (Session.get('selected_type') == 'army') {
-
-// 			Session.set('rp_template', 'rp_move_army_confirm')
-
-// 		}
-// 	}
-// }
 
 
 
