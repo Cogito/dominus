@@ -1,3 +1,7 @@
+var currentDominus = function() {
+	return RankingsDominus.findOne()
+}
+
 Template.notifications_panel.helpers({
 	notifications_type: function() {
 		return Session.get('notifications_type')
@@ -53,7 +57,9 @@ Template.notifications_panel.helpers({
 	game_end_date: function() {
 		var end = Settings.findOne({name: 'gameEndDate'})
 		return end.value
-	}
+	},
+
+	dominus: currentDominus
 })
 
 
@@ -68,6 +74,13 @@ Template.notifications_panel.events({
 
 	'click #show_battles_tab': function(event, template) {
 		Session.set('notifications_type', 'notifications_battles')
+	},
+
+	'click .dominus_goto': function() {
+		var dominus = currentDominus()
+		center_on_hex(dominus.x, dominus.y)
+		Session.set('selected_type', 'castle')
+		Session.set('selected_id', dominus.castle_id)
 	}
 })
 
@@ -75,6 +88,7 @@ Template.notifications_panel.events({
 Template.notifications_panel.created = function() {
 	this.autorun(function() {
 		Meteor.subscribe('gameEndDate')
+		Meteor.subscribe('dominus_rankings')
 	})
 }
 

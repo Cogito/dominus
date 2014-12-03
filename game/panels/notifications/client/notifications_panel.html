@@ -4,13 +4,22 @@
 
 		<div class="panel panel-default">
 			<div class="panel-body" style="text-align: center;">
-				Game End Date: 
+				Game End Date:
 				{{#if is_game_end_set}}
 					{{date_from_now game_end_date}} on {{date_calendar game_end_date}}
 				{{else}}
 					Not Yet Set
 				{{/if}}
 				<div class="light_text" style="font-size:80%;">{{time_til_game_end_when_new_dominus}} is added when someone new becomes the Dominus.</div>
+				<div class="light_text" style="font-size:80%;">
+					{{#if dominus}}
+						{{#with dominus}}
+							<a href="" class="dominus_goto">{{username}}</a> is the current Dominus
+						{{/with}}
+					{{else}}
+						There is currently no Dominus.
+					{{/if}}
+				</div>
 			</div>
 		</div>
 
