@@ -4,9 +4,9 @@ Template.rp_split_armies.helpers({
 	},
 
 	old_army: function(type) {
-		var parentData = UI._parentData(1)
+		var parentData = Template.parentData(1)
 		if (parentData) {
-			return UI._parentData(1)[type] - get_selected_unit(type)
+			return Template.parentData(1)[type] - get_selected_unit(type)
 		}
 	},
 })

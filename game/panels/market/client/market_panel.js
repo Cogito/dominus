@@ -47,6 +47,10 @@ Template.market_panel.helpers({
 		}
 	},
 
+	subReady: function() {
+		return Template.instance().subReady.get()
+	}
+
 })
 
 
@@ -211,21 +215,25 @@ Template.market_panel.destroyed = function() {
 }
 
 
-Template.market_panel.rendered = function() {
-	this.firstNode.parentNode._uihooks = leftPanelAnimation
+Template.market_panel.created = function() {
+	var self = this
 
 	Session.set('temp_market_type', '')
 	Session.set('temp_market_quantity', 0)
 
-
 	// subscribe
-	this.deps_subscribeMarket = Deps.autorun(function() {
-		Meteor.subscribe('markethistory')
+	self.subReady = new ReactiveVar(false)
+	self.autorun(function() {
+		self.subReady.set(Meteor.subscribe('markethistory').ready())
 	})
+}
 
 
+Template.market_panel.rendered = function() {
+	this.firstNode.parentNode._uihooks = leftPanelAnimation
 
-	this.deps_preview = Deps.autorun(function() {
+	this.autorun(function() {
+
 		$('#market_preview_buy').text('')
 		$('#market_preview_sell').text('')
 		$('#market_preview_buy').css('color', '#fff')
@@ -259,8 +267,8 @@ Template.market_panel.rendered = function() {
 
 
 	// charts
-	this.deps_marketCharts = Deps.autorun(function() {
-		if (Session.get('show_market_panel')) {
+	this.autorun(function() {
+		if (Template.instance().subReady.get()) {
 			var markethistory = Markethistory.find({}, {sort: {created_at: 1}})
 			if (markethistory) {
 

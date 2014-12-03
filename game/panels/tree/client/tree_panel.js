@@ -24,12 +24,18 @@ Template.tree_panel.helpers({
 
 	has_vassals: function(num_vassals) {
 		return (num_vassals > 0)
+	},
+
+	subReady: function() {
+		return Template.instance().subReady.get()
 	}
 })
 
 Template.tree_panel.created = function() {
-	this.autorun(function() {
-		Meteor.subscribe('tree_panel_users')
+	var self = this
+	self.subReady = new ReactiveVar(false)
+	self.autorun(function() {
+		self.subReady.set(Meteor.subscribe('tree_panel_users').ready())
 	})
 }
 

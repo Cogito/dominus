@@ -129,18 +129,22 @@
 			<div class="panel-heading">
 				Price History
 			</div>
-			<div id="market_price_chart" class="dailystats_chart">
-				<svg></svg>
-			</div>
+			{{#if subReady}}
+				<div id="market_price_chart" class="dailystats_chart">
+					<svg></svg>
+				</div>
+			{{/if}}
 		</div>
 
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				Volume History
 			</div>
-			<div id="market_volume_chart" class="dailystats_chart">
-				<svg></svg>
-			</div>
+			{{#if subReady}}
+				<div id="market_volume_chart" class="dailystats_chart">
+					<svg></svg>
+				</div>
+			{{/if}}
 		</div>
 
 	</div>
