@@ -1,9 +1,17 @@
 <template name="not_new_dominus">
 	{{#if ready}}
-	{{#if newDominus}}
-		Congratulations!  You are the Dominus.  You have succeeded in making everyone else in the game your vassal or a vassal of your vassal.
+	{{#if sameDominus}}
+		Game end date has not been reset, as {{#if isDominus}}you were{{else}}{{vars.username}} was{{/if}} the last Dominus.
 	{{else}}
-		There is a new Dominus.
+		{{#if isDominus}}
+			Congratulations!  You are the Dominus.  You have succeeded in making everyone else in the game your vassal or a vassal of your vassal.
+		{{/if}}
+		{{#if isLastDominus}}
+			You are no longer Dominus.
+		{{/if}}
+		{{#if notDominus}}
+			There is a new Dominus.
+		{{/if}}
 	{{/if}}
 	{{/if}}
 </template>
