@@ -47,9 +47,6 @@ new_dominus_event = function(dominus_user) {
 	check(dominus_user, Object)
 	check(dominus_user._id, String)
 
-	// send notifications
-	notification_new_dominus(dominus_user)
-
 	// make sure dominus and last dominus are not the same
 	var lastDominus = Settings.findOne({name: 'lastDominusUserId'})
 
@@ -65,4 +62,7 @@ new_dominus_event = function(dominus_user) {
 		Settings.upsert({name: 'gameEndDate'}, {$set: {name: 'gameEndDate', value: endDate}})
 		Settings.upsert({name: 'lastDominusUserId'}, {$set: {name: 'lastDominusUserId', value: dominus_user._id}})
 	}
+
+	// send notifications
+	notification_new_dominus(dominus_user, lastDominusUserId)
 }
