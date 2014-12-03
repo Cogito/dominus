@@ -29,14 +29,14 @@ receive_income = function(user, numGold, numGrain, numLumber, numOre, numWool, n
 
 	var has_lord = numAbove != 0
 
-	if (numAbove <= 5) {
+	if (numAbove <= s.income.maxToLords / s.income.percentToLords) {
 		// 5% taken away for every lord above
-		var percentPerLord = 0.05
+		var percentPerLord = s.income.percentToLords
 		var percentageUserGets = 1 - percentPerLord * numAbove
 	} else {
 		// 25%/numberOfLords to each lord
-		var percentPerLord = 0.25 / numAbove
-		var percentageUserGets = 0.75
+		var percentPerLord = s.income.maxToLords / numAbove
+		var percentageUserGets = 1 - s.income.maxToLords
 	}
 
 	// give to user

@@ -267,23 +267,23 @@ Template.market_panel.rendered = function() {
 				var i_grain = markethistory.map(function(value, index) {
 					return {x: value.created_at, y:value.price.grain }
 				})
-				markethistory.rewind()
+
 				var i_lumber = markethistory.map(function(value, index) {
 					return {x: value.created_at, y:value.price.lumber }
 				})
-				markethistory.rewind()
+
 				var i_ore = markethistory.map(function(value, index) {
 					return {x: value.created_at, y:value.price.ore }
 				})
-				markethistory.rewind()
+
 				var i_wool = markethistory.map(function(value, index) {
 					return {x: value.created_at, y:value.price.wool }
 				})
-				markethistory.rewind()
+
 				var i_clay = markethistory.map(function(value, index) {
 					return {x: value.created_at, y:value.price.clay }
 				})
-				markethistory.rewind()
+
 				var i_glass = markethistory.map(function(value, index) {
 					return {x: value.created_at, y:value.price.glass }
 				})
@@ -316,7 +316,6 @@ Template.market_panel.rendered = function() {
 
 
 
-				markethistory.rewind()
 				var vol = markethistory.map(function(value, index) {
 					return {x: value.created_at, y:value.quantity }
 				})
