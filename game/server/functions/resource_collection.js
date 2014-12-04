@@ -10,7 +10,7 @@ gather_resources_new = function() {
 		var income = gather_resources_surrounding(res.x, res.y, s.resource.num_rings_village, res.user_id, s.resource.gold_gained_at_village)
 		var worth = s.resource.gold_gained_at_village
 		worth += resources_to_gold(income.grain, income.lumber, income.ore, income.wool, income.clay, income.glass)
-		Villages.update(res._id, {$set: {"income.worth":worth}})
+		Villages.update(res._id, {$set: {"income.worth":worth}})	// could this be made asynchronous? // it slows down this function
 	})
 
 	run_cached_user_update()

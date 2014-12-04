@@ -57,7 +57,6 @@ Template.stats_panel.rendered = function() {
 
 				nv.addGraph(function() {
 					var chart = nv.models.lineChart().useInteractiveGuideline(true).showLegend(true).showYAxis(true).showXAxis(true)
-
 					chart.xAxis.tickFormat(function(d) { return d3.time.format('%b %d')(new Date(d)); })
 					chart.yAxis.tickFormat(d3.format(",.0f"))
 
