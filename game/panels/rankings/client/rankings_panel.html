@@ -15,7 +15,7 @@
 		</div>
 
 		<div class="panel panel-default">
-			<div class="panel-heading">Top 15 by Vassals<br><small>People below you in the tree.</small></div>
+			<div class="panel-heading">Top 15 Players by Vassals<br><small class="light_text">People below you in the tree.</small></div>
 			<div class="panel-body">
 				<table class="table table-condensed rank_start">
 					<tbody>
@@ -43,7 +43,7 @@
 
 
 		<div class="panel panel-default">
-			<div class="panel-heading">Top 15 by Networth</div>
+			<div class="panel-heading">Top 15 Players by Networth</div>
 			<div class="panel-body">
 				<table class="table table-condensed rank_start">
 					<tbody>
@@ -71,7 +71,7 @@
 
 
 		<div class="panel panel-default">
-			<div class="panel-heading">Top 15 by Income</div>
+			<div class="panel-heading">Top 15 Players by Income</div>
 			<div class="panel-body">
 				<table class="table table-condensed rank_start">
 					<tbody>
@@ -99,7 +99,7 @@
 
 
 		<div class="panel panel-default">
-			<div class="panel-heading">Top 15 by Lost Soldiers</div>
+			<div class="panel-heading">Top 15 Players by Lost Soldiers</div>
 			<div class="panel-body">
 				<table class="table table-condensed rank_start">
 					<tbody>
@@ -117,6 +117,37 @@
 								</td>
 								<td style="text-align:right;">
 									{{> center_on_button x=x y=y selected_type='castle' selected_id=castle_id}}
+								</td>
+							</tr>
+						{{/each}}
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+
+		<div class="panel panel-default">
+			<div class="panel-heading">Top 15 Villages<br><small class="light_text">By worth of resources collected in gold.</small></div>
+			<div class="panel-body">
+				<table class="table table-condensed rank_start">
+					<tbody>
+						{{#each top10_villages}}
+							<tr>
+								<td class="rank_username">
+									<a href="" class="gotoUserButton" data-x="{{castle_x}}" data-y="{{castle_y}}" data-castle_id="{{castle_id}}">
+										{{#if is_me}}
+											<strong>{{username}}</strong>
+										{{else}}
+											{{username}}
+										{{/if}}
+									</a>
+									: {{name}}
+								</td>
+								<td style="text-align:right;">
+									{{round income.worth}}
+								</td>
+								<td style="text-align:right;">
+									{{> center_on_button x=x y=y selected_type='village' selected_id=_id}}
 								</td>
 							</tr>
 						{{/each}}

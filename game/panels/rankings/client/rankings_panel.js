@@ -1,6 +1,6 @@
 Template.rankings_panel.helpers({
 	top10_networth: function() {
-		var users = RankingsNetworth.find({}, {sort: {networth: -1}, limit: 15}).map(function(u) {
+		return RankingsNetworth.find({}, {sort: {networth: -1}}).map(function(u) {
 			if (u._id == Meteor.userId()) {
 				u.is_me = true
 			} else {
@@ -8,12 +8,10 @@ Template.rankings_panel.helpers({
 			}
 			return u
 		})
-
-		return users
 	},
 
 	top10_income: function() {
-		var users = RankingsIncome.find({}, {sort: {income: -1}, limit: 15}).map(function(u) {
+		return RankingsIncome.find({}, {sort: {income: -1}}).map(function(u) {
 			if (u._id == Meteor.userId()) {
 				u.is_me = true
 			} else {
@@ -21,12 +19,10 @@ Template.rankings_panel.helpers({
 			}
 			return u
 		})
-
-		return users
 	},
 
 	top10_allies: function() {
-		var users = RankingsAllies.find({}, {sort: {num_allies_below: -1}, limit: 15}).map(function(u) {
+		return RankingsAllies.find({}, {sort: {num_allies_below: -1}}).map(function(u) {
 			if (u._id == Meteor.userId()) {
 				u.is_me = true
 			} else {
@@ -34,12 +30,10 @@ Template.rankings_panel.helpers({
 			}
 			return u
 		})
-
-		return users
 	},
 
 	top10_losses: function() {
-		var users = RankingsLostSoldiers.find({}, {sort: {losses_worth: -1}, limit: 15}).map(function(u) {
+		return RankingsLostSoldiers.find({}, {sort: {losses_worth: -1}}).map(function(u) {
 			if (u._id == Meteor.userId()) {
 				u.is_me = true
 			} else {
@@ -47,15 +41,39 @@ Template.rankings_panel.helpers({
 			}
 			return u
 		})
-
-		return users
 	},
 
 	dominus: function() {
 		return RankingsDominus.findOne()
-	}
+	},
+
+	top10_villages: function() {
+		return RankingsVillages.find({}, {sort: {"income.worth": -1}}).map(function(u) {
+			if (u._id == Meteor.userId()) {
+				u.is_me = true
+			} else {
+				u.is_me = false
+			}
+			return u
+		})
+	},
 })
 
+
+Template.rankings_panel.events({
+	'click .gotoUserButton': function(event, template) {
+		event.preventDefault()
+		event.stopPropagation()
+
+		var id = $(event.currentTarget).attr('data-castle_id')
+		var x = parseInt($(event.currentTarget).attr('data-x'))
+		var y = parseInt($(event.currentTarget).attr('data-y'))
+
+		center_on_hex(x, y)
+		Session.set('selected_type', 'castle')
+		Session.set('selected_id', id)
+	}
+})
 
 
 Template.rankings_panel.created = function() {
@@ -65,6 +83,7 @@ Template.rankings_panel.created = function() {
 		Meteor.subscribe('income_rankings')
 		Meteor.subscribe('losses_rankings')
 		Meteor.subscribe('dominus_rankings')
+		Meteor.subscribe('village_rankings')
 	})
 }
 

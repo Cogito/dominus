@@ -62,3 +62,20 @@ Meteor.publish('dominus_rankings', function() {
 	Mongo.Collection._publishCursor(cur, sub, 'dominus_rankings')
 	return sub.ready();
 })
+
+
+Meteor.publish('village_rankings', function() {
+	var sub = this
+	var cur = Villages.find({}, {sort: {"income.worth": -1}, fields: {
+			username:1,
+			name:1,
+			castle_id:1,
+			castle_x:1,
+			castle_y:1,
+			x:1,
+			y:1,
+			"income.worth":1
+		}, limit:15})
+	Mongo.Collection._publishCursor(cur, sub, 'village_rankings')
+	return sub.ready();
+})

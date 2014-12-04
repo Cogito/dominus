@@ -4,4 +4,5 @@ if (Meteor.isClient) {
 	RankingsIncome = new Mongo.Collection('income_rankings')
 	RankingsLostSoldiers = new Mongo.Collection('losses_rankings')
 	RankingsDominus = new Mongo.Collection('dominus_rankings')
+	RankingsVillages = new Mongo.Collection('village_rankings')
 }

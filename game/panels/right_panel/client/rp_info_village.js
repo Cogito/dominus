@@ -67,10 +67,14 @@ Template.rp_info_village.helpers({
 	},
 
 	incomeInGold: function() {
-		var income = Template.currentData().income
-		var gold = income.gold
-		gold += resources_to_gold(income.grain, income.lumber, income.ore, income.wool, income.clay, income.glass)
-		return gold
+		if (Template.currentData()) {
+			var income = Template.currentData().income
+			if (income) {
+				var gold = income.gold
+				gold += resources_to_gold(income.grain, income.lumber, income.ore, income.wool, income.clay, income.glass)
+				return gold
+			}
+		}
 	}
 
 })
