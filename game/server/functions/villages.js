@@ -29,6 +29,25 @@ Meteor.methods({
 					if (is_hex_empty_except_allies_coords(x, y)) {
 						var name = names.towns.part1[_.random(names.towns.part1.length-1)] + names.towns.part2[_.random(names.towns.part2.length-1)]
 
+						// find how much the village makes
+						var income = {}
+
+						_.each(s.resource.types_plus_gold, function(type) {
+							income[type] = 0
+						})
+
+						var hexes = Hx.getSurroundingHexes(x,y,s.resource.num_rings_village)
+						_.each(hexes, function(hx) {
+							var h = Hexes.findOne({x:hx.x, y:hx.y}, {fields:{type:1, large:1}})
+							if (h) {
+								if (h.large) {
+									income[h.type] += s.resource.gained_at_hex * s.resource.large_resource_multiplier
+								} else {
+									income[h.type] += s.resource.gained_at_hex
+								}
+							}
+						})
+
 						var fields = {
 							x: x,
 							y: y,
@@ -38,7 +57,8 @@ Meteor.methods({
 							username: user.username,
 							castle_x: user.x,
 							castle_y: user.y,
-							castle_id: user.castle_id
+							castle_id: user.castle_id,
+							income: income
 						}
 
 						_.each(s.army.types, function(type) {

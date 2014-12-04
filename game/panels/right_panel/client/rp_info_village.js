@@ -64,6 +64,13 @@ Template.rp_info_village.helpers({
 
 	interval: function() {
 		return moment.duration(s.resource.interval).humanize()
+	},
+
+	incomeInGold: function() {
+		var income = Template.currentData().income
+		var gold = income.gold
+		gold += resources_to_gold(income.grain, income.lumber, income.ore, income.wool, income.clay, income.glass)
+		return gold
 	}
 
 })

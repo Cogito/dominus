@@ -3,11 +3,13 @@ gather_resources_new = function() {
 	var start_time = new Date()
 
 	Castles.find({}, {fields: {user_id:1, x:1, y:1}}).forEach(function(res) {
-		gather_resources_surrounding(res.x, res.y, s.resource.num_rings_castle, res.user_id, s.resource.gold_gained_at_castle)
+		var income = gather_resources_surrounding(res.x, res.y, s.resource.num_rings_castle, res.user_id, s.resource.gold_gained_at_castle)
+		Castles.update(res._id, {$set: {income:income}})
 	})
 
 	Villages.find({}, {fields: {user_id:1, x:1, y:1}}).forEach(function(res) {
-		gather_resources_surrounding(res.x, res.y, s.resource.num_rings_village, res.user_id, s.resource.gold_gained_at_village)
+		var income = gather_resources_surrounding(res.x, res.y, s.resource.num_rings_village, res.user_id, s.resource.gold_gained_at_village)
+		Villages.update(res._id, {$set: {income:income}})
 	})
 
 	run_cached_user_update()
@@ -69,4 +71,7 @@ gather_resources_surrounding = function(x, y, num_rings, user_id, gold) {
 	})
 
 	receive_income_id(user_id, gold, income.grain, income.lumber, income.ore, income.wool, income.clay, income.glass)
+
+	income.gold = gold
+	return income
 }
