@@ -126,97 +126,112 @@
 							<div class="panel-body">
 								You can build {{how_many_villages_can_i_build}} more villages.
 							</div>
-							<table class="table table-condensed">
+							<table class="table table-condensed table-striped">
+								<thead>
+									<tr>
+										<td></td><td style="text-align:right;"><b>cost</b></td>
+									</tr>
+								</thead>
 								<tbody>
 									{{#if has_enough_grain}}
 										<tr>
 											<td>Grain</td>
-											<td>{{round s.village.cost.grain}}</td>
+											<td style="text-align:right;">{{round s.village.cost.grain}}</td>
 										</tr>
 									{{else}}
 										<tr class="danger">
 											<td>Grain</td>
-											<td>{{round s.village.cost.grain}}</td>
+											<td style="text-align:right;">{{round s.village.cost.grain}}</td>
 										</tr>
 									{{/if}}
 
 									{{#if has_enough_lumber}}
 										<tr>
 											<td>Lumber</td>
-											<td>{{round s.village.cost.lumber}}</td>
+											<td style="text-align:right;">{{round s.village.cost.lumber}}</td>
 										</tr>
 									{{else}}
 										<tr class="danger">
 											<td>Lumber</td>
-											<td>{{round s.village.cost.lumber}}</td>
+											<td style="text-align:right;">{{round s.village.cost.lumber}}</td>
 										</tr>
 									{{/if}}
 
 									{{#if has_enough_ore}}
 										<tr>
 											<td>Ore</td>
-											<td>{{round s.village.cost.ore}}</td>
+											<td style="text-align:right;">{{round s.village.cost.ore}}</td>
 										</tr>
 									{{else}}
 										<tr class="danger">
 											<td>Ore</td>
-											<td>{{round s.village.cost.ore}}</td>
+											<td style="text-align:right;">{{round s.village.cost.ore}}</td>
 										</tr>
 									{{/if}}
 
 									{{#if has_enough_wool}}
 										<tr>
 											<td>Wool</td>
-											<td>{{round s.village.cost.wool}}</td>
+											<td style="text-align:right;">{{round s.village.cost.wool}}</td>
 										</tr>
 									{{else}}
 										<tr class="danger">
 											<td>Wool</td>
-											<td>{{round s.village.cost.wool}}</td>
+											<td style="text-align:right;">{{round s.village.cost.wool}}</td>
 										</tr>
 									{{/if}}
 
 									{{#if has_enough_clay}}
 										<tr>
 											<td>Clay</td>
-											<td>{{round s.village.cost.clay}}</td>
+											<td style="text-align:right;">{{round s.village.cost.clay}}</td>
 										</tr>
 									{{else}}
 										<tr class="danger">
 											<td>Clay</td>
-											<td>{{round s.village.cost.clay}}</td>
+											<td style="text-align:right;">{{round s.village.cost.clay}}</td>
 										</tr>
 									{{/if}}
 
 									{{#if has_enough_glass}}
 										<tr>
 											<td>Glass</td>
-											<td>{{round s.village.cost.glass}}</td>
+											<td style="text-align:right;">{{round s.village.cost.glass}}</td>
 										</tr>
 									{{else}}
 										<tr class="danger">
 											<td>Glass</td>
-											<td>{{round s.village.cost.glass}}</td>
+											<td style="text-align:right;">{{round s.village.cost.glass}}</td>
 										</tr>
 									{{/if}}
 								</tbody>
 							</table>
-							{{#if has_enough_grain}}
-								{{#if has_enough_lumber}}
-									{{#if has_enough_ore}}
-										{{#if has_enough_wool}}
-											{{#if has_enough_clay}}
-												{{#if has_enough_glass}}
-													<div class="panel-body">
+							<div class="panel-body" style="text-align:center;">
+								A village here would collect<br>
+								{{#if villageWorth}}
+									{{round villageWorth}}
+								{{else}}
+									(calculating)
+								{{/if}}
+								gold worth of resources.<br>
+								<br>
+
+								{{#if has_enough_grain}}
+									{{#if has_enough_lumber}}
+										{{#if has_enough_ore}}
+											{{#if has_enough_wool}}
+												{{#if has_enough_clay}}
+													{{#if has_enough_glass}}
 														<div class="alert alert-danger" id="build_village_error_alert" style="display:none;"></div>
 														<button type="button" class="btn btn-sm btn-primary btn-block" id="build_village_button">Build Village</button>
-													</div>
+													{{/if}}
 												{{/if}}
 											{{/if}}
 										{{/if}}
 									{{/if}}
 								{{/if}}
-							{{/if}}
+							</div>
+
 						{{else}}
 							<div class="panel-body">
 								Must be on a grain hex to build a village.
@@ -237,15 +252,17 @@
 				</div>
 			{{/if}}
 
-			{{#if battle}}
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						Battle
+			{{#if battleInfoReady}}
+				{{#if battle}}
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							Battle
+						</div>
+						<div class="panel-body">
+							{{> battle_report battle}}
+						</div>
 					</div>
-					<div class="panel-body">
-						{{> battle_report battle}}
-					</div>
-				</div>
+				{{/if}}
 			{{/if}}
 		{{else}}
 			<div class="pad_group" style="text-align:center;">

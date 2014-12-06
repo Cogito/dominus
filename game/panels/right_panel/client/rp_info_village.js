@@ -8,58 +8,32 @@ Template.rp_info_village.helpers({
 	},
 
 	battle: function() {
-		if (Template.currentData()) {
-			return Battles.findOne({x:Template.currentData().x, y:Template.currentData().y})
+		if (this) {
+			return Battles.findOne({x:this.x, y:this.y})
 		}
 	},
 	
 	is_owner: function() {
-		if (Template.currentData() && Template.currentData().user_id == Meteor.userId()) {
-			return true
-		} else {
-			return false
+		if (this) {
+			return this.user_id == Meteor.userId()
 		}
 	},
 
 	no_soldiers: function() {
-		if (Template.currentData()) {
+		if (this) {
 			var self = this
 			var count = 0
-
 			_.each(s.army.types, function(type) {
-				count += Template.currentData()[type]
+				count += self[type]
 			})
-
 			return (count == 0)
 		}
 	},
 
 	resources_per_interval: function() {
-		var res = {
-				gold:s.resource.gold_gained_at_village,
-				grain:0,
-				lumber:0,
-				ore:0,
-				wool:0,
-				clay:0,
-				glass:0
-			}
-
-		if (Template.currentData()) {
-			var hexes = Hx.getSurroundingHexes(Template.currentData().x, Template.currentData().y, s.resource.num_rings_village)
-			_.each(hexes, function(hex) {
-				var h = Hexes.findOne({x:hex.x, y:hex.y}, {fields:{type:1, large:1}, reactive:false})
-				if (h) {
-					if (h.large) {
-						res[h.type] += s.resource.gained_at_hex * s.resource.large_resource_multiplier
-					} else {
-						res[h.type] += s.resource.gained_at_hex
-					}
-				}
-			})
+		if (this) {
+			return this.income
 		}
-
-		return res
 	},
 
 	interval: function() {
@@ -67,8 +41,8 @@ Template.rp_info_village.helpers({
 	},
 
 	incomeInGold: function() {
-		if (Template.currentData()) {
-			var income = Template.currentData().income
+		if (this) {
+			var income = this.income
 			if (income) {
 				var gold = income.gold
 				gold += resources_to_gold(income.grain, income.lumber, income.ore, income.wool, income.clay, income.glass)

@@ -12,7 +12,9 @@ Template.rp_info_castle.helpers({
 	},
 
 	battle: function() {
-		return Battles.findOne({x:this.x, y:this.y})
+		if (this) {
+			return Battles.findOne({x:this.x, y:this.y})
+		}
 	},
 	
 	image_radio_is_checked: function() {
@@ -47,14 +49,16 @@ Template.rp_info_castle.helpers({
 	},
 
 	no_soldiers: function() {
-		var self = this
-		var count = 0
+		if (this) {
+			var self = this
+			var count = 0
 
-		_.each(s.army.types, function(type) {
-			count += self[type]
-		})
+			_.each(s.army.types, function(type) {
+				count += self[type]
+			})
 
-		return (count == 0)
+			return (count == 0)
+		}
 	},
 
 	resInfoLoaded: function() {
@@ -147,7 +151,11 @@ Template.rp_info_castle.created = function() {
 					self.dupes.set(result)
 				}
 			})
+		}
+	})
 
+	this.autorun(function() {
+		if (Template.currentData()) {
 			if (Template.currentData().user_id != Meteor.userId()) {
 				// get networth, income... for right panel
 				var castleUserHandle = Meteor.subscribe('castle_user', Template.currentData().user_id)
@@ -156,7 +164,6 @@ Template.rp_info_castle.created = function() {
 
 			var battleInfoHandle = Meteor.subscribe('battle_notifications_at_hex', Template.currentData().x, Template.currentData().y)
 			self.battleInfoLoaded.set(battleInfoHandle.ready())
-			
 		}
 	})
 

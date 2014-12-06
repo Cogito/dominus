@@ -4,22 +4,27 @@ Template.rp_info_hex.helpers({
 	},
 
 	battle: function() {
-		return Battles.findOne({x:this.x, y:this.y})
+		if (this) {
+			return Battles.findOne({x:this.x, y:this.y})
+		}
 	},
 
 	has_armies: function() {
-		if (Armies.find({x:this.x, y:this.y}).count() > 0) {
-			return true
+		if (this) {
+			if (Armies.find({x:this.x, y:this.y}).count() > 0) {
+				return true
+			}
 		}
-		return false
 	},
 
 	armies: function() {
-		return Armies.find({ x: this.x, y: this.y })
+		if (this) {
+			return Armies.find({ x: this.x, y: this.y })
+		}
 	},
 
 	typeName: function() {
-		if (this.large) {
+		if (this && this.large) {
 			return _.titleize('large '+this.type)
 		} else {
 			return _.titleize(this.type)
@@ -27,7 +32,7 @@ Template.rp_info_hex.helpers({
 	},
 
 	numResources: function() {
-		if (this.large) {
+		if (this && this.large) {
 			return s.resource.gained_at_hex * s.resource.large_resource_multiplier
 		} else {
 			return s.resource.gained_at_hex

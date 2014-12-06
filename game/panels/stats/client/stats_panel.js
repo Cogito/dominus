@@ -200,7 +200,7 @@ Template.stats_panel.rendered = function() {
 
 			if (num_users.length > 0 && num_active_users.length > 0) {
 				var user_data = [
-					{values: num_users, key: 'Players', color: '#82d957'},
+					{values: num_users, key: 'Total Players', color: '#82d957'},
 					{values: num_active_users, key: 'Active Players', color: '#5793d9'}
 				]
 

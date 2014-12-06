@@ -3,7 +3,7 @@ jobqueue = function() {
 	this.jobs = {}
 	this.restart_timer = undefined
 	this.restart_timer_interval = 1000 * 60 * 5	// 5 min
-	this.timer_interval = 500
+	this.timer_interval = 1000
 
 	this.process = function() {
 		var self = this

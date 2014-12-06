@@ -8,7 +8,7 @@ s.castle = {}
 
 if (Meteor.isServer && process.env.NODE_ENV == 'development') {
 	// cheats
-	s.resource.interval = 1000 * 5 * 1
+	s.resource.interval = 1000 * 15
 	s.battle_interval = 1000 * 30
 } else {
 	s.resource.interval = 1000 * 60 * 10
@@ -125,7 +125,7 @@ s.village.cost = {
 }
 
 s.village.max_can_have = 7
-
+s.village.time_to_build = 1000 * 60 * 30 	// 30 min
 
 
 s.village.defense_bonus = 1.5

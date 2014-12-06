@@ -132,9 +132,18 @@ Template.rp_move_unit.created = function() {
 
 	Session.set('mouse_mode', 'finding_path')
 
+	// army speed
 	self.armySpeed = new ReactiveVar(0)
 	self.autorun(function() {
-		var speed = speed_of_army(get_selected_units())
+		switch(Session.get('selected_type')) {
+			case 'army':
+				var speed = speed_of_army(Template.currentData())
+				break
+			case 'castle':
+			case 'village':
+				var speed = speed_of_army(get_selected_units())
+				break
+		}
 		self.armySpeed.set(speed)
 	})
 
