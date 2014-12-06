@@ -113,7 +113,7 @@ id_to_coords = function(id, type) {
 
 	switch (type) {
 		case 'hex':
-			var h = Hexes.findOne(id, {fields: {x:1, y:1}})
+			var h = Hexes.findOne(id, {fields: {x:1, y:1}, reactive:false})
 			if (h) {
 				coords = {x: h.x, y: h.y }
 			}
@@ -121,14 +121,14 @@ id_to_coords = function(id, type) {
 			break;
 
 		case 'castle':
-			var res = Castles.findOne(id, {fields: {x:1, y:1}})
+			var res = Castles.findOne(id, {fields: {x:1, y:1}, reactive:false})
 			if (res) {
 				coords = {x: res.x, y: res.y}
 			}
 			break;
 
 		case 'village':
-			var res = Villages.findOne(id, {fields: {x:1, y:1}})
+			var res = Villages.findOne(id, {fields: {x:1, y:1}, reactive:false})
 			if (res) {
 				coords = {x: res.x, y: res.y}
 			}
@@ -149,7 +149,7 @@ coords_to_id = function(x, y, type) {
 
 	switch (type) {
 		case 'hex':
-			var h = Hexes.findOne({x: x, y: y}, {fields: {_id:1}})
+			var h = Hexes.findOne({x: x, y: y}, {fields: {_id:1}, reactive:false})
 			if (h) {
 				var id = h._id
 				found = true

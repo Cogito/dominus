@@ -2,44 +2,89 @@ Meteor.methods({
 	edit_name: function(type, id, name) {
 		var error = false
 
-		if (name.length < 1 || name.length > 30) {
-			error = true
+		if (name.length < 1) {
+			throw new Meteor.Error('Name is too short.')
 		}
 
-		if (!error) {
-			name = _.clean(name)
+		if (name.length > 30) {
+			throw new Meteor.Error('Name must be less than 30 characters.')
+		}
 
-			switch(type) {
-				case 'castle':
-					var res = Castles.findOne(id, {fields: {user_id:1}})
-					if (res) {
-						if (res.user_id == Meteor.userId()) {
-							Castles.update(id, {$set: {name: name}})
-							return true
-						}
+
+		name = _.clean(name)
+
+		switch(type) {
+			case 'castle':
+				var res = Castles.findOne(id, {fields: {user_id:1}})
+				if (res) {
+					if (res.user_id == Meteor.userId()) {
+						Castles.update(id, {$set: {name: name}})
+						return true
 					}
-					break;
-				case 'village':
-					var res = Villages.findOne(id, {fields: {user_id:1}})
-					if (res) {
-						if (res.user_id == Meteor.userId()) {
-							Villages.update(id, {$set: {name: name}})
-							return true
-						}
+				}
+				break;
+			case 'village':
+				var res = Villages.findOne(id, {fields: {user_id:1}})
+				if (res) {
+					if (res.user_id == Meteor.userId()) {
+						Villages.update(id, {$set: {name: name}})
+						return true
 					}
-					break;
-				case 'army':
-					var res = Armies.findOne(id, {fields: {user_id:1}})
-					if (res) {
-						if (res.user_id == Meteor.userId()) {
-							Armies.update(id, {$set: {name: name}})
-							return true
-						}
+				}
+				break;
+			case 'army':
+				var res = Armies.findOne(id, {fields: {user_id:1}})
+				if (res) {
+					if (res.user_id == Meteor.userId()) {
+						Armies.update(id, {$set: {name: name}})
+						return true
 					}
-					break;
+				}
+				break;
+		}
+	},
+
+
+	send_gold_to: function(user_id, amount) {
+		var user = Meteor.users.findOne(Meteor.userId(), {fields: {gold:1, allies_below:1, username:1, castle_id:1, x:1, y:1}})
+		if (user) {
+			amount = Number(amount)
+
+			if (isNaN(amount)) {
+				throw new Meteor.Error('Enter a number.')
+			}
+
+			if (amount > user.gold) {
+				throw new Meteor.Error('You do not have enough gold.')
+			}
+
+			if (amount <= 0) {
+				throw new Meteor.Error('Number must be greater than 0.')
+			}
+
+			if (_.indexOf(user.allies_below, user_id) != -1) {
+
+				Meteor.users.update(user_id, {$inc: {gold: amount}})
+				Meteor.users.update(Meteor.userId(), {$inc: {gold: amount * -1}})
+
+				if (!this.isSimulation) {
+					// get info for notification
+					var to = Meteor.users.findOne(user_id, {fields: {gold:1, allies_below:1, username:1, castle_id:1, x:1, y:1}})
+					if (to) {
+						notification_sent_gold(user_id, {
+							to: {_id: to._id, username: to.username, castle_id: to.castle_id, x: to.x, y: to.y},
+							from: {_id: user._id, username: user.username, castle_id: user.castle_id, x: user.x, y: user.y}
+						}, amount)
+					}
+
+					worker.enqueue('update_networth', {user_id: user_id})
+					worker.enqueue('update_networth', {user_id: Meteor.userId()})
+				}
+				return true
+
 			}
 		}
 
 		return false
-	},
+	}
 })

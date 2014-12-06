@@ -22,6 +22,8 @@ Template.rp_split_armies.events({
 		set_selected_unit(type, num)
 	},
 
+	// TODO: clean this up
+	// put checks into method instead
 	'click #split_confirm_button': function(event, template) {
 		var button = template.find('#split_confirm_button')
 		var alert = template.find('#split_error')

@@ -188,8 +188,9 @@ Meteor.methods({
 					return new_id
 				}
 			}
+		} else {
+			throw new Meteor.Error('Could not find army.')
 		}
-		return false
 	},
 
 

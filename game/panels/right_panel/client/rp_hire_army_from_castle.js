@@ -1,20 +1,21 @@
 Template.rp_hire_army_from_castle.helpers({
 	is_owner: function() {
-		if (this.user_id == Meteor.userId()) {
-			return true
-		} else {
-			return false
+		if (this) {
+			if (this.user_id == Meteor.userId()) {
+				return true
+			}
 		}
 	},
 
 	is_ally_below: function() {
-		var res = Meteor.users.findOne(Meteor.userId(), {fields: {allies_below: 1}})
-		if (res) {
-			if (_.indexOf(res.allies_below, this.user_id) != -1) {
-				return true
+		if (this) {
+			var res = Meteor.users.findOne(Meteor.userId(), {fields: {allies_below: 1}})
+			if (res) {
+				if (_.indexOf(res.allies_below, this.user_id) != -1) {
+					return true
+				}
 			}
 		}
-		return false
 	},
 
 	resource_cost: function() {
@@ -35,28 +36,24 @@ Template.rp_hire_army_from_castle.helpers({
 
 	cur_res: function(type) {
 		if (type) {
-			return round_number_1(get_hiring_current_resource(type))
+			return round_number(get_hiring_current_resource(type))
 		}
 	},
 
 	sel_cost: function(type) {
 		if (type) {
-			return round_number_1(get_hiring_cost(type))
+			return round_number(get_hiring_cost(type))
 		}
 	},
 
 	final_cost: function(type) {
 		if (type) {
-			return round_number_1(get_hiring_final_cost(type))
+			return round_number(get_hiring_final_cost(type))
 		}
 	},
 
 	is_gold: function(type) {
-		if (type == 'gold') {
-			return true
-		} else {
-			return false
-		}
+		return (type == 'gold')
 	}
 })
 
