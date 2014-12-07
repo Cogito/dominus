@@ -87,9 +87,7 @@ Template.hexes.rendered = function() {
 		Session.get('update_highlight')
 		if (Session.get('selected_type') == 'hex') {
 				remove_all_highlights()
-				var id = Session.get('selected_id')
-				highlight_hex_id(id)
-				//var hex = Hexes.findOne(id)	// not needed?
+				highlight_hex_id(Session.get('selected_id'))
 				Session.set('rp_template', 'rp_info_hex')
 		}
 	})

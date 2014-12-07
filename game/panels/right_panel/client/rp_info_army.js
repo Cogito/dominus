@@ -263,9 +263,11 @@ Template.rp_info_army.created = function() {
 	var self = this
 
 
+	// set army speed
+	// check for selected type keeps it from erroring when selecting army then a hex
 	self.speed = new ReactiveVar(0)
 	self.autorun(function() {
-		if (Template.currentData() && Template.currentData().footmen) {
+		if (Template.currentData() && Session.get('selected_type') == 'army') {
 			self.speed.set(speed_of_army(Template.currentData()))
 		}
 	})
@@ -295,8 +297,11 @@ Template.rp_info_army.created = function() {
 			var totalDuration = 0
 			moves = moves.map(function(move) {
 				move.distance = Hx.hexDistance(move.from_x, move.from_y, move.to_x, move.to_y)
+				check(move.distance, Number)
 				totalDistance += move.distance
 				var dur = self.speed.get() * move.distance * 1000 * 60
+				console.log('speed '+self.speed.get())
+				check(dur, Number)
 				move.duration = ms_to_short_time_string(dur)
 				totalDuration += dur
 				move.index = index
@@ -307,6 +312,8 @@ Template.rp_info_army.created = function() {
 			self.moves.set(moves)
 			self.totalDistance.set(totalDistance)
 			self.totalDuration.set(totalDuration)
+			console.log('distance '+totalDistance)
+			console.log('duration '+totalDuration)
 		}
 	})
 

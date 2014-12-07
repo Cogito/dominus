@@ -113,6 +113,7 @@ Meteor.methods({
 
 
 	destroy_village: function(id) {
+		console.log(id)
 		var res = Villages.findOne(id, {fields: {user_id:1}})
 		if (res) {
 			if (res.user_id == Meteor.userId()) {

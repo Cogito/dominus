@@ -106,11 +106,7 @@ Template.game.rendered = function() {
 			var hex_scale = get_hex_scale()
 			var sub = subs.subscribe('on_screen', center_hex.x, center_hex.y, s.hex_size, canvas_size.width, canvas_size.height, hex_scale)
 			var sub_hexes = subs.subscribe('on_screen_hexes', center_hex.x, center_hex.y, s.hex_size, canvas_size.width, canvas_size.height, hex_scale)
-			if (sub_hexes.ready()) {
-				Session.set('subscription_ready', true)
-			} else {
-				Session.set('subscription_ready', false)
-			}
+			Session.set('subscription_ready', sub_hexes.ready())
 		}
 	})
 
