@@ -15,3 +15,7 @@ Template.summary_hover_box.helpers({
 		return Session.get('summary_hover_box_contents')
 	}
 })
+
+Session.setDefault('show_summary_hover_box', false)
+Session.setDefault('summary_hover_box_top', 0)
+Session.setDefault('summary_hover_box_contents', '')

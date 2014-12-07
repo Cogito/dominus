@@ -9,7 +9,6 @@ createChatroom = function(name, type, owner, members) {
 		owner: owner,
 		created_at: new Date()
 	})
-	console.log('Created chatroom '+name)
 	return id
 }
 
@@ -127,7 +126,6 @@ destroyKingChatroom = function(king_id) {
 
 		var room = Rooms.findOne({owner:user._id, type:'king'})
 		if (room) {
-			console.log('Destroyed chatroom '+room.name)
 			Roomchats.remove({room_id:room._id})
 			Rooms.remove(room._id)
 		}

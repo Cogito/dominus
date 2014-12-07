@@ -300,7 +300,6 @@ Template.rp_info_army.created = function() {
 				check(move.distance, Number)
 				totalDistance += move.distance
 				var dur = self.speed.get() * move.distance * 1000 * 60
-				console.log('speed '+self.speed.get())
 				check(dur, Number)
 				move.duration = ms_to_short_time_string(dur)
 				totalDuration += dur
@@ -312,8 +311,6 @@ Template.rp_info_army.created = function() {
 			self.moves.set(moves)
 			self.totalDistance.set(totalDistance)
 			self.totalDuration.set(totalDuration)
-			console.log('distance '+totalDistance)
-			console.log('duration '+totalDuration)
 		}
 	})
 

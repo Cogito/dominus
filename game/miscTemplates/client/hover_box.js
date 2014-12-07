@@ -182,3 +182,11 @@ Template.hover_box.events({
 		Session.set('hover_on_hover_box', false)
 	}
 })
+
+
+// flag box
+Session.setDefault('hover_box_data', null)
+Session.setDefault('hover_on_object', false)
+Session.setDefault('hover_on_hover_box', false)
+Session.setDefault('draw_hover_box', false)
+Session.setDefault('hover_on_object_timer', null)

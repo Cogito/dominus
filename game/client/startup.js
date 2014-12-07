@@ -24,22 +24,10 @@ Session.setDefault('mouse_mode', 'default')	// used when selecting a hex to send
 Session.setDefault('rp_template', 'none')	// what to show in right panel
 
 
-
-// summary box
-Session.setDefault('show_summary_hover_box', false)
-Session.setDefault('summary_hover_box_top', 0)
-Session.setDefault('summary_hover_box_contents', '')
-
 // true when the onscreen subscription is ready
 // used to draw loading alert
 Session.setDefault('subscription_ready', false)	
 
-// flag box
-Session.setDefault('hover_box_data', null)
-Session.setDefault('hover_on_object', false)
-Session.setDefault('hover_on_hover_box', false)
-Session.setDefault('draw_hover_box', false)
-Session.setDefault('hover_on_object_timer', null)
 
 Session.setDefault('show_building_castle_modal', false)
 Session.setDefault('show_connection_lost_modal', false)
@@ -50,8 +38,6 @@ Meteor.setInterval(function() {
 }, 5000)
 
 Session.setDefault('num_villages', null)	// the number of villages that player has
-
-Session.setDefault('dupes', [])	// duplicate users
 
 
 // selected units reactive variable
