@@ -7,6 +7,9 @@ Meteor.startup(function() {
 
 		gamestats_job()
 
+		Villages.find().forEach(function(village) {
+			Villages.update(village._id, {$set: {under_construction:false}})
+		})
 
 		// army moves
 		Meteor.setInterval(function() {

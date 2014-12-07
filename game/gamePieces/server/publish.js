@@ -1,30 +1,25 @@
+var castle_fields = {name:1, user_id:1, x:1, y:1, username:1, image:1}
+var army_fields = {name:1, user_id:1, x:1, y:1, last_move_at:1, username:1}
+var village_fields = {name:1, user_id:1, x:1, y:1, username:1, under_construction:1}
+var hex_fields = {x:1, y:1, type:1, tileImage:1, large:1}
+
+_.each(s.army.types, function(type) {
+	castle_fields[type] = 1
+	army_fields[type] = 1
+	village_fields[type] = 1
+})
+
 Meteor.publish('on_screen_hexes', function (x, y, hex_size, canvas_width, canvas_height, hex_scale) {
 	var max = max_onscreen(hex_size, canvas_width, canvas_height, hex_scale)
 
 	return Hexes.find({
 			x: {$gt: x - max, $lt: x + max},
 			y: {$gt: y - max, $lt: y + max},
-		}, {fields: {
-			x: 1,
-			y: 1,
-			type: 1,
-			tileImage:1,
-			large:1
-		}})
+		}, {fields: hex_fields})
 })
 
 Meteor.publish("on_screen", function (x, y, hex_size, canvas_width, canvas_height, hex_scale) {
 	var max = max_onscreen(hex_size, canvas_width, canvas_height, hex_scale)
-
-	var castle_fields = {name:1, user_id:1, x:1, y:1, username:1, image:1}
-	var army_fields = {name:1, user_id:1, x:1, y:1, last_move_at:1, username:1, castle_x:1, castle_y:1, castle_id:1}
-	var village_fields = {name:1, user_id:1, x:1, y:1, username:1, castle_x:1, castle_y:1, castle_id:1, income:1}
-
-	_.each(s.army.types, function(type) {
-		castle_fields[type] = 1
-		army_fields[type] = 1
-		village_fields[type] = 1
-	})
 
 	var castle_query = Castles.find({
 		x: {$gt: x - max, $lt: x + max},
@@ -58,4 +53,14 @@ Meteor.publish('user_moves', function() {
 	} else {
 		this.ready()
 	}
+})
+
+
+Meteor.publish('gamePiecesAtHex', function(x,y) {
+	return [
+		Hexes.find({x:x, y:y}, {fields: hex_fields}),
+		Castles.find({x:x, y:y}, {fields: castle_fields}),
+		Armies.find({x:x, y:y}, {fields: army_fields}),
+		Villages.find({x:x, y:y}, {fields: village_fields})
+	]
 })

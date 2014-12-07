@@ -1,12 +1,6 @@
 Template.lp_villages.helpers({
 	villages: function() {
-		var fields = {name:1, x:1, y:1}
-
-		_.each(s.army.types, function(type) {
-			fields[type] = 1
-		})
-
-		var res =  Villages.find({user_id: Meteor.userId()}, {sort: {name: 1}, fields: fields})
+		var res =  LeftPanelVillages.find({}, {sort: {name: 1}})
 		if (res && res.count() > 0) {
 			res = res.map(function(a) {
 				a.unit_count = 0
@@ -23,3 +17,7 @@ Template.lp_villages.helpers({
 		}
 	},
 })
+
+Template.lp_villages.created = function() {
+	Meteor.subscribe('left_panel_villages')
+}

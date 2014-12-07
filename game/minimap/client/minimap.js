@@ -20,15 +20,15 @@ Template.minimap.helpers({
 	},
 
 	castle: function() {
-		return Castles.findOne({user_id: Meteor.userId()}, {fields: {x:1, y:1}})
+		return LeftPanelCastle.findOne({}, {fields: {x:1, y:1}})
 	},
 
 	villages: function() {
-		return Villages.find({user_id: Meteor.userId()}, {fields: {x:1, y:1}})
+		return LeftPanelVillages.find({}, {fields: {x:1, y:1}})
 	},
 
 	armies: function() {
-		return Armies.find({user_id: Meteor.userId()}, {fields: {x:1, y:1}})
+		return LeftPanelArmies.find({}, {fields: {x:1, y:1}})
 	},
 
 	lords: function() {

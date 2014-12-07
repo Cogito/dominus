@@ -262,6 +262,11 @@ Template.rp_info_army.events({
 Template.rp_info_army.created = function() {
 	var self = this
 
+	self.autorun(function() {
+		if (Template.currentData()) {
+			Meteor.subscribe('gamePiecesAtHex', Template.currentData().x, Template.currentData().y)
+		}
+	})
 
 	// set army speed
 	// check for selected type keeps it from erroring when selecting army then a hex

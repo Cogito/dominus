@@ -1,13 +1,7 @@
 Template.lp_armies.helpers({
 	armies: function() {
 		Session.get('refresh_time_field')
-		var fields = {name: 1, x: 1, y: 1}
-
-		_.each(s.army.types, function(type) {
-			fields[type] = 1
-		})
-
-		var res = Armies.find({user_id: Meteor.userId()}, {sort: {name: 1}, fields: fields})
+		var res = LeftPanelArmies.find({}, {sort: {name: 1}})
 		if (res && res.count() > 0) {
 			res = res.map(function(a) {
 				// movement
@@ -53,3 +47,11 @@ Template.lp_armies.helpers({
 		}
 	},
 })
+
+
+Template.lp_armies.created = function() {
+	this.autorun(function() {
+		Meteor.subscribe('left_panel_armies')
+		Meteor.subscribe('user_moves')
+	})
+}

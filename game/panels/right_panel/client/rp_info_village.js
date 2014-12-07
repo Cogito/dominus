@@ -70,6 +70,12 @@ Template.rp_info_village.events({
 Template.rp_info_village.created = function() {
 	var self = this
 
+	self.autorun(function() {
+		if (Template.currentData()) {
+			Meteor.subscribe('gamePiecesAtHex', Template.currentData().x, Template.currentData().y)
+		}
+	})
+
 	Session.set('mouse_mode', 'default')
 	Session.set('update_highlight', Random.fraction())
 

@@ -11,13 +11,13 @@ Template.game.helpers({
 	rp_template_data: function() {
 		switch (Session.get('selected_type')) {
 			case 'castle':
-				return Castles.findOne(Session.get('selected_id'))
+				return RightPanelCastle.findOne(Session.get('selected_id'))
 				break;
 			case 'village':
-				return Villages.findOne(Session.get('selected_id'))
+				return RightPanelVillages.findOne(Session.get('selected_id'))
 				break;
 			case 'army':
-				return Armies.findOne(Session.get('selected_id'))
+				return RightPanelArmies.findOne(Session.get('selected_id'))
 				break;
 			case 'hex':
 				return Hexes.findOne(Session.get('selected_id'))

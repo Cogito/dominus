@@ -84,14 +84,6 @@ Template.left_panel.helpers({
 		return Session.get('num_villages')
 	},
 
-	lords: function() {
-		var user = Meteor.users.findOne(Meteor.userId(), {fields: {allies_above:1}})
-		if (user) {
-			return LeftPanelUsers.find({_id: {$in:user.allies_above}})
-		}
-		return null
-	},
-
 	num_vassals: function() {
 		var res = Meteor.users.findOne(Meteor.userId(), {fields: {num_allies_below: 1}})
 		if (res) {
@@ -181,11 +173,6 @@ Template.left_panel.created = function() {
 			var user = Meteor.users.findOne(Meteor.userId(), {fields: {lord:1, vassals:1, lp_show_armies:1, lp_show_lords:1, lp_show_allies:1}})
 			if (user) {
 				Meteor.subscribe('gather_resources_jobstat')
-
-				if (user.lp_show_armies) {
-					Meteor.subscribe('my_armies')
-					Meteor.subscribe('user_moves')
-				}
 
 				if (user.lp_show_lords) {
 					Meteor.subscribe('left_panel_lords')
