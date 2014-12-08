@@ -11,6 +11,12 @@ Meteor.startup(function() {
 			Villages.update(village._id, {$set: {under_construction:false}})
 		})
 
+		Meteor.users.find().forEach(function(user) {
+			if (Villages.find({user_id:user._id}).count() > 7) {
+				console.log(user.username+' has more than '+Villages.find({user_id:user._id}).count()+' villages')
+			}
+		})
+
 		// army moves
 		Meteor.setInterval(function() {
 			var start_time = new Date()

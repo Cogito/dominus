@@ -17,7 +17,3 @@ Template.lp_villages.helpers({
 		}
 	},
 })
-
-Template.lp_villages.created = function() {
-	Meteor.subscribe('left_panel_villages')
-}

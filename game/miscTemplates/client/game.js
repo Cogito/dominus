@@ -112,7 +112,7 @@ Template.game.rendered = function() {
 
 	// keep track of how many villages you have
 	this.deps_num_villages = Deps.autorun(function() {
-		var num_villages = Villages.find({user_id: Meteor.userId()}).count()
+		var num_villages = LeftPanelVillages.find().count()
 		if (num_villages) {
 			Session.set('num_villages', num_villages)
 		} else {

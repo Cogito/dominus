@@ -34,7 +34,7 @@ move_hexes_to = function(pixel_x, pixel_y) {
 }
 
 // center the map on a hex
-// give coors of a hex 3,-5
+// give coordinates of a hex 3,-5
 // why * -1 ?????
 center_on_hex = function(x, y) {
 	check(x, Number)

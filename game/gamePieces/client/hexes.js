@@ -2,20 +2,19 @@ Template.hexes.helpers({
 	// this is only used for the hex coordinates
 	// not used to draw the hexes
 	hexes: function() {
-		Session.get('subscription_ready')
-		return Hexes.find({}, {fields: {x:1, y:1, type:1}})
+		return Hexes.find()
 	},
 
 	castles: function() {
-		return Castles.find({}, {fields: {x:1, y:1, user_id:1, image:1}})
+		return Castles.find()
 	},
 
 	armies: function() {
-		return Armies.find({}, {fields: {x:1, y:1, user_id:1, last_move_at:1}})
+		return Armies.find()
 	},
 
 	villages: function() {
-		return Villages.find({}, {fields: {x:1, y:1, user_id:1}})
+		return Villages.find()
 	},
 
 	show_coords: function() {
@@ -141,22 +140,20 @@ Template.hexes.destroyed = function() {
 
 
 observe_hexes = function(self) {
-	var query = Hexes.find({}, {fields: {x:1, y:1, type:1, tileImage:1, large:1}})
+	var query = Hexes.find()
+	var offset_x = -63
+	var offset_y = -41
+	var container = document.getElementById('hex_container')
 	self.handle = query.observe({
 		added: function(doc) {
 			var canvas_size = Session.get('canvas_size')
-			//$('#hex_container').find('[data-id='+doc._id+']').remove()
 			
-			var offset_x = -63
-			var offset_y = -41
-
 			var grid = Hx.coordinatesToPos(doc.x, doc.y, s.hex_size, s.hex_squish)
 			// var x = Math.round(pixel.x + canvas_size.half_width + offset_x)
 			// var y = Math.round(pixel.y + canvas_size.half_height + offset_y)
 			var x = grid.x + offset_x
 			var y = grid.y + offset_y
 
-			var container = document.getElementById('hex_container')
 			var hex_image = document.createElementNS('http://www.w3.org/2000/svg','image')
 			hex_image.setAttribute('class', 'hex_image')
 			hex_image.setAttribute('x', x)

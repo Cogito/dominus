@@ -6,6 +6,11 @@ Meteor.methods({
 
 		var user = Meteor.users.findOne(Meteor.userId(), {fields: {x:1, y:1, username:1, castle_id:1, grain:1, lumber:1, ore:1, wool:1, clay:1, glass:1}})
 		if (user) {
+			// make sure user doesn't have max villages already
+			if (Villages.find({user_id:user._id}).count() >= s.village.max_can_have) {
+				return {result:false, msg: 'Already have max villages.'}
+			}
+
 			// make sure user has an army here
 			if (Armies.find({x: x, y: y, user_id: user._id}).count() == 0) {
 				return {result:false, msg: 'No worker on hex.'}
