@@ -4,5 +4,9 @@ Template.adminCommands.events({
 		if ($(input).length > 0) {
 			Meteor.call('admin_run_update_allies_username', $(input).val())
 		}
+	},
+
+	'click #cleanupAllKingChatroomsButton': function(event, template) {
+		Meteor.call('admin_cleanupAllKingChatrooms')
 	}
 })

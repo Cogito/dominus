@@ -11,5 +11,11 @@ Meteor.methods({
 		}
 	},
 
+	admin_cleanupAllKingChatrooms: function() {
+		if (get_user_property("admin")) {
+			cleanupAllKingChatrooms()
+		}
+	}
+
 
 })
