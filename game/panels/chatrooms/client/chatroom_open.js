@@ -297,13 +297,14 @@ Template.chatroom_open.events({
 		var id = coords_to_id(hex.x, hex.y, "hex");
 
 		if (!id) {
-			var id = Meteor.call('coords_to_id', hex.x, hex.y, 'hex', function(error, result) {
-				if (!error) {
+			Meteor.call('coords_to_id', hex.x, hex.y, 'hex', function(error, result) {
+				if (!error && result) {
+					center_on_hex(hex.x, hex.y);
+					Session.set('selected_type', 'hex');
 					Session.set('selected_id', result);
 				}
-
-				return;
 			});
+			return;
 		}
 
 		center_on_hex(hex.x, hex.y);
