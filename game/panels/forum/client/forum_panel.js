@@ -89,7 +89,7 @@ Template.forum_panel.events({
 		if (Session.get('forum_current_thread')) {
 			Cookie.set('viewed_thread_'+Session.get('forum_current_thread'), new Date(), {years: 10})
 		}
-		
+
 		Session.set('forum_current_forum', id)
 		Session.set('forum_current_thread', undefined)
 		Cookie.set('viewed_forum_'+id, new Date(), {years: 10})
@@ -194,6 +194,32 @@ Template.forum_panel.events({
 		Threads.find({forum_id: Session.get('forum_current_forum')}, {fields: {_id:1}}).forEach(function(thread) {
 			Cookie.set('viewed_thread_'+thread._id, new Date(), {years: 10})
 		})
+	},
+	
+	'click .hex-link': function(event, template) {
+		event.preventDefault()
+		event.stopPropagation()
+		var hex = {
+			x: parseInt(event.currentTarget.dataset.x),
+			y: parseInt(event.currentTarget.dataset.y)
+		}
+
+		var id = coords_to_id(hex.x, hex.y, "hex");
+
+		if (!id) {
+			Meteor.call('coords_to_id', hex.x, hex.y, 'hex', function(error, result) {
+				if (!error && result) {
+					center_on_hex(hex.x, hex.y);
+					Session.set('selected_type', 'hex');
+					Session.set('selected_id', result);
+				}
+			});
+			return;
+		}
+
+		center_on_hex(hex.x, hex.y);
+		Session.set('selected_type', 'hex');
+		Session.set('selected_id', id);
 	}
 })
 
@@ -202,7 +228,7 @@ Template.forum_panel.events({
 Template.forum_panel.created = function() {
 	Session.set('forum_current_forum', undefined)
 	Session.set('forum_current_thread', undefined)
-	
+
 	// subscribe
 	this.autorun(function() {
 		Meteor.subscribe('forums')
