@@ -5,12 +5,6 @@ Meteor.startup(function() {
 		worker.empty_queue()
 		worker.start()
 
-		gamestats_job()
-
-		Villages.find().forEach(function(village) {
-			Villages.update(village._id, {$set: {under_construction:false}})
-		})
-
 		Meteor.users.find().forEach(function(user) {
 			if (Villages.find({user_id:user._id}).count() > 7) {
 				console.log(user.username+' has more than '+Villages.find({user_id:user._id}).count()+' villages')

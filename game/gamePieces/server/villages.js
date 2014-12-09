@@ -8,12 +8,12 @@ Meteor.methods({
 		if (user) {
 			// make sure user doesn't have max villages already
 			if (Villages.find({user_id:user._id}).count() >= s.village.max_can_have) {
-				return {result:false, msg: 'Already have max villages.'}
+				throw new Meteor.Error('Already have max villages.')
 			}
 
 			// make sure user has an army here
 			if (Armies.find({x: x, y: y, user_id: user._id}).count() == 0) {
-				return {result:false, msg: 'No worker on hex.'}
+				throw new Meteor.Error('No army on hex.')
 			}
 
 			if (user.grain >= s.village.cost.grain &&
@@ -28,7 +28,7 @@ Meteor.methods({
 				var hex = Hexes.findOne({x:x, y:y}, {fields: {_id:1, type:1}})
 				if (hex) {
 					if (hex.type != 'grain') {
-						return {result:false, msg: 'Must be a grain hex.'}
+						throw new Meteor.Error('Must be a grain hex.')
 					}
 
 					if (is_hex_empty_except_allies_coords(x, y)) {
@@ -64,7 +64,7 @@ Meteor.methods({
 							castle_y: user.y,
 							castle_id: user.castle_id,
 							income: income,
-							under_construction:false
+							under_construction:true
 						}
 
 						_.each(s.army.types, function(type) {
@@ -81,58 +81,83 @@ Meteor.methods({
 							clay: -1 * s.village.cost.clay,
 							glass: -1 * s.village.cost.glass
 						}})
-
-						// if army is there merge them
-						Armies.find({x:x, y:y, user_id: user._id}).forEach(function(army) {
-							if (is_stopped(army._id)) {
-								var fields = {}
-
-								_.each(s.army.types, function(type) {
-									fields[type] = army[type]
-								})
-
-								Villages.update(id, {$inc: fields})
-
-								Armies.remove(army._id)
-								Moves.remove({army_id:army._id})
-							}
-						})
 						
 						// set hex to occupied
 						Hexes.update(hex._id, {$set: {has_building: true}})
-						
-						return {result:true, id:id}
+	
+						return id
 					} else {
-						return {result:false, msg: 'Hex is not empty.'}
+						throw new Meteor.Error('Hex is not empty.')
 					}
 				} else {
-					return {result:false, msg: 'No hex found in db for '+x+','+y+'.'}
+					throw new Meteor.Error('No hex found in db for '+x+','+y+'.')
 				}
 				
 			} else {
-				return {result:false, msg: 'Not enough resources.'}
+				throw new Meteor.Error('Not enough resources.')
 			}
 		}
-		return {result:false, msg: 'Error'}
+		throw new Meteor.Error('No user found.')
 	},
 
 
 
 	destroy_village: function(id) {
-		var res = Villages.findOne(id, {fields: {user_id:1}})
-		if (res) {
-			if (res.user_id == Meteor.userId()) {
+		this.unblock()
+
+		check(id, String)
+		
+		var fields = {user_id:1}
+		_.each(s.army.types, function(type) {
+			fields[type] = 1
+		})
+
+		var village = Villages.findOne(id, {fields: fields})
+		if (village) {
+			if (village.user_id == Meteor.userId()) {
+				// spit out army
+				var army_id = Meteor.call('create_army_from_building', village, 'village', village._id, [])
 				Villages.remove(id)
-				return true
+				Hexes.update({x:village.x, y:village.y}, {$set: {has_building:false, nearby_buildings:false}})
+				return army_id
 			}
 		}
-		return false
+
+		throw new Meteor.Error('Village not found.')
 	}
 
 })
 
 
+finish_building_village = function(village_id) {
+	check(village_id, String)
+
+	var village = Villages.findOne(village_id)
+	if (village) {
+
+		// if army is there merge them
+		Armies.find({x:village.x, y:village.y, user_id: village.user_id}).forEach(function(army) {
+			if (is_stopped(army._id)) {
+				var fields = {}
+
+				_.each(s.army.types, function(type) {
+					fields[type] = army[type]
+				})
+
+				Villages.update(id, {$inc: fields})
+				Armies.remove(army._id)
+				Moves.remove({army_id:army._id})
+			}
+		})
+
+		Villages.update(village_id, {$set: {under_construction:false}})
+
+	} else {
+		throw new Meteor.Error('Could not find village.')
+	}
+}
+
+
 destroy_all_villages = function() {
 	Villages.remove({})
 }
-

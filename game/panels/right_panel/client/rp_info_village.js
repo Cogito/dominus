@@ -3,6 +3,13 @@ Template.rp_info_village.helpers({
 		return Session.get('rightPanelInfoLoaded')
 	},
 
+	timeTilFinishedBuilding: function() {
+		if (this) {
+			Session.get('refresh_time_field')
+			return moment(new Date(this.created_at)).add(s.village.time_to_build, 'ms').fromNow()
+		}
+	},
+
 	battleInfoLoaded: function() {
 		return Template.instance().battleInfoLoaded.get()
 	},

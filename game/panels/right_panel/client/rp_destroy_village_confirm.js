@@ -2,7 +2,12 @@ Template.rp_destroy_village_confirm.events({
 	'click #destroy_village_button_yes': function(event, template) {
 		$('#destroy_village_button_yes').attr('disabled', true)
 		$('#destroy_village_button_yes').html('Please Wait')
-		Meteor.call('destroy_village', Session.get('selected_id'))
+		Meteor.call('destroy_village', Session.get('selected_id'), function(error, result) {
+			if (!error && result) {
+				Session.set('selected_type', 'army')
+				Session.set('selected_id', result)
+			}
+		})
 		deselect_all()
 		remove_village_highlights()
 	},

@@ -1,5 +1,5 @@
 <template name="rp_info_village">
-	<div class="rp_content">
+	<div class="rp_content" id="rp_info_village">
 		{{#if infoLoaded}}
 			<div class="panel panel-default" style="margin-top:0;">
 				<div class="panel-body">
@@ -21,99 +21,112 @@
 					{{> hex_location}}
 					&nbsp;&nbsp;
 					{{> center_on_button x=x y=y selected_id=_id selected_type='village'}}
-					<br>
-					
-					
-
 				</div>
 			</div>
 			
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					Village Garrison
+			{{#if under_construction}}
+				<div class="panel panel-default">
+					<div class="panel-body">
+						Village is under construction and will be finished in {{timeTilFinishedBuilding}}.
+					</div>
+					<table class="table table-condensed table-striped">
+						<tbody>
+							<tr>
+								<td>Worth In Gold</td>
+								<td style="text-align:right;">{{round incomeInGold}}</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
-				<table class="table table-condensed table-striped">
-					<tbody>
-						<tr>
-							<td>Footmen</td>
-							<td style="text-align:right;">{{round footmen}}</td>
-						</tr>
-						<tr>
-							<td>Archers</td>
-							<td style="text-align:right;">{{round archers}}</td>
-						</tr>
-						<tr>
-							<td>Pikemen</td>
-							<td style="text-align:right;">{{round pikemen}}</td>
-						</tr>
-						<tr>
-							<td>Cavalry</td>
-							<td style="text-align:right;">{{round cavalry}}</td>
-						</tr>
-						<tr>
-							<td>Catapults</td>
-							<td style="text-align:right;">{{round catapults}}</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
+
+			{{else}}
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Village Garrison
+					</div>
+					<table class="table table-condensed table-striped">
+						<tbody>
+							<tr>
+								<td>Footmen</td>
+								<td style="text-align:right;">{{round footmen}}</td>
+							</tr>
+							<tr>
+								<td>Archers</td>
+								<td style="text-align:right;">{{round archers}}</td>
+							</tr>
+							<tr>
+								<td>Pikemen</td>
+								<td style="text-align:right;">{{round pikemen}}</td>
+							</tr>
+							<tr>
+								<td>Cavalry</td>
+								<td style="text-align:right;">{{round cavalry}}</td>
+							</tr>
+							<tr>
+								<td>Catapults</td>
+								<td style="text-align:right;">{{round catapults}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 
 
-			{{#if is_owner}}
-				<div class="pad_group">
-					<button type="button" class="btn btn-sm btn-primary btn-block" id="send_army_from_village_button" disabled="{{no_soldiers}}">Send Army from Village</button>
+				{{#if is_owner}}
+					<div class="pad_group">
+						<button type="button" class="btn btn-sm btn-primary btn-block" id="send_army_from_village_button" disabled="{{no_soldiers}}">Send Army from Village</button>
+					</div>
+				{{/if}}
+
+				 <div class="panel panel-default">
+					<div class="panel-heading">
+						Resource Collection
+					</div>
+					<table class="table table-condensed table-striped">
+						<tbody>
+							<tr>
+								<td>Gold</td>
+								<td style="text-align:right;">{{resources_per_interval.gold}}</td>
+							</tr>
+							<tr>
+								<td>Grain</td>
+								<td style="text-align:right;">{{resources_per_interval.grain}}</td>
+							</tr>
+							<tr>
+								<td>Lumber</td>
+								<td style="text-align:right;">{{resources_per_interval.lumber}}</td>
+							</tr>
+							<tr>
+								<td>Ore</td>
+								<td style="text-align:right;">{{resources_per_interval.ore}}</td>
+							</tr>
+							<tr>
+								<td>Wool</td>
+								<td style="text-align:right;">{{resources_per_interval.wool}}</td>
+							</tr>
+							<tr>
+								<td>Clay</td>
+								<td style="text-align:right;">{{resources_per_interval.clay}}</td>
+							</tr>
+							<tr>
+								<td>Glass</td>
+								<td style="text-align:right;">{{resources_per_interval.glass}}</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="panel-body light_text" style="text-align:center;">
+						Collected every {{interval}}<br>
+						from surrounding hexes.
+					</div>
+					<table class="table table-condensed table-striped">
+						<tbody>
+							<tr>
+								<td>Worth In Gold</td>
+								<td style="text-align:right;">{{round incomeInGold}}</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			{{/if}}
-
-			 <div class="panel panel-default">
-				<div class="panel-heading">
-					Resource Collection
-				</div>
-				<table class="table table-condensed table-striped">
-					<tbody>
-						<tr>
-							<td>Gold</td>
-							<td style="text-align:right;">{{resources_per_interval.gold}}</td>
-						</tr>
-						<tr>
-							<td>Grain</td>
-							<td style="text-align:right;">{{resources_per_interval.grain}}</td>
-						</tr>
-						<tr>
-							<td>Lumber</td>
-							<td style="text-align:right;">{{resources_per_interval.lumber}}</td>
-						</tr>
-						<tr>
-							<td>Ore</td>
-							<td style="text-align:right;">{{resources_per_interval.ore}}</td>
-						</tr>
-						<tr>
-							<td>Wool</td>
-							<td style="text-align:right;">{{resources_per_interval.wool}}</td>
-						</tr>
-						<tr>
-							<td>Clay</td>
-							<td style="text-align:right;">{{resources_per_interval.clay}}</td>
-						</tr>
-						<tr>
-							<td>Glass</td>
-							<td style="text-align:right;">{{resources_per_interval.glass}}</td>
-						</tr>
-					</tbody>
-				</table>
-				<div class="panel-body light_text" style="text-align:center;">
-					Collected every {{interval}}<br>
-					from surrounding hexes.
-				</div>
-				<table class="table table-condensed table-striped">
-					<tbody>
-						<tr>
-							<td>Worth In Gold</td>
-							<td style="text-align:right;">{{round incomeInGold}}</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
 
 			{{#if is_owner}}
 				<br>

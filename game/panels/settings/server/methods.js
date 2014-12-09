@@ -7,7 +7,10 @@ Meteor.methods({
 
 			var appendToName = '(deleted)'
 
-			Villages.remove({user_id: user._id})
+			Villages.find({user_id: user._id}).forEach(function(village) {
+				Meteor.call('destroy_village', village._id)
+			})
+			
 			Armies.remove({user_id: user._id})
 			Moves.remove({user_id: user._id})
 			Threads.update({user_id: user._id}, {$set: {username: user.username+appendToName}}, {multi: true})

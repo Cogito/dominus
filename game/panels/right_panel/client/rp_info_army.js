@@ -235,19 +235,12 @@ Template.rp_info_army.events({
 		Meteor.call('build_village', this.x, this.y, function(error, result) {
 			if (error) {
 				$(alert).show()
-				$(alert).html('Error when building village.')
+				$(alert).html(error.error)
 				$(button).attr('disabled', false)
 				$(button).html(button_html)
 			} else {
-				if (result.result) {
-					Session.set('selected_type', 'village')
-					Session.set('selected_id', result.id)
-				} else {
-					$(alert).show()
-					$(alert).html(result.msg)
-					$(button).attr('disabled', false)
-					$(button).html(button_html)
-				}
+				Session.set('selected_type', 'village')
+				Session.set('selected_id', result)
 			}
 		})
 	},

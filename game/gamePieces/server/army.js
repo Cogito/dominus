@@ -16,15 +16,22 @@ Meteor.methods({
 		}
 
 		if (from) {
-			var has_enough = true
+			// army is not 0
+			var has_some = false
+			_.each(s.army.types, function(type) {
+				if (army[type] > 0) {
+					has_some = true
+				}
+			})
 
+			var has_enough = true
 			_.each(s.army.types, function(type) {
 				if (army[type] > from[type]) {
 					has_enough = false
 				}
 			})
 
-			if (has_enough) {
+			if (has_some && has_enough) {
 				var army_id = Meteor.call('create_army', army, from.x, from.y, moves)
 
 				var fields = {}
