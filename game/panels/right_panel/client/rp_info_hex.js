@@ -66,6 +66,22 @@ Template.rp_info_hex.created = function() {
 		}
 	})
 
+	// If a hex is selected and there is a Castle or Village, select it instead.
+	self.autorun(function() {
+		if(Template.currentData()) {
+			var castle = Castles.findOne({x: Template.currentData().x, y: Template.currentData().y});
+			var village = Villages.findOne({x: Template.currentData().x, y: Template.currentData().y});
+			if (castle) {
+				Session.set('selected_type', 'castle');
+				Session.set('selected_id', castle._id);
+			}
+			if (village) {
+				Session.set('selected_type', 'village');
+				Session.set('selected_id', village._id);
+			}
+		}
+	});
+
 	Session.set('mouse_mode', 'default')
 	Session.set('update_highlight', Random.fraction())
 

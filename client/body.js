@@ -66,7 +66,8 @@ UI.registerHelper('autolink', function(text, escape) {
 	if (escape || escape === undefined){
 		text = UI._escape(text)
 	}
+
 	return new Spacebars.SafeString(
-		Autolinker.link(text, {twitter: false})
-	)
+		Autolinker.link(hex_link(text), {twitter: false})
+	);
 })
