@@ -86,7 +86,7 @@ Template.chatroom_open.helpers({
 		if (room_type == 'king' || room_type == 'everyone') {
 			return false
 		}
-		
+
 		var user_id = Meteor.userId()
 
 		// if owner
@@ -284,6 +284,31 @@ Template.chatroom_open.events({
 		center_on_hex(this.x, this.y)
 		Session.set('selected_type', 'castle')
 		Session.set('selected_id', this.castle_id)
+	},
+
+	'click .hex-link': function(event, template) {
+		event.preventDefault()
+		event.stopPropagation()
+		var hex = {
+			x: parseInt(event.currentTarget.dataset.x),
+			y: parseInt(event.currentTarget.dataset.y)
+		}
+
+		var id = coords_to_id(hex.x, hex.y, "hex");
+
+		if (!id) {
+			var id = Meteor.call('coords_to_id', hex.x, hex.y, 'hex', function(error, result) {
+				if (!error) {
+					Session.set('selected_id', result);
+				}
+
+				return;
+			});
+		}
+
+		center_on_hex(hex.x, hex.y);
+		Session.set('selected_type', 'hex');
+		Session.set('selected_id', id);
 	},
 
 	// same as click function
