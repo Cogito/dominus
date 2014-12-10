@@ -16,144 +16,134 @@
 
 		<div class="panel panel-default">
 			<div class="panel-heading">Top 15 Players by Vassals<br><small class="light_text">People below you in the tree.</small></div>
-			<div class="panel-body">
-				<table class="table table-condensed rank_start">
-					<tbody>
-						{{#each top10_allies}}
-							<tr>
-								<td class="rank_username">
-									{{#if is_me}}
-										<strong>{{username}}</strong>
-									{{else}}
-										{{username}}
-									{{/if}}
-								</td>
-								<td style="text-align:right;">
-									{{num_allies_below}}
-								</td>
-								<td style="text-align:right;">
-									{{> center_on_button x=x y=y selected_type='castle' selected_id=castle_id}}
-								</td>
-							</tr>
-						{{/each}}
-					</tbody>
-				</table>
-			</div>
+			<table class="table table-condensed table-striped rank_start">
+				<tbody>
+					{{#each top10_allies}}
+						<tr>
+							<td class="rank_username">
+								{{#if is_me}}
+									<strong>{{username}}</strong>
+								{{else}}
+									{{username}}
+								{{/if}}
+							</td>
+							<td class="rank_numbers">
+								{{num_allies_below}}
+							</td>
+							<td class="rank_buttons">
+								{{> center_on_button x=x y=y selected_type='castle' selected_id=castle_id}}
+							</td>
+						</tr>
+					{{/each}}
+				</tbody>
+			</table>
 		</div>
 
 
 		<div class="panel panel-default">
 			<div class="panel-heading">Top 15 Players by Networth</div>
-			<div class="panel-body">
-				<table class="table table-condensed rank_start">
-					<tbody>
-						{{#each top10_networth}}
-							<tr>
-								<td class="rank_username">
-									{{#if is_me}}
-										<strong>{{username}}</strong>
-									{{else}}
-										{{username}}
-									{{/if}}
-								</td>
-								<td style="text-align:right;">
-									{{round networth}}
-								</td>
-								<td style="text-align:right;">
-									{{> center_on_button x=x y=y selected_type='castle' selected_id=castle_id}}
-								</td>
-							</tr>
-						{{/each}}
-					</tbody>
-				</table>
-			</div>
+			<table class="table table-condensed table-striped rank_start">
+				<tbody>
+					{{#each top10_networth}}
+						<tr>
+							<td class="rank_username">
+								{{#if is_me}}
+									<strong>{{username}}</strong>
+								{{else}}
+									{{username}}
+								{{/if}}
+							</td>
+							<td class="rank_numbers">
+								{{round networth}}
+							</td>
+							<td class="rank_buttons">
+								{{> center_on_button x=x y=y selected_type='castle' selected_id=castle_id}}
+							</td>
+						</tr>
+					{{/each}}
+				</tbody>
+			</table>
 		</div>
 
 
 		<div class="panel panel-default">
 			<div class="panel-heading">Top 15 Players by Income</div>
-			<div class="panel-body">
-				<table class="table table-condensed rank_start">
-					<tbody>
-						{{#each top10_income}}
-							<tr>
-								<td class="rank_username">
-									{{#if is_me}}
-										<strong>{{username}}</strong>
-									{{else}}
-										{{username}}
-									{{/if}}
-								</td>
-								<td style="text-align:right;">
-									{{round income}}
-								</td>
-								<td style="text-align:right;">
-									{{> center_on_button x=x y=y selected_type='castle' selected_id=castle_id}}
-								</td>
-							</tr>
-						{{/each}}
-					</tbody>
-				</table>
-			</div>
+			<table class="table table-condensed table-striped rank_start">
+				<tbody>
+					{{#each top10_income}}
+						<tr>
+							<td class="rank_username">
+								{{#if is_me}}
+									<strong>{{username}}</strong>
+								{{else}}
+									{{username}}
+								{{/if}}
+							</td>
+							<td class="rank_numbers">
+								{{round income}}
+							</td>
+							<td class="rank_buttons">
+								{{> center_on_button x=x y=y selected_type='castle' selected_id=castle_id}}
+							</td>
+						</tr>
+					{{/each}}
+				</tbody>
+			</table>
 		</div>
 
 
 		<div class="panel panel-default">
 			<div class="panel-heading">Top 15 Players by Lost Soldiers</div>
-			<div class="panel-body">
-				<table class="table table-condensed rank_start">
-					<tbody>
-						{{#each top10_losses}}
-							<tr>
-								<td class="rank_username">
-									{{#if is_me}}
-										<strong>{{username}}</strong>
-									{{else}}
-										{{username}}
-									{{/if}}
-								</td>
-								<td style="text-align:right;">
-									{{round losses_worth}}
-								</td>
-								<td style="text-align:right;">
-									{{> center_on_button x=x y=y selected_type='castle' selected_id=castle_id}}
-								</td>
-							</tr>
-						{{/each}}
-					</tbody>
-				</table>
-			</div>
+			<table class="table table-condensed table-striped rank_start">
+				<tbody>
+					{{#each top10_losses}}
+						<tr>
+							<td class="rank_username">
+								{{#if is_me}}
+									<strong>{{username}}</strong>
+								{{else}}
+									{{username}}
+								{{/if}}
+							</td>
+							<td class="rank_numbers">
+								{{round losses_worth}}
+							</td>
+							<td class="rank_buttons">
+								{{> center_on_button x=x y=y selected_type='castle' selected_id=castle_id}}
+							</td>
+						</tr>
+					{{/each}}
+				</tbody>
+			</table>
 		</div>
 
 
 		<div class="panel panel-default">
 			<div class="panel-heading">Top 15 Villages<br><small class="light_text">By worth of resources collected in gold.</small></div>
-			<div class="panel-body">
-				<table class="table table-condensed rank_start">
-					<tbody>
-						{{#each top10_villages}}
-							<tr>
-								<td class="rank_username">
-									<a href="" class="gotoUserButton" data-x="{{castle_x}}" data-y="{{castle_y}}" data-castle_id="{{castle_id}}">
-										{{#if is_me}}
-											<strong>{{username}}</strong>
-										{{else}}
-											{{username}}
-										{{/if}}
-									</a>
-									: {{name}}
-								</td>
-								<td style="text-align:right;">
-									{{round income.worth}}
-								</td>
-								<td style="text-align:right;">
-									{{> center_on_button x=x y=y selected_type='village' selected_id=_id}}
-								</td>
-							</tr>
-						{{/each}}
-					</tbody>
-				</table>
-			</div>
+			<table class="table table-condensed table-striped rank_start">
+				<tbody>
+					{{#each top10_villages}}
+						<tr>
+							<td class="rank_username">
+								<a href="" class="gotoUserButton" data-x="{{castle_x}}" data-y="{{castle_y}}" data-castle_id="{{castle_id}}">
+									{{#if is_me}}
+										<strong>{{username}}</strong>
+									{{else}}
+										{{username}}
+									{{/if}}
+								</a>
+								: {{name}}
+							</td>
+							<td class="rank_numbers">
+								{{round income.worth}}
+							</td>
+							<td class="rank_buttons">
+								{{> center_on_button x=x y=y selected_type='village' selected_id=_id}}
+							</td>
+						</tr>
+					{{/each}}
+				</tbody>
+			</table>
 		</div>
 		
 	</div>

@@ -7,7 +7,11 @@
 	height: 100%;
 	pointer-events: auto;
 	margin-left: 10px;
-	width: 400px;
+	max-width: 450px;
+}
+
+#rankings_panel .panel {
+	margin-top:15px;
 }
 
 
@@ -18,4 +22,20 @@
 .rank_username:before {
 	content: counter(ranking-counter) ". ";
 	counter-increment: ranking-counter;
+	color:#aaa;
+}
+
+.rank_username {
+	white-space:nowrap;
+}
+
+.rank_numbers {
+	text-align:right;
+	white-space:nowrap;
+}
+
+.rank_buttons {
+	text-align:right;
+	white-space:nowrap;
+	width:83px !important;
 }
