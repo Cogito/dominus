@@ -755,7 +755,7 @@ Units.prototype._isOnAllyVillage = function(unit) {
 		check(user.allies_below, Array)
 		var allies = cloneArray(user.allies_below)
 		allies.push(unit.user_id)
-		if (Villages.find({x: unit.x, y: unit.y, user_id: {$in: allies}}).count() > 0) {
+		if (Villages.find({under_construction:false, x: unit.x, y: unit.y, user_id: {$in: allies}}).count() > 0) {
 			return true
 		}
 	}
