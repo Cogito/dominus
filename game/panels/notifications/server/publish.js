@@ -50,3 +50,16 @@ Meteor.publish('gameEndDate', function() {
 		this.ready()
 	}
 })
+
+Meteor.publish('lastDominus', function() {
+	var sub = this
+	var cur = Meteor.users.find(Settings.findOne({name: 'lastDominusUserId'}).value, {fields: {
+		username:1,
+		castle_id:1,
+		x:1,
+		y:1,
+		is_dominus:1
+	}})
+	Mongo.Collection._publishCursor(cur, sub, 'lastDominus')
+	return sub.ready();
+})

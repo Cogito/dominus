@@ -14,10 +14,15 @@
 				<div class="light_text" style="font-size:80%;">
 					{{#if dominus}}
 						{{#with dominus}}
-							<a href="" class="dominus_goto">{{username}}</a> is the current Dominus
+							<a href="" class="dominus_goto">{{username}}</a> is the current Dominus.
 						{{/with}}
 					{{else}}
-						There is currently no Dominus.
+						There is currently no Dominus. 
+						{{#if lastDominus}}
+							{{#with lastDominus}}
+								<a href="" class="last_dominus_goto">{{username}}</a> was the last Dominus.
+							{{/with}}
+						{{/if}}
 					{{/if}}
 				</div>
 			</div>
