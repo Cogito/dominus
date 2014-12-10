@@ -132,6 +132,11 @@ if (Meteor.isServer) {
 			done()
 		},
 
+		cleanupAllKingChatrooms: function(params, done) {
+			cleanupAllKingChatrooms()
+			done()
+		},
+
 		enemy_on_building_check: function(params, done) {
 			enemy_on_building_check()
 			done()

@@ -26,9 +26,22 @@ Template.navigation_panel.events({
 		var y = Number($(template.find('#move_grid_y')).val())
 
 		if (!isNaN(x) && !isNaN(y)) {
-			center_on_hex(x,y)
-			$(template.find('#move_grid_x')).val('')
-			$(template.find('#move_grid_y')).val('')
+			var id = coords_to_id(x, y, "hex");
+
+			if (!id) {
+				Meteor.call('coords_to_id', x, y, 'hex', function(error, result) {
+					if (!error && result) {
+						center_on_hex(x, y);
+						Session.set('selected_type', 'hex');
+						Session.set('selected_id', result);
+					}
+				});
+				return;
+			}
+
+			center_on_hex(x, y);
+			Session.set('selected_type', 'hex');
+			Session.set('selected_id', id);
 		}
 	},
 
