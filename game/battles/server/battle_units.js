@@ -733,13 +733,15 @@ Units.prototype._computeLocationBonus = function() {
 Units.prototype._isOnAllyCastle = function(unit) {
 	check(unit.user_id, String)
 
-	var user = this.getUserOfUnit(unit._id)
-	if (user) {
-		check(user.allies_below, Array)
-		var allies = cloneArray(user.allies_below)
-		allies.push(unit.user_id)
-		if (Castles.find({x: unit.x, y: unit.y, user_id: {$in: allies}}).count() > 0) {
-			return true
+	if (unit.type == 'army') {
+		var user = this.getUserOfUnit(unit._id)
+		if (user) {
+			check(user.allies_below, Array)
+			var allies = cloneArray(user.allies_below)
+			allies.push(unit.user_id)
+			if (Castles.find({x: unit.x, y: unit.y, user_id: {$in: allies}}).count() > 0) {
+				return true
+			}
 		}
 	}
 
@@ -750,13 +752,15 @@ Units.prototype._isOnAllyCastle = function(unit) {
 Units.prototype._isOnAllyVillage = function(unit) {
 	check(unit.user_id, String)
 	
-	var user = this.getUserOfUnit(unit._id)
-	if (user) {
-		check(user.allies_below, Array)
-		var allies = cloneArray(user.allies_below)
-		allies.push(unit.user_id)
-		if (Villages.find({under_construction:false, x: unit.x, y: unit.y, user_id: {$in: allies}}).count() > 0) {
-			return true
+	if (unit.type == 'army') {
+		var user = this.getUserOfUnit(unit._id)
+		if (user) {
+			check(user.allies_below, Array)
+			var allies = cloneArray(user.allies_below)
+			allies.push(unit.user_id)
+			if (Villages.find({under_construction:false, x: unit.x, y: unit.y, user_id: {$in: allies}}).count() > 0) {
+				return true
+			}
 		}
 	}
 
