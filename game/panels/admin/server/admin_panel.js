@@ -53,5 +53,15 @@ Meteor.methods({
 				}})
 			})
 		}
+	},
+
+	server_call: function (method_name) {
+		if (get_user_property("admin")) {
+			var args = Array.prototype.slice.call(arguments, 1)
+			var result = global[method_name].apply(this, args)
+			console.log("clientside_server_call: " + method_name + ", args: ")
+			console.log(args)
+			return result
+		}
 	}
 })
