@@ -201,7 +201,8 @@ relation_finder = function(user_id) {
 			})
 
 			worker.enqueue('check_for_dominus', {})
-			worker.enqueue('setupKingChatroom', {king_id: user._id})
+			//worker.enqueue('setupKingChatroom', {king_id: user._id})
+			worker.enqueue('cleanupAllKingChatrooms', {})
 		}
 	}
 
