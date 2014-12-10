@@ -1,4 +1,22 @@
 Template.rp_info_army.helpers({
+	offensePower: function() {
+		if (Template.instance()) {
+			var power = Template.instance().power.get()
+			if (power) {
+				return power.offense
+			}
+		}
+	},
+
+	defensePower: function() {
+		if (Template.instance()) {
+			var power = Template.instance().power.get()
+			if (power) {
+				return power.defense
+			}
+		}
+	},
+
 	infoLoaded: function() {
 		return Session.get('rightPanelInfoLoaded')
 	},
@@ -378,6 +396,24 @@ Template.rp_info_army.created = function() {
 			var gold = s.resource.gold_gained_at_village
 			gold += resources_to_gold(res.grain, res.lumber, res.ore, res.wool, res.clay, res.glass)
 			self.villageWorth.set(gold)
+		}
+	})
+
+
+	self.power = new ReactiveVar(null)
+	self.autorun(function() {
+		if (Template.currentData()) {
+			Tracker.nonreactive(function() {
+				var basePower = getUnitBasePower(Template.currentData())
+				var locationMultiplier = getUnitLocationBonusMultiplier(Template.currentData(), Session.get('selected_type'))
+
+				var power = {
+					offense: basePower.offense.total * locationMultiplier,
+					defense: basePower.defense.total * locationMultiplier
+				}
+
+				self.power.set(power)
+			})
 		}
 	})
 

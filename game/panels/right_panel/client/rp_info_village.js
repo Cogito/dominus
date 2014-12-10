@@ -1,4 +1,13 @@
 Template.rp_info_village.helpers({
+	defensePower: function() {
+		if (Template.instance()) {
+			var power = Template.instance().power.get()
+			if (power) {
+				return power.defense
+			}
+		}
+	},
+
 	infoLoaded: function() {
 		return Session.get('rightPanelInfoLoaded')
 	},
@@ -96,6 +105,24 @@ Template.rp_info_village.created = function() {
 		if (Template.currentData()) {
 			var battleInfoHandle = Meteor.subscribe('battle_notifications_at_hex', Template.currentData().x, Template.currentData().y)
 			self.battleInfoLoaded.set(battleInfoHandle.ready())
+		}
+	})
+
+
+	self.power = new ReactiveVar(null)
+	self.autorun(function() {
+		if (Template.currentData()) {
+			Tracker.nonreactive(function() {
+				var basePower = getUnitBasePower(Template.currentData())
+				var locationMultiplier = getUnitLocationBonusMultiplier(Template.currentData(), Session.get('selected_type'))
+
+				var power = {
+					offense: basePower.offense.total * locationMultiplier,
+					defense: basePower.defense.total * locationMultiplier
+				}
+
+				self.power.set(power)
+			})
 		}
 	})
 }

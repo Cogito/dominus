@@ -1,4 +1,13 @@
 Template.rp_info_castle.helpers({
+	defensePower: function() {
+		if (Template.instance()) {
+			var power = Template.instance().power.get()
+			if (power) {
+				return power.defense
+			}
+		}
+	},
+
 	castleUserLoaded: function() {
 		return Template.instance().castleUserLoaded.get()
 	},
@@ -213,6 +222,24 @@ Template.rp_info_castle.created = function() {
 		var user = Meteor.users.findOne(Meteor.userId(), {fields: fields})
 		if (user) {
 			self.userData.set(user)
+		}
+	})
+
+
+	self.power = new ReactiveVar(null)
+	self.autorun(function() {
+		if (Template.currentData()) {
+			Tracker.nonreactive(function() {
+				var basePower = getUnitBasePower(Template.currentData())
+				var locationMultiplier = getUnitLocationBonusMultiplier(Template.currentData(), Session.get('selected_type'))
+
+				var power = {
+					offense: basePower.offense.total * locationMultiplier,
+					defense: basePower.defense.total * locationMultiplier
+				}
+
+				self.power.set(power)
+			})
 		}
 	})
 }
