@@ -27,18 +27,10 @@
 			{{#if under_construction}}
 				<div class="panel panel-default">
 					<div class="panel-body">
-						Village is under construction and will be finished in {{timeTilFinishedBuilding}}.
+						Village is under construction and will be finished {{timeTilFinishedBuilding}}.
 						<br><br>
-						This village will collect {{round incomeInGold}} worth of resources every {{interval}}.
+						This village will collect {{round incomeInGold}} gold worth of resources every {{interval}}.
 					</div>
-					<table class="table table-condensed table-striped">
-						<tbody>
-							<tr>
-								<td>Worth In Gold</td>
-								<td style="text-align:right;">{{round incomeInGold}}</td>
-							</tr>
-						</tbody>
-					</table>
 				</div>
 
 			{{else}}

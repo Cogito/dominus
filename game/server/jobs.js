@@ -78,6 +78,21 @@ Meteor.startup(function() {
 		}, s.army_update_interval)
 
 
+		// village construction
+		Meteor.setInterval(function() {
+			var start_time = new Date()
+
+			Villages.find({under_construction:true}, {fields: {created_at:1}}).forEach(function(village) {
+				var finishAt = moment(new Date(village.created_at)).add(s.village.time_to_build, 'ms')
+				if (moment().isAfter(finishAt)) {
+					finish_building_village(village._id)
+				}
+			})
+
+			record_job_stat('villageConstructionJob', new Date() - start_time)
+		}, s.village.construction_update_interval)
+
+
 
 		// resources
 		var max = 1000 * 60 * 60

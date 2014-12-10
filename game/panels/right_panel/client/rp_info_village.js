@@ -6,7 +6,12 @@ Template.rp_info_village.helpers({
 	timeTilFinishedBuilding: function() {
 		if (this) {
 			Session.get('refresh_time_field')
-			return moment(new Date(this.created_at)).add(s.village.time_to_build, 'ms').fromNow()
+			var finishAt = moment(new Date(this.created_at)).add(s.village.time_to_build, 'ms')
+			if (moment().isAfter(finishAt)) {
+				return 'soon'
+			} else {
+				return finishAt.fromNow()
+			}
 		}
 	},
 

@@ -6,7 +6,7 @@ gather_resources_new = function() {
 		gather_resources_surrounding(res.x, res.y, s.resource.num_rings_castle, res.user_id, s.resource.gold_gained_at_castle)
 	})
 
-	Villages.find({}, {fields: {user_id:1, x:1, y:1}}).forEach(function(res) {
+	Villages.find({under_construction:false}, {fields: {user_id:1, x:1, y:1}}).forEach(function(res) {
 		var income = gather_resources_surrounding(res.x, res.y, s.resource.num_rings_village, res.user_id, s.resource.gold_gained_at_village)
 		var worth = s.resource.gold_gained_at_village
 		worth += resources_to_gold(income.grain, income.lumber, income.ore, income.wool, income.clay, income.glass)

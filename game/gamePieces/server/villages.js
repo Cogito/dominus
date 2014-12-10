@@ -144,13 +144,15 @@ finish_building_village = function(village_id) {
 					fields[type] = army[type]
 				})
 
-				Villages.update(id, {$inc: fields})
+				Villages.update(village_id, {$inc: fields})
 				Armies.remove(army._id)
 				Moves.remove({army_id:army._id})
 			}
 		})
 
 		Villages.update(village_id, {$set: {under_construction:false}})
+
+		// TODO: send notification
 
 	} else {
 		throw new Meteor.Error('Could not find village.')
