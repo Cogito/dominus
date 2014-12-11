@@ -1,6 +1,10 @@
 var minimap_size = 300
 
 Template.minimap.helpers({
+	moves: function() {
+		return Moves.find()
+	},
+
 	bg_points: function() {
 		var points = ''
 		for (var i = 0; i < 6; i++) {

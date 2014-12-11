@@ -1,7 +1,6 @@
 Units = function(x, y) {
 	var self = this
 	self.battleDb = null	// set this
-	self.fight = null
 	self.allUnits = []
 	self.x = x
 	self.y = y
