@@ -23,6 +23,12 @@
 					{{> center_on_button x=x y=y selected_id=_id selected_type='village'}}
 				</div>
 			</div>
+
+			{{#if unitRelationType}}
+				<div class="panel panel-default panel-body" style="text-align:center;">
+					{{username}} is your {{unitRelationType}}
+				</div>
+			{{/if}}
 			
 			{{#if under_construction}}
 				<div class="panel panel-default">

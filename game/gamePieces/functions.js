@@ -1,3 +1,51 @@
+// TODO: there are a few places that need to be updated to use this function
+getUnitRelationType = function(unit) {
+	check(unit, Object)
+	check(unit.user_id, String)
+	
+	var fields = {lord:1, allies_above:1, allies_below:1, team:1, king:1, vassals:1}
+	var user = Meteor.users.findOne(Meteor.userId(), {fields: fields})
+	if (user) {
+		if (unit.user_id == user._id) {
+			return 'mine'
+		} else if (_.indexOf(user.team, unit.user_id) != -1) {
+
+			if (_.indexOf(user.allies_above, unit.user_id) != -1) {
+				if (unit.user_id == user.king) {
+					return 'king'
+				} else {
+					return 'lord'
+				}
+				// } else if (unit.user_id == user.lord) {
+				// 	return 'lord'
+				// } else {
+				// 	return 'above'
+				// }
+			} else if (_.indexOf(user.allies_below, unit.user_id) != -1) {
+
+				return 'vassal'
+
+				// if (_.indexOf(user.vassals, unit.user_id) != -1) {
+				// 	return 'vassal'
+				// } else {
+				// 	return 'below'
+				// }
+
+			// } else if (_.indexOf(user.siblings, unit.user_id) != -1) {
+			// 	return 'sibling'
+
+			} else {
+				return 'enemy with same king'
+			}
+
+		} else {
+			return 'enemy'
+		}
+	}
+	return null
+}
+
+
 getUnitBasePower = function(unit) {
 	var power = {offense:{total:0}, defense:{total:0}}
 

@@ -21,10 +21,14 @@
 					{{> hex_location}}
 					&nbsp;&nbsp;
 					{{> center_on_button x=x y=y selected_type='army' selected_id=_id}}
-
-					
 				</div>
 			</div>
+
+			{{#if unitRelationType}}
+				<div class="panel panel-default panel-body" style="text-align:center;">
+					{{username}} is your {{unitRelationType}}
+				</div>
+			{{/if}}
 
 			<div class="panel panel-default">
 				<table class="table table-condensed table-striped">

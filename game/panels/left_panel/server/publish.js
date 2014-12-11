@@ -5,7 +5,8 @@ Meteor.publish('left_panel_allies', function() {
 				username:1,
 				castle_id:1,
 				x:1,
-				y:1
+				y:1,
+				income:1
 			}})
 		Mongo.Collection._publishCursor(cur, sub, 'left_panel_allies')
 		return sub.ready();
@@ -22,7 +23,8 @@ Meteor.publish('left_panel_lords', function() {
 				username:1,
 				castle_id:1,
 				x:1,
-				y:1
+				y:1,
+				income:1
 			}})
 		Mongo.Collection._publishCursor(cur, sub, 'left_panel_lords')
 		return sub.ready();

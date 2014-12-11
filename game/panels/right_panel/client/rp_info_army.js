@@ -1,4 +1,13 @@
 Template.rp_info_army.helpers({
+	unitRelationType: function() {
+		if (Template.instance()) {
+			var type = Template.instance().relationship.get()
+			if (type && type != 'mine') {
+				return type
+			}
+		}
+	},
+
 	offensePower: function() {
 		if (Template.instance()) {
 			var power = Template.instance().power.get()
@@ -413,6 +422,17 @@ Template.rp_info_army.created = function() {
 				}
 
 				self.power.set(power)
+			})
+		}
+	})
+
+
+
+	self.relationship = new ReactiveVar(null)
+	self.autorun(function() {
+		if (Template.currentData() && Template.currentData().user_id) {
+			Tracker.nonreactive(function() {
+				self.relationship.set(getUnitRelationType(Template.currentData()))
 			})
 		}
 	})

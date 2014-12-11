@@ -52,20 +52,9 @@
 				{{/if}}
 			</div>
 
-
-			{{#if is_lord}}
-				<div class="panel panel-default">
-					<div class="panel-body">
-						Lord {{username}} is your lord.
-					</div>
-				</div>
-			{{/if}}
-
-			{{#if is_vassal}}
-				<div class="panel panel-default">
-					<div class="panel-body">
-						Lord {{username}} is a vassal of yours.
-					</div>
+			{{#if unitRelationType}}
+				<div class="panel panel-default panel-body" style="text-align:center;">
+					{{username}} is your {{unitRelationType}}
 				</div>
 			{{/if}}
 
@@ -104,7 +93,7 @@
 				</table>
 			</div>
 
-			{{#if is_ally_below}}
+			{{#if is_vassal}}
 				<div class="pad_group">
 					<button type="button" class="btn btn-sm btn-primary btn-block" id="send_gold_button">Send Gold to {{username}}</button>
 					<button type="button" class="btn btn-sm btn-primary btn-block" id="hire_army_from_castle_button">Hire Soldiers for {{username}}</button>

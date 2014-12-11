@@ -1,4 +1,13 @@
 Template.rp_info_castle.helpers({
+	unitRelationType: function() {
+		if (Template.instance()) {
+			var type = Template.instance().relationship.get()
+			if (type && type != 'mine') {
+				return type
+			}
+		}
+	},
+
 	defensePower: function() {
 		if (Template.instance()) {
 			var power = Template.instance().power.get()
@@ -80,27 +89,8 @@ Template.rp_info_castle.helpers({
 
 	is_vassal: function() {
 		if (Template.instance().userData && Template.currentData()) {
-			if (_.indexOf(Template.instance().userData.get().vassals, Template.currentData().user_id) != -1) {
-				return true
-			}
-		}
-		return false
-	},
-
-	is_ally_below: function() {
-		if (Template.instance().userData && Template.currentData()) {
-			if (_.indexOf(Template.instance().userData.get().allies_below, Template.currentData().user_id) != -1) {
-				return true
-			}
-		}
-		return false
-	},
-
-	is_lord: function() {
-		if (Template.instance().userData && Template.currentData()) {
-			if (Template.currentData().user_id == Template.instance().userData.get().lord) {
-				return true
-			}
+			var type = Template.instance().relationship.get()
+			return type == 'vassal'
 		}
 		return false
 	},
@@ -239,6 +229,16 @@ Template.rp_info_castle.created = function() {
 				}
 
 				self.power.set(power)
+			})
+		}
+	})
+
+
+	self.relationship = new ReactiveVar(null)
+	self.autorun(function() {
+		if (Template.currentData() && Template.currentData().user_id) {
+			Tracker.nonreactive(function() {
+				self.relationship.set(getUnitRelationType(Template.currentData()))
 			})
 		}
 	})
