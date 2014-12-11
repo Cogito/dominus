@@ -164,6 +164,7 @@ Units.prototype.removeDeadUnits = function() {
 					break
 				case 'army':
 					Armies.remove(unit._id)
+					Moves.remove({army_id:unit._id})
 					break;
 			}
 		}

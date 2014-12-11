@@ -5,11 +5,6 @@ Meteor.startup(function() {
 		worker.empty_queue()
 		worker.start()
 
-		Meteor.users.find().forEach(function(user) {
-			if (Villages.find({user_id:user._id}).count() > 7) {
-				console.log(user.username+' has more than '+Villages.find({user_id:user._id}).count()+' villages')
-			}
-		})
 
 		// army moves
 		Meteor.setInterval(function() {
