@@ -118,7 +118,7 @@ BattleDb.prototype.getRecord = function() {
 }
 
 
-BattleDb.prototype.addToLosses = function(unit, armyType, numDead) {
+BattleDb.prototype.addToLosses = function(unit, armyType, numDead, power) {
 	var self = this
 	check(unit, Object)
 	check(armyType, String)
@@ -144,6 +144,8 @@ BattleDb.prototype.addToLosses = function(unit, armyType, numDead) {
 		})
 
 		existsInDeaths[armyType] += numDead
+		existsInDeaths.power += power
+		existsInDeaths.total += numDead
 
 		self.record.deaths.push(existsInDeaths)
 
@@ -155,7 +157,9 @@ BattleDb.prototype.addToLosses = function(unit, armyType, numDead) {
 			name: unit.name,
 			type: unit.type,
 			x: unit.x,
-			y: unit.y
+			y: unit.y,
+			power: power,
+			total: numDead
 		}
 
 		_.each(s.army.types, function(type) {

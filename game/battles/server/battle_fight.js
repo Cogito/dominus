@@ -130,7 +130,7 @@ Fight.prototype._killSoldiers = function(unit) {
 	var enemyFinalPower = self.unitObj.getEnemyFinalPower(unit)
 
 	// how much final power is each soldier type worth
-	var soldierPower = self._getPowerOfSoldiers(unit)
+	var soldierPower = self.unitObj.getPowerOfSoldiers(unit)
 
 	// how much power worth of soldiers should we lose
 	// combinedFinalPower is so that bigger battles lose more
@@ -207,34 +207,4 @@ Fight.prototype._killSoldiers = function(unit) {
 			powerTakenAway = powerToLose
 		}
 	}
-}
-
-
-// how much final power is each soldier type worth
-Fight.prototype._getPowerOfSoldiers = function(unit) {
-	var soldierPower = {}
-	_.each(s.army.types, function(type) {
-		soldierPower[type] = unit.basePower[type] + unit.bonus[type]
-		if (unit.castleDefenseBonus) {
-			soldierPower[type] = soldierPower[type] * s.castle.defense_bonus
-		}
-		if (unit.villageDefenseBonus) {
-			soldierPower[type] = soldierPower[type] * s.village.defense_bonus
-		}
-		if (unit.onAllyCastleBonus) {
-			soldierPower[type] = soldierPower[type] * s.castle.ally_defense_bonus
-		}
-		if (unit.onAllyVillageBonus) {
-			soldierPower[type] = soldierPower[type] * s.village.ally_defense_bonus
-		}
-
-		if (unit[type] == 0) {
-			soldierPower[type] = 0
-		} else {
-			soldierPower[type] = soldierPower[type] / unit[type]
-		}
-
-		check(soldierPower[type], validNumber)
-	})
-	return soldierPower
 }

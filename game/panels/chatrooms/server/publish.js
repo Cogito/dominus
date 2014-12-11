@@ -27,7 +27,7 @@ Meteor.publish('everyoneChatroom', function() {
 
 Meteor.publish('roomchats', function(chatroom_id) {
 	if(this.userId) {
-		return Roomchats.find({room_id: chatroom_id}, {sort: {created_at: -1}, limit: 100})
+		return Roomchats.find({room_id: chatroom_id}, {sort: {created_at: -1}, limit: 150})
 	} else {
 		this.ready()
 	}

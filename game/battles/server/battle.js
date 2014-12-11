@@ -17,5 +17,3 @@ Battle = {
 		var fight = new Fight(x, y, unitObj, battleDb)
 	}
 }
-
-

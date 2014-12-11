@@ -1,6 +1,7 @@
 Units = function(x, y) {
 	var self = this
 	self.battleDb = null	// set this
+	self.fight = null
 	self.allUnits = []
 	self.x = x
 	self.y = y
@@ -48,7 +49,7 @@ Units = function(x, y) {
 	// set defaults
 	_.each(self.allUnits, function(unit) {
 		// soldiers lost this round
-		unit.losses = {total:0}
+		unit.losses = {total:0, power:0}
 		_.each(s.army.types, function(type) {
 			unit.losses[type] = 0
 		})
@@ -176,10 +177,15 @@ Units.prototype.addToDead = function(unit, type, num) {
 	check(num, validNumber)
 	check(type, String)
 
-	self.battleDb.addToLosses(unit, type, num)
-
 	unit.losses[type] += num
 	unit.losses.total += num
+
+	// keep track of how much power they lost
+	var soldierPower = self.getPowerOfSoldiers(unit)
+	var power = soldierPower[type] * num
+	unit.losses.power += power
+
+	self.battleDb.addToLosses(unit, type, num, power)
 }
 
 
@@ -961,3 +967,33 @@ Units.prototype._findArmyThatArrivedFirst = function() {
 }
 
 
+
+
+// how much final power is each soldier type worth
+Units.prototype.getPowerOfSoldiers = function(unit) {
+	var soldierPower = {}
+	_.each(s.army.types, function(type) {
+		soldierPower[type] = unit.basePower[type] + unit.bonus[type]
+		if (unit.castleDefenseBonus) {
+			soldierPower[type] = soldierPower[type] * s.castle.defense_bonus
+		}
+		if (unit.villageDefenseBonus) {
+			soldierPower[type] = soldierPower[type] * s.village.defense_bonus
+		}
+		if (unit.onAllyCastleBonus) {
+			soldierPower[type] = soldierPower[type] * s.castle.ally_defense_bonus
+		}
+		if (unit.onAllyVillageBonus) {
+			soldierPower[type] = soldierPower[type] * s.village.ally_defense_bonus
+		}
+
+		if (unit[type] == 0) {
+			soldierPower[type] = 0
+		} else {
+			soldierPower[type] = soldierPower[type] / unit[type]
+		}
+
+		check(soldierPower[type], validNumber)
+	})
+	return soldierPower
+}
