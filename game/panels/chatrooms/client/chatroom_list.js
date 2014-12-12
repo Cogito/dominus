@@ -8,6 +8,10 @@ Template.chatroom_list.helpers({
 	},
 
 	showNewNotification: function() {
+		if (Session.get('windowHasFocus') && Session.get('selectedChatroomId') == this._id) {
+			return false
+		}
+		
 		var recent = Recentchats.findOne({room_id:Template.currentData()._id})
 		if (recent) {
 			var latest_open = Cookie.get('room_'+this._id+'_open')

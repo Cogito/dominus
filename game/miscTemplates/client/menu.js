@@ -77,25 +77,30 @@ Template.menu.helpers({
 		var page_title = s.game_name
 
 		Roomlist.find().forEach(function(room) {
-			var recent = Recentchats.findOne({room_id:room._id})
-			if (recent) {
-				var latest_open = Cookie.get('room_'+room._id+'_open')
-				if (latest_open) {
-					if (moment(new Date(recent.updated_at)).isAfter(moment(new Date(latest_open)))) {
-						document.title = page_title
+			var selectedId = Session.get('selectedChatroomId')
+			if (room._id != selectedId || !Session.get('windowHasFocus')) {
+				var recent = Recentchats.findOne({room_id:room._id})
+				if (recent) {
+					var latest_open = Cookie.get('room_'+room._id+'_open')
+					if (latest_open) {
+						if (moment(new Date(recent.updated_at)).isAfter(moment(new Date(latest_open)))) {
+							document.title = page_title
+							isNew = true
+						}
+					} else {
+						// they don't have a cookie so give them one
+						var date = new Date(TimeSync.serverTime())
+						Cookie.set('room_'+room._id+'_open', moment(date).subtract(1, 's').toDate(), {years: 10})
 						isNew = true
 					}
-				} else {
-					// they don't have a cookie so give them one
-					var date = new Date(TimeSync.serverTime())
-					Cookie.set('room_'+room._id+'_open', moment(date).subtract(1, 's').toDate(), {years: 10})
-					isNew = true
 				}
 			}
 		})
 		return isNew
 	}
 })
+
+
 
 Template.menu.events({
 	'click #show_summary_panel_button': function(event, template) {

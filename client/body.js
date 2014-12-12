@@ -71,3 +71,13 @@ UI.registerHelper('autolink', function(text, escape) {
 		Autolinker.link(hex_link(text), {twitter: false})
 	);
 })
+
+
+Session.setDefault('windowHasFocus', true)
+jQuery(document).ready(function() {
+	jQuery(window).bind('focus', function(event) {
+		Session.set('windowHasFocus', true)
+	}).bind('blur', function(event) {
+		Session.set('windowHasFocus', false)
+	})
+})

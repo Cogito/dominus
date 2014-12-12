@@ -124,6 +124,12 @@ Template.chatroom_open.helpers({
 	},
 
 	showNewNotification: function() {
+		if (Session.get('windowHasFocus') && Session.get('selectedChatroomId') == this._id) {
+			var date = new Date(TimeSync.serverTime())
+			Cookie.set('room_'+this._id+'_open', moment(date).add(1, 's').toDate(), {years: 10})
+			return false
+		}
+
 		var recent = Recentchats.findOne({room_id:Template.currentData()._id})
 		if (recent) {
 			var latest_open = Cookie.get('room_'+this._id+'_open')
