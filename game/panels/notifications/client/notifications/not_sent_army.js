@@ -1,10 +1,16 @@
 Template.not_sent_army.helpers({
 	has_army: function() {
-		return Template.parentData(1).vars.army[this] > 0
+		var data = Template.parentData(1)
+		if (data && data.vars && data.vars.army) {
+			return data.vars.army[this] > 0
+		}
 	},
 
 	num_army: function() {
-		return Template.parentData(1).vars.army[this]
+		var data = Template.parentData(1)
+		if (data && data.vars && data.vars.army) {
+			return data.vars.army[this]
+		}
 	}
 })
 

@@ -125,11 +125,13 @@ notification_sent_gold = function(user_id, userData, amount) {
 	check(userData.from.castle_id, String)
 	check(amount, Number)
 
+	userData.from = filter_user_for_public_notification(userData.from)
+	userData.to = filter_user_for_public_notification(userData.to)
 	userData.amount = amount
 
 	create_notification_new(user_id,
 		'sent_gold',
-		filter_user_for_public_notification(userData),
+		userData,
 		userData.from.username+' sent '+userData.to.username+' '+amount+' Gold'
 		)
 }
@@ -149,11 +151,13 @@ notification_sent_army = function(user_id, userData, army) {
 	check(userData.from.castle_id, String)
 	check(army, Object)
 
+	userData.from = filter_user_for_public_notification(userData.from)
+	userData.to = filter_user_for_public_notification(userData.to)
 	userData.army = army
 
 	create_notification_new(user_id,
 		'sent_army',
-		filter_user_for_public_notification(userData),
+		userData,
 		userData.from.username+' sent '+userData.to.username+' an army'
 		)
 }
