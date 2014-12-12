@@ -16,11 +16,11 @@
 
 		<div class="panel panel-default">
 			<div class="panel-heading">Top 15 Players by Vassals<br><small class="light_text">People below you in the tree.</small></div>
-			<table class="table table-condensed table-striped rank_start">
+			<table class="table table-condensed table-striped" style="counter-reset:vassal-counter {{startVassalCounterAt}};">
 				<tbody>
 					{{#each top10_allies}}
 						<tr>
-							<td class="rank_username">
+							<td class="rank_username vassalRank_username">
 								{{#if is_me}}
 									<strong>{{username}}</strong>
 								{{else}}
@@ -37,16 +37,26 @@
 					{{/each}}
 				</tbody>
 			</table>
+			<div class="panel-body" style="text-align:center;">
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-primary btn-xs previousButton" data-type="vassalsPage">
+						<i class="fa fa-angle-double-left"></i> Previous
+					</button>
+					<button type="button" class="btn btn-primary btn-xs nextButton" data-type="vassalsPage">
+						Next <i class="fa fa-angle-double-right"></i>
+					</button>
+				</div>
+			</div>
 		</div>
 
 
 		<div class="panel panel-default">
 			<div class="panel-heading">Top 15 Players by Networth</div>
-			<table class="table table-condensed table-striped rank_start">
+			<table class="table table-condensed table-striped" style="counter-reset:networth-counter {{startNetworthCounterAt}};">
 				<tbody>
 					{{#each top10_networth}}
 						<tr>
-							<td class="rank_username">
+							<td class="rank_username networthRank_username">
 								{{#if is_me}}
 									<strong>{{username}}</strong>
 								{{else}}
@@ -63,16 +73,26 @@
 					{{/each}}
 				</tbody>
 			</table>
+			<div class="panel-body" style="text-align:center;">
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-primary btn-xs previousButton" data-type="networthPage">
+						<i class="fa fa-angle-double-left"></i> Previous
+					</button>
+					<button type="button" class="btn btn-primary btn-xs nextButton" data-type="networthPage">
+						Next <i class="fa fa-angle-double-right"></i>
+					</button>
+				</div>
+			</div>
 		</div>
 
 
 		<div class="panel panel-default">
 			<div class="panel-heading">Top 15 Players by Income</div>
-			<table class="table table-condensed table-striped rank_start">
+			<table class="table table-condensed table-striped" style="counter-reset:income-counter {{startIncomeCounterAt}};">
 				<tbody>
 					{{#each top10_income}}
 						<tr>
-							<td class="rank_username">
+							<td class="rank_username incomeRank_username">
 								{{#if is_me}}
 									<strong>{{username}}</strong>
 								{{else}}
@@ -89,16 +109,26 @@
 					{{/each}}
 				</tbody>
 			</table>
+			<div class="panel-body" style="text-align:center;">
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-primary btn-xs previousButton" data-type="incomePage">
+						<i class="fa fa-angle-double-left"></i> Previous
+					</button>
+					<button type="button" class="btn btn-primary btn-xs nextButton" data-type="incomePage">
+						Next <i class="fa fa-angle-double-right"></i>
+					</button>
+				</div>
+			</div>
 		</div>
 
 
 		<div class="panel panel-default">
 			<div class="panel-heading">Top 15 Players by Lost Soldiers</div>
-			<table class="table table-condensed table-striped rank_start">
+			<table class="table table-condensed table-striped" style="counter-reset:lostSoldiers-counter {{startLostSoldiersCounterAt}};">
 				<tbody>
 					{{#each top10_losses}}
 						<tr>
-							<td class="rank_username">
+							<td class="rank_username lostSoldiersRank_username">
 								{{#if is_me}}
 									<strong>{{username}}</strong>
 								{{else}}
@@ -115,16 +145,26 @@
 					{{/each}}
 				</tbody>
 			</table>
+			<div class="panel-body" style="text-align:center;">
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-primary btn-xs previousButton" data-type="lostSoldiersPage">
+						<i class="fa fa-angle-double-left"></i> Previous
+					</button>
+					<button type="button" class="btn btn-primary btn-xs nextButton" data-type="lostSoldiersPage">
+						Next <i class="fa fa-angle-double-right"></i>
+					</button>
+				</div>
+			</div>
 		</div>
 
 
 		<div class="panel panel-default">
 			<div class="panel-heading">Top 15 Villages<br><small class="light_text">By worth of resources collected in gold.</small></div>
-			<table class="table table-condensed table-striped rank_start">
+			<table class="table table-condensed table-striped" style="counter-reset:villages-counter {{startVillageCounterAt}};">
 				<tbody>
 					{{#each top10_villages}}
 						<tr>
-							<td class="rank_username">
+							<td class="rank_username villagesRank_username">
 								<a href="" class="gotoUserButton" data-x="{{castle_x}}" data-y="{{castle_y}}" data-castle_id="{{castle_id}}">
 									{{#if is_me}}
 										<strong>{{username}}</strong>
@@ -144,6 +184,16 @@
 					{{/each}}
 				</tbody>
 			</table>
+			<div class="panel-body" style="text-align:center;">
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-primary btn-xs previousButton" data-type="villagesPage">
+						<i class="fa fa-angle-double-left"></i> Previous
+					</button>
+					<button type="button" class="btn btn-primary btn-xs nextButton" data-type="villagesPage">
+						Next <i class="fa fa-angle-double-right"></i>
+					</button>
+				</div>
+			</div>
 		</div>
 		
 	</div>

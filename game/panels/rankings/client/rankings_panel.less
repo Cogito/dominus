@@ -15,15 +15,32 @@
 }
 
 
-.rank_start {
-	counter-reset: ranking-counter;
-}
-
-.rank_username:before {
-	content: counter(ranking-counter) ". ";
-	counter-increment: ranking-counter;
+.vassalRank_username:before {
+	content: counter(vassal-counter) ". ";
+	counter-increment: vassal-counter;
 	color:#aaa;
 }
+.incomeRank_username:before {
+	content: counter(income-counter) ". ";
+	counter-increment: income-counter;
+	color:#aaa;
+}
+.networthRank_username:before {
+	content: counter(networth-counter) ". ";
+	counter-increment: networth-counter;
+	color:#aaa;
+}
+.lostSoldiersRank_username:before {
+	content: counter(lostSoldiers-counter) ". ";
+	counter-increment: lostSoldiers-counter;
+	color:#aaa;
+}
+.villagesRank_username:before {
+	content: counter(villages-counter) ". ";
+	counter-increment: villages-counter;
+	color:#aaa;
+}
+
 
 .rank_username {
 	white-space:nowrap;

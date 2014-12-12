@@ -5,6 +5,9 @@ s.resource = {}
 s.army = {}
 s.village = {}
 s.castle = {}
+s.rankings = {}
+
+s.rankings.perPage = 10
 
 if (Meteor.isServer && process.env.NODE_ENV == 'development') {
 	// cheats

@@ -44,7 +44,7 @@
 @import "@{bootstrap3-less-root}/navs.less";
 //@import "@{bootstrap3-less-root}/navbar.less";
 @import "@{bootstrap3-less-root}/breadcrumbs.less";
-@import "@{bootstrap3-less-root}/pagination.less";
+//@import "@{bootstrap3-less-root}/pagination.less";
 //@import "@{bootstrap3-less-root}/pager.less";
 @import "@{bootstrap3-less-root}/labels.less";
 @import "@{bootstrap3-less-root}/badges.less";
@@ -52,7 +52,7 @@
 //@import "@{bootstrap3-less-root}/thumbnails.less";
 @import "@{bootstrap3-less-root}/alerts.less";
 //@import "@{bootstrap3-less-root}/progress-bars.less";
-@import "@{bootstrap3-less-root}/media.less";
+//@import "@{bootstrap3-less-root}/media.less";
 @import "@{bootstrap3-less-root}/list-group.less";
 @import "@{bootstrap3-less-root}/panels.less";
 @import "@{bootstrap3-less-root}/wells.less";
