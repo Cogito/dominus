@@ -2,17 +2,25 @@
 	<table class="table table-condensed">
 		<tbody>
 			{{#each villages}}
-				<tr>
-					<td class="summary_hover">
-						{{name}}
-					</td>
-					<td style="text-align: right;">
-						<span class="light_text">{{unit_count}}</span>
-						&nbsp;
-						{{> center_on_button x=x y=y selected_type='village' selected_id=_id}}
-					</td>
-				</tr>
+				{{> lp_village}}
 			{{/each}}
 		</tbody>
 	</table>
+</template>
+
+
+<template name="lp_village">
+	<tr>
+		<td class="summary_hover">
+			{{#if inBattle}}
+				<i class="fa fa-gavel" title="In battle."></i> &nbsp;
+			{{/if}}
+			{{name}}
+		</td>
+		<td style="text-align: right;">
+			<span class="light_text">{{unit_count}}</span>
+			&nbsp;
+			{{> center_on_button x=x y=y selected_type='village' selected_id=_id}}
+		</td>
+	</tr>
 </template>
