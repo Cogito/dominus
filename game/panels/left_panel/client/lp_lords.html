@@ -2,11 +2,21 @@
 	<table class="table table-condensed">
 		<tbody>
 			{{#each lords}}
-				<tr>
-					<td>{{username}}</td>
-					<td style="text-align: right;">{{> center_on_button x=x y=y selected_type='castle' selected_id=castle_id}}</td>
-				</tr>
+				{{> lp_lord}}
 			{{/each}}
 		</tbody>
 	</table>
+</template>
+
+
+<template name="lp_lord">
+	<tr>
+		<td>
+			{{#if inBattle}}
+				<i class="fa fa-gavel" title="In battle."></i> &nbsp;
+			{{/if}}
+			{{username}}
+		</td>
+		<td style="text-align: right;">{{> center_on_button x=x y=y selected_type='castle' selected_id=castle_id}}</td>
+	</tr>
 </template>
