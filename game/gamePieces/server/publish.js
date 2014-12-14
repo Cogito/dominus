@@ -39,6 +39,33 @@ Meteor.publish("on_screen", function (x, y, hex_size, canvas_width, canvas_heigh
 	return [castle_query, armies_query, village_query]
 });
 
+
+
+max_onscreen = function(hex_size, canvas_width, canvas_height, hex_scale) {
+	check(hex_size, Number)
+	check(canvas_width, Number)
+	check(canvas_height, Number)
+
+	hex_size = hex_size * hex_scale
+
+	var num_wide = canvas_width / (hex_size * 3/2)
+	var num_high = canvas_height / ((Math.sqrt(3) * s.hex_squish) * hex_size)
+
+	// this isn't exact at all
+	// covers entire screen, hopefully not much more
+	var max = Math.max(num_wide / 2 + 3, num_high / 2 + 3)
+	//var max = Math.ceil(max / 5) * 5
+	if (max > 16) {
+		max = 16
+	}
+
+	return max
+}
+
+
+
+
+
 Meteor.publish('army_moves', function(army_id) {
 	if (this.userId) {
 		return Moves.find({army_id:army_id, user_id:this.userId})

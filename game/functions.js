@@ -1,26 +1,3 @@
-// used in Meteor.publish
-max_onscreen = function(hex_size, canvas_width, canvas_height, hex_scale) {
-	check(hex_size, Number)
-	check(canvas_width, Number)
-	check(canvas_height, Number)
-
-	hex_size = hex_size * hex_scale
-
-	var num_wide = canvas_width / (hex_size * 3/2)
-	var num_high = canvas_height / ((Math.sqrt(3) * s.hex_squish) * hex_size)
-
-	// this isn't exact at all
-	// covers entire screen, hopefully not much more
-	var max = Math.max(num_wide / 2 + 2, num_high / 2 + 2)
-	//var max = Math.ceil(max / 5) * 5
-	if (max > 16) {
-		max = 16
-	}
-
-	return max
-}
-
-
 grid_to_pixel = function(x,y) {
 	check(x, Number)
 	check(y, Number)

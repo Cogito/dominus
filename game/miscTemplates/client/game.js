@@ -78,40 +78,43 @@ var height = $(window).outerHeight(true)
 Session.set('canvas_size', {width: 0, height: 0, half_width: 0, half_height: 0})	// set to zero so that deps.autorun will run again
 Session.set('canvas_size', {width: width, height: height, half_width: width/2, half_height: height/2})
 
-Template.game.rendered = function() {
-
-	window.onresize = function() {
-		var width = $(window).outerWidth(true)
-		var height = $(window).outerHeight(true)
-		Session.set('canvas_size', {width: width, height: height, half_width: width/2, half_height: height/2})
-	}
 
 
-	// show loading map panel
-	this.deps_showLoading = Deps.autorun(function() {
-		if (Session.get('subscription_ready')) {
-			$('#subscription_ready_panel').fadeOut(50)
-		} else {
-			$('#subscription_ready_panel').fadeIn(50)
+Template.game.created = function() {
+	var self = this
+
+	// subscribe to what's onscreen
+	// uses meteor package meteorhacks:subs-manager
+	subs = new SubsManager({cacheLimit:10, expireIn:5})
+
+
+	// round to nearest x so that there is more of a chance of subscribing to a previous subscription
+	var roundTo = 5
+	self.roundedCenterHex_x = new ReactiveVar(0)
+	self.roundedCenterHex_y = new ReactiveVar(0)
+	this.autorun(function() {
+		var center_hex = Session.get('center_hex')
+		if (center_hex) {
+			self.roundedCenterHex_x.set(Math.round(center_hex.x / roundTo) * roundTo)
+			self.roundedCenterHex_y.set(Math.round(center_hex.y / roundTo) * roundTo)
 		}
 	})
 
 
-	// subscribe to what's onscreen
-	// uses meteorhacks:subs-manager
-	this.deps_onscreenSubscribe = Deps.autorun(function() {
+	this.autorun(function() {
 		if (!Session.get('is_dragging_hexes')){
-			var center_hex = Session.get('center_hex')
+			var roundedCenterHex_x = self.roundedCenterHex_x.get()
+			var roundedCenterHex_y = self.roundedCenterHex_y.get()
 			var canvas_size = Session.get('canvas_size')
 			var hex_scale = get_hex_scale()
-			var sub = subs.subscribe('on_screen', center_hex.x, center_hex.y, s.hex_size, canvas_size.width, canvas_size.height, hex_scale)
-			var sub_hexes = subs.subscribe('on_screen_hexes', center_hex.x, center_hex.y, s.hex_size, canvas_size.width, canvas_size.height, hex_scale)
+			var sub = subs.subscribe('on_screen', roundedCenterHex_x, roundedCenterHex_y, s.hex_size, canvas_size.width, canvas_size.height, hex_scale)
+			var sub_hexes = subs.subscribe('on_screen_hexes', roundedCenterHex_x, roundedCenterHex_y, s.hex_size, canvas_size.width, canvas_size.height, hex_scale)
 			Session.set('subscription_ready', sub_hexes.ready())
 		}
 	})
 
 	// keep track of how many villages you have
-	this.deps_num_villages = Deps.autorun(function() {
+	this.autorun(function() {
 		var num_villages = LeftPanelVillages.find().count()
 		if (num_villages) {
 			Session.set('num_villages', num_villages)
@@ -124,9 +127,25 @@ Template.game.rendered = function() {
 
 
 
-// hexes subscription manager
-// uses meteor package meteorhacks:subs-manager
-subs = new SubsManager()
+Template.game.rendered = function() {
+	window.onresize = function() {
+		var width = $(window).outerWidth(true)
+		var height = $(window).outerHeight(true)
+		Session.set('canvas_size', {width: width, height: height, half_width: width/2, half_height: height/2})
+	}
+
+
+	// show loading map panel
+	this.autorun(function() {
+		if (Session.get('subscription_ready')) {
+			$('#subscription_ready_panel').fadeOut(50)
+		} else {
+			$('#subscription_ready_panel').fadeIn(50)
+		}
+	})
+}
+
+
 
 
 Meteor.startup(function () {

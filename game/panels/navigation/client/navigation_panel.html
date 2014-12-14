@@ -1,5 +1,13 @@
 <template name="navigation_panel">
 	<div id="navigation_panel">
+		<form class="form-inline">
+			<input type="number" class="form-control input-sm" placeholder="x" id="move_grid_x">
+			<input type="number" class="form-control input-sm" placeholder="y" id="move_grid_y">
+			<button type="button" class="btn btn-xs btn-primary" id="move_grid_goto_button"><i class="fa fa-mail-forward"></i></button>
+		</form>
+
+		<br>
+
 		<button type="button" class="btn btn-xs btn-primary" id="move_grid_up_button"><i class="fa fa-arrow-up"></i></button><br>
 		<button type="button" class="btn btn-xs btn-primary" id="move_grid_left_button"><i class="fa fa-arrow-left"></i></button>
 		&nbsp;&nbsp;&nbsp;
@@ -11,13 +19,7 @@
 		<button type="button" class="btn btn-xs btn-primary" id="increase_scale_button"><i class="fa fa-search-plus"></i></button>
 		<button type="button" class="btn btn-xs btn-primary" id="decrease_scale_button"><i class="fa fa-search-minus"></i></button>
 
-		<br><br>
-
-		<form class="form-inline">
-		<input type="number" class="form-control input-sm" placeholder="x" id="move_grid_x">
-		<input type="number" class="form-control input-sm" placeholder="y" id="move_grid_y">
-		<button type="button" class="btn btn-xs btn-primary" id="move_grid_goto_button"><i class="fa fa-mail-forward"></i></button>
-		</form>
+		
 
 		{{#if show_minimap}}
 			{{> minimap}}
