@@ -38,35 +38,38 @@ Template.lp_army.helpers({
 	},
 
 	time_to_destination: function() {
-		Session.get('refresh_time_field')
-		var time_to_destination = null
+		var self = this
 
-		var moves = Moves.find({army_id:this._id})
-		if (moves.count() > 0) {
-			this.is_moving = true
-			var army_speed = speed_of_army(this)
+		if (self) {
+			Session.get('refresh_time_field')
+			var time_to_destination = null
 
-			var distance = 0
-			var last_move_at
-			moves.forEach(function(move) {
-				if (move.index == 0) {
-					var d = Hx.hexDistance(this.x, this.y, move.to_x, move.to_y)
-					last_move_at = move.last_move_at
+			var moves = Moves.find({army_id:self._id})
+			if (moves.count() > 0) {
+				var army_speed = speed_of_army(self)
+
+				var distance = 0
+				var last_move_at
+				moves.forEach(function(move) {
+					if (move.index == 0) {
+						var d = Hx.hexDistance(self.x, self.y, move.to_x, move.to_y)
+						last_move_at = move.last_move_at
+					} else {
+						var d = Hx.hexDistance(move.from_x, move.from_y, move.to_x, move.to_y)
+					}
+					distance += d
+				})
+
+				var move_time = moment(new Date(last_move_at)).add(distance * army_speed, 'minutes')
+				if (move_time < moment()) {
+					time_to_destination = 'soon'
 				} else {
-					var d = Hx.hexDistance(move.from_x, move.from_y, move.to_x, move.to_y)
+					time_to_destination = move_time.fromNow()
 				}
-				distance += d
-			})
-
-			var move_time = moment(new Date(last_move_at)).add(distance * army_speed, 'minutes')
-			if (move_time < moment()) {
-				time_to_destination = 'soon'
-			} else {
-				time_to_destination = move_time.fromNow()
 			}
-		}
 
-		return time_to_destination
+			return time_to_destination
+		}
 	}
 })
 
