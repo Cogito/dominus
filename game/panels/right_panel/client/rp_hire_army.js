@@ -1,4 +1,16 @@
-Template.rp_hire_army_from_castle.helpers({
+Template.rp_hire_army.helpers({
+	is_village: function() {
+		return Session.get('selected_type') == 'village'
+	},
+
+	armyTypes: function() {
+		var types = s.army.types
+		if (Session.get('selected_type') == 'village') {
+			types = _.without(types, 'catapults')
+		}
+		return types
+	},
+
 	is_owner: function() {
 		if (this) {
 			if (this.user_id == Meteor.userId()) {
@@ -57,28 +69,31 @@ Template.rp_hire_army_from_castle.helpers({
 	}
 })
 
-Template.rp_hire_army_from_castle.events({
-	'click #hire_army_from_castle_cancel_button': function(event, template) {
+Template.rp_hire_army.events({
+	'click #hire_army_cancel_button': function(event, template) {
 		Session.set('rp_template', 'rp_info_castle')
 	},
 
-	'click #hire_army_from_castle_hire_button': function(event, template) {
-		if (no_units_are_selected()){
-			$('#hire_zero_error').show(100)
-		} else {
-			var button = template.$('#hire_army_from_castle_hire_button')
+	'click #hire_army_hire_button': function(event, template) {
+		var alert = template.find('#hire_error')
+		var button = template.$('#hire_army_hire_button')
+		var button_html = button.html()
 
-			var button_html = button.html()
+		if (no_units_are_selected()){
+			$(alert).show(100)
+			$(alert).html('Use the sliders to set how many soldiers to hire.')
+		} else {
 			button.attr('disabled', true)
 			button.html('Please Wait')
 
-			Meteor.call('hire_army', get_selected_hiring_units(), this._id, function(error, result) {
-				if (result) {
-					Session.set('rp_template', 'rp_info_castle')
-				} else {
-					$('#hire_error').show(100)
+			Meteor.call('hire_army', get_selected_hiring_units(), this._id, Session.get('selected_type'), function(error, result) {
+				if (error) {
+					$(alert).show(100)
+					$(alert).html(error.error)
 					button.attr('disabled', false)
 					button.html(button_html)
+				} else {
+					Session.set('rp_template', 'rp_info_'+Session.get('selected_type'))
 				}
 			})
 		}
@@ -104,7 +119,7 @@ Template.rp_hire_army_from_castle.events({
 })
 
 
-Template.rp_hire_army_from_castle.created = function() {
+Template.rp_hire_army.created = function() {
 	var self = this
 	reset_selected_hiring_units()
 
@@ -203,6 +218,8 @@ Template.rp_hire_army_from_castle.created = function() {
 
 
 			 // run loop until gold is gone
+			 // each time checking if we can buy another unit
+			 // TODO: figure out a way to speed this up!!!
 			 var has_gold_left = true
 			 var num_can_buy = 0  	// start at 1, subtract 1 at end if can't buy any
 			 while (has_gold_left) {
@@ -322,7 +339,7 @@ Template.rp_hire_army_from_castle.created = function() {
 }
 
 
-Template.rp_hire_army_from_castle.rendered = function() {
+Template.rp_hire_army.rendered = function() {
 	var self = this
 
 	// set slider max

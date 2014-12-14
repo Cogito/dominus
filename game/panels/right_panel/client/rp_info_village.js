@@ -92,6 +92,10 @@ Template.rp_info_village.events({
 
 	'click #destroy_village_button': function() {
 		Session.set('rp_template', 'rp_destroy_village_confirm')
+	},
+
+	'click #hireArmyButton': function(event, template) {
+		Session.set('rp_template', 'rp_hire_army')
 	}
 })
 

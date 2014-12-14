@@ -138,6 +138,7 @@ coords_to_id = function(x, y, type) {
 }
 
 
+
 resource_cost_army = function(army) {
 	check(army, Object)
 

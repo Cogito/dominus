@@ -72,6 +72,12 @@ UI.registerHelper('autolink', function(text, escape) {
 	);
 })
 
+// 1.25 = 25%
+UI.registerHelper('multiplierToPercentage', function(float) {
+	check(float, Number)
+	return (float - 1) * 100
+})
+
 
 Session.setDefault('windowHasFocus', true)
 jQuery(document).ready(function() {

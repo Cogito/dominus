@@ -118,7 +118,7 @@ Template.rp_info_castle.events({
 	},
 
 	'click #hire_army_from_castle_button': function(event, template) {
-		Session.set('rp_template', 'rp_hire_army_from_castle')
+		Session.set('rp_template', 'rp_hire_army')
 
 	},
 

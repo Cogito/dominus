@@ -66,14 +66,6 @@ UI.registerHelper('resource_interval', function() {
 	return moment.duration(s.resource.interval).humanize()
 })
 
-UI.registerHelper('army_settings', function() {
-	return s.army
-})
-
-UI.registerHelper('resource_settings', function() {
-	return s.resource
-})
-
 UI.registerHelper('greater_than_zero', function(num) {
 	return num > 0
 })

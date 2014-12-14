@@ -133,9 +133,17 @@ Meteor.methods({
 	},
 
 
-	hire_army: function(army, castle_id) {
+	hire_army: function(army, building_id, building_type) {
 		check(army, Object)
-		check(castle_id, String)
+		check(building_id, String)
+		check(building_type, String)
+
+		// don't allow buying catapults at villages
+		if (building_type == 'village' && army.catapults) {
+			if (army.catapults > 0) {
+				throw new Meteor.Error("Can't buy catapults at villages.")
+			}
+		}
 
 		var user = Meteor.users.findOne(Meteor.userId(), {fields: {username:1, x:1, y:1, allies_below:1, castle_id:1, gold:1, grain:1, lumber:1, ore:1, wool:1, clay:1, glass:1}})
 		if (user) {
@@ -144,10 +152,15 @@ Meteor.methods({
 				fields[type] = 1
 			})
 
-			var castle = Castles.findOne(castle_id, {fields: fields})
-			if (castle) {
+			if (building_type == 'castle') {
+				var building = Castles.findOne(building_id, {fields: fields})
+			} else if (building_type == 'village') {
+				var building = Villages.findOne(building_id, {fields: fields})
+			}
+
+			if (building) {
 				// is castle mine for my ally below's
-				if (castle.user_id == Meteor.userId() || _.indexOf(user.allies_below, castle.user_id) != -1) {
+				if (building.user_id == Meteor.userId() || _.indexOf(user.allies_below, building.user_id) != -1) {
 
 					// cost of army
 					var cost = resource_cost_army(army)
@@ -173,7 +186,7 @@ Meteor.methods({
 							market[res.type] = res.price
 						})
 					} else {
-						return false
+						throw new Meteor.Error('Not enough resources.')
 					}
 
 					// do we need to buy resrouces?  if so set cost_adjusted
@@ -188,58 +201,61 @@ Meteor.methods({
 					})
 
 					// test if we have enough with cost_adjusted
-					var has_enough = true
+
 					_.each(s.resource.types_plus_gold, function(type) {
 						if (user[type] < cost_adjusted[type]) {
-							has_enough = false
+							throw new Meteor.Error('Not enough resources.')
 						}
 					})
 
-					if (has_enough) {
-						// sell needed on market
-						var error_buying = false
-						_.each(s.resource.types, function(type) {
-							if (needed[type] > 0) {
-								var result = Meteor.call('buy_resource', type, needed[type])
-								if (!result.result) {
-									error_buying = true
-								}
+
+					// sell needed on market
+					_.each(s.resource.types, function(type) {
+						if (needed[type] > 0) {
+							var result = Meteor.call('buy_resource', type, needed[type])
+							if (!result.result) {
+								error_buying = true
+								throw new Meteor.Error('Error selling resources on market.')
 							}
-						})
+						}
+					})
 
-						if (!error_buying) {
-							// update user
-							var inc = {}
-							_.each(s.resource.types_plus_gold, function(type) {
-								inc[type] = cost[type] * -1
-							})
-							Meteor.users.update(user._id, {$inc: inc})
+					// update user
+					var inc = {}
+					_.each(s.resource.types_plus_gold, function(type) {
+						inc[type] = cost[type] * -1
+					})
+					Meteor.users.update(user._id, {$inc: inc})
 
-							// update castle
-							var inc = {}
-							_.each(s.army.types, function(type) {
-								inc[type] = army[type]
-							})
-							Castles.update(castle._id, {$inc: inc})
+					// update building
+					var inc = {}
+					_.each(s.army.types, function(type) {
+						inc[type] = army[type]
+					})
 
-							// send notification if this is not your castle
-							if (user._id != castle.user_id) {
-								var to = Meteor.users.findOne(castle.user_id, {fields: {gold:1, allies_below:1, username:1, castle_id:1, x:1, y:1}})
-								if (to) {
-									notification_sent_army(to._id, {
-										to: {_id: to._id, username: to.username, castle_id: to.castle_id, x: to.x, y: to.y},
-										from: {_id: user._id, username: user.username, castle_id: user.castle_id, x: user.x, y: user.y}
-									}, army)
-								}
-							}
+					if (building_type == 'castle') {
+						Castles.update(building._id, {$inc: inc})
+					} else if (building_type == 'village') {
+						Villages.update(building._id, {$inc: inc})
+					}
+					
 
-							return true
+					// send notification if this is not your building
+					if (user._id != building.user_id) {
+						var to = Meteor.users.findOne(building.user_id, {fields: {gold:1, allies_below:1, username:1, id:1, x:1, y:1}})
+						if (to) {
+							notification_sent_army(to._id, {
+								to: {_id: to._id, username: to.username, id: to.castle_id, x: to.x, y: to.y},
+								from: {_id: user._id, username: user.username, id: user.castle_id, x: user.x, y: user.y}
+							}, army)
 						}
 					}
+
+					return true
 				}
 			}
 		}
-		return false
+		throw new Meteor.Error('Error hiring.')
 	},
 })
 
