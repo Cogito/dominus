@@ -7,7 +7,7 @@ Meteor.methods({
 		check(moves, Array)
 
 		if (moves.length < 1) {
-			return false
+			throw new Meteor.Error('No moves.')
 		}
 
 		var army = Armies.findOne({_id:army_id, user_id:Meteor.userId()}, {fields: {x:1, y:1}})
@@ -15,7 +15,7 @@ Meteor.methods({
 
 			// make sure army is at start of first move
 			if (army.x != moves[0].from_x && army.y != moves[0].from_y) {
-				return false
+				throw new Meteor.Error('Army must be at the beginning of first move.')
 			}
 
 			// delete old moves
@@ -38,6 +38,8 @@ Meteor.methods({
 					last_move_at:new Date()
 				})
 			})
+		} else {
+			throw new Meteor.Error('Army not found.')
 		}
 	},
 

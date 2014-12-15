@@ -132,6 +132,12 @@ Template.rp_move_unit.created = function() {
 
 	Session.set('mouse_mode', 'finding_path')
 
+	// if army moves to a new hex while player is making a move
+	// update the queued moves with the army's new position
+	self.autorun(function() {
+		update_first_move_to_new_army_position(Template.currentData().x, Template.currentData().y)
+	})
+
 	// army speed
 	self.armySpeed = new ReactiveVar(0)
 	self.autorun(function() {
@@ -167,9 +173,15 @@ Template.rp_move_unit.created = function() {
 		self.totalDistance.set(distance)
 	})
 
+	// update from coords when army moves
+	// should only happen if there are no queued moves
+	// if there are queued moves then from should stay from the last queued move's to
 	self.autorun(function() {
-		if (Template.currentData()) {
-			set_from_coords(Template.currentData().x, Template.currentData().y)
+		var moves = get_unit_moves()
+		if (moves.length == 0) {
+			if (Template.currentData()) {
+				set_from_coords(Template.currentData().x, Template.currentData().y)
+			}
 		}
 	})
 
@@ -251,6 +263,10 @@ var get_from_coords = function() {
 		return false
 	}
 }
+
+// if player has already queued some moves
+// from should be from the to of the last move
+// otherwise it should be from army position
 var set_from_coords = function(x, y) {
 	check(x, Number)
 	check(y, Number)
@@ -291,6 +307,16 @@ var add_unit_move = function(from_x, from_y, to_x, to_y) {
 
 var unit_moves = []
 var unit_moves_dep = new Deps.Dependency
+
+var update_first_move_to_new_army_position = function(x,y) {
+	if (unit_moves && unit_moves[0]) {
+		if (unit_moves[0].from_x != x || unit_moves[0].from_y != y) {
+			unit_moves[0].from_x = x
+			unit_moves[0].from_y = y
+			unit_moves_dep.changed()
+		}
+	}
+}
 
 var get_unit_moves = function() {
 	unit_moves_dep.depend()
