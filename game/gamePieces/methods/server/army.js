@@ -1,5 +1,14 @@
 Meteor.methods({
+	// do this on server only because the army might not be in client db
 	split_armies: function(id, new_army) {
+		// check values
+		_.each(s.army.types, function(type) {
+			if (!new_army[type]) {
+				new_army[type] = 0
+			}
+			check(new_army[type], Number)
+		})
+
 		var fields = {castle_id:1, x:1, y:1}
 
 		_.each(s.army.types, function(type) {
@@ -8,14 +17,22 @@ Meteor.methods({
 
 		var res = Armies.findOne({_id: id, user_id: Meteor.userId()}, {fields: fields})
 		if (res) {
+
+			// make sure new_army isn't more than army or less than 0
+			_.each(s.army.types, function(type) {
+				if (new_army[type] > res[type]) {
+					throw new Meteor.Error('Too many '+type+'.')
+				}
+
+				if (new_army[type] < 0) {
+					throw new Meteor.Error('Too few '+type+'.')
+				}
+			})
+
 			var oldNum = 0
 			_.each(s.army.types, function(type) {
 				oldNum += res[type]
 			})
-
-			// if (oldNum == 0) {
-			// 	throw new Meteor.Error('Old army must still have at least one soldier.')
-			// }
 
 			var newNum = 0
 			_.each(s.army.types, function(type) {

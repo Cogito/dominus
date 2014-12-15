@@ -159,7 +159,7 @@ Meteor.methods({
 		}
 	},
 
-	
+
 
 
 
@@ -179,7 +179,7 @@ Meteor.methods({
 		this.unblock()
 		check(army_id, String)
 	
-		var army = Armies.findOne(army_id, {fields: {x:1, y:1}})
+		var army = Armies.findOne({_id:army_id, user_id:Meteor.userId()}, {fields: {x:1, y:1}})
 		if (army) {
 			var fields = {}
 

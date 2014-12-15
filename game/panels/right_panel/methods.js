@@ -15,7 +15,7 @@ Meteor.methods({
 
 		switch(type) {
 			case 'castle':
-				var res = Castles.findOne(id, {fields: {user_id:1}})
+				var res = Castles.findOne({_id:id, user_id:Meteor.userId()}, {fields: {user_id:1}})
 				if (res) {
 					if (res.user_id == Meteor.userId()) {
 						Castles.update(id, {$set: {name: name}})
@@ -24,7 +24,7 @@ Meteor.methods({
 				}
 				break;
 			case 'village':
-				var res = Villages.findOne(id, {fields: {user_id:1}})
+				var res = Villages.findOne({_id:id, user_id:Meteor.userId()}, {fields: {user_id:1}})
 				if (res) {
 					if (res.user_id == Meteor.userId()) {
 						Villages.update(id, {$set: {name: name}})
@@ -33,7 +33,7 @@ Meteor.methods({
 				}
 				break;
 			case 'army':
-				var res = Armies.findOne(id, {fields: {user_id:1}})
+				var res = Armies.findOne({_id:id, user_id:Meteor.userId()}, {fields: {user_id:1}})
 				if (res) {
 					if (res.user_id == Meteor.userId()) {
 						Armies.update(id, {$set: {name: name}})

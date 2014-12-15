@@ -5,7 +5,6 @@ Meteor.startup(function() {
 		worker.empty_queue()
 		worker.start()
 
-
 		// army moves
 		Meteor.setInterval(function() {
 			var start_time = new Date()
