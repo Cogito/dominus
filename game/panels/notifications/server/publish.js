@@ -17,13 +17,13 @@ Meteor.publish('notifications_titles_global', function() {
 	var sub = this
 	var types = [
 			'battle',
-			'now_dominus',
+			'new_dominus',
 			'no_longer_dominus',
 			'no_longer_dominus_new_user',
 			'sent_gold',
 			'sent_army'
 			]
-	var cur = Notifications.find({type: {$in: types}}, {fields: {read:1, title:1, created_at:1, type:1}, sort: {created_at: -1}, limit:150})
+	var cur = Notifications.find({type: {$in: types}}, {fields: {user_id:1, read:1, title:1, created_at:1, type:1}, sort: {created_at: -1}, limit:150})
 	Mongo.Collection._publishCursor(cur, sub, 'notifications_titles_global')
 	return sub.ready();
 })
@@ -49,4 +49,17 @@ Meteor.publish('gameEndDate', function() {
 	} else {
 		this.ready()
 	}
+})
+
+Meteor.publish('lastDominus', function() {
+	var sub = this
+	var cur = Meteor.users.find(Settings.findOne({name: 'lastDominusUserId'}).value, {fields: {
+		username:1,
+		castle_id:1,
+		x:1,
+		y:1,
+		is_dominus:1
+	}})
+	Mongo.Collection._publishCursor(cur, sub, 'lastDominus')
+	return sub.ready();
 })

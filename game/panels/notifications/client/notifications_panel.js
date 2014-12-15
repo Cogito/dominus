@@ -1,3 +1,11 @@
+var currentDominus = function() {
+	return RankingsDominus.findOne()
+}
+
+var lastDominus = function() {
+	return LastDominus.findOne()
+}
+
 Template.notifications_panel.helpers({
 	notifications_type: function() {
 		return Session.get('notifications_type')
@@ -53,7 +61,11 @@ Template.notifications_panel.helpers({
 	game_end_date: function() {
 		var end = Settings.findOne({name: 'gameEndDate'})
 		return end.value
-	}
+	},
+
+	dominus: currentDominus,
+
+	lastDominus: lastDominus
 })
 
 
@@ -68,6 +80,20 @@ Template.notifications_panel.events({
 
 	'click #show_battles_tab': function(event, template) {
 		Session.set('notifications_type', 'notifications_battles')
+	},
+
+	'click .dominus_goto': function(event, template) {
+		var target = currentDominus()
+		center_on_hex(target.x, target.y)
+		Session.set('selected_type', 'castle')
+		Session.set('selected_id', target.castle_id)
+	},
+
+	'click .last_dominus_goto': function(event, template) {
+		var target = lastDominus()
+		center_on_hex(target.x, target.y)
+		Session.set('selected_type', 'castle')
+		Session.set('selected_id', target.castle_id)
 	}
 })
 
@@ -75,6 +101,8 @@ Template.notifications_panel.events({
 Template.notifications_panel.created = function() {
 	this.autorun(function() {
 		Meteor.subscribe('gameEndDate')
+		Meteor.subscribe('lastDominus')
+		Meteor.subscribe('dominus_rankings')
 	})
 }
 
@@ -110,7 +138,7 @@ get_notification_icon = function(notification_type) {
 			return 'fa-sitemap'
 		case 'now_a_king':
 			return 'fa-sitemap'
-		case 'now_dominus':
+		case 'new_dominus':
 			return 'fa-sitemap'
 		case 'sent_army':
 			return 'fa-envelope'

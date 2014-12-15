@@ -11,6 +11,12 @@ Template.notifications_global.helpers({
 				} else {
 					return false
 				}
+			} else if (n.type == 'new_dominus') {
+				if (n.user_id == Meteor.userId()) {
+					return true
+				} else {
+					return false
+				}
 			} else {
 				return true
 			}

@@ -16,11 +16,12 @@ notification_no_longer_dominus_new_user = function(user_id, user) {
 		)
 }
 
-notification_are_now_dominus = function(user_id, user) {
-	check(user_id, String)
-	create_notification_new(user_id,
-		'now_dominus',
-		{_id:user._id, username: user.username, x:user.x, y:user.y, castle_id:user.castle_id},
+notification_new_dominus = function(user, oldDominusId) {
+	check(user, Object)
+	check(oldDominusId, Match.Optional(String))
+	create_notification_for_all_players(
+		'new_dominus',
+		{_id:user._id, username: user.username, x:user.x, y:user.y, castle_id:user.castle_id, oldDominusId: oldDominusId},
 		user.username+' is the new Dominus'
 		)
 }
@@ -238,7 +239,7 @@ create_notification_new = function(user_id, type, vars, title) {
 	check(type, String)
 	check(vars, Object)
 	check(title, String)
-	
+
 	Notifications.insert({
 		user_id: user_id,
 		created_at: new Date(),
@@ -246,6 +247,12 @@ create_notification_new = function(user_id, type, vars, title) {
 		type: type,
 		vars: vars,
 		title: title
+	})
+}
+
+create_notification_for_all_players = function(type, vars, title) {
+	Meteor.users.find({}, {fields: {_id:1}}).forEach(function(user) {
+		create_notification_new(user._id, type, vars, title)
 	})
 }
 
