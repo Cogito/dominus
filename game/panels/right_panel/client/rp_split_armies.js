@@ -22,59 +22,28 @@ Template.rp_split_armies.events({
 		set_selected_unit(type, num)
 	},
 
-	// TODO: clean this up
-	// put checks into method instead
 	'click #split_confirm_button': function(event, template) {
 		var button = template.find('#split_confirm_button')
 		var alert = template.find('#split_error')
+		var button_html = $(button).html()
 
 		$(alert).hide()
-		var error = false
 
-		var newNum = num_selected_units()
-		if (newNum == 0) {
-			error = true
-			$(alert).show()
-			$(alert).html('New army must have at least one soldier.')
-		}
+		$(button).attr('disabled', true)
+		$(button).html('Please Wait')
 
-		if (!error) {
-			var fields = {}
-			_.each(s.army.types, function(type) {
-				fields[type] = 1
-			})
-			var res = Armies.findOne({_id: Session.get('selected_id'), user_id: Meteor.userId()}, {fields: fields})
-			if (res) {
-				var oldNum = 0
-				_.each(s.army.types, function(type) {
-					oldNum += res[type]
-				})
-				if (newNum >= oldNum) {
-					error = true
-					$(alert).show()
-					$(alert).html('Old army must still have at least one soldier.')
-				}
+		Meteor.call('split_armies', Session.get('selected_id'), get_selected_units(), function(error, result) {
+			if (error) {
+				$(alert).show()
+				$(alert).html(error.error)
+
+				$(button).attr('disabled', false)
+				$(button).html(button_html)
+			} else {
+				Session.set('selected_id', result)
+				Session.set('rp_template', 'rp_info_army')
 			}
-		}
-
-		if (!error) {
-			var button_html = $(button).html()
-			$(button).attr('disabled', true)
-			$(button).html('Please Wait')
-
-			Meteor.apply('split_armies', [Session.get('selected_id'), get_selected_units()], {wait:true, onResultReceived:function(error, result) {
-				if (result) {
-					Session.set('selected_id', result)
-					Session.set('rp_template', 'rp_info_army')
-				} else {
-					$(alert).show()
-					$(alert).html('Error, could not split army.')
-
-					$(button).attr('disabled', false)
-					$(button).html(button_html)
-				}
-			}})
-		}
+		})
 	}
 })
 

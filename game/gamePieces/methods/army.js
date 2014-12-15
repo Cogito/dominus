@@ -7,7 +7,8 @@ Meteor.methods({
 		check(moves, Array)
 
 		if (moves.length < 1) {
-			throw new Meteor.Error('No moves.')
+			// do not throw error here
+			return false
 		}
 
 		var army = Armies.findOne({_id:army_id, user_id:Meteor.userId()}, {fields: {x:1, y:1}})
@@ -158,42 +159,7 @@ Meteor.methods({
 		}
 	},
 
-	split_armies: function(id, new_army) {
-		var fields = {castle_id:1, x:1, y:1}
-
-		_.each(s.army.types, function(type) {
-			fields[type] = 1
-		})
-
-		var res = Armies.findOne({_id: id, user_id: Meteor.userId()}, {fields: fields})
-		if (res) {
-			var oldNum = 0
-			_.each(s.army.types, function(type) {
-				oldNum += res[type]
-			})
-
-			var newNum = 0
-			_.each(s.army.types, function(type) {
-				newNum += new_army[type]
-			})
-
-			if (newNum > 0) {
-				if (newNum < oldNum) {
-					var new_id = Meteor.call('create_army', new_army, res.x, res.y, [])
-
-					var set = {}
-					_.each(s.army.types, function(type) {
-						set[type] = res[type] - new_army[type]
-					})
-
-					Armies.update(res._id, {$set: set})
-					return new_id
-				}
-			}
-		} else {
-			throw new Meteor.Error('Could not find army.')
-		}
-	},
+	
 
 
 
