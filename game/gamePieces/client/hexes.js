@@ -84,7 +84,7 @@ Template.hexes.rendered = function() {
 	// update when selected session variable changes
 	this.autorun(function() {
 		Session.get('update_highlight')
-		if (Session.get('selected_type') == 'hex') {
+		if (Session.get('selected_type') == 'hex' && Session.get('selected_id')) {
 				remove_all_highlights()
 				highlight_hex_id(Session.get('selected_id'))
 				Session.set('rp_template', 'rp_info_hex')

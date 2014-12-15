@@ -168,7 +168,9 @@ Template.rp_move_unit.created = function() {
 	})
 
 	self.autorun(function() {
-		set_from_coords(Template.currentData().x, Template.currentData().y)
+		if (Template.currentData()) {
+			set_from_coords(Template.currentData().x, Template.currentData().y)
+		}
 	})
 
 	self.autorun(function() {
