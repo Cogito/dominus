@@ -7,20 +7,29 @@
 				<thead>
 					<tr>
 						<td>function</td>
-						<td>run time</td>
+						<td>runs today</td>
+						<td>ms</td>
+						<td>total ms today</td>
 						<td>finish date</td>
 					</tr>
 				</thead>
 				<tbody>
 					{{#each jobstats}}
-						<tr>
-							<td>{{job_name}}</td>
-							<td>{{round time}}</td>
-							<td>{{date_calendar updated_at}}</td>
-						</tr>
+						{{> adminJobstat}}
 					{{/each}}
 				</tbody>
 			</table>
 		</div>
 	{{/if}}
+</template>
+
+
+<template name="adminJobstat">
+	<tr>
+		<td>{{job_name}}</td>
+		<td>{{runs}}</td>
+		<td>{{round time}}</td>
+		<td>{{runTime}}</td>
+		<td>{{date_calendar updated_at}}</td>
+	</tr>
 </template>
