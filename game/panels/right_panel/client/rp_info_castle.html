@@ -12,6 +12,26 @@
 						</h4>
 						{{> hex_location}} &nbsp;&nbsp; {{> center_on_button x=x y=y selected_type='castle' selected_id=_id}}
 					</div>
+					<table class="table table-condensed table-striped">
+						<tbody>
+							<tr>
+								<td>Vassals</td>
+								<td style="text-align:right;">{{round user.num_allies_below}}</td>
+							</tr>
+							<tr>
+								<td>Networth</td>
+								<td style="text-align:right;">{{round user.networth}}</td>
+							</tr>
+							<tr>
+								<td>Income</td>
+								<td style="text-align:right;">{{round user.income}}</td>
+							</tr>
+							<tr>
+								<td>Lost Soldiers</td>
+								<td style="text-align:right;">{{round user.losses_worth}}</td>
+							</tr>
+						</tbody>
+					</table>
 
 				{{else}}
 

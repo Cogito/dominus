@@ -27,7 +27,7 @@ Meteor.publish('user_data', function () {
 			x:1,
 			y:1,
 			king:1,
-			siblings:1,
+			//siblings:1,	// not currently used
 			team:1,
 			lp_show_castle:1,
 			lp_show_villages:1,
@@ -36,6 +36,7 @@ Meteor.publish('user_data', function () {
 			lp_show_allies:1,
 			hex_scale:1,
 			income:1,
+			networth:1,
 			purchases:1,
 			losses_worth:1,
 			sp_show_coords:1,
