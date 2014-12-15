@@ -2,7 +2,7 @@ if (Meteor.isServer) {
 
 	if (process.env.NODE_ENV == 'development') {
 		// cheats
-		s.army_travel_multiplier = 1
+		s.army_travel_multiplier = 0.000001
 		s.battle_check_interval = 1000 * 10
 	} else {
 		s.army_travel_multiplier = 1 	// for debug, lower than one makes armies move faster

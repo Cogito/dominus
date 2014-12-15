@@ -29,7 +29,7 @@ move_hexes_to = function(pixel_x, pixel_y) {
 	var hex_scale = get_hex_scale()
 
 	$(hexes).attr('transform', 'translate('+pixel_x+','+pixel_y+') scale('+hex_scale+')')
-
+	
 	Session.set('hexes_pos', {x:pixel_x, y:pixel_y})
 }
 

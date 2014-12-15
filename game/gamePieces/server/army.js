@@ -242,11 +242,11 @@ Meteor.methods({
 
 					// send notification if this is not your building
 					if (user._id != building.user_id) {
-						var to = Meteor.users.findOne(building.user_id, {fields: {gold:1, allies_below:1, username:1, id:1, x:1, y:1}})
+						var to = Meteor.users.findOne(building.user_id, {fields: {gold:1, allies_below:1, username:1, castle_id:1, x:1, y:1}})
 						if (to) {
 							notification_sent_army(to._id, {
-								to: {_id: to._id, username: to.username, id: to.castle_id, x: to.x, y: to.y},
-								from: {_id: user._id, username: user.username, id: user.castle_id, x: user.x, y: user.y}
+								to: {_id: to._id, username: to.username, castle_id: to.castle_id, x: to.x, y: to.y},
+								from: {_id: user._id, username: user.username, castle_id: user.castle_id, x: user.x, y: user.y}
 							}, army)
 						}
 					}
