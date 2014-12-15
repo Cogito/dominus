@@ -1,3 +1,84 @@
+create_army = function(user_id, army, x, y, moves) {
+	check(army, Object)
+	check(x, Number)
+	check(y, Number)
+	check(moves, Array)
+
+	var name = names.armies.part1[_.random(names.armies.part1.length-1)] +' '+ names.armies.part2[_.random(names.armies.part2.length-1)]
+
+	var user = Meteor.users.findOne(user_id, {fields: {username:1, x:1, y:1, castle_id:1, allies:1, is_dominus:1}})
+
+	var fields = {
+		name: name,
+		x: x,
+		y: y,
+		created_at: new Date(),
+		last_move_at: new Date(),
+		user_id: user_id,
+		username: user.username,
+		castle_x: user.x,
+		castle_y: user.y,
+		castle_id: user.castle_id,
+	}
+
+	_.each(s.army.types, function(type) {
+		if (!army[type]) {
+			army[type] = 0
+		}
+		check(army[type], Number)
+		fields[type] = army[type]
+	})
+
+	var num_units = 0
+	_.each(s.army.types, function(type) {
+		num_units += army[type]
+	})
+
+	if (num_units == 0) {
+		return false
+	}
+
+	var id = Armies.insert(fields)
+
+	if (id) {
+		// check for enemy armies
+		var eas = Armies.find({x:x, y:y, user_id: {$ne:user._id}}, {fields: {_id:1, user_id:1}})
+		if (eas) {
+			eas.forEach(function(ea) {
+				
+				// dominus' armies can attack any army
+				var otherUser = Meteor.users.findOne(ea.user_id, {fields: {is_dominus:1}})
+				if (user.is_dominus || otherUser.is_dominus) {
+					// make sure army is still alive
+					var attacker = Armies.findOne(id)
+					if (attacker) {
+						Battle.start_battle(x,y)
+					}
+				} else {
+					if (_.indexOf(user.allies, ea.user_id) == -1) {
+						// army is enemy
+						// make sure army is still alive
+						var attacker = Armies.findOne(id)
+						if (attacker) {
+							Battle.start_battle(x,y)
+						}
+					}
+				}
+			})
+		}
+
+		// still alive?
+		var a = Armies.findOne(id)
+		if (a) {
+			Meteor.call('create_moves', a._id, moves)
+		}
+
+		return id
+	}
+
+	return false
+}
+
 destroy_all_armies = function() {
 	Armies.remove({})
 	Moves.remove({})

@@ -1,6 +1,8 @@
 Meteor.methods({
 	// do this on server only because the army might not be in client db
 	split_armies: function(id, new_army) {
+		check(id, String)
+
 		// check values
 		_.each(s.army.types, function(type) {
 			if (!new_army[type]) {
@@ -47,25 +49,20 @@ Meteor.methods({
 				throw new Meteor.Error('Old army must still have at least one soldier.')
 			}
 
-			var fut = new Future()
-			Meteor.call('create_army', new_army, res.x, res.y, [], function(error, result) {
-				if (error) {
-					fut.throw(error)
-				} else {
-					if (result) {
-						var set = {}
-						_.each(s.army.types, function(type) {
-							set[type] = res[type] - new_army[type]
-						})
+			var aid = create_army(Meteor.userId(), new_army, res.x, res.y, [])
+			if (aid) {
+				var set = {}
+				_.each(s.army.types, function(type) {
+					set[type] = res[type] - new_army[type]
+				})
 
-						Armies.update(res._id, {$set: set})
-						fut.return(result)
-					} else {
-						fut.throw('Could not create army.')
-					}
-				}
-			})
-			return fut.wait();
+				Armies.update(res._id, {$set: set})
+
+				return aid
+			} else {
+				throw new Meteor.Error('Could not create army.')
+			}
+
 		} else {
 			throw new Meteor.Error('Could not find army.')
 		}
@@ -104,105 +101,32 @@ Meteor.methods({
 			})
 
 			if (has_some && has_enough) {
-				var army_id = Meteor.call('create_army', army, from.x, from.y, moves)
+				var army_id = create_army(Meteor.userId(), army, from.x, from.y, moves)
+				if (army_id) {
+					var fields = {}
+					_.each(s.army.types, function(type) {
+						fields[type] = army[type] * -1
+					})
 
-				var fields = {}
-				_.each(s.army.types, function(type) {
-					fields[type] = army[type] * -1
-				})
-
-				if (from_type == 'castle') {
-					Castles.update(from_id, {$inc: fields})
-				}
-
-				if (from_type == 'village') {
-					Villages.update(from_id, {$inc: fields})
-				}
-
-				return army_id
-			}
-		}
-		return false
-	},
-
-	create_army: function(army, x, y, moves) {
-		this.unblock()
-		check(army, Object)
-		check(x, Number)
-		check(y, Number)
-		check(moves, Array)
-
-		var name = names.armies.part1[_.random(names.armies.part1.length-1)] +' '+ names.armies.part2[_.random(names.armies.part2.length-1)]
-
-		var user = Meteor.users.findOne(Meteor.userId(), {fields: {username:1, x:1, y:1, castle_id:1, allies:1, is_dominus:1}})
-
-		var fields = {
-			name: name,
-			x: x,
-			y: y,
-			created_at: new Date(),
-			last_move_at: new Date(),
-			user_id: Meteor.userId(),
-			username: user.username,
-			castle_x: user.x,
-			castle_y: user.y,
-			castle_id: user.castle_id,
-		}
-
-		_.each(s.army.types, function(type) {
-			check(army[type], Number)
-			fields[type] = army[type]
-		})
-
-		var num_units = 0
-		_.each(s.army.types, function(type) {
-			num_units += army[type]
-		})
-
-		if (num_units == 0) {
-			return false
-		}
-
-		var id = Armies.insert(fields)
-
-		if (id) {
-			// check for enemy armies
-			var eas = Armies.find({x:x, y:y, user_id: {$ne:user._id}}, {fields: {_id:1, user_id:1}})
-			if (eas) {
-				eas.forEach(function(ea) {
-					
-					// dominus' armies can attack any army
-					var otherUser = Meteor.users.findOne(ea.user_id, {fields: {is_dominus:1}})
-					if (user.is_dominus || otherUser.is_dominus) {
-						// make sure army is still alive
-						var attacker = Armies.findOne(id)
-						if (attacker) {
-							Battle.start_battle(x,y)
-						}
-					} else {
-						if (_.indexOf(user.allies, ea.user_id) == -1) {
-							// army is enemy
-							// make sure army is still alive
-							var attacker = Armies.findOne(id)
-							if (attacker) {
-								Battle.start_battle(x,y)
-							}
-						}
+					if (from_type == 'castle') {
+						Castles.update(from_id, {$inc: fields})
 					}
-				})
-			}
 
-			// still alive?
-			var a = Armies.findOne(id)
-			if (a) {
-				Meteor.call('create_moves', a._id, moves)
-			}
+					if (from_type == 'village') {
+						Villages.update(from_id, {$inc: fields})
+					}
 
-			return id
+					return army_id
+				} else {
+					return false
+				}
+
+				
+			}
 		}
-
 		return false
 	},
+
 
 
 	hire_army: function(army, building_id, building_type) {

@@ -6,6 +6,13 @@ Meteor.methods({
 		check(army_id, String)
 		check(moves, Array)
 
+		_.each(moves, function(move) {
+			check(move.from_x, Number)
+			check(move.from_y, Number)
+			check(move.to_x, Number)
+			check(move.to_y, Number)
+		})
+
 		if (moves.length < 1) {
 			// do not throw error here
 			return false
@@ -165,6 +172,7 @@ Meteor.methods({
 
 	disband_army: function(id) {
 		this.unblock()
+		check(id, String)
 		var res = Armies.findOne({_id: id, user_id: Meteor.userId()}, {fields: {_id:1}})
 		if (res) {
 			Armies.remove({_id: id})
