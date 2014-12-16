@@ -117,7 +117,6 @@ Meteor.methods({
 			if (village.user_id == Meteor.userId()) {
 				// spit out army
 				var army_id = Meteor.call('create_army_from_building', village, 'village', village._id, [])
-				var army_id = c
 				Villages.remove(id)
 				Hexes.update({x:village.x, y:village.y}, {$set: {has_building:false, nearby_buildings:false}})
 				return army_id

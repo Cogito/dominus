@@ -134,7 +134,7 @@ Template.rp_info_army.helpers({
 		var hex = Hexes.findOne({x:this.x, y:this.y}, {fields: {type:1}})
 		if (hex && hex.type == 'grain') {
 			if (Castles.find({x:this.x, y:this.y}, {reactive:false}).count() == 0) {
-				if (Villages.find({x:this.x, y:this.y}, {reactive:false}).count() == 0) {
+				if (Villages.find({x:this.x, y:this.y}).count() == 0) {
 					return true
 				}
 			}

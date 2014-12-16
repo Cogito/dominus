@@ -92,7 +92,6 @@ Template.rp_info_castle.helpers({
 			var type = Template.instance().relationship.get()
 			return type == 'vassal'
 		}
-		return false
 	},
 
 	interval: function() {
@@ -136,19 +135,16 @@ Template.rp_info_castle.events({
 Template.rp_info_castle.created = function() {
 	var self = this
 
+	Session.set('mouse_mode', 'default')
+	Session.set('update_highlight', Random.fraction())
+
 	self.autorun(function() {
 		if (Template.currentData()) {
 			Meteor.subscribe('gamePiecesAtHex', Template.currentData().x, Template.currentData().y)
 		}
-	})
-
-	Session.set('mouse_mode', 'default')
-	Session.set('update_highlight', Random.fraction())
+	})	
 
 	self.dupes = new ReactiveVar(false)
-	self.castleUserLoaded = new ReactiveVar(false)
-	self.battleInfoLoaded = new ReactiveVar(false)
-
 	this.autorun(function() {
 		if (Template.currentData()) {
 			Meteor.call('get_duplicate_users', Template.currentData().user_id, function(error, result) {
@@ -159,6 +155,8 @@ Template.rp_info_castle.created = function() {
 		}
 	})
 
+	self.castleUserLoaded = new ReactiveVar(false)
+	self.battleInfoLoaded = new ReactiveVar(false)
 	this.autorun(function() {
 		if (Template.currentData()) {
 			if (Template.currentData().user_id != Meteor.userId()) {
