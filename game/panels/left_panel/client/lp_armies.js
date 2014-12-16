@@ -9,7 +9,7 @@ Template.lp_army.helpers({
 	onAllyBuilding: function() {
 		var castle = Castles.findOne({x:this.x, y:this.y})
 		if (castle) {
-			var relationship = getUnitRelationType(castle)
+			var relationship = getUnitRelationType(castle.user_id)
 			if (relationship == 'mine' || relationship == 'vassal') {
 				return true
 			}
@@ -17,7 +17,7 @@ Template.lp_army.helpers({
 
 		var village = Villages.findOne({x:this.x, y:this.y})
 		if (village) {
-			var relationship = getUnitRelationType(village)
+			var relationship = getUnitRelationType(village.user_id)
 			if (relationship == 'mine' || relationship == 'vassal') {
 				return true
 			}

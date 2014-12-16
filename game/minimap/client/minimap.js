@@ -1,5 +1,29 @@
 var minimap_size = 300
 
+UI.registerHelper('minimap_coord_to_pixel_x', function(x,y) {
+	check(x, Number)
+	check(y, Number)
+
+	var hex_size = get_hex_size()
+	var coords = minimap_coordinates_to_grid(x, y, hex_size)
+	return coords.x
+})
+
+UI.registerHelper('minimap_coord_to_pixel_y', function(x,y) {
+	check(x, Number)
+	check(y, Number)
+	
+	var hex_size = get_hex_size()
+	var coords = minimap_coordinates_to_grid(x, y, hex_size)
+	return coords.y
+})
+
+UI.registerHelper('relationship', function(user_id) {
+	return getUnitRelationType(user_id)
+})
+
+
+
 Template.minimap.helpers({
 	moves: function() {
 		return Moves.find()
@@ -23,12 +47,12 @@ Template.minimap.helpers({
 		return points
 	},
 
-	castle: function() {
-		return LeftPanelCastle.findOne({}, {fields: {x:1, y:1}})
+	castles: function() {
+		return LeftPanelCastle.find()
 	},
 
 	villages: function() {
-		return LeftPanelVillages.find({}, {fields: {x:1, y:1}})
+		return LeftPanelVillages.find()
 	},
 
 	armies: function() {
@@ -36,46 +60,11 @@ Template.minimap.helpers({
 	},
 
 	lords: function() {
-		var user = Meteor.users.findOne(Meteor.userId(), {fields: {lord:1}})
-		if (user) {
-			return LeftPanelLords.find().map(function(u) {
-				if (user.lord == u._id) {
-					u.my_lord = true
-				} else {
-					u.my_lord = false
-				}
-				return u
-			})
-		}
+		return LeftPanelLords.find()
 	},
 
 	allies: function() {
-		var user = Meteor.users.findOne(Meteor.userId(), {fields: {vassals:1}})
-		if (user) {
-			return LeftPanelAllies.find().map(function(u) {
-				if (_.indexOf(user.vassals, u._id) == -1) {
-					u.direct_vassal = false
-				} else {
-					u.direct_vassal = true
-				}
-				return u
-			})
-		}
-
-
 		return LeftPanelAllies.find()
-	},
-
-	minimap_coord_to_pixel_x: function(x,y) {
-		var hex_size = get_hex_size()
-		var coords = minimap_coordinates_to_grid(x, y, hex_size)
-		return coords.x
-	},
-
-	minimap_coord_to_pixel_y: function(x,y) {
-		var hex_size = get_hex_size()
-		var coords = minimap_coordinates_to_grid(x, y, hex_size)
-		return coords.y
 	},
 
 	viewport_size: function() {

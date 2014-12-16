@@ -3,7 +3,7 @@ Template.rp_info_army.helpers({
 		if (Template.instance()) {
 			var type = Template.instance().relationship.get()
 			if (type && type != 'mine') {
-				return type
+				return getNiceRelationType(type)
 			}
 		}
 	},
@@ -221,20 +221,7 @@ Template.rp_info_army.events({
 	},
 
 	'click #return_to_castle_button': function(event, template) {
-		var castle = Castles.findOne({user_id: Meteor.userId()})
-		if (castle) {
-			if (this.x == castle.x && this.y == castle.y) {
-				Meteor.call('army_join_building', this._id)
-			} else {
-				var moves = [{
-					from_x:this.x,
-					from_y:this.y,
-					to_x:castle.x,
-					to_y:castle.y
-				}]
-				Meteor.call('create_moves', this._id, moves)
-			}
-		}
+		Meteor.call('returnToCastle', this._id)
 	},
 
 	'click #stop_movement_button': function(event, template) {
@@ -432,8 +419,16 @@ Template.rp_info_army.created = function() {
 	self.autorun(function() {
 		if (Template.currentData() && Template.currentData().user_id) {
 			Tracker.nonreactive(function() {
-				self.relationship.set(getUnitRelationType(Template.currentData()))
+				self.relationship.set(getUnitRelationType(Template.currentData().user_id))
 			})
+		}
+	})
+
+
+	// add this player's units to minimap
+	self.autorun(function() {
+		if (Template.currentData() && Template.currentData().user_id) {
+			Meteor.subscribe('user_buildings_for_minimap', Template.currentData().user_id)
 		}
 	})
 

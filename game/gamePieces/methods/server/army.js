@@ -1,4 +1,35 @@
 Meteor.methods({
+
+	returnToCastle: function(army_id) {
+		var user_id = Meteor.userId()
+		if (user_id) {
+			var army = Armies.findOne({_id:army_id, user_id:Meteor.userId()})
+			if (army) {
+				var castle = Castles.findOne({user_id:user_id})
+				if (castle) {
+					if (castle.x == army.x && castle.y == army.y) {
+						Meteor.call('army_join_building', castle._id)
+					} else {
+						var moves = [{
+							from_x:army.x,
+							from_y:army.y,
+							to_x:castle.x,
+							to_y:castle.y
+						}]
+						Meteor.call('create_moves', army._id, moves)
+					}
+				} else {
+					throw new Meteor.Error('Could not find castle.')
+				}
+			} else {
+				throw new Meteor.Error('Could not find army.')
+			}
+		} else {
+			throw new Meteor.Error('Could not find user.')
+		}
+	},
+	
+
 	// do this on server only because the army might not be in client db
 	split_armies: function(id, new_army) {
 		check(id, String)

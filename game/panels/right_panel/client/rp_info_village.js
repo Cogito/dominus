@@ -3,7 +3,7 @@ Template.rp_info_village.helpers({
 		if (Template.instance()) {
 			var type = Template.instance().relationship.get()
 			if (type && type != 'mine') {
-				return type
+				return getNiceRelationType(type)
 			}
 		}
 	},
@@ -144,8 +144,16 @@ Template.rp_info_village.created = function() {
 	self.autorun(function() {
 		if (Template.currentData() && Template.currentData().user_id) {
 			Tracker.nonreactive(function() {
-				self.relationship.set(getUnitRelationType(Template.currentData()))
+				self.relationship.set(getUnitRelationType(Template.currentData().user_id))
 			})
+		}
+	})
+
+
+	// add this player's units to minimap
+	self.autorun(function() {
+		if (Template.currentData() && Template.currentData().user_id) {
+			Meteor.subscribe('user_buildings_for_minimap', Template.currentData().user_id)
 		}
 	})
 }

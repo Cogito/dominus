@@ -6,7 +6,7 @@ Meteor.publish('left_panel_allies', function() {
 				castle_id:1,
 				x:1,
 				y:1,
-				income:1
+				income:1	// sort by income
 			}})
 		Mongo.Collection._publishCursor(cur, sub, 'left_panel_allies')
 		return sub.ready();
@@ -37,7 +37,7 @@ Meteor.publish('left_panel_castle', function() {
 	if(this.userId) {
 		var sub = this
 
-		var fields = {name:1, x:1, y:1}
+		var fields = {name:1, x:1, y:1, user_id:1}
 		_.each(s.army.types, function(type) {
 			fields[type] = 1
 		})
@@ -70,7 +70,7 @@ Meteor.publish('left_panel_armies', function() {
 Meteor.publish('left_panel_villages', function() {
 	if(this.userId) {
 		var sub = this
-		var fields = {name:1, x:1, y:1}
+		var fields = {name:1, x:1, y:1, user_id:1}
 
 		_.each(s.army.types, function(type) {
 			fields[type] = 1
@@ -78,6 +78,28 @@ Meteor.publish('left_panel_villages', function() {
 
 		var cur = Villages.find({user_id: this.userId}, {fields: fields})
 		Mongo.Collection._publishCursor(cur, sub, 'left_panel_villages')
+		return sub.ready()
+	} else {
+		this.ready()
+	}
+})
+
+
+Meteor.publish('user_buildings_for_minimap', function(user_id) {
+	if(this.userId && user_id != this.userId) {
+		var sub = this
+		var fields = {name:1, x:1, y:1, user_id:1}
+
+		_.each(s.army.types, function(type) {
+			fields[type] = 1
+		})
+
+		var curVillages = Villages.find({user_id: user_id}, {fields: fields})
+		Mongo.Collection._publishCursor(curVillages, sub, 'left_panel_villages')
+
+		var curCastle = Castles.find({user_id: user_id}, {fields: fields})
+		Mongo.Collection._publishCursor(curCastle, sub, 'left_panel_castle')
+
 		return sub.ready()
 	} else {
 		this.ready()

@@ -4,7 +4,7 @@ Template.lp_castle.helpers({
 	},
 
 	castle: function() {
-		var res = LeftPanelCastle.findOne()
+		var res = LeftPanelCastle.findOne({user_id:Meteor.userId()})
 		if (res) {
 			res.unit_count = 0
 

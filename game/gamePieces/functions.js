@@ -1,41 +1,57 @@
+// takes return value of getUnitRelationType and return a nice string
+getNiceRelationType = function(relationType) {
+	switch(relationType) {
+		case 'mine':
+			return 'mine'
+		case 'king':
+			return 'king'
+		case 'direct_lord':
+			return 'lord'
+		case 'lord':
+			return 'lord'
+		case 'vassal':
+			return 'vassal'
+		case 'direct_vassal':
+			return 'vassal'
+		case 'enemy_ally':
+			return 'enemy with same king'
+		case 'enemy':
+			return 'enemy'
+	}
+}
+
 // TODO: there are a few places that need to be updated to use this function
-getUnitRelationType = function(unit) {
-	check(unit, Object)
-	check(unit.user_id, String)
+getUnitRelationType = function(user_id) {
+	check(user_id, String)
 	
 	var fields = {lord:1, allies_above:1, allies_below:1, team:1, king:1, vassals:1}
 	var user = Meteor.users.findOne(Meteor.userId(), {fields: fields})
 	if (user) {
-		if (unit.user_id == user._id) {
+		if (user_id == user._id) {
 			return 'mine'
-		} else if (_.indexOf(user.team, unit.user_id) != -1) {
+		} else if (_.indexOf(user.team, user_id) != -1) {
 
-			if (_.indexOf(user.allies_above, unit.user_id) != -1) {
-				if (unit.user_id == user.king) {
+			if (_.indexOf(user.allies_above, user_id) != -1) {
+				if (user_id == user.king) {
 					return 'king'
+				} else if (user_id == user.lord) {
+					return 'direct_lord'
 				} else {
 					return 'lord'
 				}
-				// } else if (unit.user_id == user.lord) {
-				// 	return 'lord'
-				// } else {
-				// 	return 'above'
-				// }
-			} else if (_.indexOf(user.allies_below, unit.user_id) != -1) {
+			} else if (_.indexOf(user.allies_below, user_id) != -1) {
 
-				return 'vassal'
+				if (_.indexOf(user.vassals, user_id) != -1) {
+					return 'direct_vassal'
+				} else {
+					return 'vassal'
+				}
 
-				// if (_.indexOf(user.vassals, unit.user_id) != -1) {
-				// 	return 'vassal'
-				// } else {
-				// 	return 'below'
-				// }
-
-			// } else if (_.indexOf(user.siblings, unit.user_id) != -1) {
+			// } else if (_.indexOf(user.siblings, user_id) != -1) {
 			// 	return 'sibling'
 
 			} else {
-				return 'enemy with same king'
+				return 'enemy_ally'
 			}
 
 		} else {

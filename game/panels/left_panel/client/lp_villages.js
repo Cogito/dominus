@@ -1,6 +1,6 @@
 Template.lp_villages.helpers({
 	villages: function() {
-		return LeftPanelVillages.find({}, {sort: {name: 1}})
+		return LeftPanelVillages.find({user_id:Meteor.userId()}, {sort: {name: 1}})
 	},
 })
 
