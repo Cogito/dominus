@@ -90,7 +90,7 @@ Template.rp_info_castle.helpers({
 	is_vassal: function() {
 		if (Template.instance().userData && Template.currentData()) {
 			var type = Template.instance().relationship.get()
-			return type == 'vassal'
+			return type == 'vassal' || type == 'direct_vassal'
 		}
 	},
 

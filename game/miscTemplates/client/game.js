@@ -115,7 +115,7 @@ Template.game.created = function() {
 
 	// keep track of how many villages you have
 	this.autorun(function() {
-		var num_villages = LeftPanelVillages.find().count()
+		var num_villages = LeftPanelVillages.find({user_id:Meteor.userId()}).count()
 		if (num_villages) {
 			Session.set('num_villages', num_villages)
 		} else {
