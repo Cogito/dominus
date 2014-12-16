@@ -6,11 +6,6 @@ Template.admin_panel.helpers({
 	center_hex_x: function() { return Session.get('center_hex').x },
 	center_hex_y: function() { return Session.get('center_hex').y },
 
-	users: function() {
-		Meteor.subscribe('all_users')
-		return Meteor.users.find()
-	},
-
 	mouseover_hex_id: function() { return Session.get('mouseover_hex_id') },
 	mouse_mode: function() { return Session.get('mouse_mode') },
 })

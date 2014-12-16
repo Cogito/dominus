@@ -19,9 +19,12 @@ Template.lp_castle.helpers({
 })
 
 Template.lp_castle.created = function() {
-	Meteor.subscribe('left_panel_castle')
+	
+	this.autorun(function() {
+		Meteor.subscribe('left_panel_castle')
 
-	if (Template.currentData()) {
-		Meteor.subscribe('battle_notifications_at_hex', Template.currentData().x, Template.currentData().y)
-	}
+		if (Template.currentData()) {
+			Meteor.subscribe('battle_notifications_at_hex', Template.currentData().x, Template.currentData().y)
+		}
+	})
 }

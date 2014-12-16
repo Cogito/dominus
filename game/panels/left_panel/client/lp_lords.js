@@ -11,8 +11,10 @@ Template.lp_lord.helpers({
 })
 
 
-Template.lp_lord.created = function() {
-	if (Template.currentData()) {
-		Meteor.subscribe('battle_notifications_at_hex', Template.currentData().x, Template.currentData().y)
-	}
+Template.lp_lords.created = function() {
+	this.autorun(function() {
+		if (Template.currentData()) {
+			Meteor.subscribe('battle_notifications_at_hex', Template.currentData().x, Template.currentData().y)
+		}
+	})
 }

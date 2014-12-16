@@ -82,8 +82,9 @@ Template.lp_armies.created = function() {
 }
 
 Template.lp_army.created = function() {
-	if (Template.currentData()) {
-		Meteor.subscribe('battle_notifications_at_hex', Template.currentData().x, Template.currentData().y)
-		Meteor.subscribe('gamePiecesAtHex', Template.currentData().x, Template.currentData().y)
-	}
+	this.autorun(function() {
+		if (Template.currentData()) {
+			Meteor.subscribe('battle_notifications_at_hex', Template.currentData().x, Template.currentData().y)
+		}
+	})
 }
