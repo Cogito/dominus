@@ -4,6 +4,9 @@ Units = function(x, y) {
 	self.allUnits = []
 	self.x = x
 	self.y = y
+	self.debug = true
+
+	if (self.debug) {console.log('--- loading units ---')}
 
 	var castle_fields = {name:1, user_id:1, x:1, y:1, username:1, image:1}
 	var army_fields = {name:1, user_id:1, x:1, y:1, last_move_at:1, username:1, castle_x:1, castle_y:1, castle_id:1}
@@ -22,6 +25,7 @@ Units = function(x, y) {
 	armies.forEach(function(army) {
 		army.type = 'army'
 		self.allUnits.push(army)
+		if (self.debug) {console.log('adding '+army.username+':'+army.name+':'+army.type+' to allunits')}
 	})
 
 	if (castle) {
@@ -37,12 +41,14 @@ Units = function(x, y) {
 
 		if (hasSoldiers) {
 			self.allUnits.push(castle)
+			if (self.debug) {console.log('adding '+castle.username+':'+castle.name+':'+castle.type+' to allunits')}
 		}
 	}
 
 	if (village) {
 		village.type = 'village'
 		self.allUnits.push(village)
+		if (self.debug) {console.log('adding '+village.username+':'+village.name+':'+village.type+' to allunits')}
 	}
 
 	// set defaults
@@ -53,6 +59,8 @@ Units = function(x, y) {
 			unit.losses[type] = 0
 		})
 	})
+
+
 
 	// if nobody has enemies then keep everyone
 	// if someone has an enemy then remove everyone with no enemies
@@ -65,8 +73,57 @@ Units = function(x, y) {
 	self._computeBonus()
 	self._computeFinalPower()
 	self._computeLocationBonus()
+
+	if (self.debug) {console.log('--- finished loading units ---')}
 }
 
+
+
+Units.prototype.enteredBattle = function(unit) {
+	var self = this
+
+	if (self.debug) {console.log(unit.username+':'+unit.name+':'+unit.type+' entered battle')}
+
+	var record = self.battleDb.getRecord()
+	record.unit = unit
+	notification_battle_start(unit.user_id, record)
+
+	//
+	switch(unit.type) {
+		case 'castle':
+			Castles.update(unit._id, {$set:{inBattle:true}})
+			break;
+		case 'village':
+			Villages.update(unit._id, {$set:{inBattle:true}})
+			break;
+		case 'army':
+			Armies.update(unit._id, {$set:{inBattle:true}})
+			break;
+	}
+}
+
+Units.prototype.exitedBattle = function(unit) {
+	var self = this
+
+	if (self.debug) {console.log(unit.username+':'+unit.name+':'+unit.type+' exited battle')}
+
+	self.sendNotification(unit)
+	self.battleDb.removeFromSendEndNotificationTo(unit)
+
+	switch(unit.type) {
+		case 'castle':
+			Castles.update(unit._id, {$set:{inBattle:false}})
+			break;
+		case 'village':
+			Villages.update(unit._id, {$set:{inBattle:false}})
+			break;
+		case 'army':
+			Armies.update(unit._id, {$set:{inBattle:false}})
+			break;
+	}
+
+	Meteor.users.update(unit.user_id, {$set:{inBattle:false}})
+}
 
 
 
@@ -78,10 +135,12 @@ Units.prototype._setAlliesOfDefenderAsDefenders = function() {
 
 	_.each(allies, function(unit) {
 		unit.isAttacker = false
+		if (self.debug) {console.log('making '+unit.username+':'+unit.name+':'+unit.type+' also a defender')}
 	})
 
 	_.each(self.getUnitsWithSameOwner(defender), function(unit) {
 		unit.isAttacker = false
+		if (self.debug) {console.log('making '+unit.username+':'+unit.name+':'+unit.type+' also a defender')}
 	})
 }
 
@@ -97,6 +156,8 @@ Units.prototype._someoneHasEnemies = function() {
 		}
 	})
 
+	if (self.debug && !hasEnemy) {console.log('nobody has enemies')}
+
 	return hasEnemy
 }
 
@@ -106,6 +167,7 @@ Units.prototype._removeUnitsWithNoEnemies = function() {
 
 	_.each(self.allUnits, function(unit) {
 		if (!self.hasEnemies(unit)) {
+			if (self.debug) {console.log(unit.username+':'+unit.name+':'+unit.type+' has no enemies so removing from allunits')}
 			self._removeFromAllUnits(unit)
 		}
 	})
@@ -116,8 +178,15 @@ Units.prototype._removeUnitsWithNoEnemies = function() {
 Units.prototype.sendNotification = function(unit) {
 	var self = this
 	var record = Battles.findOne({x:self.x, y:self.y})
-	record.unit = unit
-	notification_battle(unit.user_id, record)
+	if (record) {
+		record.unit = unit
+		notification_battle(unit.user_id, record)
+
+		if (self.debug) {console.log('sending exit notification to '+unit.username+':'+unit.name+':'+unit.type)}
+	} else {
+		console.log('Error: No battle record found.')
+	}
+	
 }
 
 
@@ -154,7 +223,8 @@ Units.prototype.removeDeadUnits = function() {
 	var units = self.getAllUnits()
 	_.each(units, function(unit) {
 		if (!self.hasSoldiers(unit)) {
-			self.sendNotification(unit)
+			if (self.debug) {console.log(unit.username+':'+unit.name+':'+unit.type+' has no more soldiers')}
+			self.exitedBattle(unit)
 			self._removeFromAllUnits(unit)
 			switch(unit.type) {
 				case 'castle':
@@ -505,7 +575,9 @@ Units.prototype.getUserOfUnit = function(unit_id) {
 
 
 Units.prototype.hasEnemies = function(unit) {
-	return  this.getEnemies(unit).length > 0
+	var hasEnemies = this.getEnemies(unit).length > 0
+	//if (this.debug) {console.log(unit.username+':'+unit.name+':'+unit.type+' hasEnemies is '+hasEnemies)}
+	return hasEnemies
 }
 
 
@@ -635,6 +707,8 @@ Units.prototype.isEnemy = function(unit, otherUnit) {
 		return false
 	}
 
+	//if (self.debug) {console.log('running isEnemy for '+unit.username+':'+unit.name+':'+unit.type+' and '+otherUnit.username+':'+otherUnit.name+':'+otherUnit.type)}
+
 	var isEnemy = false
 	var user = Meteor.users.findOne(unit.user_id, {fields: {allies:1, team:1, allies_below:1, allies_above:1, is_dominus:1}})
 	var otherUser = Meteor.users.findOne(otherUnit.user_id, {fields: {is_dominus:1}})
@@ -643,6 +717,7 @@ Units.prototype.isEnemy = function(unit, otherUnit) {
 		// dominus' armies can attack all other armies
 		if (user.is_dominus || otherUser.is_dominus) {
 			if (unit.type == 'army' && otherUnit.type == 'army') {
+				//if (self.debug) {console.log(otherUnit.username+':'+otherUnit.name+':'+otherUnit.type+' is enemy of '+unit.username+':'+unit.name+':'+unit.type+' because one side is dominus. ')}
 				isEnemy = true	
 			}
 		}
@@ -668,13 +743,18 @@ Units.prototype.isEnemy = function(unit, otherUnit) {
 						}
 					} else {
 						if (_.indexOf(user.allies, otherUnit.user_id) == -1) {
+							//if (self.debug) {console.log(otherUnit.username+':'+otherUnit.name+':'+otherUnit.type+' is enemy of '+unit.username+':'+unit.name+':'+unit.type)}
 							isEnemy = true
+						} else {
+							//if (self.debug) {console.log(otherUnit.username+':'+otherUnit.name+':'+otherUnit.type+' is NOT enemy of '+unit.username+':'+unit.name+':'+unit.type)}
 						}
 					}
 					break
 			}
 		}
 		
+	} else {
+		throw new Meteor.Error('Could not find both users')
 	}
 
 	return isEnemy
@@ -692,8 +772,11 @@ Units.prototype.isEnemy = function(unit, otherUnit) {
 
 Units.prototype._removeFromAllUnits = function(unit) {
 	var self = this
+
+	if (self.debug) {console.log('removing '+unit.username+':'+unit.name+':'+unit.type+' from allUnits')}
+
 	self.allUnits = _.reject(self.allUnits, function(u) {
-		if (unit == u) {
+		if (unit._id == u._id) {
 			return true
 		}
 		return false
@@ -923,12 +1006,14 @@ Units.prototype._findAttackersAndDefender = function() {
 	// if there is a castle or a village then they are the defender
 	var castle = self.getCastle()
 	if (castle) {
+		if (self.debug) {console.log(castle.username+':'+castle.name+':'+castle.type+' is defender')}
 		castle.isAttacker = false
 		defenderFound = true
 	}
 
 	var village = self.getVillage()
 	if (village) {
+		if (self.debug) {console.log(village.username+':'+village.name+':'+village.type+' is defender')}
 		village.isAttacker = false
 		defenderFound = true
 	}
@@ -937,6 +1022,7 @@ Units.prototype._findAttackersAndDefender = function() {
 	if (!defenderFound) {
 		var firstArmy = self._findArmyThatArrivedFirst()
 		if (firstArmy) {
+			if (self.debug) {console.log(firstArmy.username+':'+firstArmy.name+':'+firstArmy.type+' is defender')}
 			firstArmy.isAttacker = false
 		}
 	}

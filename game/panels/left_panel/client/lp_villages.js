@@ -5,10 +5,6 @@ Template.lp_villages.helpers({
 })
 
 Template.lp_village.helpers({
-	inBattle: function() {
-		return Battles.findOne({x:this.x, y:this.y}, {fields: {_id:1}})
-	},
-	
 	unit_count: function() {
 		var self = this
 		var unit_count = 0
@@ -18,12 +14,3 @@ Template.lp_village.helpers({
 		return unit_count
 	}
 })
-
-
-Template.lp_village.created = function() {
-	this.autorun(function() {
-		if (Template.currentData()) {
-			Meteor.subscribe('battle_notifications_at_hex', Template.currentData().x, Template.currentData().y)
-		}
-	})
-}

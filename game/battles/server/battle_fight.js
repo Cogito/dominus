@@ -5,6 +5,7 @@ Fight = function (x, y, unitObj, battleDb) {
 	self.y = y
 	self.unitObj = unitObj
 	self.battleDb = battleDb
+	self.debug = true
 
 	var units = self.unitObj.getAllUnits()
 
@@ -21,7 +22,6 @@ Fight = function (x, y, unitObj, battleDb) {
 		battleDb.saveRecord()
 		self.unitObj.removeDeadSoldiers()
 		self.unitObj.removeDeadUnits()
-		self._sendEndBattleNotifications()
 		self._endBattle()
 	} else {
 		self._endBattle()
@@ -31,22 +31,26 @@ Fight = function (x, y, unitObj, battleDb) {
 }
 
 
-Fight.prototype._sendEndBattleNotifications = function() {
-	var self = this
+// Fight.prototype._sendEndBattleNotifications = function() {
+// 	var self = this
 
-	if (self._isBattleOver()) {
-		// send notification to remaining units
-		_.each(self.unitObj.getAllUnits(), function(unit) {
-			self.unitObj.sendNotification(unit)
-		})
-	}
-}
+// 	if (self._isBattleOver()) {
+// 		// send notification to remaining units
+// 		_.each(self.battleDb.getAllUnitsEverInBattle(), function(unit) {
+// 			self.unitObj.exitedBattle(unit)
+// 		})
+// 	}
+// }
 
 
 Fight.prototype._endBattle = function() {
 	var self = this
 
 	if (self._isBattleOver()) {
+		_.each(self.battleDb.getSendEndNotificationTo(), function(unit) {
+			self.unitObj.exitedBattle(unit)
+		})
+		
 		// is there a castle in this hex
 		// it might not be in allUnits so check mongodb
 		var castle_fields = {name:1, user_id:1, x:1, y:1, username:1, image:1}
@@ -102,6 +106,7 @@ Fight.prototype._isBattleOver = function() {
 	var units = self.unitObj.getAllUnits()
 
 	if (units.length < 2) {
+		if (self.debug) {console.log('battle is over')}
 		return true
 	}
 
@@ -114,7 +119,13 @@ Fight.prototype._isBattleOver = function() {
 		}
 	})
 
-	return !someoneHasAnEnemy
+	if (someoneHasAnEnemy) {
+		if (self.debug) {console.log('battle is not over')}
+		return false
+	} else {
+		if (self.debug) {console.log('battle is over')}
+		return true
+	}
 }
 
 

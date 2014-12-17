@@ -3,19 +3,3 @@ Template.lp_allies.helpers({
 		return LeftPanelAllies.find({}, {sort:{income:-1}})
 	}
 })
-
-
-Template.lp_ally.helpers({
-	inBattle: function() {
-		return Battles.findOne({x:this.x, y:this.y}, {fields: {_id:1}})
-	},
-})
-
-
-Template.lp_ally.created = function() {
-	this.autorun(function() {
-		if (Template.currentData()) {
-			Meteor.subscribe('battle_notifications_at_hex', Template.currentData().x, Template.currentData().y)
-		}
-	})
-}

@@ -64,7 +64,8 @@ Meteor.methods({
 							castle_y: user.y,
 							castle_id: user.castle_id,
 							income: income,
-							under_construction:true
+							under_construction:true,
+							inBattle: false
 						}
 
 						_.each(s.army.types, function(type) {

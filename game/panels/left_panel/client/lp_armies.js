@@ -10,7 +10,7 @@ Template.lp_army.helpers({
 		var castle = Castles.findOne({x:this.x, y:this.y})
 		if (castle) {
 			var relationship = getUnitRelationType(castle.user_id)
-			if (relationship == 'mine' || relationship == 'vassal') {
+			if (relationship == 'mine' || relationship == 'vassal' || relationship == 'direct_vassal') {
 				return true
 			}
 		}
@@ -18,14 +18,10 @@ Template.lp_army.helpers({
 		var village = Villages.findOne({x:this.x, y:this.y})
 		if (village) {
 			var relationship = getUnitRelationType(village.user_id)
-			if (relationship == 'mine' || relationship == 'vassal') {
+			if (relationship == 'mine' || relationship == 'vassal' || relationship == 'direct_vassal') {
 				return true
 			}
 		}
-	},
-
-	inBattle: function() {
-		return Battles.findOne({x:this.x, y:this.y}, {fields: {_id:1}})
 	},
 
 	unit_count: function() {
@@ -84,7 +80,7 @@ Template.lp_armies.created = function() {
 Template.lp_army.created = function() {
 	this.autorun(function() {
 		if (Template.currentData()) {
-			Meteor.subscribe('battle_notifications_at_hex', Template.currentData().x, Template.currentData().y)
+			Meteor.subscribe('gamePiecesAtHex', Template.currentData().x, Template.currentData().y)
 		}
 	})
 }

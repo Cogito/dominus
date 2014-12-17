@@ -10,10 +10,10 @@ Battle = {
 	run_battle: function(x,y) {
 		var self = this
 
-		
 		var unitObj = new Units(x,y)
 		var battleDb = new BattleDb(x,y, unitObj)
 		unitObj.battleDb = battleDb
+		battleDb.init()
 		var fight = new Fight(x, y, unitObj, battleDb)
 	}
 }

@@ -1,8 +1,4 @@
 Template.lp_castle.helpers({
-	inBattle: function(x,y) {
-		return Battles.findOne({x:x, y:y}, {fields: {_id:1}})
-	},
-
 	castle: function() {
 		var res = LeftPanelCastle.findOne({user_id:Meteor.userId()})
 		if (res) {
@@ -22,9 +18,5 @@ Template.lp_castle.created = function() {
 	
 	this.autorun(function() {
 		Meteor.subscribe('left_panel_castle')
-
-		if (Template.currentData()) {
-			Meteor.subscribe('battle_notifications_at_hex', Template.currentData().x, Template.currentData().y)
-		}
 	})
 }
