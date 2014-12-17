@@ -63,3 +63,10 @@ Meteor.publish('lastDominus', function() {
 	Mongo.Collection._publishCursor(cur, sub, 'lastDominus')
 	return sub.ready();
 })
+
+
+
+Meteor.startup(function () {  
+	Notifications._ensureIndex({user_id:1, type:1})
+	Settings._ensureIndex({name:1})
+})

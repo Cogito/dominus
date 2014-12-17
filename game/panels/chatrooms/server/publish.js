@@ -63,3 +63,21 @@ Meteor.publish('room_list', function() {
 	Mongo.Collection._publishCursor(cur, sub, 'room_list')
 	return sub.ready()
 })
+
+
+
+
+
+Meteor.startup(function () {  
+  Rooms._ensureIndex({members:1, type:1})
+  Roomchats._ensureIndex({room_id:1})
+})
+
+Rooms.allow({insert: false, update: false, remove: false})
+Roomchats.allow({insert: function(userId, doc) {
+	if (doc.user_id == userId) {
+		return true
+	} else {
+		return false
+	} 
+}, update: false, remove: false})

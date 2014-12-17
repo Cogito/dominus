@@ -14,3 +14,10 @@ Meteor.publish('markethistory', function() {
 		this.ready()
 	}
 })
+
+
+
+if (Meteor.isServer) {
+	Market.allow({insert: false, update: false, remove: false})
+	Markethistory.allow({insert: false, update: false, remove: false})
+}

@@ -11,12 +11,6 @@ if (Meteor.isServer) {
 	Gamestats.allow({insert: false, update: false, remove: false})
 	Jobstats.allow({insert: false, update: false, remove: false})
 	Jobqueue.allow({insert: false, update: false, remove: false})
-
-	Meteor.startup(function () {  
-		Jobstats._ensureIndex({job_name:1})
-		Notifications._ensureIndex({user_id:1, type:1})
-		Dailystats._ensureIndex({user_id:1})
-	})
 }
 
 // // //log every find
