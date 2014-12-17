@@ -4,7 +4,7 @@ Units = function(x, y) {
 	self.allUnits = []
 	self.x = x
 	self.y = y
-	self.debug = true
+	self.debug = false
 
 	if (self.debug) {console.log('--- loading units ---')}
 

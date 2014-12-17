@@ -1,6 +1,6 @@
 BattleDb = function(x,y, unitObj) {
 	this.unitObj = unitObj
-	this.debug = true
+	this.debug = false
 	this.x = x
 	this.y = y
 }

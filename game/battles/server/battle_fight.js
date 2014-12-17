@@ -5,7 +5,7 @@ Fight = function (x, y, unitObj, battleDb) {
 	self.y = y
 	self.unitObj = unitObj
 	self.battleDb = battleDb
-	self.debug = true
+	self.debug = false
 
 	var units = self.unitObj.getAllUnits()
 
