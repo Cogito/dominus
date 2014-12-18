@@ -111,7 +111,7 @@ if (Meteor.isServer) {
 		// pass type, quantity, buy
 		update_market_price: function(params, done) {
 			check(params.type, String)
-			check(params.quantity, Number)
+			check(params.quantity, validNumber)
 			check(params.buy, Boolean)
 
 			update_market_price(params.type, params.quantity, params.buy)
@@ -119,7 +119,7 @@ if (Meteor.isServer) {
 		},
 
 		record_market_history: function(params, done) {
-			check(params.quantity, Number)
+			check(params.quantity, validNumber)
 
 			record_market_history(params.quantity)
 			done()

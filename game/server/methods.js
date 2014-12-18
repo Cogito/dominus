@@ -1,7 +1,7 @@
 Meteor.methods({
   coords_to_id: function(x, y, type) {
-    check(x, Number);
-    check(y, Number);
+    check(x, validNumber);
+    check(y, validNumber);
     check(type, String);
 
     var id = false;

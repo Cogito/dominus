@@ -1,8 +1,8 @@
 Meteor.methods({
 
 	build_village: function(x, y) {
-		check(x, Number)
-		check(y, Number)
+		check(x, validNumber)
+		check(y, validNumber)
 
 		var user = Meteor.users.findOne(Meteor.userId(), {fields: {x:1, y:1, username:1, castle_id:1, grain:1, lumber:1, ore:1, wool:1, clay:1, glass:1}})
 		if (user) {

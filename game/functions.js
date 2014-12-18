@@ -1,6 +1,6 @@
 grid_to_pixel = function(x,y) {
-	check(x, Number)
-	check(y, Number)
+	check(x, validNumber)
+	check(y, validNumber)
 
 	var canvas_size = Session.get('canvas_size')
 	var hex_scale = get_hex_scale()
@@ -13,8 +13,8 @@ grid_to_pixel = function(x,y) {
 
 
 pixel_to_grid = function(x,y) {
-	check(x, Number)
-	check(y, Number)
+	check(x, validNumber)
+	check(y, validNumber)
 
 	var canvas_size = Session.get('canvas_size')
 	var hex_scale = get_hex_scale()
@@ -36,8 +36,8 @@ is_hex_empty_id = function(id) {
 }
 
 is_hex_empty_coords = function(x,y) {
-	check(x, Number)
-	check(y, Number)
+	check(x, validNumber)
+	check(y, validNumber)
 
 	if (Castles.find({x:x, y:y}).count() > 0) {
 		return false
@@ -54,8 +54,8 @@ is_hex_empty_coords = function(x,y) {
 }
 
 is_hex_empty_except_allies_coords = function(x,y) {
-    check(x, Number)
-    check(y, Number)
+    check(x, validNumber)
+    check(y, validNumber)
     
     if (Castles.find({x:x, y:y}).count() > 0) {
 		return false
@@ -118,8 +118,8 @@ id_to_coords = function(id, type) {
 
 
 coords_to_id = function(x, y, type) {
-	check(x, Number)
-	check(y, Number)
+	check(x, validNumber)
+	check(y, validNumber)
 	check(type, String)
 
 	var id = false
@@ -188,12 +188,12 @@ my_worth = function() {
 
 // doesn't take into account that market is not linear
 resources_to_gold = function(numGrain, numLumber, numOre, numWool, numClay, numGlass) {
-	check(numGrain, Number)
-	check(numLumber, Number)
-	check(numOre, Number)
-	check(numWool, Number)
-	check(numClay, Number)
-	check(numGlass, Number)
+	check(numGrain, validNumber)
+	check(numLumber, validNumber)
+	check(numOre, validNumber)
+	check(numWool, validNumber)
+	check(numClay, validNumber)
+	check(numGlass, validNumber)
 
 	var num = {
 		grain: numGrain,
@@ -229,7 +229,7 @@ speed_of_army_id = function(id) {
 // speed of army in number of minutes it takes to cross one hex
 speed_of_army = function(army) {
 	_.each(s.army.types, function(type) {
-		check(army[type], Number)
+		check(army[type], validNumber)
 	})
 
 	var army_speed = 1000

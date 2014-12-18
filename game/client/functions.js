@@ -5,8 +5,8 @@
 // offset your position on the map
 // this is pixel position not coordinates
 offset_hexes = function(offset_x, offset_y) {
-	check(offset_x, Number)
-	check(offset_y, Number)
+	check(offset_x, validNumber)
+	check(offset_y, validNumber)
 
 	var hexes_pos = Session.get('hexes_pos')
 
@@ -20,8 +20,8 @@ offset_hexes = function(offset_x, offset_y) {
 // move the map to a position
 // this is pixel position not coordinates
 move_hexes_to = function(pixel_x, pixel_y) {
-	check(pixel_x, Number)
-	check(pixel_y, Number)
+	check(pixel_x, validNumber)
+	check(pixel_y, validNumber)
 	if (isNaN(pixel_x) || isNaN(pixel_y)) {
 		return false
 	}
@@ -37,8 +37,8 @@ move_hexes_to = function(pixel_x, pixel_y) {
 // give coordinates of a hex 3,-5
 // why * -1 ?????
 center_on_hex = function(x, y) {
-	check(x, Number)
-	check(y, Number)
+	check(x, validNumber)
+	check(y, validNumber)
 	var hex_scale = get_hex_scale()
 	var canvas_size = Session.get('canvas_size')
 	var grid = Hx.coordinatesToPos(x, y, s.hex_size, s.hex_squish)
@@ -54,10 +54,10 @@ center_on_hex = function(x, y) {
 
 
 highlight_hex_path = function(from_x, from_y, to_x, to_y) {
-	check(from_x, Number)
-	check(from_y, Number)
-	check(to_x, Number)
-	check(to_y, Number)
+	check(from_x, validNumber)
+	check(from_y, validNumber)
+	check(to_x, validNumber)
+	check(to_y, validNumber)
 
 	var from_pos = Hx.coordinatesToPos(from_x, from_y, s.hex_size, s.hex_squish)
 	var to_pos = Hx.coordinatesToPos(to_x, to_y, s.hex_size, s.hex_squish)
@@ -75,6 +75,10 @@ highlight_hex_path = function(from_x, from_y, to_x, to_y) {
 
 	// get distance
 	var distance = Hx.hexDistance(from_x, from_y, to_x, to_y)
+
+	if (distance == 0) {
+		return false
+	}
 
 	for (i = 0; i <= distance; i++) {
 		// pick points along line

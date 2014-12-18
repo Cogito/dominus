@@ -36,7 +36,7 @@ Meteor.methods({
 	},
 
 	stripe_purchase_checkout: function(amount_in_cents, type, id, token) {
-		check(amount_in_cents, Number)
+		check(amount_in_cents, validNumber)
 		check(type, String)
 		check(id, String)
 		check(token, Object)
@@ -77,7 +77,7 @@ Meteor.methods({
 	},
 
 	stripe_donation_checkout: function(amount_in_cents, token) {
-		check(amount_in_cents, Number)
+		check(amount_in_cents, validNumber)
 		check(token, Object)
 
 		var fut = new Future()

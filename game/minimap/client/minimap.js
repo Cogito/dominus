@@ -1,8 +1,8 @@
 var minimap_size = 300
 
 UI.registerHelper('minimap_coord_to_pixel_x', function(x,y) {
-	check(x, Number)
-	check(y, Number)
+	check(x, validNumber)
+	check(y, validNumber)
 
 	var hex_size = get_hex_size()
 	var coords = minimap_coordinates_to_grid(x, y, hex_size)
@@ -10,8 +10,8 @@ UI.registerHelper('minimap_coord_to_pixel_x', function(x,y) {
 })
 
 UI.registerHelper('minimap_coord_to_pixel_y', function(x,y) {
-	check(x, Number)
-	check(y, Number)
+	check(x, validNumber)
+	check(y, validNumber)
 	
 	var hex_size = get_hex_size()
 	var coords = minimap_coordinates_to_grid(x, y, hex_size)
@@ -162,7 +162,7 @@ get_hex_size = function() {
 }
 
 set_hex_size = function(num) {
-	check(num, Number)
+	check(num, validNumber)
 	if (hex_size != num) {
 		hex_size = num
 		hex_size_dep.changed()
@@ -173,8 +173,8 @@ set_hex_size = function(num) {
 
 
 var minimap_coordinates_to_grid = function(x, y, hex_size) {
-	check(x, Number)
-	check(y, Number)
+	check(x, validNumber)
+	check(y, validNumber)
 
 	var pixel_x = hex_size * 3/2 * x
 	var pixel_y = hex_size * (Math.sqrt(3) * s.hex_squish) * (y + x/2)

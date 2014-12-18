@@ -39,7 +39,7 @@ Meteor.methods({
 			if (!new_army[type]) {
 				new_army[type] = 0
 			}
-			check(new_army[type], Number)
+			check(new_army[type], validNumber)
 		})
 
 		var fields = {castle_id:1, x:1, y:1}

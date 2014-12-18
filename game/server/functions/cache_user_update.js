@@ -3,13 +3,13 @@ cached_user_changes = []
 
 cache_user_update = function(user_id, gold, grain, lumber, ore, wool, clay, glass, from_vassal) {
 	check(user_id, String)
-	check(gold, Number)
-	check(grain, Number)
-	check(lumber, Number)
-	check(ore, Number)
-	check(wool, Number)
-	check(clay, Number)
-	check(glass, Number)
+	check(gold, validNumber)
+	check(grain, validNumber)
+	check(lumber, validNumber)
+	check(ore, validNumber)
+	check(wool, validNumber)
+	check(clay, validNumber)
+	check(glass, validNumber)
 	check(from_vassal, Boolean)
 
 	var user = _.find(cached_user_changes, function(u) {

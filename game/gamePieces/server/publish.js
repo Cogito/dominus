@@ -42,9 +42,9 @@ Meteor.publish("on_screen", function (x, y, hex_size, canvas_width, canvas_heigh
 
 
 max_onscreen = function(hex_size, canvas_width, canvas_height, hex_scale) {
-	check(hex_size, Number)
-	check(canvas_width, Number)
-	check(canvas_height, Number)
+	check(hex_size, validNumber)
+	check(canvas_width, validNumber)
+	check(canvas_height, validNumber)
 
 	hex_size = hex_size * hex_scale
 

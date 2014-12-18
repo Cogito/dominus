@@ -2,7 +2,7 @@ Meteor.methods({
 	buy_resource: function(type, quantity) {
 		var start_time = new Date()
 		check(type, String)
-		check(quantity, Number)
+		check(quantity, validNumber)
 
 		if (!isFinite(quantity)) {
 			throw new Meteor.Error(404, "buy_resource quantity !isFinite");
@@ -38,7 +38,7 @@ Meteor.methods({
 					worker.enqueue('record_market_history', {quantity: quantity})
 					//record_market_history(quantity)
 				}
-				check(cost, Number)
+				check(cost, validNumber)
 				return {result: true, cost: cost}
 
 			} else {
@@ -51,7 +51,7 @@ Meteor.methods({
 
 	sell_resource: function(type, quantity) {
 		check(type, String)
-		check(quantity, Number)
+		check(quantity, validNumber)
 
 		if (!isFinite(quantity)) {
 			throw new Meteor.Error(404, "sell_resource quantity !isFinite");

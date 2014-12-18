@@ -1,7 +1,7 @@
 create_army = function(user_id, army, x, y, moves) {
 	check(army, Object)
-	check(x, Number)
-	check(y, Number)
+	check(x, validNumber)
+	check(y, validNumber)
 	check(moves, Array)
 
 	var name = names.armies.part1[_.random(names.armies.part1.length-1)] +' '+ names.armies.part2[_.random(names.armies.part2.length-1)]
@@ -26,7 +26,7 @@ create_army = function(user_id, army, x, y, moves) {
 		if (!army[type]) {
 			army[type] = 0
 		}
-		check(army[type], Number)
+		check(army[type], validNumber)
 		fields[type] = army[type]
 	})
 
@@ -88,8 +88,8 @@ destroy_all_armies = function() {
 
 move_army_to_hex = function(army_id, x, y) {
 	check(army_id, String)
-	check(x, Number)
-	check(y, Number)
+	check(x, validNumber)
+	check(y, validNumber)
 
 	var unit = Armies.findOne(army_id)
 	if (!unit) {

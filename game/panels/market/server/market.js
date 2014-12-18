@@ -18,7 +18,7 @@ Meteor.methods({
 //buy is false if selling true if buying
 update_market_price = function(type, quantity, buy) {
 	check(type, String)
-	check(quantity, Number)
+	check(quantity, validNumber)
 	check(buy, Boolean)
 
 	if (!isFinite(quantity)) {
@@ -59,7 +59,7 @@ update_market_price = function(type, quantity, buy) {
 
 		price = price * Math.pow(s.market.increment + 1, quantity)
 
-		check(price, Number)
+		check(price, validNumber)
 
 		Market.update(resource._id, {$set: {price: price}})
 	}
@@ -67,7 +67,7 @@ update_market_price = function(type, quantity, buy) {
 
 
 record_market_history = function(quantity) {
-	check(quantity, Number)
+	check(quantity, validNumber)
 
 	if (!isFinite(quantity)) {
 		throw new Meteor.Error(404, "record_market_history quantity !isFinite");

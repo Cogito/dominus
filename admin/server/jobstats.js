@@ -1,6 +1,6 @@
 record_job_stat = function(job_name, time) {
 	check(job_name, String)
-	check(time, Number)
+	check(time, validNumber)
 	
 	var stat = Jobstats.findOne({job_name: job_name})
 	

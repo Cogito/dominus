@@ -33,8 +33,8 @@ Template.castle_flag.helpers({
 	},
 
 	flag_points: function(x, y) {
-		check(x, Number)
-		check(y, Number)
+		check(x, validNumber)
+		check(y, validNumber)
 
 		var grid = Hx.coordinatesToPos(x, y, s.hex_size, s.hex_squish)
 		var offset_x = _store.castles[this.image].flag_offset_x

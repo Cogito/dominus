@@ -31,8 +31,8 @@ notification_now_a_king = function(user_id, conquered_lord) {
 	check(conquered_lord, Object)
 	check(conquered_lord._id, String)
 	check(conquered_lord.username, String)
-	check(conquered_lord.x, Number)
-	check(conquered_lord.y, Number)
+	check(conquered_lord.x, validNumber)
+	check(conquered_lord.y, validNumber)
 	check(conquered_lord.castle_id, String)
 
 	create_notification_new(
@@ -48,8 +48,8 @@ notification_no_longer_a_king = function(user_id, king) {
 	check(king, Object)
 	check(king._id, String)
 	check(king.username, String)
-	check(king.x, Number)
-	check(king.y, Number)
+	check(king.x, validNumber)
+	check(king.y, validNumber)
 	check(king.castle_id, String)
 
 	create_notification_new(
@@ -99,8 +99,8 @@ notification_new_lord = function(user_id, lord) {
 	check(lord, Object)
 	check(lord._id, String)
 	check(lord.username, String)
-	check(lord.x, Number)
-	check(lord.y, Number)
+	check(lord.x, validNumber)
+	check(lord.y, validNumber)
 	check(lord.castle_id, String)
 
 	create_notification_new(user_id,
@@ -116,15 +116,15 @@ notification_sent_gold = function(user_id, userData, amount) {
 	check(userData, Object)
 	check(userData.to._id, String)
 	check(userData.to.username, String)
-	check(userData.to.x, Number)
-	check(userData.to.y, Number)
+	check(userData.to.x, validNumber)
+	check(userData.to.y, validNumber)
 	check(userData.to.castle_id, String)
 	check(userData.from._id, String)
 	check(userData.from.username, String)
-	check(userData.from.x, Number)
-	check(userData.from.y, Number)
+	check(userData.from.x, validNumber)
+	check(userData.from.y, validNumber)
 	check(userData.from.castle_id, String)
-	check(amount, Number)
+	check(amount, validNumber)
 
 	userData.from = filter_user_for_public_notification(userData.from)
 	userData.to = filter_user_for_public_notification(userData.to)
@@ -142,13 +142,13 @@ notification_sent_army = function(user_id, userData, army) {
 	check(userData, Object)
 	check(userData.to._id, String)
 	check(userData.to.username, String)
-	check(userData.to.x, Number)
-	check(userData.to.y, Number)
+	check(userData.to.x, validNumber)
+	check(userData.to.y, validNumber)
 	check(userData.to.castle_id, String)
 	check(userData.from._id, String)
 	check(userData.from.username, String)
-	check(userData.from.x, Number)
-	check(userData.from.y, Number)
+	check(userData.from.x, validNumber)
+	check(userData.from.y, validNumber)
 	check(userData.from.castle_id, String)
 	check(army, Object)
 
@@ -168,8 +168,8 @@ notification_new_chatroom_user = function(user_id, other_user) {
 	check(other_user, Object)
 	check(other_user._id, String)
 	check(other_user.username, String)
-	check(other_user.x, Number)
-	check(other_user.y, Number)
+	check(other_user.x, validNumber)
+	check(other_user.y, validNumber)
 	check(other_user.castle_id, String)
 
 	create_notification_new(user_id,

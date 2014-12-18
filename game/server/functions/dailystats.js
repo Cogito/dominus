@@ -127,7 +127,9 @@ update_losses_worth = function(user_id) {
 		// number of soldiers
 		var num = 0
 		_.each(s.army.types, function(type) {
-			num += user.losses[type]
+			if (user.losses[type]) {
+				num += user.losses[type]
+			}
 		})
 
 		check(num, validNumber)
@@ -168,7 +170,9 @@ init_dailystats_for_new_user = function(user_id) {
 			glass: 0
 		},
 		networth: 0,
-		num_allies: 0
+		num_allies: 0,
+		losses_worth:0,
+		losses_num:0
 	}
 	Dailystats.insert(stat)
 }

@@ -41,7 +41,7 @@ Template.store_panel_item.events({
 
 		check(self.type, String)
 		check(self.id, String)
-		check(amount_in_cents, Number)
+		check(amount_in_cents, validNumber)
 
 		$(error_alert).hide()
 

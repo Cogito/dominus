@@ -7,10 +7,10 @@ Meteor.methods({
 		check(moves, Array)
 
 		_.each(moves, function(move) {
-			check(move.from_x, Number)
-			check(move.from_y, Number)
-			check(move.to_x, Number)
-			check(move.to_y, Number)
+			check(move.from_x, validNumber)
+			check(move.from_y, validNumber)
+			check(move.to_x, validNumber)
+			check(move.to_y, validNumber)
 		})
 
 		if (moves.length < 1) {
@@ -30,10 +30,10 @@ Meteor.methods({
 			Moves.remove({army_id:army._id, user_id:Meteor.userId()})
 
 			_.each(moves, function(move, index) {
-				check(move.from_x, Number)
-				check(move.from_y, Number)
-				check(move.to_x, Number)
-				check(move.to_y, Number)
+				check(move.from_x, validNumber)
+				check(move.from_y, validNumber)
+				check(move.to_x, validNumber)
+				check(move.to_y, validNumber)
 				Moves.insert({
 					from_x:move.from_x,
 					from_y:move.from_y,

@@ -237,7 +237,7 @@ old_battle = function(attacker_id, attacker_type, defender_id, defender_type) {
 		while (i < num_dead) {
 			var rand = Math.floor(Math.random() * s.army.types.length)
 			var type = s.army.types[rand]
-			check(a.survivors[type], Number)
+			check(a.survivors[type], validNumber)
 
 			if (a.survivors[type] > 0) {
 				a.survivors[type]--
@@ -318,7 +318,7 @@ old_battle = function(attacker_id, attacker_type, defender_id, defender_type) {
 		while (i < num_dead) {
 			var rand = Math.floor(Math.random() * s.army.types.length)
 			var type = s.army.types[rand]
-			check(d.survivors[type], Number)
+			check(d.survivors[type], validNumber)
 
 			if (d.survivors[type] > 0) {
 				d.survivors[type]--

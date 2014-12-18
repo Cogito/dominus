@@ -268,15 +268,15 @@ var get_from_coords = function() {
 // from should be from the to of the last move
 // otherwise it should be from army position
 var set_from_coords = function(x, y) {
-	check(x, Number)
-	check(y, Number)
+	check(x, validNumber)
+	check(y, validNumber)
 	from_coords = {x:x, y:y}
 	from_coords_dep.changed()
 }
 
 var add_move_to_queue = function(x, y) {
-	check(x, Number)
-	check(y, Number)
+	check(x, validNumber)
+	check(y, validNumber)
 	var from = get_from_coords()
 	add_unit_move(from.x, from.y, x, y)
 }
@@ -286,10 +286,10 @@ var add_move_to_queue = function(x, y) {
 
 
 var add_unit_move = function(from_x, from_y, to_x, to_y) {
-	check(from_x, Number)
-	check(from_y, Number)
-	check(to_x, Number)
-	check(to_y, Number)
+	check(from_x, validNumber)
+	check(from_y, validNumber)
+	check(to_x, validNumber)
+	check(to_y, validNumber)
 
 	unit_moves.push({
 		from_x:from_x,
@@ -336,7 +336,7 @@ var length_of_queue = function() {
 }
 
 var remove_move_from_queue = function(index) {
-	check(index, Number)
+	check(index, validNumber)
 
 	// remove first
 	if (index == 0 && unit_moves.length > 1) {

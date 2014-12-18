@@ -345,7 +345,7 @@ Template.rp_hire_army.rendered = function() {
 	// set slider max
 	this.autorun(function() {
 		_.each(get_hiring_maxs(), function(max, type) {
-			check(max, Number)
+			check(max, validNumber)
 			var new_slider = $('.hire_units_new_slider[data-type='+type+']')
 			new_slider.attr('max', max)
 			new_slider.attr('min', 0)
@@ -381,7 +381,7 @@ var get_hiring_max = function(type) {
 
 var set_hiring_max = function(type, num) {
 	check(type, String)
-	check(num, Number)
+	check(num, validNumber)
 
 	if (hiring_maxs[type] != num) {
 		hiring_maxs[type] = num
@@ -431,7 +431,7 @@ var get_hiring_final_cost = function(type) {
 
 var set_hiring_final_cost = function(type, num) {
 	check(type, String)
-	check(num, Number)
+	check(num, validNumber)
 
 	if (hiring_final_costs[type] != num) {
 		hiring_final_costs[type] = num
@@ -482,7 +482,7 @@ var get_hiring_army_cost = function(type) {
 
 var set_hiring_army_cost = function(type, num) {
 	check(type, String)
-	check(num, Number)
+	check(num, validNumber)
 
 	if (hiring_army_costs[type] != num) {
 		hiring_army_costs[type] = num
@@ -533,7 +533,7 @@ var get_hiring_cost = function(type) {
 
 var set_hiring_cost = function(type, num) {
 	check(type, String)
-	check(num, Number)
+	check(num, validNumber)
 
 	if (hiring_costs[type] != num) {
 		hiring_costs[type] = num
@@ -582,7 +582,7 @@ var get_hiring_current_resource = function(type) {
 
 var set_hiring_current_resource = function(type, num) {
 	check(type, String)
-	check(num, Number)
+	check(num, validNumber)
 
 	if (hiring_current_resources[type] != num) {
 		hiring_current_resources[type] = num
@@ -630,7 +630,7 @@ var get_selected_hiring_unit = function(type) {
 
 var set_selected_hiring_unit = function(type, num) {
 	check(type, String)
-	check(num, Number)
+	check(num, validNumber)
 
 	if (selected_hiring_units[type] != num) {
 		selected_hiring_units_dep.changed()

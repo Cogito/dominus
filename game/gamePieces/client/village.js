@@ -33,8 +33,8 @@ Template.village.helpers({
 	},
 
 	flag_points: function(x, y) {
-		check(x, Number)
-		check(y, Number)
+		check(x, validNumber)
+		check(y, validNumber)
 
 		var canvas_size = Session.get('canvas_size')
 
@@ -94,8 +94,8 @@ draw_village_highlight = function(id, draw_resource_hexes) {
 
 	var coords = id_to_coords(id, 'village')
 
-	check(coords.x, Number)
-	check(coords.y, Number)
+	check(coords.x, validNumber)
+	check(coords.y, validNumber)
 
 	var grid = Hx.coordinatesToPos(coords.x, coords.y, s.hex_size, s.hex_squish)
 	var points = Hx.getHexPolygonVerts(grid.x, grid.y, s.hex_size * 0.95)

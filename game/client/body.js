@@ -2,9 +2,9 @@
 // needs to be cleaned up
 
 UI.registerHelper('coord_to_pixel_x', function(x, y, offset) {
-	check(x, Number)
-	check(y, Number)
-	check(offset, Number)
+	check(x, validNumber)
+	check(y, validNumber)
+	check(offset, validNumber)
 
 	var grid = Hx.coordinatesToPos(x, y, s.hex_size, s.hex_squish)
 	//return Math.round(pixel.x +  canvas_center_x + offset)
@@ -12,9 +12,9 @@ UI.registerHelper('coord_to_pixel_x', function(x, y, offset) {
 })
 
 UI.registerHelper('coord_to_pixel_y', function(x, y, offset) {
-	check(x, Number)
-	check(y, Number)
-	check(offset, Number)
+	check(x, validNumber)
+	check(y, validNumber)
+	check(offset, validNumber)
 	
 	var grid = Hx.coordinatesToPos(x, y, s.hex_size, s.hex_squish)
 	//return Math.round(pixel.y +  canvas_center_y + offset)

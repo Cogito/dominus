@@ -7,8 +7,8 @@ Template.center_on_button.events({
 	},
 
 	'click .center_on_button': function(event, template) {
-		check(template.data.x, Number)
-		check(template.data.y, Number)
+		check(template.data.x, validNumber)
+		check(template.data.y, validNumber)
 		center_on_hex(template.data.x,template.data.y)
 	}
 })

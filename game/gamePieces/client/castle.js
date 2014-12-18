@@ -46,8 +46,8 @@ draw_castle_highlight = function(castle_id, draw_resource_hexes) {
 
 	var coords = id_to_coords(castle_id, 'castle')
 
-	check(coords.x, Number)
-	check(coords.y, Number)
+	check(coords.x, validNumber)
+	check(coords.y, validNumber)
 
 	var grid = Hx.coordinatesToPos(coords.x, coords.y, s.hex_size, s.hex_squish)
 	var points = Hx.getHexPolygonVerts(grid.x, grid.y, s.hex_size * 0.95)

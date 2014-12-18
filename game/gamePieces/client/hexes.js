@@ -204,8 +204,8 @@ observe_hexes = function(self) {
 
 
 highlight_hex_coords = function(x, y) {
-	check(x, Number)
-	check(y, Number)
+	check(x, validNumber)
+	check(y, validNumber)
 
 	var pixel = Hx.coordinatesToPos(x, y, s.hex_size, s.hex_squish)
 	var points = Hx.getHexPolygonVerts(pixel.x, pixel.y, s.hex_size * 0.95)
@@ -228,8 +228,8 @@ highlight_hex_id = function(hex_id) {
 		return false
 	}
 
-	check(coords.x, Number)
-	check(coords.y, Number)
+	check(coords.x, validNumber)
+	check(coords.y, validNumber)
 
 	highlight_hex_coords(coords.x, coords.y)
 }
@@ -265,7 +265,7 @@ get_hex_scale = function() {
 }
 
 var set_hex_scale = function(num) {
-	check(num, Number)
+	check(num, validNumber)
 
 	if (hex_scale != num) {
 		hex_scale = num

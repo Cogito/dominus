@@ -32,7 +32,7 @@ gamestats_job = function() {
 	})
 
 	_.each(s.resource.types_plus_gold, function(type) {
-		check(total_res[type], Number)
+		check(total_res[type], validNumber)
 		stat['total_'+type] = total_res[type]
 	})
 
@@ -62,7 +62,7 @@ gamestats_job = function() {
 	})
 
 	_.each(s.army.types, function(type) {
-		check(total_army[type], Number)
+		check(total_army[type], validNumber)
 		stat['total_'+type] = total_army[type]
 	})
 
@@ -70,7 +70,7 @@ gamestats_job = function() {
 	// active users past 2 days
 	var cutoff = moment().subtract(2, 'days').toDate()
 	var num_active_users = Meteor.users.find({"status.lastLogin.date": {$gt: cutoff}}).count()
-	check(num_active_users, Number)
+	check(num_active_users, validNumber)
 	stat.num_active_users = num_active_users
 
 	// average market price
@@ -81,7 +81,7 @@ gamestats_job = function() {
 		count++
 	})
 	stat.avg_market_price = price / count
-	check(stat.avg_market_price, Number)
+	check(stat.avg_market_price, validNumber)
 
 	// number of chats
 	stat.num_chats = Roomchats.find().count()

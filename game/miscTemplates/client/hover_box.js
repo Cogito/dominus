@@ -10,8 +10,8 @@ Template.hover_box.helpers({
 		var x = Session.get('hover_box_data').x
 		var y = Session.get('hover_box_data').y
 
-		check(x, Number)
-		check(y, Number)
+		check(x, validNumber)
+		check(y, validNumber)
 
 		var grid = Hx.coordinatesToPos(x, y, s.hex_size, s.hex_squish)
 
@@ -37,8 +37,8 @@ Template.hover_box.helpers({
 		var x = Session.get('hover_box_data').x
 		var y = Session.get('hover_box_data').y
 		
-		check(x, Number)
-		check(y, Number)
+		check(x, validNumber)
+		check(y, validNumber)
 
 		var grid = Hx.coordinatesToPos(x, y, s.hex_size, s.hex_squish)
 

@@ -351,7 +351,7 @@ Fight = function(x, y) {
 			})
 		}
 
-		check(unit.base_power.total, Number)
+		check(unit.base_power.total, validNumber)
 
 		// percentage
 		// for each unit, what percentage of the army are they
@@ -362,7 +362,7 @@ Fight = function(x, y) {
 			} else {
 				unit.percentage[type] = unit[type] / unit.num_units
 			}
-			check(unit.percentage[type], Number)
+			check(unit.percentage[type], validNumber)
 		})
 
 	}
@@ -412,7 +412,7 @@ Fight = function(x, y) {
 				} else {
 					enemyPercentage[type] = enemyNumUnits[type] / enemyNumUnits.total
 				}
-				check(enemyPercentage[type], Number)
+				check(enemyPercentage[type], validNumber)
 			})
 
 			// bonuses
@@ -476,7 +476,7 @@ Fight = function(x, y) {
 			} else {
 				unit.enemy_percentage[type] = unit.enemy_num_units[type] / unit.enemy_num_units.total
 			}
-			check(unit.enemy_percentage[type], Number)
+			check(unit.enemy_percentage[type], validNumber)
 		})
 	}
 
@@ -506,7 +506,7 @@ Fight = function(x, y) {
 		_.each(s.army.types, function(type) {
 			unit.bonus.total += unit.bonus[type]
 		})
-		check(unit.bonus.total, Number)
+		check(unit.bonus.total, validNumber)
 	}
 
 
@@ -524,12 +524,12 @@ Fight = function(x, y) {
 
 		if (self.defender.type == 'castle') {
 			self.defender.final_power = self.defender.final_power * s.castle.defense_bonus
-			check(self.defender.final_power, Number)
+			check(self.defender.final_power, validNumber)
 		}
 
 		if (self.defender.type == 'village') {
 			self.defender.final_power = self.defender.final_power * s.village.defense_bonus
-			check(self.defender.final_power, Number)
+			check(self.defender.final_power, validNumber)
 		}
 
 		_.each(self.allUnits, function(u) {
@@ -576,7 +576,7 @@ Fight = function(x, y) {
 	// find who won
 	this.fight = function(unit) {
 		unit.dif = unit.final_power - unit.enemy_final_power
-		check(unit.dif, Number)
+		check(unit.dif, validNumber)
 	}
 	
 
@@ -626,7 +626,7 @@ Fight = function(x, y) {
 		while (i < num_dead) {
 			var rand = Math.floor(Math.random() * s.army.types.length)
 			var type = s.army.types[rand]
-			check(survivors[type], Number)
+			check(survivors[type], validNumber)
 
 			if (survivors[type] > 0) {
 				survivors[type]--
@@ -730,7 +730,7 @@ Fight = function(x, y) {
 		}
 
 		_.each(self.attackers, function(army) {
-			check(army.survivors.total, Number)
+			check(army.survivors.total, validNumber)
 			if (army.survivors.total > 0) {
 				if (self.isEnemy(self.castle, army)) {
 					var last_move_at = new Date(army.last_move_at)

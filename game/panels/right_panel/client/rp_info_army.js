@@ -142,8 +142,9 @@ Template.rp_info_army.helpers({
 	},
 
 	is_on_village: function() {
-		var num_villages = Villages.find({x:this.x, y:this.y}).count()
-		if (num_villages && num_villages > 0) {
+		var user = Template.instance().userData.get()
+		var village = Villages.findOne({x:this.x, y:this.y, user_id:user._id, under_construction:false})
+		if (village) {
 			return true
 		}
 	},
@@ -309,10 +310,10 @@ Template.rp_info_army.created = function() {
 			var totalDuration = 0
 			moves = moves.map(function(move) {
 				move.distance = Hx.hexDistance(move.from_x, move.from_y, move.to_x, move.to_y)
-				check(move.distance, Number)
+				check(move.distance, validNumber)
 				totalDistance += move.distance
 				var dur = self.speed.get() * move.distance * 1000 * 60
-				check(dur, Number)
+				check(dur, validNumber)
 				move.duration = ms_to_short_time_string(dur)
 				totalDuration += dur
 				move.index = index
