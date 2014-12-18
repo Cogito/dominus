@@ -123,7 +123,7 @@
 
 
 		<div class="panel panel-default">
-			<div class="panel-heading">Top 15 Players by Lost Soldiers</div>
+			<div class="panel-heading">Top 15 Players by Lost Soldiers<br><small class="light_text">Number Of Soldiers / Worth In Gold</small></div>
 			<table class="table table-condensed table-striped" style="counter-reset:lostSoldiers-counter {{startLostSoldiersCounterAt}};">
 				<tbody>
 					{{#each top10_losses}}
@@ -136,7 +136,7 @@
 								{{/if}}
 							</td>
 							<td class="rank_numbers">
-								{{round losses_worth}}
+								{{round losses_num}} / {{round losses_worth}}
 							</td>
 							<td class="rank_buttons">
 								{{> center_on_button x=x y=y selected_type='castle' selected_id=castle_id}}

@@ -98,6 +98,7 @@ update_losses_worth = function(user_id) {
 
 	var user = Meteor.users.findOne(user_id, {fields: {losses:1}})
 	if (user) {
+		// worth of losses in gold
 		var worth = {gold: 0}
 
 		_.each(s.resource.types, function(t) {
@@ -121,15 +122,21 @@ update_losses_worth = function(user_id) {
 			worth.total += m.price * worth[t]
 		})
 
-		if (!isFinite(worth.total) || isNaN(worth.total)) {
-			return false
-		}
+		check(worth.total, validNumber)
+
+		// number of soldiers
+		var num = 0
+		_.each(s.army.types, function(type) {
+			num += user.losses[type]
+		})
+
+		check(num, validNumber)
 
 		var begin = moment().startOf('day').toDate()
 		var end = moment().add(1, 'days').startOf('day').toDate()
 
-		Dailystats.upsert({user_id: user_id, created_at: {$gte: begin, $lt: end}}, {$setOnInsert: {user_id:user_id, created_at: new Date()}, $set: {losses_worth:worth.total, updated_at:new Date()}})
-		Meteor.users.update(user_id, {$set: {losses_worth: worth.total}})
+		Dailystats.upsert({user_id: user_id, created_at: {$gte: begin, $lt: end}}, {$setOnInsert: {user_id:user_id, created_at: new Date()}, $set: {losses_worth:worth.total, losses_num:num, updated_at:new Date()}})
+		Meteor.users.update(user_id, {$set: {losses_worth: worth.total, losses_num: num}})
 	}
 }
 

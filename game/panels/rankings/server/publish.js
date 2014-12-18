@@ -137,7 +137,8 @@ Meteor.publish('losses_rankings', function(page) {
 			castle_id:1,
 			x:1,
 			y:1,
-			losses_worth:1
+			losses_worth:1,
+			losses_num:1
 		}, limit:s.rankings.perPage})
 	Mongo.Collection._publishCursor(cur, sub, 'losses_rankings')
 	return sub.ready();

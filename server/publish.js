@@ -39,6 +39,7 @@ Meteor.publish('user_data', function () {
 			networth:1,
 			purchases:1,
 			losses_worth:1,
+			losses_num:1,
 			sp_show_coords:1,
 			sp_show_minimap:1
 		}})

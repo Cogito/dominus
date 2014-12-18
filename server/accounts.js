@@ -54,6 +54,7 @@ Accounts.onCreateUser(function(options, user) {
 	}
 	user.losses = {}
 	user.losses_worth = 0
+	user.losses_num = 0
 	user.sp_show_coords = false
 	user.sp_show_minimap = true
 
