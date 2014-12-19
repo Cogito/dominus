@@ -87,7 +87,7 @@ Template.navigation_panel.rendered = function() {
 
 	// arrow keys to scroll map
 	this.deps_move_map = Deps.autorun(function() {
-		if (Session.get('show_chat_panel') || Session.get('show_forum_panel') || Session.get('show_market_panel') || Session.get('show_settings_panel')) {
+		if (Session.get('show_chatrooms_panel') || Session.get('show_forum_panel') || Session.get('show_market_panel') || Session.get('show_settings_panel')) {
 			return false
 		}
 

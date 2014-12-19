@@ -177,6 +177,7 @@ nightly_job = function() {
 
 	Meteor.users.find().forEach(function(user) {
 		update_num_allies(user._id)
+		update_losses_worth(user._id)	// can remove this after next game starts
 	})
 }
 
