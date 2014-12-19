@@ -23,9 +23,10 @@ _.each(s.army.types, function(type) {
 
 
 
+// allies_below is required for army to tell if they're on a vassal's castle/village
 Meteor.publish('castle_user', function(user_id) {
 	if(this.userId) {
-		var fields = {username:1, num_allies_below:1, is_dominus:1, is_king:1, income:1, networth:1, losses_num:1}
+		var fields = {username:1, num_allies_below:1, allies_below:1, is_dominus:1, is_king:1, income:1, networth:1, losses_num:1}
 		return Meteor.users.find(user_id, {fields: fields})
 	} else {
 		this.ready()

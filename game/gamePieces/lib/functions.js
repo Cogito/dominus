@@ -23,7 +23,7 @@ getNiceRelationType = function(relationType) {
 // TODO: there are a few places that need to be updated to use this function
 getUnitRelationType = function(user_id) {
 	check(user_id, String)
-	
+
 	var fields = {lord:1, allies_above:1, allies_below:1, team:1, king:1, vassals:1}
 	var user = Meteor.users.findOne(Meteor.userId(), {fields: fields})
 	if (user) {
@@ -105,9 +105,10 @@ getUnitLocationBonusMultiplier = function(unit, type) {
 
 // castle must be in client db if called on client
 isArmyOnAllyCastle = function(army) {
+	check(army.user_id, String)
 	var castle = Castles.findOne({x:army.x, y:army.y}, {fields: {user_id:1}})
 	if (castle) {
-		return isUnitMineOrAllyBelow(castle)
+		return isUnitMineOrAllyBelow(castle, army.user_id)
 	}
 	return false
 }
@@ -115,17 +116,20 @@ isArmyOnAllyCastle = function(army) {
 
 // village must be in client db if called on client
 isArmyOnAllyVillage = function(army) {
+	check(army.user_id, String)
 	var village = Villages.findOne({x:army.x, y:army.y}, {fields: {user_id:1}})
 	if (village) {
-		return isUnitMineOrAllyBelow(village)
+		return isUnitMineOrAllyBelow(village, army.user_id)
 	}
 	return false
 }
 
 
-isUnitMineOrAllyBelow = function(unit) {
+// is unit user_id's or their vassal
+isUnitMineOrAllyBelow = function(unit, user_id) {
 	check(unit.user_id, String)
-	var user = Meteor.users.findOne(Meteor.userId(), {fields: {}})
+	check(user_id, String)
+	var user = Meteor.users.findOne(user_id, {fields: {allies_below:1}})
 	if (user) {
 		if (unit.user_id == user._id) {
 			return true

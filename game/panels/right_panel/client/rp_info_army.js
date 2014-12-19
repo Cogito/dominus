@@ -270,9 +270,18 @@ Template.rp_info_army.events({
 Template.rp_info_army.created = function() {
 	var self = this
 
+	self.gamePiecesAtHexLoaded = new ReactiveVar(false)
+	self.armyUserLoaded = new ReactiveVar(false)
 	self.autorun(function() {
 		if (Template.currentData()) {
-			Meteor.subscribe('gamePiecesAtHex', Template.currentData().x, Template.currentData().y)
+			var handle = Meteor.subscribe('gamePiecesAtHex', Template.currentData().x, Template.currentData().y)
+			self.gamePiecesAtHexLoaded.set(handle.ready())
+
+			if (Template.currentData().user_id != Meteor.userId()) {
+				// this is used to tell if castle/village in this hex is our ally
+				var castleUserHandle = Meteor.subscribe('castle_user', Template.currentData().user_id)
+				self.armyUserLoaded.set(castleUserHandle.ready())
+			}
 		}
 	})
 
@@ -397,12 +406,13 @@ Template.rp_info_army.created = function() {
 	})
 
 
+	// offense and defense power
 	self.power = new ReactiveVar(null)
 	self.autorun(function() {
-		if (Template.currentData()) {
+		if (Template.currentData() && self.gamePiecesAtHexLoaded.get() && self.armyUserLoaded.get()) {
 			Tracker.nonreactive(function() {
 				var basePower = getUnitBasePower(Template.currentData())
-				var locationMultiplier = getUnitLocationBonusMultiplier(Template.currentData(), Session.get('selected_type'))
+				var locationMultiplier = getUnitLocationBonusMultiplier(Template.currentData(), 'army')
 
 				var power = {
 					offense: basePower.offense.total * locationMultiplier,
