@@ -12,7 +12,7 @@
 <template name="lp_lord">
 	<tr>
 		<td>
-			{{username}}
+			<span class="summaryPanelColorBlock {{relationship _id}}">&nbsp;</span>{{username}}
 		</td>
 		<td style="text-align: right;">{{> center_on_button x=x y=y selected_type='castle' selected_id=castle_id}}</td>
 	</tr>

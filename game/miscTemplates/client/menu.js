@@ -18,7 +18,7 @@ Template.menu.helpers({
 	market_active: function() {
 		if (Session.get('show_market_panel')) { return 'active' } else { return '' }
 	},
-	
+
 	stats_active: function() {
 		if (Session.get('show_stats_panel')) { return 'active' } else { return '' }
 	},
@@ -104,6 +104,7 @@ Template.menu.helpers({
 
 Template.menu.events({
 	'click #show_summary_panel_button': function(event, template) {
+		event.preventDefault()
 		if (Session.get('show_summary_panel')) {
 			Session.set('show_summary_panel', false)
 		} else {
@@ -225,12 +226,12 @@ Template.menu.rendered = function() {
 		$('#subscription_ready_panel').css('left', Session.get('canvas_size').width / 2 - 50)
 		$('#welcome_screen').css('left', Session.get('canvas_size').half_width - 250)
 		$('#welcome_screen').css('top', Session.get('canvas_size').half_height - 150)
-	}		
+	}
 
 	var deps_newuser_first_run = true
 
 	this.deps_newuser = Deps.autorun(function() {
-		
+
 		if (Meteor.userId()) {
 			var user = Meteor.users.findOne(Meteor.userId(), {fields: {show_welcome_screen:1, castle_id:1, x:1, y:1}})
 			if (user) {

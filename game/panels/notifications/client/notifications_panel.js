@@ -7,6 +7,10 @@ var lastDominus = function() {
 }
 
 Template.notifications_panel.helpers({
+	num_notifications: function() {
+		return NotificationsUnread.find().count()
+	},
+
 	notifications_type: function() {
 		return Session.get('notifications_type')
 	},

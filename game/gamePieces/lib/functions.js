@@ -22,40 +22,40 @@ getNiceRelationType = function(relationType) {
 
 // TODO: there are a few places that need to be updated to use this function
 getUnitRelationType = function(user_id) {
-	check(user_id, String)
+	if (user_id) {
+		var fields = {lord:1, allies_above:1, allies_below:1, team:1, king:1, vassals:1}
+		var user = Meteor.users.findOne(Meteor.userId(), {fields: fields})
+		if (user) {
+			if (user_id == user._id) {
+				return 'mine'
+			} else if (_.indexOf(user.team, user_id) != -1) {
 
-	var fields = {lord:1, allies_above:1, allies_below:1, team:1, king:1, vassals:1}
-	var user = Meteor.users.findOne(Meteor.userId(), {fields: fields})
-	if (user) {
-		if (user_id == user._id) {
-			return 'mine'
-		} else if (_.indexOf(user.team, user_id) != -1) {
+				if (_.indexOf(user.allies_above, user_id) != -1) {
+					if (user_id == user.king) {
+						return 'king'
+					} else if (user_id == user.lord) {
+						return 'direct_lord'
+					} else {
+						return 'lord'
+					}
+				} else if (_.indexOf(user.allies_below, user_id) != -1) {
 
-			if (_.indexOf(user.allies_above, user_id) != -1) {
-				if (user_id == user.king) {
-					return 'king'
-				} else if (user_id == user.lord) {
-					return 'direct_lord'
+					if (_.indexOf(user.vassals, user_id) != -1) {
+						return 'direct_vassal'
+					} else {
+						return 'vassal'
+					}
+
+					// } else if (_.indexOf(user.siblings, user_id) != -1) {
+					// 	return 'sibling'
+
 				} else {
-					return 'lord'
+					return 'enemy_ally'
 				}
-			} else if (_.indexOf(user.allies_below, user_id) != -1) {
-
-				if (_.indexOf(user.vassals, user_id) != -1) {
-					return 'direct_vassal'
-				} else {
-					return 'vassal'
-				}
-
-			// } else if (_.indexOf(user.siblings, user_id) != -1) {
-			// 	return 'sibling'
 
 			} else {
-				return 'enemy_ally'
+				return 'enemy'
 			}
-
-		} else {
-			return 'enemy'
 		}
 	}
 	return null

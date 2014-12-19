@@ -203,13 +203,6 @@ dd {
 	}
 }
 
-/* stops buttons from looking like they stay pressed */
-.btn-primary:focus {
-    background-color: @brand-primary;
-    border-color: darken(@brand-primary, 5%)
-}
-
-
 .pad_group {
 	padding: 5px 15px 5px 15px;
 }

@@ -4,85 +4,88 @@
 	Fought {{roundNumber}} rounds.<br>
 	{{#if next_fight_in}}Next fight {{next_fight_in}}.<br>{{/if}}
 	<br>
-	Won last round.
-	<ul>
-		{{#each winnersLastRound}}
-			<li>{{username}}'s {{type}} {{name}}</li>
-		{{/each}}
-	</ul>
 
-	Lost last round.
-	<ul>
-		{{#each lostLastRound}}
-			<li>{{username}}'s {{type}} {{name}}</li>
-		{{/each}}
-	</ul>
+	{{#unless conqueredEmptyCastle}}
+		Won last round.
+		<ul>
+			{{#each winnersLastRound}}
+				<li>{{username}}'s {{type}} {{name}}</li>
+			{{/each}}
+		</ul>
 
-	<div class="panel panel-default">
-		<div class="panel-heading" style="text-align:left;">
-			<a data-toggle="collapse" href="#losses">
-				Losses From All Rounds
-			</a>
-		</div>
-		<div id="losses" class="panel-collapse collapse">
-			<div class="panel-body">
-				{{#each deaths}}
-					{{username}}'s {{type}} {{name}}
-					<ul>
-						{{#if greater_than_zero footmen}}
-							<li>
-								Footmen: {{footmen}}
-							</li>
-						{{/if}}
+		Lost last round.
+		<ul>
+			{{#each lostLastRound}}
+				<li>{{username}}'s {{type}} {{name}}</li>
+			{{/each}}
+		</ul>
 
-						{{#if greater_than_zero archers}}
-							<li>
-								Archers: {{archers}}
-							</li>
-						{{/if}}
-
-						{{#if greater_than_zero pikemen}}
-							<li>
-								Pikemen: {{pikemen}}
-							</li>
-						{{/if}}
-
-						{{#if greater_than_zero cavalry}}
-							<li>
-								Cavalry: {{cavalry}}
-							</li>
-						{{/if}}
-
-						{{#if greater_than_zero catapults}}
-							<li>
-								Catapults: {{catapults}}
-							</li>
-						{{/if}}
-						<li>
-							{{total}} soldiers worth {{round power}} power.
-						</li>
-					</ul>
-				{{/each}}
-			</div>
-		</div>
-	</div>
-
-	{{#each roundData}}
 		<div class="panel panel-default">
 			<div class="panel-heading" style="text-align:left;">
-				<a data-toggle="collapse" href="#results-{{roundNumber}}">
-					Round {{roundNumber}} Results
+				<a data-toggle="collapse" href="#losses">
+					Losses From All Rounds
 				</a>
 			</div>
-			<div id="results-{{roundNumber}}" class="panel-collapse collapse">
+			<div id="losses" class="panel-collapse collapse">
 				<div class="panel-body">
-					{{#each units}}
-						{{> battle_report_unit}}
+					{{#each deaths}}
+						{{username}}'s {{type}} {{name}}
+						<ul>
+							{{#if greater_than_zero footmen}}
+								<li>
+									Footmen: {{footmen}}
+								</li>
+							{{/if}}
+
+							{{#if greater_than_zero archers}}
+								<li>
+									Archers: {{archers}}
+								</li>
+							{{/if}}
+
+							{{#if greater_than_zero pikemen}}
+								<li>
+									Pikemen: {{pikemen}}
+								</li>
+							{{/if}}
+
+							{{#if greater_than_zero cavalry}}
+								<li>
+									Cavalry: {{cavalry}}
+								</li>
+							{{/if}}
+
+							{{#if greater_than_zero catapults}}
+								<li>
+									Catapults: {{catapults}}
+								</li>
+							{{/if}}
+							<li>
+								{{total}} soldiers worth {{round power}} power.
+							</li>
+						</ul>
 					{{/each}}
 				</div>
 			</div>
 		</div>
-	{{/each}}
+
+		{{#each roundData}}
+			<div class="panel panel-default">
+				<div class="panel-heading" style="text-align:left;">
+					<a data-toggle="collapse" href="#results-{{roundNumber}}">
+						Round {{roundNumber}} Results
+					</a>
+				</div>
+				<div id="results-{{roundNumber}}" class="panel-collapse collapse">
+					<div class="panel-body">
+						{{#each units}}
+							{{> battle_report_unit}}
+						{{/each}}
+					</div>
+				</div>
+			</div>
+		{{/each}}
+	{{/unless}}
 </template>
 
 

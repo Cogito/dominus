@@ -17,7 +17,7 @@
 							<a href="" class="dominus_goto">{{username}}</a> is the current Dominus.
 						{{/with}}
 					{{else}}
-						There is currently no Dominus. 
+						There is currently no Dominus.
 						{{#if lastDominus}}
 							{{#with lastDominus}}
 								<a href="" class="last_dominus_goto">{{username}}</a> was the last Dominus.
@@ -31,7 +31,9 @@
 		<div class="pad_group">
 			<div class="btn-group btn-group-justified" role="group">
 				<div class="btn-group" role="group">
-					<button type="button" class="btn btn-default btn-primary {{mine_active}}" id="show_mine_tab">My Notifications</button>
+					<button type="button" class="btn btn-default btn-primary {{mine_active}}" id="show_mine_tab">
+						Mine{{#if num_notifications}} &nbsp;<span class="badge">{{num_notifications}}</span>{{/if}}
+					</button>
 				</div>
 				<div class="btn-group" role="group">
 					<button type="button" class="btn btn-default btn-primary {{global_active}}" id="show_global_tab">Global</button>

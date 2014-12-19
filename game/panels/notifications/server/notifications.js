@@ -202,19 +202,21 @@ notification_battle = function(user_id, battle) {
 	check(user_id, String)
 	check(battle, Object)
 
-	if (battle.unit.dif > 0) {
-		var str = ' won '
+	if (typeof battle.unit.dif == "undefined") {
+		// this happens when someone wins without a fight
+		// when army attacks an empty castle
+		var str = ' conquered an empty castle at '
+	} else if (battle.unit.dif > 0) {
+		var str = ' won a battle at '
 	} else {
-		var str = ' lost '
+		var str = ' lost a battle at '
 	}
-
-
 
 	create_notification_new(
 		user_id,
 		'battle',
 		{battle:battle},
-		battle.unit.username+"'s "+battle.unit.type+str+' a battle at '+battle.unit.x+', '+battle.unit.y
+		battle.unit.username+"'s "+battle.unit.type+str+battle.unit.x+', '+battle.unit.y
 		)
 }
 

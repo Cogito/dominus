@@ -1,5 +1,4 @@
 Template.battle_report_unit.helpers({
-
 	unit_type: function(name) {
 		if (this.type == name) {
 			return true
@@ -21,11 +20,17 @@ Template.battle_report_unit.helpers({
 		} else {
 			return 'fa-shield'
 		}
-		
+
 	}
 })
 
 Template.battle_report.helpers({
+	conqueredEmptyCastle: function() {
+		if (typeof this.unit.dif == 'undefined') {
+			return true
+		}
+	},
+
 	next_fight_in: function() {
 		Session.get('refresh_time_field')
 		var time = moment(new Date(this.updated_at)).add(s.battle_interval, 'ms')
@@ -34,7 +39,7 @@ Template.battle_report.helpers({
 		} else {
 			return null
 		}
-		
+
 	},
 
 	roundData: function() {
