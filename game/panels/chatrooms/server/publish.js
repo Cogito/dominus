@@ -47,6 +47,19 @@ Meteor.publish('room_members', function(member_ids) {
 	return sub.ready()
 })
 
+Meteor.publish('room_members_everyone', function(member_ids) {
+	var sub = this
+	var cur = Meteor.users.find({}, {fields: {
+		username: 1,
+		x: 1,
+		y: 1,
+		castle_id: 1
+	}})
+	Mongo.Collection._publishCursor(cur, sub, 'room_members')
+	return sub.ready()
+})
+
+
 
 Meteor.publish('recentchats', function() {
 	if(this.userId) {
@@ -68,7 +81,7 @@ Meteor.publish('room_list', function() {
 
 
 
-Meteor.startup(function () {  
+Meteor.startup(function () {
   Rooms._ensureIndex({members:1, type:1})
   Roomchats._ensureIndex({room_id:1})
 })
@@ -79,5 +92,5 @@ Roomchats.allow({insert: function(userId, doc) {
 		return true
 	} else {
 		return false
-	} 
+	}
 }, update: false, remove: false})

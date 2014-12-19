@@ -371,7 +371,13 @@ Template.chatroom_open.created = function() {
 
 	self.chatroomMembersReady = new ReactiveVar(false)
 	this.autorun(function() {
-		var roomMembersHandle = Meteor.subscribe('room_members', Template.currentData().members)
+		if (Template.currentData()) {
+			if (Template.currentData().type == 'everyone') {
+				var roomMembersHandle = Meteor.subscribe('room_members_everyone', Template.currentData().members)
+			} else {
+				var roomMembersHandle = Meteor.subscribe('room_members', Template.currentData().members)
+			}
+		}
 		self.chatroomMembersReady.set(roomMembersHandle.ready())
 	})
 }
