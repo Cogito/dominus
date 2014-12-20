@@ -277,7 +277,9 @@ Template.rp_info_army.created = function() {
 			var handle = Meteor.subscribe('gamePiecesAtHex', Template.currentData().x, Template.currentData().y)
 			self.gamePiecesAtHexLoaded.set(handle.ready())
 
-			if (Template.currentData().user_id != Meteor.userId()) {
+			if (Template.currentData().user_id == Meteor.userId()) {
+				self.armyUserLoaded.set(true)
+			} else {
 				// this is used to tell if castle/village in this hex is our ally
 				var castleUserHandle = Meteor.subscribe('castle_user', Template.currentData().user_id)
 				self.armyUserLoaded.set(castleUserHandle.ready())

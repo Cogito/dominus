@@ -8,7 +8,7 @@ Meteor.methods({
 				var castle = Castles.findOne({user_id:user_id})
 				if (castle) {
 					if (castle.x == army.x && castle.y == army.y) {
-						Meteor.call('army_join_building', castle._id)
+						Meteor.call('army_join_building', army._id)
 					} else {
 						var moves = [{
 							from_x:army.x,
@@ -26,6 +26,46 @@ Meteor.methods({
 			}
 		} else {
 			throw new Meteor.Error('Could not find user.')
+		}
+	},
+
+	army_join_building: function(army_id) {
+		this.unblock()
+		check(army_id, String)
+
+		var user_id = Meteor.userId()
+
+		var fields = {x:1, y:1}
+
+		_.each(s.army.types, function(type) {
+			fields[type] = 1
+		})
+		
+		var army = Armies.findOne({_id:army_id, user_id:user_id}, {fields: fields})
+		if (army) {
+			var inc = {}
+			_.each(s.army.types, function(type) {
+				inc[type] = army[type]
+			})
+
+			var castle = Castles.findOne({x:army.x, y:army.y, user_id:user_id}, {fields: {_id:1}})
+			if (castle) {
+				Castles.update(castle._id, {$inc:inc})
+				Armies.remove(army._id)
+				Moves.remove({army_id:army._id})
+			} else {
+				var village = Villages.findOne({x:army.x, y:army.y, user_id:user_id}, {fields: {_id:1}})
+				if (village) {
+					
+					Villages.update(village._id, {$inc: inc})
+					Armies.remove(army._id)
+					Moves.remove({army_id:army._id})
+				} else {
+					throw new Meteor.Error('Could not find building.')
+				}
+			}
+		} else {
+			throw new Meteor.Error('Could not find army.')
 		}
 	},
 	

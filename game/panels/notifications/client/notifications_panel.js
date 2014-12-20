@@ -108,6 +108,8 @@ Template.notifications_panel.created = function() {
 		Meteor.subscribe('lastDominus')
 		Meteor.subscribe('dominus_rankings')
 	})
+
+	Session.set('notifications_type', 'notifications_mine')
 }
 
 

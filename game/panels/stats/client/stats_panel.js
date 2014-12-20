@@ -188,7 +188,7 @@ Template.stats_panel.rendered = function() {
 
 	this.autorun(function() {
 		if (Template.instance().subReady.get()) {
-			var gamestats = Gamestats.find()
+			var gamestats = Gamestats.find({}, {sort:{created_at:1}})
 
 			var num_users = gamestats.map(function(value, index) {
 				return {x: value.created_at, y:value.num_users }

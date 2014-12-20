@@ -75,4 +75,6 @@ if (Meteor.isServer) {
 		glass: 0
 	}
 
+	s.maxNotificationsPerUser = 150
+
 }

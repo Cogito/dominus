@@ -133,7 +133,7 @@ notification_sent_gold = function(user_id, userData, amount) {
 	create_notification_new(user_id,
 		'sent_gold',
 		userData,
-		userData.from.username+' sent '+userData.to.username+' '+amount+' Gold'
+		userData.from.username+' sent '+userData.to.username+' '+round_number(amount)+' Gold'
 		)
 }
 
@@ -260,9 +260,20 @@ create_notification_for_all_players = function(type, vars, title) {
 
 
 
+// if user has over max notifications
+// keep newest s.maxNotificationsPerUser
 delete_old_notifications = function() {
-	var begin = moment().add(-15, 'days').toDate()
-	Notifications.remove({read: true, created_at: {$lt: begin}})
+	Meteor.users.find().forEach(function(user) {
+		var numNots = Notifications.find({user_id:user._id}).count()
+		if (numNots > s.maxNotificationsPerUser) {
+			// find created_at of last one they should have
+			var nots = Notifications.find({user_id:user._id}, {sort:{created_at:-1}, limit:s.maxNotificationsPerUser}).fetch()
+			if (nots) {
+				var created_at = nots[s.maxNotificationsPerUser-1].created_at
+				Notifications.remove({user_id:user._id, created_at:{$lt:created_at}})
+			}
+		}
+	})
 }
 
 
