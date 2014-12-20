@@ -42,7 +42,7 @@ Template.rp_info_village.helpers({
 			return Battles.findOne({x:this.x, y:this.y})
 		}
 	},
-	
+
 	is_owner: function() {
 		if (this) {
 			return this.user_id == Meteor.userId()
@@ -74,7 +74,7 @@ Template.rp_info_village.helpers({
 		if (this) {
 			var income = this.income
 			if (income) {
-				var gold = income.gold
+				var gold = s.resource.gold_gained_at_village
 				gold += resources_to_gold(income.grain, income.lumber, income.ore, income.wool, income.clay, income.glass)
 				return gold
 			}

@@ -22,7 +22,7 @@ Meteor.methods({
 				user.wool >= s.village.cost.wool &&
 				user.clay >= s.village.cost.clay &&
 				user.glass >= s.village.cost.glass
-				) 
+				)
 			{
 
 				var hex = Hexes.findOne({x:x, y:y}, {fields: {_id:1, type:1}})
@@ -40,6 +40,8 @@ Meteor.methods({
 						_.each(s.resource.types_plus_gold, function(type) {
 							income[type] = 0
 						})
+
+						income.gold = s.resource.gold_gained_at_village
 
 						var hexes = Hx.getSurroundingHexes(x,y,s.resource.num_rings_village)
 						_.each(hexes, function(hx) {
@@ -82,10 +84,10 @@ Meteor.methods({
 							clay: -1 * s.village.cost.clay,
 							glass: -1 * s.village.cost.glass
 						}})
-						
+
 						// set hex to occupied
 						Hexes.update(hex._id, {$set: {has_building: true}})
-	
+
 						return id
 					} else {
 						throw new Meteor.Error('Hex is not empty.')
@@ -93,7 +95,7 @@ Meteor.methods({
 				} else {
 					throw new Meteor.Error('No hex found in db for '+x+','+y+'.')
 				}
-				
+
 			} else {
 				throw new Meteor.Error('Not enough resources.')
 			}
@@ -107,7 +109,7 @@ Meteor.methods({
 		this.unblock()
 
 		check(id, String)
-		
+
 		var fields = {user_id:1}
 		_.each(s.army.types, function(type) {
 			fields[type] = 1
