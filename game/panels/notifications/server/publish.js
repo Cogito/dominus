@@ -53,20 +53,23 @@ Meteor.publish('gameEndDate', function() {
 
 Meteor.publish('lastDominus', function() {
 	var sub = this
-	var cur = Meteor.users.find(Settings.findOne({name: 'lastDominusUserId'}).value, {fields: {
-		username:1,
-		castle_id:1,
-		x:1,
-		y:1,
-		is_dominus:1
-	}})
-	Mongo.Collection._publishCursor(cur, sub, 'lastDominus')
+	var lastDominusId = Settings.findOne({name: 'lastDominusUserId'})
+	if (lastDominusId && lastDominusId.value) {
+		var cur = Meteor.users.find(lastDominusId.value, {fields: {
+			username:1,
+			castle_id:1,
+			x:1,
+			y:1,
+			is_dominus:1
+		}})
+		Mongo.Collection._publishCursor(cur, sub, 'lastDominus')
+	}
 	return sub.ready();
 })
 
 
 
-Meteor.startup(function () {  
+Meteor.startup(function () {
 	Notifications._ensureIndex({user_id:1, type:1})
 	Settings._ensureIndex({name:1})
 })

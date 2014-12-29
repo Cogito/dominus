@@ -62,6 +62,49 @@ getUnitRelationType = function(user_id) {
 }
 
 
+// server only, get otherUser's relationship to user
+if (Meteor.isServer) {
+	getPlayersRelationType_server = function(user_id, otherUser_id) {
+		check(user_id, String)
+		check(otherUser_id, String)
+
+		var fields = {lord:1, allies_above:1, allies_below:1, team:1, king:1, vassals:1}
+		var user = Meteor.users.findOne(user_id, {fields: fields})
+		if (user) {
+			if (otherUser_id == user._id) {
+				return 'mine'
+			} else if (_.indexOf(user.team, otherUser_id) != -1) {
+
+				if (_.indexOf(user.allies_above, otherUser_id) != -1) {
+					if (otherUser_id == user.king) {
+						return 'king'
+					} else if (otherUser_id == user.lord) {
+						return 'direct_lord'
+					} else {
+						return 'lord'
+					}
+				} else if (_.indexOf(user.allies_below, otherUser_id) != -1) {
+
+					if (_.indexOf(user.vassals, otherUser_id) != -1) {
+						return 'direct_vassal'
+					} else {
+						return 'vassal'
+					}
+
+					// } else if (_.indexOf(user.siblings, user_id) != -1) {
+					// 	return 'sibling'
+
+				} else {
+					return 'enemy_ally'
+				}
+
+			} else {
+				return 'enemy'
+			}
+		}
+	}
+}
+
 getUnitBasePower = function(unit) {
 	var power = {offense:{total:0}, defense:{total:0}}
 

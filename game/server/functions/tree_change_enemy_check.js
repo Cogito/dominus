@@ -23,13 +23,12 @@ enemy_on_building_check = function() {
 check_for_enemies_here = function(building, type) {
 	var armies = Armies.find({x:building.x, y:building.y, user_id: {$ne: building.user_id}}, {fields: {user_id:1}})
 	if (armies.count() > 0) {
-		var user = Meteor.users.findOne(building.user_id, {fields: {allies:1}})
 		armies.forEach(function(army) {
-			if (_.indexOf(user.allies, army.user_id) == -1) {
-				// enemy here
+			var relation = getPlayersRelationType_server(army.user_id, building.user_id)
+			var canAttack = ['king', 'direct_lord', 'lord', 'enemy', 'enemy_ally']
+			if (_.contains(canAttack, relation)) {
 				if (!is_army_on_castle(building.user_id, army.user_id)) {
 					Battle.start_battle(building.x,building.y)
-					//battle(army._id, 'army', building._id, type)
 				}
 			}
 		})
@@ -61,15 +60,17 @@ enemies_together_check = function() {
 			// make sure army still exists
 			var a = Armies.findOne(army._id, {fields: {user_id:1}})
 			if (a) {
-				var user = Meteor.users.findOne(a.user_id, {fields: {allies:1, is_dominus:1}})
+				// if one of them is dominus then they fight
+				var user = Meteor.users.findOne(a.user_id, {fields: {is_dominus:1}})
 				var otherUser = Meteor.users.findOne(other_army.user_id, {fields: {is_dominus:1}})
-				if (user) {
+				if (user && otherUser) {
 					if (user.is_dominus || otherUser.is_dominus) {
 						// dominus' armies can attack any army
 						Battle.start_battle(army.x,army.y)
 					} else {
-						if (_.indexOf(user.allies, other_army.user_id) == -1) {
-							// enemy here
+						var relation = getPlayersRelationType_server(user._id, otherUser._id)
+						var canAttack = ['enemy', 'enemy_ally']
+						if (_.contains(canAttack, relation)) {
 							Battle.start_battle(army.x,army.y)
 						}
 					}
