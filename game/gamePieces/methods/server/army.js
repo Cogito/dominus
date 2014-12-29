@@ -40,7 +40,7 @@ Meteor.methods({
 		_.each(s.army.types, function(type) {
 			fields[type] = 1
 		})
-		
+
 		var army = Armies.findOne({_id:army_id, user_id:user_id}, {fields: fields})
 		if (army) {
 			var inc = {}
@@ -56,7 +56,7 @@ Meteor.methods({
 			} else {
 				var village = Villages.findOne({x:army.x, y:army.y, user_id:user_id}, {fields: {_id:1}})
 				if (village) {
-					
+
 					Villages.update(village._id, {$inc: inc})
 					Armies.remove(army._id)
 					Moves.remove({army_id:army._id})
@@ -68,7 +68,7 @@ Meteor.methods({
 			throw new Meteor.Error('Could not find army.')
 		}
 	},
-	
+
 
 	// do this on server only because the army might not be in client db
 	split_armies: function(id, new_army) {
@@ -192,7 +192,7 @@ Meteor.methods({
 					return false
 				}
 
-				
+
 			}
 		}
 		return false
@@ -305,7 +305,7 @@ Meteor.methods({
 					} else if (building_type == 'village') {
 						Villages.update(building._id, {$inc: inc})
 					}
-					
+
 
 					// send notification if this is not your building
 					if (user._id != building.user_id) {
@@ -315,6 +315,9 @@ Meteor.methods({
 								to: {_id: to._id, username: to.username, castle_id: to.castle_id, x: to.x, y: to.y},
 								from: {_id: user._id, username: user.username, castle_id: user.castle_id, x: user.x, y: user.y}
 							}, army)
+
+							worker.enqueue('update_networth', {user_id: user._id})
+							worker.enqueue('update_networth', {user_id: to._id})
 						}
 					}
 
