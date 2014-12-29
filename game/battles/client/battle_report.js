@@ -26,7 +26,7 @@ Template.battle_report_unit.helpers({
 
 Template.battle_report.helpers({
 	conqueredEmptyCastle: function() {
-		if (typeof this.unit.dif == 'undefined') {
+		if (this.unit && typeof this.unit.dif == 'undefined') {
 			return true
 		}
 	},

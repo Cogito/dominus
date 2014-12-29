@@ -135,7 +135,9 @@ Template.rp_move_unit.created = function() {
 	// if army moves to a new hex while player is making a move
 	// update the queued moves with the army's new position
 	self.autorun(function() {
-		update_first_move_to_new_army_position(Template.currentData().x, Template.currentData().y)
+		if (Template.currentData()) {
+			update_first_move_to_new_army_position(Template.currentData().x, Template.currentData().y)
+		}
 	})
 
 	// army speed

@@ -91,8 +91,8 @@
 									{{#each moves}}
 										<tr>
 											<td>{{num}}</td>
-											<td>{{from_x}},{{from_y}}</td>
-											<td>{{to_x}},{{to_y}}</td>
+											<td>{{> coordLink x=from_x y=from_y}}</td>
+											<td>{{> coordLink x=to_x y=to_y}}</td>
 											<td>{{distance}} hexes</td>
 											<td>{{duration}}</td>
 											<td>
@@ -127,7 +127,7 @@
 						<button type="button" class="btn btn-sm btn-primary btn-block" id="join_village_button">Join Village Garrison</button>
 					{{/if}}
 				</div>
-				
+
 				<br>
 				<div class="panel panel-default">
 					<div class="panel-heading">
@@ -257,7 +257,7 @@
 						</div>
 					{{/if}}
 				</div>
-				
+
 
 				<div class="pad_group">
 					<button type="button" class="btn btn-sm btn-primary btn-block" id="disband_army_button">Disband Army</button>

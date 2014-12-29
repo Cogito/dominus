@@ -15,7 +15,7 @@ UI.registerHelper('coord_to_pixel_y', function(x, y, offset) {
 	check(x, validNumber)
 	check(y, validNumber)
 	check(offset, validNumber)
-	
+
 	var grid = Hx.coordinatesToPos(x, y, s.hex_size, s.hex_squish)
 	//return Math.round(pixel.y +  canvas_center_y + offset)
 	return grid.y +  offset

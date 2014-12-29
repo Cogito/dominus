@@ -69,8 +69,8 @@
 						{{#each queued_moves}}
 							<tr>
 								<td>{{num}}</td>
-								<td>{{from_x}},{{from_y}}</td>
-								<td>{{to_x}},{{to_y}}</td>
+								<td>{{> coordLink x=from_x y=from_y}}</td>
+								<td>{{> coordLink x=to_x y=to_y}}</td>
 								<td>{{distance}} hexes</td>
 								<td>{{duration}}</td>
 								<td>
@@ -82,8 +82,8 @@
 							{{#with current_move}}
 								<tr>
 									<td>{{num}}</td>
-									<td>{{from_x}},{{from_y}}</td>
-									<td>{{to_x}},{{to_y}}</td>
+									<td>{{> coordLink x=from_x y=from_y}}</td>
+									<td>{{> coordLink x=to_x y=to_y}}</td>
 									<td>{{distance}} hexes</td>
 									<td>{{duration}}</td>
 									<td></td>
