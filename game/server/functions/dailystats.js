@@ -69,10 +69,7 @@ update_networth = function(user_id) {
 		return false
 	}
 
-	var begin = moment().startOf('day').toDate()
-	var end = moment().add(1, 'days').startOf('day').toDate()
-
-	Dailystats.upsert({user_id: user_id, created_at: {$gte: begin, $lt: end}}, {$setOnInsert: {user_id:user_id, created_at: new Date()}, $set: {networth:worth.total, updated_at:new Date()}})
+	Dailystats.upsert({user_id: user_id, created_at: {$gte: s.statsBegin, $lt: s.statsEnd}}, {$setOnInsert: {user_id:user_id, created_at: new Date()}, $set: {networth:worth.total, updated_at:new Date()}})
 	Meteor.users.update(user_id, {$set: {networth: worth.total}})
 }
 
@@ -86,10 +83,7 @@ update_num_allies = function(user_id) {
 			var num_allies_below = 0
 		}
 
-		var begin = moment().startOf('day').toDate()
-		var end = moment().add(1, 'days').startOf('day').toDate()
-
-		Dailystats.upsert({user_id: user_id, created_at: {$gte: begin, $lt: end}}, {$setOnInsert: {user_id:user_id, created_at: new Date()}, $set: {num_allies:num_allies_below, updated_at:new Date()}})
+		Dailystats.upsert({user_id: user_id, created_at: {$gte: s.statsBegin, $lt: s.statsEnd}}, {$setOnInsert: {user_id:user_id, created_at: new Date()}, $set: {num_allies:num_allies_below, updated_at:new Date()}})
 	}
 }
 
@@ -134,10 +128,7 @@ update_losses_worth = function(user_id) {
 
 		check(num, validNumber)
 
-		var begin = moment().startOf('day').toDate()
-		var end = moment().add(1, 'days').startOf('day').toDate()
-
-		Dailystats.upsert({user_id: user_id, created_at: {$gte: begin, $lt: end}}, {$setOnInsert: {user_id:user_id, created_at: new Date()}, $set: {losses_worth:worth.total, losses_num:num, updated_at:new Date()}})
+		Dailystats.upsert({user_id: user_id, created_at: {$gte: s.statsBegin, $lt: s.statsEnd}}, {$setOnInsert: {user_id:user_id, created_at: new Date()}, $set: {losses_worth:worth.total, losses_num:num, updated_at:new Date()}})
 		Meteor.users.update(user_id, {$set: {losses_worth: worth.total, losses_num: num}})
 	}
 }

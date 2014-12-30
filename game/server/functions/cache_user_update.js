@@ -105,7 +105,7 @@ run_cached_user_update = function() {
 	}
 
 	_.each(cached_user_changes, function(arr) {
-		
+
 		// get income for ranking
 		var income = arr.gold
 		_.each(s.resource.types, function(type) {
@@ -161,9 +161,6 @@ run_cached_user_update = function() {
 			updated_at: new Date()
 		}
 
-		var begin = moment().startOf('day').toDate()
-		var end = moment().add(1, 'days').startOf('day').toDate()
-
-		Dailystats.upsert({user_id: arr.user_id, created_at: {$gte: begin, $lt: end}}, {$setOnInsert:setOnInsert, $inc:inc, $set:set})
+		Dailystats.upsert({user_id: arr.user_id, created_at: {$gte: s.statsBegin, $lt: s.statsEnd}}, {$setOnInsert:setOnInsert, $inc:inc, $set:set})
 	})
 }

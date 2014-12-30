@@ -77,4 +77,10 @@ if (Meteor.isServer) {
 
 	s.maxNotificationsPerUser = 150
 
+	// how much time between dailystat ticks
+	s.statsInverval = 6
+	var currentHour = moment().hour()
+	var beginHour = currentHour - (currentHour % s.statsInverval)
+	s.statsBegin = moment().startOf('day').add(beginHour, 'hours').toDate()
+	s.statsEnd = moment().startOf('day').add(beginHour, 'hours').add(s.statsInverval, 'hours').toDate()
 }

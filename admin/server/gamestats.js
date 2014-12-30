@@ -2,10 +2,7 @@
 gamestats_job = function() {
 	var start_time = new Date()
 
-	var begin = moment().startOf('day').toDate()
-	var end = moment().add(1, 'days').startOf('day').toDate()
-
-	var stat = Gamestats.findOne({created_at: {$gte: begin, $lt: end}})
+	var stat = Gamestats.findOne({created_at: {$gte: s.statsBegin, $lt: s.statsEnd}})
 
 	if (!stat) {
 		var stat = {
