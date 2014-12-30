@@ -147,7 +147,7 @@ observe_hexes = function(self) {
 	self.handle = query.observe({
 		added: function(doc) {
 			var canvas_size = Session.get('canvas_size')
-			
+
 			var grid = Hx.coordinatesToPos(doc.x, doc.y, s.hex_size, s.hex_squish)
 			// var x = Math.round(pixel.x + canvas_size.half_width + offset_x)
 			// var y = Math.round(pixel.y + canvas_size.half_height + offset_y)
@@ -170,12 +170,12 @@ observe_hexes = function(self) {
 			}
 
 			hex_image.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '/game_images/'+filename)
-			
+
 			container.appendChild(hex_image)
 
 			var hex_polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
 			hex_polygon.setAttribute('class', 'hex')
-			var points = Hx.getHexPolygonVerts(grid.x, grid.y, s.hex_size)
+			var points = Hx.getHexPolygonVerts(grid.x, grid.y, s.hex_size, s.hex_squish)
 			hex_polygon.setAttribute('points', points)
 			hex_polygon.setAttribute('data-id', doc._id)
 			hex_polygon.setAttribute('data-x', doc.x)
@@ -208,7 +208,7 @@ highlight_hex_coords = function(x, y) {
 	check(y, validNumber)
 
 	var pixel = Hx.coordinatesToPos(x, y, s.hex_size, s.hex_squish)
-	var points = Hx.getHexPolygonVerts(pixel.x, pixel.y, s.hex_size * 0.95)
+	var points = Hx.getHexPolygonVerts(pixel.x, pixel.y, s.hex_size * 0.95, s.hex_squish)
 
 	if (points != false) {
 		var polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')

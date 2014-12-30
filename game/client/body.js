@@ -37,7 +37,7 @@ UI.registerHelper('half_canvas_height', function() { return Session.get('canvas_
 // draw the outline for the hex
 UI.registerHelper('hex_points', function(x, y) {
 	var grid = Hx.coordinatesToPos(x, y, s.hex_size, s.hex_squish)
-	return Hx.getHexPolygonVerts(grid.x, grid.y, s.hex_size)
+	return Hx.getHexPolygonVerts(grid.x, grid.y, s.hex_size, s.hex_squish)
 })
 
 UI.registerHelper('game_name', function() {
