@@ -1,5 +1,20 @@
 Meteor.methods({
 
+	admin_setupDefaultForums: function() {
+		if (get_user_property("admin")) {
+			var forums = Forums.find()
+			if (forums) {
+				// only continus if there are no forums
+				if (forums.count() == 0) {
+					Meteor.call('admin_create_forum', 'News', '')
+					Meteor.call('admin_create_forum', 'General', '')
+					Meteor.call('admin_create_forum', 'Feature Requests', 'Issues are tracked <a href="https://github.com/dan335/dominus/issues">here</a>')
+					Meteor.call('admin_create_forum', 'Report a Bug', 'Issues are tracked <a href="https://github.com/dan335/dominus/issues">here</a>')
+				}
+			}
+		}
+	},
+
 	admin_create_forum: function(name, desc) {
 		if (get_user_property("admin")) {
 			desc = desc.replace(/\r?\n/g, '<br />')

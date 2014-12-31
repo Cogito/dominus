@@ -27,4 +27,8 @@ Template.adminForums.events({
 		var id = $(event.currentTarget).attr('data-id')
 		Meteor.call('admin_forum_move_down', id)
 	},
+
+	'click #setupDefaultButton': function(event, template) {
+		Meteor.call('admin_setupDefaultForums')
+	}
 })

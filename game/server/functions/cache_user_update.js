@@ -162,5 +162,6 @@ run_cached_user_update = function() {
 		}
 
 		Dailystats.upsert({user_id: arr.user_id, created_at: {$gte: s.statsBegin, $lt: s.statsEnd}}, {$setOnInsert:setOnInsert, $inc:inc, $set:set})
+		worker.enqueue('updateIncomeStats', {user_id: arr.user_id})
 	})
 }

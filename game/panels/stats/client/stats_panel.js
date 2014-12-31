@@ -22,6 +22,83 @@ Template.stats_panel.rendered = function() {
 		if (subs.ready('stats')) {
 			var dailystats = Dailystats.find({user_id: Meteor.userId()}, {sort: {created_at: 1}})
 
+			var inc = {}
+			var vInc = {}
+
+			_.each(s.resource.types_plus_gold, function(type) {
+				inc[type] = []
+				vInc[type] = []
+			})
+
+			dailystats.forEach(function(stat) {
+				_.each(s.resource.types_plus_gold, function(type) {
+
+					if (stat.inc && stat.inc[type]) {
+						var y = stat.inc[type]
+						inc[type].push({x:stat.created_at, y:y})
+					}
+
+					if (stat.vassalInc && stat.vassalInc[type]) {
+						var y = stat.vassalInc[type]
+						vInc[type].push({x:stat.created_at, y:y})
+					}
+				})
+			})
+
+
+			var incData = [
+				{values: inc.gold, key: 'Gold', color: '#e6d545'},
+				{values: inc.grain, key: 'Grain', color: '#82d957'},
+				{values: inc.lumber, key: 'Lumber', color: '#b3823e'},
+				{values: inc.ore, key: 'Ore', color: '#d9d9d9'},
+				{values: inc.wool, key: 'Wool', color: '#d9cf82'},
+				{values: inc.clay, key: 'Clay', color: '#d98659'},
+				{values: inc.glass, key: 'Glass', color: '#5793d9'},
+				]
+
+			nv.addGraph(function() {
+				var chart = nv.models.lineChart().useInteractiveGuideline(true).showLegend(true).showYAxis(true).showXAxis(true)
+				chart.xAxis.tickFormat(function(d) { return d3.time.format('%b %d')(new Date(d)); })
+				chart.yAxis.tickFormat(d3.format(",.0f"))
+
+				d3.select('#incChart svg').datum(incData).transition().duration(300).call(chart)
+
+				nv.utils.windowResize(chart.update)
+
+				return chart
+			})
+
+
+
+			var vIncData = [
+				{values: vInc.gold, key: 'Gold', color: '#e6d545'},
+				{values: vInc.grain, key: 'Grain', color: '#82d957'},
+				{values: vInc.lumber, key: 'Lumber', color: '#b3823e'},
+				{values: vInc.ore, key: 'Ore', color: '#d9d9d9'},
+				{values: vInc.wool, key: 'Wool', color: '#d9cf82'},
+				{values: vInc.clay, key: 'Clay', color: '#d98659'},
+				{values: vInc.glass, key: 'Glass', color: '#5793d9'},
+				]
+
+			nv.addGraph(function() {
+				var chart = nv.models.lineChart().useInteractiveGuideline(true).showLegend(true).showYAxis(true).showXAxis(true)
+				chart.xAxis.tickFormat(function(d) { return d3.time.format('%b %d')(new Date(d)); })
+				chart.yAxis.tickFormat(d3.format(",.0f"))
+
+				d3.select('#vassalIncChart svg').datum(vIncData).transition().duration(300).call(chart)
+
+				nv.utils.windowResize(chart.update)
+
+				return chart
+			})
+
+
+
+
+
+
+
+
 			var i_gold = dailystats.map(function(value, index) {
 				return {x: value.created_at, y:value.income.gold }
 			})

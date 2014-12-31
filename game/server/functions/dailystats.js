@@ -136,12 +136,54 @@ update_losses_worth = function(user_id) {
 
 
 
+updateIncomeStats = function(user_id) {
+	var user = Meteor.users.findOne(user_id, {fields: {res_update:1}})
+	if (user) {
+		var income = {}
+		var vassalIncome = {}
+
+		_.each(s.resource.types_plus_gold, function(type) {
+			income[type] = user.res_update[type]
+			vassalIncome[type] = user.res_update.from_vassal[type]
+		})
+
+		Dailystats.upsert({
+				user_id: user_id,
+				created_at: {$gte: s.statsBegin, $lt: s.statsEnd}
+			}, {
+				$setOnInsert: {user_id:user_id, created_at: new Date()},
+				$set: {inc:income, vassalInc:vassalIncome, updated_at:new Date()}
+			}
+		)
+	}
+}
+
+
+
 
 init_dailystats_for_new_user = function(user_id) {
 	var stat = {
 		user_id: user_id,
 		created_at: new Date(),
 		updated_at: new Date(),
+		inc: {
+			gold:0,
+			grain:0,
+			lumber:0,
+			ore:0,
+			wool:0,
+			clay:0,
+			glass:0,
+		},
+		vassalInc: {
+			gold:0,
+			grain:0,
+			lumber:0,
+			ore:0,
+			wool:0,
+			clay:0,
+			glass:0,
+		},
 		income: {
 			gold: 0,
 			grain: 0,
