@@ -1,10 +1,14 @@
-Template.stats_panel.created = function() {
-	var self = this
+var subs = new ReadyManager()
 
-	// subscribe
-	self.subReady = new ReactiveVar(false)
+Template.stats_panel.created = function() {
 	this.autorun(function() {
-		self.subReady.set(Meteor.subscribe('my_dailystats').ready() && Meteor.subscribe('stats_gamestats').ready())
+		subs.subscriptions([{
+			groupName:'stats',
+			subscriptions: [
+				Meteor.subscribe('my_dailystats').ready(),
+				Meteor.subscribe('stats_gamestats').ready()
+				]
+		}])
 	})
 }
 
@@ -15,7 +19,7 @@ Template.stats_panel.rendered = function() {
 	this.firstNode.parentNode._uihooks = leftPanelAnimation
 
 	this.autorun(function() {
-		if (Template.instance().subReady.get()) {
+		if (subs.ready('stats')) {
 			var dailystats = Dailystats.find({user_id: Meteor.userId()}, {sort: {created_at: 1}})
 
 			var i_gold = dailystats.map(function(value, index) {
@@ -187,7 +191,7 @@ Template.stats_panel.rendered = function() {
 
 
 	this.autorun(function() {
-		if (Template.instance().subReady.get()) {
+		if (subs.ready('stats')) {
 			var gamestats = Gamestats.find({}, {sort:{created_at:1}})
 
 			var num_users = gamestats.map(function(value, index) {

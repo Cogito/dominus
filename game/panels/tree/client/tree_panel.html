@@ -2,7 +2,7 @@
 	<div id="tree_panel">
 		<div class="panel_title"><i class="fa fa-tree fa-lg"></i> &nbsp;Tree</div>
 		<div class="panel panel-body" id="tree">
-			{{#if subReady}}
+			{{#if treeReady}}
 				<ul>
 					{{#each kings}}
 						<li>
@@ -12,7 +12,7 @@
 					{{/each}}
 				</ul>
 			{{else}}
-				<i class="fa fa-refresh fa-spin"></i> &nbsp; Loading
+				{{> loading}}
 			{{/if}}
 		</div>
 	</div>

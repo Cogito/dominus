@@ -1,7 +1,9 @@
+var subs = new ReadyManager()
+
 var loadingArray = function() {
 	var ret = []
 	for (var x=0; x<s.rankings.perPage; x++) {
-		ret.push({username:'', is_me:false, x:'', y:'', castle_id:''})
+		ret.push({username:'loading', is_me:false, x:'', y:'', castle_id:''})
 	}
 	return ret
 }
@@ -28,7 +30,7 @@ Template.rankings_panel.helpers({
 	},
 
 	top10_networth: function() {
-		if (Template.instance().networthLoaded.get()) {
+		if (subs.ready('net') && subs.ready('playerCount')) {
 			return RankingsNetworth.find({}, {sort: {networth: -1}}).map(function(u) {
 				if (u._id == Meteor.userId()) {
 					u.is_me = true
@@ -43,7 +45,7 @@ Template.rankings_panel.helpers({
 	},
 
 	top10_income: function() {
-		if (Template.instance().incomeLoaded.get()) {
+		if (subs.ready('inc') && subs.ready('playerCount')) {
 			return RankingsIncome.find({}, {sort: {income: -1}}).map(function(u) {
 				if (u._id == Meteor.userId()) {
 					u.is_me = true
@@ -58,7 +60,7 @@ Template.rankings_panel.helpers({
 	},
 
 	top10_allies: function() {
-		if (Template.instance().allyLoaded.get()) {
+		if (subs.ready('ally') && subs.ready('playerCount')) {
 			return RankingsAllies.find({}, {sort: {num_allies_below: -1}}).map(function(u) {
 				if (u._id == Meteor.userId()) {
 					u.is_me = true
@@ -73,7 +75,7 @@ Template.rankings_panel.helpers({
 	},
 
 	top10_losses: function() {
-		if (Template.instance().lossesLoaded.get()) {
+		if (subs.ready('loss') && subs.ready('playerCount')) {
 			return RankingsLostSoldiers.find({}, {sort: {losses_worth: -1}}).map(function(u) {
 				if (u._id == Meteor.userId()) {
 					u.is_me = true
@@ -88,11 +90,13 @@ Template.rankings_panel.helpers({
 	},
 
 	dominus: function() {
-		return RankingsDominus.findOne()
+		if (subs.ready('dominus')) {
+			return RankingsDominus.findOne()
+		}
 	},
 
 	top10_villages: function() {
-		if (Template.instance().villageLoaded.get()) {
+		if (subs.ready('villageRanks')) {
 			return RankingsVillages.find({}, {sort: {"income.worth": -1}}).map(function(u) {
 				if (u._id == Meteor.userId()) {
 					u.is_me = true
@@ -160,40 +164,44 @@ Template.rankings_panel.created = function() {
 	self.lostSoldiersPage = new ReactiveVar(1)
 	self.villagesPage = new ReactiveVar(1)
 
-	self.networthLoaded = new ReactiveVar(false)
-	self.allyLoaded = new ReactiveVar(false)
-	self.incomeLoaded = new ReactiveVar(false)
-	self.lossesLoaded = new ReactiveVar(false)
-	self.villageLoaded = new ReactiveVar(false)
-
-	this.autorun(function() {
-		Meteor.subscribe('dominus_rankings')
+	self.autorun(function() {
+		subs.subscriptions([
+		{
+			groupName: 'net',
+			subscriptions: [ Meteor.subscribe('networth_rankings', self.networthPage.get()).ready() ]
+		},
+		{
+			groupName: 'ally',
+			subscriptions: [ Meteor.subscribe('ally_rankings', self.vassalsPage.get()).ready() ]
+		},
+		{
+			groupName: 'inc',
+			subscriptions: [ Meteor.subscribe('income_rankings', self.incomePage.get()).ready() ]
+		},
+		{
+			groupName: 'loss',
+			subscriptions: [ Meteor.subscribe('losses_rankings', self.lostSoldiersPage.get()).ready() ]
+		},
+		{
+			groupName: 'playerCount',
+			subscriptions: [
+				Meteor.subscribe('playerCount').ready(),
+				Meteor.subscribe('findPlayerCount').ready()
+			]
+		},{
+			groupName: 'villageRanks',
+			subscriptions: [
+				Meteor.subscribe('village_rankings', self.villagesPage.get()).ready(),
+				Meteor.subscribe('villageCount').ready(),
+				Meteor.subscribe('findVillageCount').ready()
+			]
+		}, {
+			groupName: 'dominus',
+			subscriptions: [
+				Meteor.subscribe('dominus_rankings').ready()
+			]
+		}])
 	})
-
-	this.autorun(function() {
-
-		var netHandle = Meteor.subscribe('networth_rankings', self.networthPage.get())
-		var allyHandle = Meteor.subscribe('ally_rankings', self.vassalsPage.get())
-		var incomeHandle = Meteor.subscribe('income_rankings', self.incomePage.get())
-		var lossesHandle = Meteor.subscribe('losses_rankings', self.lostSoldiersPage.get())
-
-		var playerCountHandle = Meteor.subscribe('playerCount')
-		var findPlayerCountHandle = Meteor.subscribe('findPlayerCount')
-
-		self.networthLoaded.set(netHandle.ready() && playerCountHandle.ready() && findPlayerCountHandle.ready())
-		self.allyLoaded.set(allyHandle.ready() && playerCountHandle.ready() && findPlayerCountHandle.ready())
-		self.incomeLoaded.set(incomeHandle.ready() && playerCountHandle.ready() && findPlayerCountHandle.ready())
-		self.lossesLoaded.set(lossesHandle.ready() && playerCountHandle.ready() && findPlayerCountHandle.ready())
-	})
-
-	this.autorun(function() {
-		var villageHandle = Meteor.subscribe('village_rankings', self.villagesPage.get())
-		var villageCountHandle = Meteor.subscribe('villageCount')
-		var findVillageCountHandle = Meteor.subscribe('findVillageCount')
-
-		self.villageLoaded.set(villageHandle.ready() && villageCountHandle.ready() && findVillageCountHandle.ready())
-	})
-
 
 	self.playerCount = new ReactiveVar(0)
 	this.autorun(function() {

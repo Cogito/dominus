@@ -7,7 +7,6 @@ jquery
 less
 random
 accounts-password
-natestrauser:font-awesome@4.1.0
 facts
 mrt:underscore-string-latest@2.3.3
 email
@@ -30,5 +29,7 @@ mrt:nvd3js
 meteor-platform
 
 meteorhacks:kadira
-peernohell:c3
 nemo64:bootstrap
+d3js:d3
+fortawesome:fontawesome
+danimal:readymanager
