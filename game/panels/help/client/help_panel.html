@@ -37,10 +37,10 @@
 					<div class="panel-body">
 						<p>{{game_name}} is a slow strategy game that does not require a lot of time to play.  Give your armies their orders then come back in a few hours to check on them.</p>
 
-						<p>Everyone has one castle.  Your castle is where you hire soldiers.</p>
+						<p>Games last about a month.  When someone wins everything is reset and a new game starts.</p>
 
 						<div class="help_section">Build an Army</div>
-						<p>The first thing you should do is to build an army.</p>
+						<p>The first thing you should do is build an army.</p>
 						<ul>
 							<li>Click on your castle.  It's the one with the green flag.</li>
 							<li>Click the "Hire Soldiers" button.</li>
@@ -50,7 +50,10 @@
 						<p>You will now have footmen inside your castle.</p>
 
 						<div class="help_section">Build a Village</div>
-						<p>Villages increase your resources.  Each village you have collects {{s.resource.gained_at_hex}} or {{resources_at_large_hexes}} resources from the ring of hexes surrounding it.  Use an army to build a village.</p>
+
+						<p>When you start playing you should focus on building up your income.  One way to do that is to build villages. Villages collect resources from the ring of hexes surrounding it.</p>
+
+						<p>Villages are built using armies.</p>
 						<ul>
 							<li>Find a good hex to build your village at.  You can only build villages on grain hexes, those are the light green ones.  Find a grain hex near your castle that is surrounded by hexes other than grain.</li>
 							<li>Click on your castle.</li>
@@ -58,9 +61,16 @@
 							<li>Move the footmen slider to the right.</li>
 							<li>Click on the hex where you want to build your village.</li>
 						</ul>
-						<p>You should now see your army next to your castle.  If you click on your army you will see their path highlighted and how long it will take to reach their destination.  When they reach their destination they will have a "Build Village" button which you can click on to build your village.</p>
-						<p>When you have enough resources then you should hire soldiers to protect your castle and villages.</p>
-						<p>After you have an army try attacking someone's castle to gain a vassal.</p>
+						<p>You should now see your army next to your castle.  If you click on your army you will see their path highlighted and how long it will take to reach their destination.</p>
+
+						<p>When they reach their destination they will have a "Build Village" button which you can click on to build your village.</p>
+
+						<div class="help_section">Next Steps</div>
+
+						<p>Continue building viillages to gain more income.  You can have up to {{s.village.max_can_have}} villages at one time.</p>
+						<p>Hire soldiers to protect your castle and villages.</p>
+						<p>After you have an army try attacking someone's castle.  If you win then they become your vassal and will send you part of their income.</p>
+						<p>When you gain a vassal it's usually a good idea to place an army on their castle to prevent someone else from stealing your vassal.</p>
 					</div>
 				</div>
 			</div>
@@ -82,8 +92,8 @@
 						<div class="help_section">Enemies</div>
 						<p>Gain vassals by attacking these units.</p>
 
-						<p><div class="help_flag foe">&nbsp;</div> Units that have a different king than you are solid red.  These units are enemies of both you and your allies.</p>
-						<p><div class="help_flag team">&nbsp;</div> Units that are red and light red share the same king as you but are in a different branch.  These units are your enemies but they are also your allies because they share the same king as you.</p>
+						<p><div class="help_flag foe">&nbsp;</div> Units that have a different king than you are solid red.</p>
+						<p><div class="help_flag team">&nbsp;</div> Units that are red and light red share the same king as you but are in a different branch.</p>
 
 						<div class="help_section">People Above You</div>
 						<p>Attack these units to climb the tree.</p>
@@ -93,7 +103,7 @@
 						<p><div class="help_flag lord">&nbsp;</div> These units belong to your lord.  You can attack your lord's castle only.  If you attack your lord's castle and win then you become his lord and his lord becomes your lord.</p>
 
 						<div class="help_section">People Below You</div>
-						<p>You cannot attack these units</p>
+						<p>You cannot attack these units.</p>
 
 						<p><div class="help_flag vassal">&nbsp;</div> These units are directly below you in the tree.  You cannot attack them.</p>
 						<p><div class="help_flag below">&nbsp;</div> These units are below you in the tree.  You cannot attack them.</p>
@@ -109,13 +119,13 @@
 				</div>
 				<div id="help-market" class="panel-collapse collapse">
 					<div class="panel-body">
-						<p>There are six different types of resources.  Grain, lumber, ore, wool, clay and glass.  Resources are used to hire soldiers and build villages.  Each hex contains a different type of resouce.</p>
+						<p>There are six different types of resources.  Grain, lumber, ore, wool, clay and glass.  Resources are used to hire soldiers and build villages.  Each hex produces a different type of resouce.</p>
 						<div class="help_section">Collecting Resources</div>
-						<p>Resources are collected at your castle and villages.  Your castle collects resources from the {{s.resource.num_rings_castle}} rings of hexes surrounding it.  Your villages collect resources {{s.resource.gained_at_hex}} from the 6 hexes surrounding it.  Your castle also collects {{s.resource.gold_gained_at_castle}} gold and your villages each collect {{s.resource.gold_gained_at_village}} gold.  Resources are collected every {{s_resource_interval}}.</p>
-						<p>You can see how many resources you have in the top of the summary panel.  The white number is how many you have and the grey number is how many you collected last resource update.</p>
+						<p>Resources are collected at your castle and villages.  Your castle collects resources from the {{s.resource.num_rings_castle}} rings of hexes surrounding it.  Your villages collect resources from the 6 hexes surrounding it.  Your castle also collects {{s.resource.gold_gained_at_castle}} gold and your villages each collect {{s.resource.gold_gained_at_village}} gold.  Resources are collected every {{s_resource_interval}}.</p>
+						<p>You can see how many resources you have in the top of the summary panel.  The white number is how many you have.  The first grey number is how many you collected last resource update from your castle and villages.  The second grey number is how many you received from your vassals.</p>
 						<p>Castles and villages collect from the hexes surrounding even if there is another building on the hex.  It is ok to build villages and castles next to each other.</p>
 						<div class="help_section">Large Resource Hexes</div>
-						<p>Some hexes produce {{resources_at_large_hexes}} resources instead of {{s.resource.gained_at_hex}} like most hexes.  These hexes look different than the others.</p>
+						<p>Some hexes produce {{resources_at_large_hexes}} resources instead of {{s.resource.gained_at_hex}}.  These hexes look different than the others.</p>
 						<div class="help_section">The Market</div>
 						<p>The market is where you can exchange resources for gold.  Prices for resources go up and down based on demand.  If grain is in high demand and many people buy grain then the price will go up.</p>
 					</div>
@@ -168,7 +178,7 @@
 							Offense: {{s.army.stats.catapults.offense}} &nbsp; Defense: {{s.army.stats.catapults.defense}} &nbsp; Speed: {{s.army.stats.catapults.speed}}<br>
 							{{s.army.stats.catapults.bonus_against_buildings}}x bonus when attacking a castle or village.<br>
 						</p>
-						<p>If your army enters hex that is also occupied by an enemy army, village or castle then they will attack it.  You can also attack the castle of people above you in the tree but not their armies or villages.</p>
+						<p>If your army enters hex that is also occupied by an enemy army, village or castle then they will attack it.</p>
 
 						<div class="help_section">Bonuses</div>
 						<p>There are four different kinds of soldiers.  Some gain bonuses when fighting.</p>
@@ -216,7 +226,7 @@
 					<div class="panel-body">
 						<p>If you attack someone's castle and win then you become their lord and they become your vassal.</p>
 
-						<p>Vassals send 5% of their income to each person above them in the tree.  If there are more than 5 people above them then they send 25% / number_of_people_above to each person above them.</p>
+						<p>Vassals send {{floatToPercentage s.income.percentToLords}}% of their income to each person above them in the tree.  If there are more than 5 people above them then they send {{floatToPercentage s.income.maxToLords}}% / number_of_people_above to each person above them.</p>
 
 						<p>You can send gold to your vassals.  You cannot send gold to your enemies or anyone above you in the tree.  To send someone gold click on the "Send Gold" button at their castle.</p>
 						<p>If you do not have a lord then you are a king.  If you have a lord and you attack their castle and win then his lord will become your lord.</p>

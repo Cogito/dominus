@@ -74,8 +74,14 @@ UI.registerHelper('autolink', function(text, escape) {
 
 // 1.25 = 25%
 UI.registerHelper('multiplierToPercentage', function(float) {
-	check(float, Number)
+	check(float, validNumber)
 	return (float - 1) * 100
+})
+
+// 1.25 = 25%
+UI.registerHelper('floatToPercentage', function(float) {
+	check(float, validNumber)
+	return float * 100
 })
 
 
