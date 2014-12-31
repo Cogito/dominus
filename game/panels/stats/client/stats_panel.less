@@ -1,4 +1,4 @@
-@import (reference) url("../../../../client/css/variables.lessimport");
+@import (reference) url("/client/lib/custom.bootstrap.import.less");
 
 #stats_panel {
 	overflow-y: auto;
@@ -13,21 +13,17 @@
 
 .dailystats_chart {
 	height: 200px;
-}
-
-.dailystats_chart text {
-	fill: @text-color;
-}
-
-.dailystats_chart .nvtooltip {
-	background-color: rgba(20,20,20,0.6);
-	color: @text-color;
-}
-
-.dailystats_chart .nvd3 .nv-axis line {
-	stroke: #666 !important;
-}
-
-.nvd3 .nv-axis path {
-  stroke: #666;
+	& text {
+		fill: @text-color;
+	}
+	& .nvtooltip {
+		background-color: rgba(20,20,20,0.6);
+		color: @text-color;
+	}
+	& .nvd3 .nv-axis line {
+		stroke: #666 !important;
+	}
+	& .nvd3 .nv-axis path {
+		stroke: #666;
+	}
 }

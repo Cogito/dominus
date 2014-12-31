@@ -10,6 +10,8 @@ Template.stats_panel.created = function() {
 
 
 Template.stats_panel.rendered = function() {
+	var self = this
+
 	this.firstNode.parentNode._uihooks = leftPanelAnimation
 
 	this.autorun(function() {
@@ -62,9 +64,7 @@ Template.stats_panel.rendered = function() {
 
 					d3.select('#income_chart svg').datum(income_data).transition().duration(300).call(chart)
 
-					//nv.utils.windowResize(chart.update)
-
-					//d3.selectAll("rect").style("opacity", 0.3)
+					nv.utils.windowResize(chart.update)
 
 					return chart
 				})

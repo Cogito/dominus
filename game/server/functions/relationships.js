@@ -42,7 +42,7 @@ set_lord_and_vassal = function(winner, loser, runUpdateAllies) {
 		Meteor.users.update(loser._id, {$set: {is_king: false}})
 		notification_no_longer_a_king(loser._id, {_id:winner._id, username:winner.username, x:winner.x, y:winner.y, castle_id:winner.castle_id})
 	}
-	
+
 
 	// is loser above winner
 	// he is either above winner or he is in a different branch
@@ -93,8 +93,8 @@ set_lord_and_vassal = function(winner, loser, runUpdateAllies) {
 		}
 	}
 
-	worker.enqueue('enemies_together_check', {})
-	worker.enqueue('enemy_on_building_check', {})
+	//worker.enqueue('enemies_together_check', {})
+	//worker.enqueue('enemy_on_building_check', {})
 }
 
 

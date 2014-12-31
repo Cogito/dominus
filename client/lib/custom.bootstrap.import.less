@@ -1,3 +1,12 @@
+// This File is for you to modify!
+// It won't be overwritten as long as it exists.
+// You may include this file into your less files to benefit from
+// mixins and variables that bootstrap provides.
+
+@import "custom.bootstrap.mixins.import.less";
+
+
+// @import "bootstrap/less/variables.less"
 //
 // Variables
 // --------------------------------------------------
@@ -7,11 +16,12 @@
 //
 //## Gray and brand colors for use across Bootstrap.
 
-@gray-darker:            lighten(#000, 13.5%); // #222
-@gray-dark:              lighten(#000, 20%);   // #333
-@gray:                   lighten(#000, 33.5%); // #555
-@gray-light:             lighten(#000, 46.7%); // #777
-@gray-lighter:           lighten(#000, 93.5%); // #eee
+@gray-base:              #000;
+@gray-darker:            lighten(@gray-base, 13.5%); // #222
+@gray-dark:              lighten(@gray-base, 20%);   // #333
+@gray:                   lighten(@gray-base, 33.5%); // #555
+@gray-light:             lighten(@gray-base, 46.7%); // #777
+@gray-lighter:           lighten(@gray-base, 93.5%); // #eee
 
 @brand-primary:         #428bca;
 @brand-success:         #5cb85c;
@@ -27,12 +37,14 @@
 //** Background color for `<body>`.
 @body-bg:               #fff;
 //** Global text color on `<body>`.
-@text-color:            @gray-dark;
+@text-color:            #eee;
 
 //** Global textual link color.
-@link-color:            @brand-primary;
+@link-color:            saturate(lighten(@brand-primary, 15%), 50%);
 //** Link hover color set via `darken()` function.
 @link-hover-color:      darken(@link-color, 15%);
+//** Link hover decoration.
+@link-hover-decoration: underline;
 
 
 //== Typography
@@ -45,7 +57,7 @@
 @font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace;
 @font-family-base:        @font-family-sans-serif;
 
-@font-size-base:          14px;
+@font-size-base:          13px;
 @font-size-large:         ceil((@font-size-base * 1.25)); // ~18px
 @font-size-small:         ceil((@font-size-base * 0.85)); // ~12px
 
@@ -64,7 +76,7 @@
 //** By default, this inherits from the `<body>`.
 @headings-font-family:    inherit;
 @headings-font-weight:    500;
-@headings-line-height:    1.1;
+@headings-line-height:    1;
 @headings-color:          inherit;
 
 
@@ -121,18 +133,18 @@
 //** Padding for `<th>`s and `<td>`s.
 @table-cell-padding:            8px;
 //** Padding for cells in `.table-condensed`.
-@table-condensed-cell-padding:  5px;
+@table-condensed-cell-padding:  3px 10px;
 
 //** Default background color used for all tables.
 @table-bg:                      transparent;
 //** Background color used for `.table-striped`.
-@table-bg-accent:               #f9f9f9;
+@table-bg-accent:               lighten(@panel-bg, 15%);
 //** Background color used for `.table-hover`.
 @table-bg-hover:                #f5f5f5;
 @table-bg-active:               @table-bg-hover;
 
 //** Border color for table and cell borders.
-@table-border-color:            #ddd;
+@table-border-color:            rgba(0,0,0,0);
 
 
 //== Buttons
@@ -181,13 +193,20 @@
 @input-color:                    @gray;
 //** `<input>` border color
 @input-border:                   #ccc;
-//** `<input>` border radius
+
+// TODO: Rename `@input-border-radius` to `@input-border-radius-base` in v4
+//** Default `.form-control` border radius
 @input-border-radius:            @border-radius-base;
+//** Large `.form-control` border radius
+@input-border-radius-large:      @border-radius-large;
+//** Small `.form-control` border radius
+@input-border-radius-small:      @border-radius-small;
+
 //** Border color for inputs on focus
 @input-border-focus:             #66afe9;
 
 //** Placeholder text color
-@input-color-placeholder:        @gray-light;
+@input-color-placeholder:        #999;
 
 //** Default `.form-control` height
 @input-height-base:              (@line-height-computed + (@padding-base-vertical * 2) + 2);
@@ -203,6 +222,9 @@
 @input-group-addon-bg:           @gray-lighter;
 //** Border color for textual input addons
 @input-group-addon-border-color: @input-border;
+
+//** Disabled cursor for form controls and buttons.
+@cursor-disabled:                not-allowed;
 
 
 //== Dropdowns
@@ -252,8 +274,7 @@
 @zindex-popover:           1060;
 @zindex-tooltip:           1070;
 @zindex-navbar-fixed:      1030;
-@zindex-modal-background:  1040;
-@zindex-modal:             1050;
+@zindex-modal:             1040;
 
 
 //== Media queries breakpoints
@@ -315,17 +336,17 @@
 //## Define the maximum width of `.container` for different screen sizes.
 
 // Small screen / tablet
-@container-tablet:             ((720px + @grid-gutter-width));
+@container-tablet:             (720px + @grid-gutter-width);
 //** For `@screen-sm-min` and up.
 @container-sm:                 @container-tablet;
 
 // Medium screen / desktop
-@container-desktop:            ((940px + @grid-gutter-width));
+@container-desktop:            (940px + @grid-gutter-width);
 //** For `@screen-md-min` and up.
 @container-md:                 @container-desktop;
 
 // Large screen / wide desktop
-@container-large-desktop:      ((1140px + @grid-gutter-width));
+@container-large-desktop:      (1140px + @grid-gutter-width);
 //** For `@screen-lg-min` and up.
 @container-lg:                 @container-large-desktop;
 
@@ -368,12 +389,12 @@
 
 // Inverted navbar
 // Reset inverted navbar basics
-@navbar-inverse-color:                      @gray-light;
+@navbar-inverse-color:                      lighten(@gray-light, 15%);
 @navbar-inverse-bg:                         #222;
 @navbar-inverse-border:                     darken(@navbar-inverse-bg, 10%);
 
 // Inverted navbar links
-@navbar-inverse-link-color:                 @gray-light;
+@navbar-inverse-link-color:                 lighten(@gray-light, 15%);
 @navbar-inverse-link-hover-color:           #fff;
 @navbar-inverse-link-hover-bg:              transparent;
 @navbar-inverse-link-active-color:          @navbar-inverse-link-hover-color;
@@ -403,18 +424,16 @@
 @nav-disabled-link-color:                   @gray-light;
 @nav-disabled-link-hover-color:             @gray-light;
 
-@nav-open-link-hover-color:                 #fff;
-
 //== Tabs
 @nav-tabs-border-color:                     #ddd;
 
 @nav-tabs-link-hover-border-color:          @gray-lighter;
 
-@nav-tabs-active-link-hover-bg:             @body-bg;
-@nav-tabs-active-link-hover-color:          @gray;
+@nav-tabs-active-link-hover-bg:             lighten(@panel-bg, 50%);
+@nav-tabs-active-link-hover-color:          @text-color;
 @nav-tabs-active-link-hover-border-color:   #ddd;
 
-@nav-tabs-justified-link-border-color:            #ddd;
+@nav-tabs-justified-link-border-color:            lighten(@panel-bg, 25%);
 @nav-tabs-justified-active-link-border-color:     @body-bg;
 
 //== Pills
@@ -488,7 +507,7 @@
 @state-warning-border:           darken(spin(@state-warning-bg, -10), 5%);
 
 @state-danger-text:              #a94442;
-@state-danger-bg:                #f2dede;
+@state-danger-bg:                #9e3c3c;
 @state-danger-border:            darken(spin(@state-danger-bg, -10), 5%);
 
 
@@ -529,7 +548,7 @@
 //** Popover arrow width
 @popover-arrow-width:                 10px;
 //** Popover arrow color
-@popover-arrow-color:                 #fff;
+@popover-arrow-color:                 @popover-bg;
 
 //** Popover outer arrow width
 @popover-arrow-outer-width:           (@popover-arrow-width + 1);
@@ -616,7 +635,7 @@
 @alert-warning-border:        @state-warning-border;
 
 @alert-danger-bg:             @state-danger-bg;
-@alert-danger-text:           @state-danger-text;
+@alert-danger-text:           @text-color;
 @alert-danger-border:         @state-danger-border;
 
 
@@ -628,6 +647,8 @@
 @progress-bg:                 #f5f5f5;
 //** Progress bar text color
 @progress-bar-color:          #fff;
+//** Variable for setting rounded corners on progress bar.
+@progress-border-radius:      @border-radius-base;
 
 //** Default progress bar color
 @progress-bar-bg:             @brand-primary;
@@ -646,14 +667,14 @@
 //##
 
 //** Background color on `.list-group-item`
-@list-group-bg:                 #fff;
+@list-group-bg:                 @panel-bg;
 //** `.list-group-item` border color
-@list-group-border:             #ddd;
+@list-group-border:             rgba(0,0,0,0);
 //** List group border radius
 @list-group-border-radius:      @border-radius-base;
 
 //** Background color of single list items on hover
-@list-group-hover-bg:           #f5f5f5;
+@list-group-hover-bg:           lighten(@panel-bg, 25%);
 //** Text color of active list items
 @list-group-active-color:       @component-active-color;
 //** Background color of active list items
@@ -670,7 +691,7 @@
 //** Text color for content within disabled list items
 @list-group-disabled-text-color: @list-group-disabled-color;
 
-@list-group-link-color:         #555;
+@list-group-link-color:         @link-color;
 @list-group-link-hover-color:   @list-group-link-color;
 @list-group-link-heading-color: #333;
 
@@ -679,19 +700,19 @@
 //
 //##
 
-@panel-bg:                    #fff;
+@panel-bg:                    rgba(20,20,20,0.6);
 @panel-body-padding:          15px;
-@panel-heading-padding:       10px 15px;
+@panel-heading-padding:       5px;
 @panel-footer-padding:        @panel-heading-padding;
-@panel-border-radius:         @border-radius-base;
+@panel-border-radius:         0;
 
 //** Border color for elements within panels
 @panel-inner-border:          #ddd;
 @panel-footer-bg:             #f5f5f5;
 
-@panel-default-text:          @gray-dark;
-@panel-default-border:        #ddd;
-@panel-default-heading-bg:    #f5f5f5;
+@panel-default-text:          @text-color;
+@panel-default-border:        rgba(255,255,255,0);
+@panel-default-heading-bg:    @panel-bg;
 
 @panel-primary-text:          #fff;
 @panel-primary-border:        @brand-primary;
@@ -767,9 +788,9 @@
 @breadcrumb-padding-vertical:   8px;
 @breadcrumb-padding-horizontal: 15px;
 //** Breadcrumb background color
-@breadcrumb-bg:                 #f5f5f5;
+@breadcrumb-bg:                 @panel-bg;
 //** Breadcrumb text color
-@breadcrumb-color:              #ccc;
+@breadcrumb-color:              @text-color;
 //** Text color of current page in the breadcrumb
 @breadcrumb-active-color:       @gray-light;
 //** Textual separator for between breadcrumb elements
@@ -833,9 +854,9 @@
 //** Blockquote small color
 @blockquote-small-color:      @gray-light;
 //** Blockquote font size
-@blockquote-font-size:        (@font-size-base * 1.25);
+@blockquote-font-size:        @font-size-base;
 //** Blockquote border color
-@blockquote-border-color:     @gray-lighter;
+@blockquote-border-color:     lighten(@panel-bg, 50%);
 //** Page header border color
 @page-header-border-color:    @gray-lighter;
 //** Width of horizontal description list titles
@@ -844,3 +865,4 @@
 @hr-border:                   @gray-lighter;
 
 
+@import "dominus.variables.import.less";
