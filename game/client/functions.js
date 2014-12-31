@@ -29,7 +29,7 @@ move_hexes_to = function(pixel_x, pixel_y) {
 	var hex_scale = get_hex_scale()
 
 	$(hexes).attr('transform', 'translate('+pixel_x+','+pixel_y+') scale('+hex_scale+')')
-	
+
 	Session.set('hexes_pos', {x:pixel_x, y:pixel_y})
 }
 
@@ -59,57 +59,23 @@ highlight_hex_path = function(from_x, from_y, to_x, to_y) {
 	check(to_x, validNumber)
 	check(to_y, validNumber)
 
-	var from_pos = Hx.coordinatesToPos(from_x, from_y, s.hex_size, s.hex_squish)
-	var to_pos = Hx.coordinatesToPos(to_x, to_y, s.hex_size, s.hex_squish)
+	var hexes = Hx.getHexesAlongLine(from_x, from_y, to_x, to_y, s.hex_size, s.hex_squish)
 
-	// draw debug line
-	// if (Session.get('show_debug_symbols')) {
-	// 	var newLine = document.createElementNS('http://www.w3.org/2000/svg','line')
-	// 	newLine.setAttribute('id','select_hex_to_move_army_line')
-	// 	newLine.setAttribute('x1', from_pos.x + Session.get('canvas_size').half_width)
-	// 	newLine.setAttribute('y1', from_pos.y + Session.get('canvas_size').half_height)
-	// 	newLine.setAttribute('x2', to_pos.x + Session.get('canvas_size').half_width)
-	// 	newLine.setAttribute('y2', to_pos.y + Session.get('canvas_size').half_height)
-	// 	$("#hexes").append(newLine);
-	// }
+	_.each(hexes, function(hex) {
 
-	// get distance
-	var distance = Hx.hexDistance(from_x, from_y, to_x, to_y)
+		highlight_hex_coords(hex.x, hex.y)
 
-	if (distance == 0) {
-		return false
-	}
-
-	for (i = 0; i <= distance; i++) {
-		// pick points along line
-		var x = from_pos.x * (1 - i/distance) + to_pos.x * i/distance
-		var y = from_pos.y * (1 - i/distance) + to_pos.y * i/distance
-
-		// draw debug circles
-		// if (Session.get('show_debug_symbols')) {
-		// 	var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
-		// 	circle.setAttribute('class', 'select_hex_to_move_army_circle')
-		// 	circle.setAttribute('cx', x + Session.get('canvas_size').half_width)
-		// 	circle.setAttribute('cy', y + Session.get('canvas_size').half_height)
-		// 	circle.setAttribute('r', 5)
-		// 	$('#hexes').append(circle)
-		// }
-
-		//sample hexes at circles
-		var coords = Hx.posToCoordinates(x, y, s.hex_size, s.hex_squish)
-		highlight_hex_coords(coords.x, coords.y)
-
-		var castle = Castles.findOne({x: coords.x, y: coords.y}, {fields: {_id: 1}})
+		var castle = Castles.findOne({x: hex.x, y: hex.y}, {fields: {_id: 1}})
 		if (castle) {
 			draw_castle_highlight(castle._id)
 		}
 
-		var village = Villages.findOne({x: coords.x, y: coords.y}, {fields: {_id: 1}})
+		var village = Villages.findOne({x: hex.x, y: hex.y}, {fields: {_id: 1}})
 		if (village) {
 			draw_village_highlight(village._id)
 		}
-
-	}
+		
+	})
 }
 
 
