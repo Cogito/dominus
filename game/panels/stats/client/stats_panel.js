@@ -271,6 +271,30 @@ Template.stats_panel.rendered = function() {
 
 
 
+			incomeRankValues = []
+			dailystats.forEach(function(stat) {
+				if (stat.incomeRank) {
+					incomeRankValues.push({x:stat.created_at, y:stat.incomeRank})
+				}
+			})
+
+			var incomeRankData = [{values: incomeRankValues, key: 'Income Rank', color: '#e6d545'}]
+
+			nv.addGraph(function() {
+				var chart = nv.models.lineChart().useInteractiveGuideline(true).showLegend(true).showYAxis(true).showXAxis(true)
+
+				chart.xAxis.tickFormat(function(d) { return d3.time.format('%b %d')(new Date(d)); })
+				chart.yAxis.tickFormat(d3.format(",.0f"))
+
+				d3.select('#rankIncomeChart svg').datum(incomeRankData).transition().duration(300).call(chart)
+
+				nv.utils.windowResize(chart.update)
+
+				return chart
+			})
+
+
+
 
 			var nw = dailystats.map(function(value, index) {
 				return {x: value.created_at, y:value.num_allies }

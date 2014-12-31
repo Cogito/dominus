@@ -160,6 +160,27 @@ updateIncomeStats = function(user_id) {
 
 
 
+updateIncomeRank = function() {
+	var start_time = new Date()
+
+	var rank = 1
+	Meteor.users.find({}, {sort: {income:-1}}).forEach(function(user) {
+
+		Dailystats.upsert({
+			user_id: user._id,
+			created_at: {$gte: s.statsBegin, $lt: s.statsEnd}
+		}, {
+			$setOnInsert: {user_id:user._id, created_at: new Date()},
+			$set: {incomeRank:rank, updated_at:new Date()}
+		})
+
+		rank++
+	})
+
+	record_job_stat('updateIncomeRank', new Date() - start_time)
+}
+
+
 
 init_dailystats_for_new_user = function(user_id) {
 	var stat = {
@@ -205,7 +226,8 @@ init_dailystats_for_new_user = function(user_id) {
 		networth: 0,
 		num_allies: 0,
 		losses_worth:0,
-		losses_num:0
+		losses_num:0,
+		incomeRank: Meteor.users.find().count()
 	}
 	Dailystats.insert(stat)
 }

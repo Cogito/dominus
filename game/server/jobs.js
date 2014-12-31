@@ -185,4 +185,5 @@ nightly_job = function() {
 
 tenMin_job = function() {
 	gamestats_job()
+	updateIncomeRank()
 }
