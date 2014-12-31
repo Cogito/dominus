@@ -22,12 +22,14 @@ Template.stats_panel.rendered = function() {
 		if (subs.ready('stats')) {
 			var dailystats = Dailystats.find({user_id: Meteor.userId()}, {sort: {created_at: 1}})
 
-			var inc = {}
-			var vInc = {}
+			var inc = {}	// total income
+			var vInc = {}	// vassal income
+			var bInc = {}	// income from castle/villages
 
 			_.each(s.resource.types_plus_gold, function(type) {
 				inc[type] = []
 				vInc[type] = []
+				bInc[type] = []
 			})
 
 			dailystats.forEach(function(stat) {
@@ -41,6 +43,11 @@ Template.stats_panel.rendered = function() {
 					if (stat.vassalInc && stat.vassalInc[type]) {
 						var y = stat.vassalInc[type]
 						vInc[type].push({x:stat.created_at, y:y})
+					}
+
+					if (stat.inc && stat.vassalInc && stat.inc[type] && stat.vassalInc[type]) {
+						var y = stat.inc[type] - stat.vassalInc[type]
+						bInc[type].push({x:stat.created_at, y:y})
 					}
 				})
 			})
@@ -62,6 +69,30 @@ Template.stats_panel.rendered = function() {
 				chart.yAxis.tickFormat(d3.format(",.0f"))
 
 				d3.select('#incChart svg').datum(incData).transition().duration(300).call(chart)
+
+				nv.utils.windowResize(chart.update)
+
+				return chart
+			})
+
+
+
+			var bIncData = [
+				{values: bInc.gold, key: 'Gold', color: '#e6d545'},
+				{values: bInc.grain, key: 'Grain', color: '#82d957'},
+				{values: bInc.lumber, key: 'Lumber', color: '#b3823e'},
+				{values: bInc.ore, key: 'Ore', color: '#d9d9d9'},
+				{values: bInc.wool, key: 'Wool', color: '#d9cf82'},
+				{values: bInc.clay, key: 'Clay', color: '#d98659'},
+				{values: bInc.glass, key: 'Glass', color: '#5793d9'},
+				]
+
+			nv.addGraph(function() {
+				var chart = nv.models.lineChart().useInteractiveGuideline(true).showLegend(true).showYAxis(true).showXAxis(true)
+				chart.xAxis.tickFormat(function(d) { return d3.time.format('%b %d')(new Date(d)); })
+				chart.yAxis.tickFormat(d3.format(",.0f"))
+
+				d3.select('#buildingIncChart svg').datum(bIncData).transition().duration(300).call(chart)
 
 				nv.utils.windowResize(chart.update)
 
