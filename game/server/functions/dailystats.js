@@ -157,8 +157,7 @@ updateIncomeStats = function() {
 			}
 		})
 
-console.log(statsStart())
-console.log(statsEnd())
+
 		Dailystats.upsert({
 			user_id: user._id,
 			created_at: {$gte: statsBegin(), $lt: statsEnd()}
