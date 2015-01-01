@@ -79,13 +79,15 @@ if (Meteor.isServer) {
 
 	// how much time between dailystat ticks
 	s.statsInverval = 6
-	var currentHour = moment().hour()
-	var beginHour = currentHour - (currentHour % s.statsInverval)
+
 
 	statsBegin = function() {
+		var currentHour = moment().hour()
+		var beginHour = currentHour - (currentHour % s.statsInverval)
 		return moment().startOf('day').add(beginHour, 'hours').toDate()
 	}
 	statsEnd = function() {
-		return moment().startOf('day').add(beginHour, 'hours').add(s.statsInverval, 'hours').toDate()
+		var begin = moment(statsBegin())
+		return begin.add(s.statsInverval, 'hours').toDate()
 	}
 }
