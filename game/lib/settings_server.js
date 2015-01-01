@@ -81,6 +81,11 @@ if (Meteor.isServer) {
 	s.statsInverval = 6
 	var currentHour = moment().hour()
 	var beginHour = currentHour - (currentHour % s.statsInverval)
-	s.statsBegin = moment().startOf('day').add(beginHour, 'hours').toDate()
-	s.statsEnd = moment().startOf('day').add(beginHour, 'hours').add(s.statsInverval, 'hours').toDate()
+
+	statsBegin = function() {
+		return moment().startOf('day').add(beginHour, 'hours').toDate()
+	}
+	statsEnd = function() {
+		return moment().startOf('day').add(beginHour, 'hours').add(s.statsInverval, 'hours').toDate()
+	}
 }

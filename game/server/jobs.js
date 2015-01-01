@@ -184,6 +184,11 @@ nightly_job = function() {
 
 
 tenMin_job = function() {
+	var start_time = new Date()
+
 	gamestats_job()
 	updateIncomeRank()
+	updateIncomeStats()
+
+	record_job_stat('tenMin_job', new Date() - start_time)
 }

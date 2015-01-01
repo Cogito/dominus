@@ -90,14 +90,6 @@ if (Meteor.isServer) {
 		},
 
 		// pass user_id
-		updateIncomeStats: function(params, done) {
-			check(params.user_id, String)
-
-			updateIncomeStats(params.user_id)
-			done()
-		},
-
-		// pass user_id
 		update_losses_worth: function(params, done) {
 			check(params.user_id, String)
 

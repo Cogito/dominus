@@ -69,7 +69,7 @@ update_networth = function(user_id) {
 		return false
 	}
 
-	Dailystats.upsert({user_id: user_id, created_at: {$gte: s.statsBegin, $lt: s.statsEnd}}, {$setOnInsert: {user_id:user_id, created_at: new Date()}, $set: {networth:worth.total, updated_at:new Date()}})
+	Dailystats.upsert({user_id: user_id, created_at: {$gte: statsBegin(), $lt: statsEnd()}}, {$setOnInsert: {user_id:user_id, created_at: new Date()}, $set: {networth:worth.total, updated_at:new Date()}})
 	Meteor.users.update(user_id, {$set: {networth: worth.total}})
 }
 
@@ -83,7 +83,7 @@ update_num_allies = function(user_id) {
 			var num_allies_below = 0
 		}
 
-		Dailystats.upsert({user_id: user_id, created_at: {$gte: s.statsBegin, $lt: s.statsEnd}}, {$setOnInsert: {user_id:user_id, created_at: new Date()}, $set: {num_allies:num_allies_below, updated_at:new Date()}})
+		Dailystats.upsert({user_id: user_id, created_at: {$gte: statsBegin(), $lt: statsEnd()}}, {$setOnInsert: {user_id:user_id, created_at: new Date()}, $set: {num_allies:num_allies_below, updated_at:new Date()}})
 	}
 }
 
@@ -128,7 +128,7 @@ update_losses_worth = function(user_id) {
 
 		check(num, validNumber)
 
-		Dailystats.upsert({user_id: user_id, created_at: {$gte: s.statsBegin, $lt: s.statsEnd}}, {$setOnInsert: {user_id:user_id, created_at: new Date()}, $set: {losses_worth:worth.total, losses_num:num, updated_at:new Date()}})
+		Dailystats.upsert({user_id: user_id, created_at: {$gte: statsBegin(), $lt: statsEnd()}}, {$setOnInsert: {user_id:user_id, created_at: new Date()}, $set: {losses_worth:worth.total, losses_num:num, updated_at:new Date()}})
 		Meteor.users.update(user_id, {$set: {losses_worth: worth.total, losses_num: num}})
 	}
 }
@@ -136,26 +136,39 @@ update_losses_worth = function(user_id) {
 
 
 
-updateIncomeStats = function(user_id) {
-	var user = Meteor.users.findOne(user_id, {fields: {res_update:1}})
-	if (user) {
+updateIncomeStats = function() {
+	var start_time = new Date()
+
+	Meteor.users.find({}, {fields: {res_update:1}}).forEach(function(user) {
 		var income = {}
 		var vassalIncome = {}
 
 		_.each(s.resource.types_plus_gold, function(type) {
-			income[type] = user.res_update[type]
-			vassalIncome[type] = user.res_update.from_vassal[type]
+
+			income[type] = 0
+			vassalIncome[type] = 0
+
+			if (user.res_update && user.res_update[type]) {
+				income[type] = user.res_update[type]
+			}
+
+			if (user.res_update && user.res_update.from_vassal && user.res_update.from_vassal[type]) {
+				vassalIncome[type] = user.res_update.from_vassal[type]
+			}
 		})
 
+console.log(statsStart())
+console.log(statsEnd())
 		Dailystats.upsert({
-				user_id: user_id,
-				created_at: {$gte: s.statsBegin, $lt: s.statsEnd}
-			}, {
-				$setOnInsert: {user_id:user_id, created_at: new Date()},
-				$set: {inc:income, vassalInc:vassalIncome, updated_at:new Date()}
-			}
-		)
-	}
+			user_id: user._id,
+			created_at: {$gte: statsBegin(), $lt: statsEnd()}
+		}, {
+			$setOnInsert: {user_id:user._id, created_at: new Date()},
+			$set: {inc:income, vassalInc:vassalIncome, updated_at:new Date()}
+		})
+	})
+
+	record_job_stat('updateIncomeStats', new Date() - start_time)
 }
 
 
@@ -164,17 +177,26 @@ updateIncomeRank = function() {
 	var start_time = new Date()
 
 	var rank = 1
-	Meteor.users.find({}, {sort: {income:-1}}).forEach(function(user) {
+	var prevIncome = null
+	Meteor.users.find({}, {sort: {income:-1}, fields: {income:1}}).forEach(function(user) {
 
 		Dailystats.upsert({
 			user_id: user._id,
-			created_at: {$gte: s.statsBegin, $lt: s.statsEnd}
+			created_at: {$gte: statsBegin(), $lt: statsEnd()}
 		}, {
 			$setOnInsert: {user_id:user._id, created_at: new Date()},
 			$set: {incomeRank:rank, updated_at:new Date()}
 		})
 
-		rank++
+		if (prevIncome) {
+			if (prevIncome != user.income) {
+				rank++
+			}
+		} else {
+			rank++
+		}
+
+		prevIncome = user.income
 	})
 
 	record_job_stat('updateIncomeRank', new Date() - start_time)
