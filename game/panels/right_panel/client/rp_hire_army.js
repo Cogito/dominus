@@ -70,6 +70,17 @@ Template.rp_hire_army.helpers({
 })
 
 Template.rp_hire_army.events({
+	'input .hireUnitsInput': function(event, template) {
+		var num = Number(event.currentTarget.value)
+		var type = this.toString()
+
+		set_selected_hiring_unit(type, num)
+
+		// update slider
+		var slider = $('.hire_units_new_slider[data-type='+type+']')
+		slider.val(get_selected_hiring_unit(type))
+	},
+
 	'click #hire_army_cancel_button': function(event, template) {
 		Session.set('rp_template', 'rp_info_castle')
 	},
@@ -633,8 +644,10 @@ var set_selected_hiring_unit = function(type, num) {
 	check(num, validNumber)
 
 	if (selected_hiring_units[type] != num) {
-		selected_hiring_units_dep.changed()
-		selected_hiring_units[type] = num
+		if (num >= 0) {
+			selected_hiring_units_dep.changed()
+			selected_hiring_units[type] = num
+		}
 	}
 }
 
@@ -670,4 +683,3 @@ var no_units_are_selected = function() {
 	})
 	return has_no_units
 }
-
