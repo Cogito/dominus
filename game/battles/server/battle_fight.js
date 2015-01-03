@@ -50,7 +50,7 @@ Fight.prototype._endBattle = function() {
 		_.each(self.battleDb.getSendEndNotificationTo(), function(unit) {
 			self.unitObj.exitedBattle(unit)
 		})
-		
+
 		// is there a castle in this hex
 		// it might not be in allUnits so check mongodb
 		var castle_fields = {name:1, user_id:1, x:1, y:1, username:1, image:1}
@@ -58,7 +58,7 @@ Fight.prototype._endBattle = function() {
 			castle_fields[type] = 1
 		})
 		var castle = Castles.findOne({x:self.x, y:self.y}, {fields: castle_fields})
-		
+
 		if (castle) {
 			castle.type = 'castle'
 			var getsCastle = self._whoGetsCastle(castle)
@@ -145,7 +145,8 @@ Fight.prototype._killSoldiers = function(unit) {
 
 	// how much power worth of soldiers should we lose
 	// combinedFinalPower is so that bigger battles lose more
-	var combinedFinalPower = unit.final_power + enemyFinalPower
+	// var combinedFinalPower = unit.final_power + enemyFinalPower
+	var combinedFinalPower = self.unitObj.getTotalFinalPower()
 
 	if (unit.dif > 0) {
 		var powerToLose = s.battle_power_lost_per_round_winner + (combinedFinalPower/1000)
@@ -193,7 +194,7 @@ Fight.prototype._killSoldiers = function(unit) {
 			var type = survivorTypes[rand]
 
 			check(survivors[type], validNumber)
-		
+
 			// take away solder if power lost less than powerToLose
 			// unit can't lose more than powerToLose
 			if (survivors[type] > 0) {

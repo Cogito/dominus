@@ -129,7 +129,7 @@ Units.prototype.exitedBattle = function(unit) {
 
 Units.prototype._setAlliesOfDefenderAsDefenders = function() {
 	var self = this
-	
+
 	var defender = self.getDefender()
 	var allies = self.getAllies(defender)
 
@@ -186,7 +186,7 @@ Units.prototype.sendNotification = function(unit) {
 	} else {
 		console.log('Error: No battle record found.')
 	}
-	
+
 }
 
 
@@ -461,6 +461,18 @@ Units.prototype.getEnemyNumSoldiers = function(unit) {
 }
 
 
+Units.prototype.getTotalFinalPower = function() {
+	var self = this
+	var finalPower = 0
+
+	_.each(self.getAllUnits(), function(unit) {
+		finalPower += unit.final_power
+	})
+
+	return finalPower
+}
+
+
 Units.prototype.getTeamFinalPower = function(unit) {
 	var self = this
 	var final_power = 0
@@ -485,7 +497,7 @@ Units.prototype.getEnemyFinalPower = function(unit) {
 		final_power += enemy.final_power
 	})
 
-	return final_power 
+	return final_power
 }
 
 
@@ -500,7 +512,7 @@ Units.prototype.getEnemyFinalPower = function(unit) {
 // 		final_power += ally.final_power
 // 	})
 
-// 	return final_power 
+// 	return final_power
 // }
 
 
@@ -718,14 +730,14 @@ Units.prototype.isEnemy = function(unit, otherUnit) {
 		if (user.is_dominus || otherUser.is_dominus) {
 			if (unit.type == 'army' && otherUnit.type == 'army') {
 				//if (self.debug) {console.log(otherUnit.username+':'+otherUnit.name+':'+otherUnit.type+' is enemy of '+unit.username+':'+unit.name+':'+unit.type+' because one side is dominus. ')}
-				isEnemy = true	
+				isEnemy = true
 			}
 		}
 
 		if (!isEnemy) {
 			switch (unit.type) {
 				case 'castle':
-					
+
 					if (_.indexOf(user.allies_above, otherUnit.user_id) == -1) {
 						isEnemy = true
 					}
@@ -752,7 +764,7 @@ Units.prototype.isEnemy = function(unit, otherUnit) {
 					break
 			}
 		}
-		
+
 	} else {
 		throw new Meteor.Error('Could not find both users')
 	}
@@ -840,7 +852,7 @@ Units.prototype._isOnAllyCastle = function(unit) {
 
 Units.prototype._isOnAllyVillage = function(unit) {
 	check(unit.user_id, String)
-	
+
 	if (unit.type == 'army') {
 		var user = this.getUserOfUnit(unit._id)
 		if (user) {
@@ -1041,7 +1053,7 @@ Units.prototype._findArmyThatArrivedFirst = function() {
 			} else {
 				var last_move_at = moment(new Date())
 			}
-			
+
 			if (last_move_at.isBefore(oldest_date)) {
 				oldest_date = last_move_at
 				firstArmy = unit
