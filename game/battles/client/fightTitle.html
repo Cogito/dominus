@@ -1,0 +1,24 @@
+<template name="fightTitle">
+    <div class="panel panel-default">
+        <div class="panel-heading" style="text-align:left;">
+            <a href="" class="fightOpenButton">
+                Round {{roundNumber}} Results
+            </a>
+        </div>
+        {{#if isOpen}}
+        <div class="panel-body">
+            {{#if fightReady}}
+                {{#with fight}}
+                    {{date_calendar created_at}}
+                    <br><br>
+                    {{#each units}}
+                        {{> battle_report_unit}}
+                    {{/each}}
+                {{/with}}
+            {{else}}
+                {{> loading}}
+            {{/if}}
+        </div>
+        {{/if}}
+    </div>
+</template>

@@ -26,7 +26,7 @@ BattleDb.prototype.init = function() {
 			updated_at:new Date(),
 			roundNumber: 1,
 			deaths: [],
-			roundData: [],
+			//roundData: [],
 			currentUnits: self.getCurrentUnits(),
 			sendEndNotificationTo: []	// set in enteredBattle - used for end battle notifications
 		}
@@ -118,34 +118,11 @@ BattleDb.prototype.endBattle = function() {
 BattleDb.prototype.saveRecord = function() {
 	var self = this
 
-	// var allUnits = []
-
-	// _.each(self.unitObj.getAllUnits(), function(unit) {
-	// 	if (self.unitObj.hasSoldiers(unit)) {
-	// 		if (self.unitObj.hasEnemies(unit)) {
-	// 			var cloned = cloneObject(unit)
-	// 			cloned.allies = self.unitObj.getAllies(unit)
-	// 			cloned.teamFinalPower = self.unitObj.getTeamFinalPower(unit)
-	// 			cloned.teamBasePower = self.unitObj.getTeamBasePower(unit)
-	// 			cloned.teamBonus = self.unitObj.getTeamBonus(unit)
-	// 			cloned.teamNumSoldiers = self.unitObj.getTeamNumSoldiers(unit)
-	// 			cloned.enemies = self.unitObj.getEnemies(unit)
-	// 			cloned.enemyFinalPower = self.unitObj.getEnemyFinalPower(unit)
-	// 			cloned.enemyBasePower = self.unitObj.getEnemyBasePower(unit)
-	// 			cloned.enemyBonus = self.unitObj.getEnemyBonus(unit)
-	// 			cloned.enemyNumSoldiers = self.unitObj.getEnemyNumSoldiers(unit)
-	// 			cloned.castleDefenseBonus = unit.castleDefenseBonus
-	// 			cloned.villageDefenseBonus = unit.villageDefenseBonus
-	// 			cloned.onAllyCastleBonus = unit.onAllyCastleBonus
-	// 			cloned.onAllyVillageBonus = unit.onAllyVillageBonus
-	// 			allUnits.push(cloned)
-	// 		}
-	// 	}
-	// })
-
 	var roundData = {
 		roundNumber: self.record.roundNumber,
-		units: self.getCurrentUnits()
+		units: self.getCurrentUnits(),
+		battle_id:self.record._id,
+		created_at: new Date(),
 	}
 
 	var set = {
@@ -156,7 +133,10 @@ BattleDb.prototype.saveRecord = function() {
 		sendEndNotificationTo: self.record.sendEndNotificationTo
 	}
 
-	Battles.update(self.record._id, {$set: set, $addToSet: {roundData: roundData}})
+	//Battles.update(self.record._id, {$set: set, $addToSet: {roundData: roundData}})
+	Fights.insert(roundData)
+	Battles.update(self.record._id, {$set: set})
+
 }
 
 
