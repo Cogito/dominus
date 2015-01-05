@@ -269,6 +269,19 @@ Template.rp_info_army.events({
 
 Template.rp_info_army.created = function() {
 	var self = this
+	self.subs = new ReadyManager()
+
+	self.autorun(function() {
+		if (Template.currentData()) {
+			self.subs.subscriptions([{
+				groupName: 'rightPanelTree',
+				subscriptions: [ Meteor.subscribe('rightPanelTree', Template.currentData().user_id).ready() ]
+			}, {
+				groupName: 'rightPanelUser',
+				subscriptions: [ Meteor.subscribe('rightPanelUser', Template.currentData().user_id).ready() ]
+			}])
+		}
+	})
 
 	self.gamePiecesAtHexLoaded = new ReactiveVar(false)
 	self.armyUserLoaded = new ReactiveVar(false)

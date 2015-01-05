@@ -103,6 +103,19 @@ Template.rp_info_village.events({
 
 Template.rp_info_village.created = function() {
 	var self = this
+	self.subs = new ReadyManager()
+
+	self.autorun(function() {
+		if (Template.currentData()) {
+			self.subs.subscriptions([{
+				groupName: 'rightPanelTree',
+				subscriptions: [ Meteor.subscribe('rightPanelTree', Template.currentData().user_id).ready() ]
+			}, {
+				groupName: 'rightPanelUser',
+				subscriptions: [ Meteor.subscribe('rightPanelUser', Template.currentData().user_id).ready() ]
+			}])
+		}
+	})
 
 	self.autorun(function() {
 		if (Template.currentData()) {

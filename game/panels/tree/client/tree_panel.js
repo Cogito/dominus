@@ -14,10 +14,10 @@ Template.tree_panel.helpers({
 					} else if (user.king == k._id) {
 						k.relation = 'king'
 					} else {
-						k.relation = 'foe'
+						k.relation = 'enemy'
 					}
 				} else {
-					k.relation = 'foe'
+					k.relation = 'enemy'
 				}
 				return k
 			})

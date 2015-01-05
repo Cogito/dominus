@@ -14,31 +14,31 @@ Template.tree_panel_vassals.helpers({
 					if (_.indexOf(user.allies_above, v._id) != -1) {
 
 						if (user.lord == v._id) {
-							v.relation = 'lord'
+							v.relation = 'direct_lord'
 						} else {
-							v.relation = 'above'
+							v.relation = 'lord'
 						}
 
 					} else if (_.indexOf(user.allies_below, v._id) != -1) {
 
 						if (_.indexOf(user.vassals, v._id) != -1) {
-							v.relation = 'vassal'
+							v.relation = 'direct_vassal'
 						} else {
-							v.relation = 'below'
+							v.relation = 'vassal'
 						}
 
 					// } else if (_.indexOf(user.siblings, v._id) != -1) {
 					// 	v.relation = 'sibling'
 					} else {
-						v.relation = 'team'
+						v.relation = 'enemy_ally'
 					}
 
 				} else {
-					v.relation = 'foe'
+					v.relation = 'enemy'
 				}
 
 			} else {
-				v.relation = 'foe'
+				v.relation = 'enemy'
 			}
 
 			return v

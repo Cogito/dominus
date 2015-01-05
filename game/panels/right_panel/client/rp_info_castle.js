@@ -17,16 +17,8 @@ Template.rp_info_castle.helpers({
 		}
 	},
 
-	castleUserLoaded: function() {
-		return Template.instance().castleUserLoaded.get()
-	},
-
 	castleInfoLoaded: function() {
 		return Session.get('rightPanelInfoLoaded')
-	},
-
-	battleInfoLoaded: function() {
-		return Template.instance().battleInfoLoaded.get()
 	},
 
 	battle: function() {
@@ -34,7 +26,7 @@ Template.rp_info_castle.helpers({
 			return Battles.findOne({x:this.x, y:this.y})
 		}
 	},
-	
+
 	image_radio_is_checked: function() {
 		if (Template.parentData(1).image == this.toString()) {
 			return 'checked'
@@ -104,7 +96,7 @@ Template.rp_info_castle.helpers({
 
 	user: function() {
 		if (Template.currentData()) {
-			return Meteor.users.findOne(Template.currentData().user_id)
+			return RightPanelUser.findOne(Template.currentData().user_id)
 		}
 	}
 })
@@ -134,17 +126,34 @@ Template.rp_info_castle.events({
 
 Template.rp_info_castle.created = function() {
 	var self = this
+	self.subs = new ReadyManager()
+	self.dupes = new ReactiveVar(false)
 
 	Session.set('mouse_mode', 'default')
 	Session.set('update_highlight', Random.fraction())
 
 	self.autorun(function() {
 		if (Template.currentData()) {
-			Meteor.subscribe('gamePiecesAtHex', Template.currentData().x, Template.currentData().y)
+			self.subs.subscriptions([{
+				groupName: 'gamePiecesAtHex',
+				subscriptions: [ Meteor.subscribe('gamePiecesAtHex', Template.currentData().x, Template.currentData().y).ready() ]
+			}, {
+				groupName: 'rightPanelUser',
+				subscriptions: [ Meteor.subscribe('rightPanelUser', Template.currentData().user_id).ready() ]
+			}, {
+				groupName: 'battleInfo',
+				subscriptions: [ Meteor.subscribe('battle_notifications_at_hex', Template.currentData().x, Template.currentData().y).ready() ]
+			}, {
+				groupName: 'forMinimap',
+				subscriptions: [ Meteor.subscribe('user_buildings_for_minimap', Template.currentData().user_id).ready() ]
+			}, {
+				groupName: 'rightPanelTree',
+				subscriptions: [ Meteor.subscribe('rightPanelTree', Template.currentData().user_id).ready() ]
+			}])
 		}
-	})	
+	})
 
-	self.dupes = new ReactiveVar(false)
+
 	this.autorun(function() {
 		if (Template.currentData()) {
 			Meteor.call('get_duplicate_users', Template.currentData().user_id, function(error, result) {
@@ -152,21 +161,6 @@ Template.rp_info_castle.created = function() {
 					self.dupes.set(result)
 				}
 			})
-		}
-	})
-
-	self.castleUserLoaded = new ReactiveVar(false)
-	self.battleInfoLoaded = new ReactiveVar(false)
-	this.autorun(function() {
-		if (Template.currentData()) {
-			if (Template.currentData().user_id != Meteor.userId()) {
-				// get networth, income... for right panel
-				var castleUserHandle = Meteor.subscribe('castle_user', Template.currentData().user_id)
-				self.castleUserLoaded.set(castleUserHandle.ready())
-			}
-
-			var battleInfoHandle = Meteor.subscribe('battle_notifications_at_hex', Template.currentData().x, Template.currentData().y)
-			self.battleInfoLoaded.set(battleInfoHandle.ready())
 		}
 	})
 
@@ -238,14 +232,6 @@ Template.rp_info_castle.created = function() {
 			Tracker.nonreactive(function() {
 				self.relationship.set(getUnitRelationType(Template.currentData().user_id))
 			})
-		}
-	})
-
-
-	// add this player's units to minimap
-	self.autorun(function() {
-		if (Template.currentData() && Template.currentData().user_id) {
-			Meteor.subscribe('user_buildings_for_minimap', Template.currentData().user_id)
 		}
 	})
 }

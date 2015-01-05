@@ -12,6 +12,7 @@
 						</h4>
 						{{> hex_location}} &nbsp;&nbsp; {{> center_on_button x=x y=y selected_type='castle' selected_id=_id}}
 					</div>
+
 					<table class="table table-condensed table-striped">
 						<tbody>
 							<tr>
@@ -43,7 +44,7 @@
 							<span class="light_text">Lord</span> {{username}}
 						</h4>
 					</div>
-					{{#if castleUserLoaded}}
+					{{#if rightPanelUserReady}}
 						<table class="table table-condensed table-striped">
 							<tbody>
 								<tr>
@@ -77,6 +78,12 @@
 					{{username}} is your {{unitRelationType}}
 				</div>
 			{{/if}}
+
+			{{#unless is_owner}}
+				{{#if rightPanelTreeReady}}
+					{{> rightPanelTree}}
+				{{/if}}
+			{{/unless}}
 
 
 			<div class="panel panel-default">
@@ -216,7 +223,7 @@
 		{{/if}}
 
 
-		{{#if battleInfoLoaded}}
+		{{#if battleInfoReady}}
 			{{#if battle}}
 				<div class="panel panel-default">
 					<div class="panel-heading">

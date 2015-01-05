@@ -30,6 +30,12 @@
 				</div>
 			{{/if}}
 
+			{{#unless is_owner}}
+				{{#if rightPanelTreeReady}}
+					{{> rightPanelTree}}
+				{{/if}}
+			{{/unless}}
+
 			<div class="panel panel-default">
 				<table class="table table-condensed table-striped">
 					<tbody>
