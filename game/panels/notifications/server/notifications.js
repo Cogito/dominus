@@ -267,7 +267,8 @@ delete_old_notifications = function() {
 		var numNots = Notifications.find({user_id:user._id}).count()
 		if (numNots > s.maxNotificationsPerUser) {
 			// find created_at of last one they should have
-			var nots = Notifications.find({user_id:user._id}, {sort:{created_at:-1}, limit:s.maxNotificationsPerUser}).fetch()
+			var options = {fields: {created_at:1}, sort:{created_at:-1}, limit:s.maxNotificationsPerUser}
+			var nots = Notifications.find({user_id:user._id}, options).fetch()
 			if (nots) {
 				var created_at = nots[s.maxNotificationsPerUser-1].created_at
 				Notifications.remove({user_id:user._id, created_at:{$lt:created_at}})

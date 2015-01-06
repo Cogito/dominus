@@ -172,11 +172,30 @@ Meteor.methods({
 			})
 
 			if (has_some && has_enough) {
+				// take away from building
+				// this has to be done before create_army
+				// because create_army could start a battle
+				// and units would still be in building
+				var fields = {}
+				_.each(s.army.types, function(type) {
+					fields[type] = army[type] * -1
+				})
+
+				if (from_type == 'castle') {
+					Castles.update(from_id, {$inc: fields})
+				}
+
+				if (from_type == 'village') {
+					Villages.update(from_id, {$inc: fields})
+				}
+
 				var army_id = create_army(Meteor.userId(), army, from.x, from.y, moves)
 				if (army_id) {
-					var fields = {}
+					return army_id
+				} else {
+					// couldn't create army so give army back to building
 					_.each(s.army.types, function(type) {
-						fields[type] = army[type] * -1
+						fields[type] = fields[type] * -1
 					})
 
 					if (from_type == 'castle') {
@@ -187,12 +206,8 @@ Meteor.methods({
 						Villages.update(from_id, {$inc: fields})
 					}
 
-					return army_id
-				} else {
 					return false
 				}
-
-
 			}
 		}
 		return false

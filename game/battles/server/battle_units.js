@@ -25,7 +25,7 @@ Units = function(x, y) {
 	armies.forEach(function(army) {
 		army.type = 'army'
 		self.allUnits.push(army)
-		if (self.debug) {console.log('adding '+army.username+':'+army.name+':'+army.type+' to allunits')}
+		self._debugMsg(army)
 	})
 
 	if (castle) {
@@ -41,14 +41,14 @@ Units = function(x, y) {
 
 		if (hasSoldiers) {
 			self.allUnits.push(castle)
-			if (self.debug) {console.log('adding '+castle.username+':'+castle.name+':'+castle.type+' to allunits')}
+			self._debugMsg(castle)
 		}
 	}
 
 	if (village) {
 		village.type = 'village'
 		self.allUnits.push(village)
-		if (self.debug) {console.log('adding '+village.username+':'+village.name+':'+village.type+' to allunits')}
+		self._debugMsg(village)
 	}
 
 	// set defaults
@@ -77,6 +77,24 @@ Units = function(x, y) {
 	if (self.debug) {console.log('--- finished loading units ---')}
 }
 
+
+Units.prototype._debugMsg = function(unit) {
+	var self = this
+
+	if (self.debug) {
+		console.log('adding '+unit.username+':'+unit.name+':'+unit.type+' to allunits')
+		var hasSoldiers = false
+		_.each(s.army.types, function(type) {
+			if (unit[type] > 0) {
+				console.log('    '+type+': '+unit[type])
+				hasSoldiers = true
+			}
+		})
+		if (!hasSoldiers) {
+			console.log('    has no soldiers')
+		}
+	}
+}
 
 
 Units.prototype.enteredBattle = function(unit) {

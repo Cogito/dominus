@@ -50,4 +50,9 @@ Router.map(function() {
 		waitOn: function() { return Meteor.subscribe('admin_chatrooms')}
 	})
 
+	this.route('adminNotificationCounts', {
+		path: '/admin/admin_notification_counts',
+		waitOn: function() { return Meteor.subscribe('admin_notification_counts')}
+	})
+
 });
