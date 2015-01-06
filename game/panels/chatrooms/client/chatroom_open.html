@@ -21,12 +21,12 @@
 								&nbsp;
 								<a href="" class="inviteButton" data-toggle="tooltip" title="Invite Someone"><i class="fa fa-plus-circle"></i></a>
 							{{/if}}
-							
+
 							{{#if showRenameButton}}
 								&nbsp;
 								<a href="" class="renameButton" data-toggle="tooltip" title="Rename Chatroom"><i class="fa fa-pencil"></i></a>
 							{{/if}}
-							
+
 							{{#if showLeaveButton}}
 								&nbsp;
 								<a href="" class="leaveChatroomButton" data-toggle="tooltip" title="Leave Chatroom"><i class="fa fa-times-circle"></i></a>
@@ -80,7 +80,7 @@
 
 
 		<div style="display:{{showChatBox}};">
-		<table style="width:400px;table-layout-fixed;">
+		<table style="width:100%;table-layout-fixed;">
 			<tbody>
 				<tr>
 					<td style="padding-left:15px;padding-right:15px;padding-top:12px;vertical-align:top;">
@@ -139,7 +139,7 @@
 
 							{{else}}
 								Loading...
-							{{/if}}							
+							{{/if}}
 						</td>
 					{{/if}}
 				</tr>
