@@ -22,13 +22,13 @@ Template.hover_box.helpers({
 
 		} else if (Session.get('hover_box_data').type == 'castle') {
 			offset = -40
-		
+
 		} else if (Session.get('hover_box_data').type == 'village') {
 			offset = -40
 		}
 
 		// this is outside of #hexes so it needs to be scaled
-		var x = grid.x * get_hex_scale()
+		var x = grid.x * Session.get('hexScale')
 
 		return Session.get('hexes_pos').x + x + offset
 	},
@@ -36,7 +36,7 @@ Template.hover_box.helpers({
 	top: function() {
 		var x = Session.get('hover_box_data').x
 		var y = Session.get('hover_box_data').y
-		
+
 		check(x, validNumber)
 		check(y, validNumber)
 
@@ -55,7 +55,7 @@ Template.hover_box.helpers({
 		}
 
 		// this is outside of #hexes so it needs to be scaled
-		var y = grid.y * get_hex_scale()
+		var y = grid.y * Session.get('hexScale')
 
 		return Session.get('hexes_pos').y + y + offset
 	},

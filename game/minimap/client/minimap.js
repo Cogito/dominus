@@ -12,7 +12,7 @@ UI.registerHelper('minimap_coord_to_pixel_x', function(x,y) {
 UI.registerHelper('minimap_coord_to_pixel_y', function(x,y) {
 	check(x, validNumber)
 	check(y, validNumber)
-	
+
 	var hex_size = get_hex_size()
 	var coords = minimap_coordinates_to_grid(x, y, hex_size)
 	return coords.y
@@ -111,7 +111,7 @@ Template.minimap.created = function() {
 	this.autorun(function() {
 		var mini_hex_size = get_hex_size()
 		var canvas_size = Session.get('canvas_size')
-		var hex_scale = get_hex_scale()
+		var hex_scale = Session.get('hexScale')
 
 		var hex_size = s.hex_size * hex_scale
 

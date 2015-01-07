@@ -3,7 +3,7 @@ grid_to_pixel = function(x,y) {
 	check(y, validNumber)
 
 	var canvas_size = Session.get('canvas_size')
-	var hex_scale = get_hex_scale()
+	var hex_scale = Session.get('hexScale')
 	x -= canvas_size.half_width
 	y -= canvas_size.half_height
 	x = x * (1/hex_scale)
@@ -17,7 +17,7 @@ pixel_to_grid = function(x,y) {
 	check(y, validNumber)
 
 	var canvas_size = Session.get('canvas_size')
-	var hex_scale = get_hex_scale()
+	var hex_scale = Session.get('hexScale')
 
 	x += canvas_size.half_width
 	y += canvas_size.half_height
@@ -56,7 +56,7 @@ is_hex_empty_coords = function(x,y) {
 is_hex_empty_except_allies_coords = function(x,y) {
     check(x, validNumber)
     check(y, validNumber)
-    
+
     if (Castles.find({x:x, y:y}).count() > 0) {
 		return false
 	}
@@ -64,7 +64,7 @@ is_hex_empty_except_allies_coords = function(x,y) {
 	if (Villages.find({x:x, y:y}).count() > 0) {
 		return false
 	}
-    
+
     var user = Meteor.users.findOne(Meteor.userId(), {fields: {allies:1}})
     if (user) {
         var allies = user.allies
@@ -72,10 +72,10 @@ is_hex_empty_except_allies_coords = function(x,y) {
         check(allies, Array)
         var numFound = Armies.find({x: x, y: y, user_id: {$nin: allies} }).count()
         if (numFound > 0) { return false }
-        
+
         return true
     }
-    
+
     return false
 }
 

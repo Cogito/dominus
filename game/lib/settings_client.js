@@ -6,7 +6,7 @@ if (Meteor.isClient) {
 
 	s.hex_move_speed = 20		// how fast does the grid move when moving
 	s.hex_scale_max = 1
-	s.hex_scale_min = 0.7
+	s.hex_scale_min = 0.6
 
 	s.army_travel_multiplier = 1
 }

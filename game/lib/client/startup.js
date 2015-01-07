@@ -2,6 +2,7 @@
 Session.setDefault('hexes_pos', {x: 0, y: 0})	//	x,y that the svg hex group #hexes is translated to
 Session.setDefault('canvas_size', {width: 0, height: 0, half_width: 0, half_height: 0})
 Session.setDefault('center_hex', {x: 0, y: 0})	// the hex that is in the center of the screen
+Session.setDefault('hexScale', 1)
 
 // set these to select something
 // this is the only thing you need to do to select something
@@ -26,7 +27,7 @@ Session.setDefault('rp_template', 'none')	// what to show in right panel
 
 // true when the onscreen subscription is ready
 // used to draw loading alert
-Session.setDefault('subscription_ready', false)	
+Session.setDefault('subscription_ready', false)
 
 
 Session.setDefault('show_building_castle_modal', false)

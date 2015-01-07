@@ -32,8 +32,6 @@ Template.store_panel_item.events({
 	'click .store_purchase_button': function(event, template) {
 		var self = this
 
-		// var type = $(event.currentTarget).attr('data-type')
-		// var id = String(this)
 		var button = $(event.currentTarget)
 		var button_html = $(button).html()
 		var error_alert = template.find('.store_error_alert')

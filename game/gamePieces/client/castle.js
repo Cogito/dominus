@@ -6,7 +6,8 @@ Template.castle.helpers({
 
 Template.castle.events({
 	'click .castle': function(event, template) {
-		if (!Session.get('is_dragging_hexes')) {
+		//if (!Session.get('is_dragging_hexes')) {
+		if (!mapmover.isDraggingOrScaling) {
 
 			if (Session.get('mouse_mode') == 'default') {
 				Session.set('selected_type', 'castle')

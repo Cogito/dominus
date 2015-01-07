@@ -84,7 +84,7 @@ Template.forum_panel.events({
 	},
 
 	'click .forum_link': function(event, template) {
-		var id = $(event.currentTarget).attr('data-id')
+		var id = event.currentTarget.dataset.id
 		check(id, String)
 		if (Session.get('forum_current_thread')) {
 			Cookie.set('viewed_thread_'+Session.get('forum_current_thread'), new Date(), {years: 10})
@@ -96,7 +96,7 @@ Template.forum_panel.events({
 	},
 
 	'click .thread_link': function(event, template) {
-		var id = $(event.currentTarget).attr('data-id')
+		var id = event.currentTarget.dataset.id
 		check(id, String)
 		Session.set('forum_current_thread', id)
 		if (!Cookie.get('viewed_thread_'+id)) {
@@ -195,7 +195,7 @@ Template.forum_panel.events({
 			Cookie.set('viewed_thread_'+thread._id, new Date(), {years: 10})
 		})
 	},
-	
+
 	'click .hex-link': function(event, template) {
 		event.preventDefault()
 		event.stopPropagation()

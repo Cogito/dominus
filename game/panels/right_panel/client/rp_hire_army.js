@@ -116,7 +116,7 @@ Template.rp_hire_army.events({
 	},
 
 	'click .sell_all_button': function(event, template) {
-		var type = template.$(event.currentTarget).attr('data-type')
+		var type = event.currentTarget.dataset.type
 		var button = template.$(".sell_all_button[data-type='"+type+"']")
 
 		var button_html = $(button).html()

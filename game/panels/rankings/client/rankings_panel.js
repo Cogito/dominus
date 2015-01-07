@@ -117,9 +117,9 @@ Template.rankings_panel.events({
 		event.preventDefault()
 		event.stopPropagation()
 
-		var id = $(event.currentTarget).attr('data-castle_id')
-		var x = parseInt($(event.currentTarget).attr('data-x'))
-		var y = parseInt($(event.currentTarget).attr('data-y'))
+		var id = event.currentTarget.dataset.castle_id
+		var x = event.currentTarget.dataset.x
+		var y = event.currentTarget.dataset.y
 
 		center_on_hex(x, y)
 		Session.set('selected_type', 'castle')

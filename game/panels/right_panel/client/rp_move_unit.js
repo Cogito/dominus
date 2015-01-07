@@ -87,7 +87,7 @@ Template.rp_move_unit.events({
 	},
 
 	'input .send_units_slider, change .send_units_slider': function(event, template) {
-		var type = $(event.currentTarget).attr('data-type')
+		var type = event.currentTarget.dataset.type
 		var num = Number(event.currentTarget.value)
 		set_selected_unit(type, num)
 	},

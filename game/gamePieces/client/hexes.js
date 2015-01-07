@@ -1,3 +1,27 @@
+// global so that functions can check isDragging
+var lastPos = {x:null,y:null}
+
+mapmover = new Mapmover(function(x,y,scale) {
+	// beginning of move
+	beginPos = {x:x,y:y}
+
+}, function(x,y,scale) {
+	// during move
+	Meteor.call('set_hex_scale', scale)
+	Session.set('hexScale', scale)
+	offset_hexes(x-lastPos.x, y-lastPos.y)
+	lastPos = {x:x, y:y}
+
+}, function(x,y,scale) {
+	// end of move
+	offset_hexes(x-lastPos.x, y-lastPos.y)
+})
+
+mapmover.minScale = s.hex_scale_min
+mapmover.maxScale = s.hex_scale_max
+
+
+
 Template.hexes.helpers({
 	// this is only used for the hex coordinates
 	// not used to draw the hexes
@@ -29,7 +53,7 @@ Template.hexes.helpers({
 Template.hexes.events({
 	// selecting hex to move army to
 	'mouseenter .hex': function(event, template) {
-		var id = $(event.currentTarget).attr('data-id')
+		var id = event.currentTarget.dataset.id
 		Session.set('mouseover_hex_id', id)
 	},
 	'mouseleave .hex': function(event, template) {
@@ -37,9 +61,10 @@ Template.hexes.events({
 	},
 
 	'click .hex': function(event, template) {
-		var id = $(event.currentTarget).attr('data-id')
-		check(id, String)
-		if (!Session.get('is_dragging_hexes')) {
+		if (!mapmover.isDraggingOrScaling) {
+
+			var id = event.currentTarget.dataset.id
+			check(id, String)
 
 			if (Session.get('mouse_mode') == 'default') {
 
@@ -57,28 +82,30 @@ Template.hexes.events({
 
 
 
-
-Template.hexes.rendered = function() {
-	var self = this
-
-	// draw hexes
-	observe_hexes(self)
-
+Template.hexes.created = function() {
 	// update hexes when player zooms in/out
 	this.autorun(function() {
 		var user = Meteor.users.findOne(Meteor.userId(), {fields: {hex_scale:1}})
 		if (user && user.hex_scale) {
-			set_hex_scale(user.hex_scale)
+			Session.set('hexScale', user.hex_scale)
+			Deps.nonreactive(function() {
+				var center_hex = Session.get('center_hex')
+				center_on_hex(center_hex.x, center_hex.y)
+			})
 		}
 	})
+}
 
-	// if canvas size changes redraw hexes
-	this.autorun(function() {
-		Session.get('canvas_size')
-		self.handle.stop()
-		$('#hex_container').empty()
-		observe_hexes(self)
-	})
+
+
+Template.hexes.rendered = function() {
+	var self = this
+
+	mapmover.scale = Session.get('hexScale')
+	mapmover.start($('#svg_container'))
+
+	// draw hexes
+	observe_hexes(self)
 
 	// hex selection
 	// update when selected session variable changes
@@ -93,48 +120,38 @@ Template.hexes.rendered = function() {
 
 	// set canvas size
 	// update size of map when window size changes
+	// if canvas size changes redraw hexes
 	this.autorun(function() {
 		var canvas_size = Session.get('canvas_size')
 		$('#svg_container').css('height', canvas_size.height)
 		$('#svg_container').css('width', canvas_size.width)
+
+		self.handle.stop()
+		$('#hex_container').empty()
+		observe_hexes(self)
 	})
 
 
 	// update session with which hex is at the center of the screen
 	// used to subscribe to hexes onscreen
 	this.autorun(function() {
-		if (!Session.get('is_dragging_hexes')){
-			if (typeof Session.get('hexes_pos') != 'undefined') {
-				var hexes_pos = Session.get('hexes_pos')
-				var canvas_size = Session.get('canvas_size')
+		var hexes_pos = Session.get('hexes_pos')
+		if (typeof hexes_pos != 'undefined') {
+			var canvas_size = Session.get('canvas_size')
+			var pixel = grid_to_pixel(hexes_pos.x, hexes_pos.y)
+			var coords = Hx.posToCoordinates(pixel.x, pixel.y, s.hex_size, s.hex_squish)
 
-				var pixel = grid_to_pixel(hexes_pos.x, hexes_pos.y)
-
-				var coords = Hx.posToCoordinates(pixel.x, pixel.y, s.hex_size, s.hex_squish)
-
-				var x = coords.x * -1 	// why -1???
-				var y = coords.y * -1
-				Session.set('center_hex', {x:x, y:y})
-			}
+			var x = coords.x * -1 	// why -1???
+			var y = coords.y * -1
+			Session.set('center_hex', {x:x, y:y})
 		}
 	})
-
-
-	this.autorun(function() {
-		var hex_scale = get_hex_scale()
-		Deps.nonreactive(function() {
-			var center_hex = Session.get('center_hex')
-			center_on_hex(center_hex.x, center_hex.y)
-		})
-	})
-
-
-
 }
 
 
 Template.hexes.destroyed = function() {
 	var self = this
+	mapmover.stop()
 }
 
 
@@ -237,38 +254,4 @@ highlight_hex_id = function(hex_id) {
 
 hex_remove_highlights = function() {
 	$('polygon.hex_highlight').remove()
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-/////////////////////////////////////////////////////////
-/// getters setters
-
-
-// hex_scale
-var hex_scale = 1
-var hex_scale_dep = new Deps.Dependency
-
-get_hex_scale = function() {
-	hex_scale_dep.depend()
-	return hex_scale
-}
-
-var set_hex_scale = function(num) {
-	check(num, validNumber)
-
-	if (hex_scale != num) {
-		hex_scale = num
-		hex_scale_dep.changed()
-	}
 }

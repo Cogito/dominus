@@ -144,19 +144,21 @@ Template.navigation_panel.destroyed = function() {
 
 
 decrease_hex_scale = function() {
-	var hex_scale = get_hex_scale()
+	var hex_scale = Session.get('hexScale')
 	hex_scale -= 0.1
 	if (hex_scale < s.hex_scale_min) {
 		hex_scale = s.hex_scale_min
 	}
+	mapmover.scale = hex_scale
 	Meteor.call('set_hex_scale', hex_scale)
 }
 
 increase_hex_scale = function() {
-	var hex_scale = get_hex_scale()
+	var hex_scale = Session.get('hexScale')
 	hex_scale += 0.1
 	if (hex_scale > s.hex_scale_max) {
 		hex_scale = s.hex_scale_max
 	}
+	mapmover.scale = hex_scale
 	Meteor.call('set_hex_scale', hex_scale)
 }

@@ -55,30 +55,6 @@ Template.game.helpers({
 
 })
 
-Template.game.events({
-	// grid drag. Only start dragging if starting within #hex_body; continue dragging everywhere.
-	'mousedown #hex_body': function(event, template) {
-		if (event.which == 1) { // left mouse button
-			dragger.start_grid_drag(event, false)
-		}
-	},
-	'mouseup': function(event, template) { dragger.stop_grid_drag() },
-	'mousemove': function(event, template) { dragger.hexes_mouse_move(event, false) },
-
-	'touchstart #hex_body': function(event, template) { dragger.start_grid_drag(event, true) },
-	'touchend': function(event, template) { dragger.stop_grid_drag() },
-	'touchmove': function(event, template) { dragger.hexes_mouse_move(event, true) }
-})
-
-
-
-
-var width = $(window).outerWidth(true)
-var height = $(window).outerHeight(true)
-Session.set('canvas_size', {width: 0, height: 0, half_width: 0, half_height: 0})	// set to zero so that deps.autorun will run again
-Session.set('canvas_size', {width: width, height: height, half_width: width/2, half_height: height/2})
-
-
 
 Template.game.created = function() {
 	var self = this
@@ -102,11 +78,11 @@ Template.game.created = function() {
 
 
 	this.autorun(function() {
-		if (!Session.get('is_dragging_hexes')){
+		if (!mapmover.isDraggingOrScalingReactive.get()) {
 			var roundedCenterHex_x = self.roundedCenterHex_x.get()
 			var roundedCenterHex_y = self.roundedCenterHex_y.get()
 			var canvas_size = Session.get('canvas_size')
-			var hex_scale = get_hex_scale()
+			var hex_scale = Session.get('hexScale')
 			var sub = subs.subscribe('on_screen', roundedCenterHex_x, roundedCenterHex_y, s.hex_size, canvas_size.width, canvas_size.height, hex_scale)
 			var sub_hexes = subs.subscribe('on_screen_hexes', roundedCenterHex_x, roundedCenterHex_y, s.hex_size, canvas_size.width, canvas_size.height, hex_scale)
 			Session.set('subscription_ready', sub_hexes.ready())
@@ -132,7 +108,15 @@ Template.game.rendered = function() {
 		var width = $(window).outerWidth(true)
 		var height = $(window).outerHeight(true)
 		Session.set('canvas_size', {width: width, height: height, half_width: width/2, half_height: height/2})
+
+		var zoom = screen.width / 1000
+		if (zoom < 1) {
+			var tag = document.getElementById('viewport')
+			var content = 'initial-scale='+zoom+', maximum-scale='+zoom+', minimum-scale='+zoom+', user-scalable=no, width='+1000
+			tag.setAttribute('content', content)
+		}
 	}
+	window.onresize()
 
 
 	// show loading map panel
