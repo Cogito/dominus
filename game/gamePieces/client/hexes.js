@@ -53,7 +53,7 @@ Template.hexes.helpers({
 Template.hexes.events({
 	// selecting hex to move army to
 	'mouseenter .hex': function(event, template) {
-		var id = event.currentTarget.dataset.id
+		var id = event.currentTarget.getAttribute('data-id')
 		Session.set('mouseover_hex_id', id)
 	},
 	'mouseleave .hex': function(event, template) {
@@ -63,7 +63,7 @@ Template.hexes.events({
 	'click .hex': function(event, template) {
 		if (!mapmover.isDraggingOrScaling) {
 
-			var id = event.currentTarget.dataset.id
+			var id = event.currentTarget.getAttribute('data-id')
 			check(id, String)
 
 			if (Session.get('mouse_mode') == 'default') {

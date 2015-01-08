@@ -296,8 +296,8 @@ Template.chatroom_open.events({
 		event.preventDefault()
 		event.stopPropagation()
 		var hex = {
-			x: parseInt(event.currentTarget.dataset.x),
-			y: parseInt(event.currentTarget.dataset.y)
+			x: parseInt(event.currentTarget.getAttribute('data-x')),
+			y: parseInt(event.currentTarget.getAttribute('data-y'))
 		}
 
 		var id = coords_to_id(hex.x, hex.y, "hex");

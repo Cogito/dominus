@@ -17,7 +17,7 @@ Template.rp_split_armies.events({
 	},
 
 	'change .split_units_slider, input .split_units_slider': function(event, template) {
-		var type = event.currentTarget.dataset.type
+		var type = event.currentTarget.getAttribute('data-type')
 		var num = Number(event.currentTarget.value)
 		set_selected_unit(type, num)
 	},

@@ -117,9 +117,9 @@ Template.rankings_panel.events({
 		event.preventDefault()
 		event.stopPropagation()
 
-		var id = event.currentTarget.dataset.castle_id
-		var x = event.currentTarget.dataset.x
-		var y = event.currentTarget.dataset.y
+		var id = event.currentTarget.getAttribute('data-castle_id')
+		var x = event.currentTarget.getAttribute('data-x')
+		var y = event.currentTarget.getAttribute('data-y')
 
 		center_on_hex(x, y)
 		Session.set('selected_type', 'castle')
@@ -130,7 +130,7 @@ Template.rankings_panel.events({
 		event.preventDefault()
 		event.stopPropagation()
 
-		var type = event.currentTarget.dataset.type
+		var type = event.currentTarget.getAttribute('data-type')
 		if (Template.instance()[type].get() > 1) {
 			Template.instance()[type].set(Template.instance()[type].get()-1)
 		}
@@ -140,7 +140,7 @@ Template.rankings_panel.events({
 		event.preventDefault()
 		event.stopPropagation()
 
-		var type = event.currentTarget.dataset.type
+		var type = event.currentTarget.getAttribute('data-type')
 		if (type == 'villagesPage') {
 			if (Template.instance()[type].get() < Template.instance().villageCount.get() / s.rankings.perPage) {
 				Template.instance()[type].set(Template.instance()[type].get()+1)

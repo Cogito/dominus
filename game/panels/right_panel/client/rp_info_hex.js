@@ -49,7 +49,7 @@ Template.rp_info_hex.helpers({
 
 Template.rp_info_hex.events({
 	'click #select_army_button': function(event, template) {
-		var id = event.currentTarget.dataset.id
+		var id = event.currentTarget.getAttribute('data-id')
 		Session.set('selected_id', id)
 		Session.set('selected_type', 'army')
 	},

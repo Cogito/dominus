@@ -1,5 +1,8 @@
 {
 	"stripe_secret_key":"sk_test",
+	"s3key":"000",
+	"s3secretKey":"000",
+	"s3bucket":"asdf",
 	"public": {
 		"stripe_publishable_key":"pk_test"
 	}
