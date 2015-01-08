@@ -7,7 +7,6 @@ mapmover = new Mapmover(function(x,y,scale) {
 
 }, function(x,y,scale) {
 	// during move
-	Meteor.call('set_hex_scale', scale)
 	Session.set('hexScale', scale)
 	offset_hexes(x-lastPos.x, y-lastPos.y)
 	lastPos = {x:x, y:y}
@@ -15,6 +14,7 @@ mapmover = new Mapmover(function(x,y,scale) {
 }, function(x,y,scale) {
 	// end of move
 	offset_hexes(x-lastPos.x, y-lastPos.y)
+	Meteor.call('set_hex_scale', scale)
 })
 
 mapmover.minScale = s.hex_scale_min
