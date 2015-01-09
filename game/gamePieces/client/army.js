@@ -1,14 +1,7 @@
 Template.army.helpers({
 	//only draw guy that has been there the longest
 	draw: function() {
-		var self = this
-		var draw = true
-		Armies.find({x: self.x, y: self.y, _id: {$ne: self._id}}, {fields: {last_move_at:1}}).forEach(function(res) {
-			if (self.last_move_at > res.last_move_at) {
-				draw = false
-			}
-		})
-		return draw
+		return Template.instance().draw.get()
 	}
 })
 
@@ -44,6 +37,17 @@ Template.army.events({
 
 Template.army.created = function() {
 	var self = this
+
+	self.draw = new ReactiveVar(true)
+	self.autorun(function() {
+		if (Template.currentData()) {
+			Armies.find({x: Template.currentData().x, y: Template.currentData().y, _id: {$ne: Template.currentData()._id}}, {fields: {last_move_at:1}}).forEach(function(res) {
+				if (Template.currentData().last_move_at > res.last_move_at) {
+					self.draw.set(false)
+				}
+			})
+		}
+	})
 
 	this.autorun(function() {
 		Session.get('update_highlight')

@@ -1,35 +1,6 @@
 Template.castle_flag.helpers({
 	friend_or_foe: function() {
-		var user = Meteor.users.findOne(Meteor.userId(), {fields: {lord:1, allies_above:1, allies_below:1, team:1, king:1, vassals:1}})
-		if (user) {
-			if (this.user_id == user._id) {
-				return 'mine'
-			} else if (_.indexOf(user.team, this.user_id) != -1) {
-
-				if (_.indexOf(user.allies_above, this.user_id) != -1) {
-					if (this.user_id == user.king) {
-						return 'king'
-					} else if (this.user_id == user.lord) {
-						return 'lord'
-					} else {
-						return 'above'
-					}
-				} else if (_.indexOf(user.allies_below, this.user_id) != -1) {
-					if (_.indexOf(user.vassals, this.user_id) != -1) {
-						return 'vassal'
-					} else {
-						return 'below'
-					}
-				// } else if (_.indexOf(user.siblings, this.user_id) != -1) {
-				// 	return 'sibling'
-				} else {
-					return 'team'
-				}
-
-			} else {
-				return 'foe'
-			}
-		}
+		return Template.instance().flagColor.get()
 	},
 
 	flag_points: function(x, y) {
@@ -47,3 +18,15 @@ Template.castle_flag.helpers({
 		return points
 	}
 })
+
+Template.castle_flag.created = function() {
+	var self = this
+
+	self.flagColor = new ReactiveVar(null)
+	self.autorun(function() {
+		if (Template.currentData()) {
+			var relation = getUnitRelationType(Template.currentData().user_id)
+			self.flagColor.set(relation)
+		}
+	})
+}

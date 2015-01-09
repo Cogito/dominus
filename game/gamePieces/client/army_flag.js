@@ -1,17 +1,31 @@
 Template.army_flag.helpers({
 	draw: function() {
-		var self = this
-		var draw = true
-		Armies.find({x: self.x, y: self.y, _id: {$ne: self._id}}, {fields: {last_move_at:1}}).forEach(function(res) {
-			if (self.last_move_at > res.last_move_at) {
-				draw = false
-			}
-		})
-		return draw
+		return Template.instance().draw.get()
 	},
 
 	flags: function() {
+		return Template.instance().flags.get()
+	}
+})
 
+
+Template.army_flag.created = function() {
+	var self = this
+
+	self.draw = new ReactiveVar(true)
+	self.autorun(function() {
+		if (Template.currentData()) {
+			Armies.find({x: Template.currentData().x, y: Template.currentData().y, _id: {$ne: Template.currentData()._id}}, {fields: {last_move_at:1}}).forEach(function(res) {
+				if (Template.currentData().last_move_at > res.last_move_at) {
+					self.draw.set(false)
+				}
+			})
+		}
+	})
+
+
+	self.flags = new ReactiveVar([])
+	self.autorun(function() {
 		if (Meteor.userId()) {
 
 			var user = Meteor.users.findOne(Meteor.userId(), {lord:1, allies_above:1, allies_below:1, team:1, king:1, vassals:1})
@@ -26,7 +40,7 @@ Template.army_flag.helpers({
 				var numTeam = 0
 				var numFoe = 0
 
-				Armies.find({x:this.x, y:this.y}, {fields: {user_id:1}}).forEach(function(res) {
+				Armies.find({x:Template.currentData().x, y:Template.currentData().y}, {fields: {user_id:1}}).forEach(function(res) {
 
 					if (res.user_id == user._id) {
 						numMine++
@@ -50,8 +64,8 @@ Template.army_flag.helpers({
 								numBelow++
 							}
 
-						// } else if (_.indexOf(user.siblings, res.user_id) != -1) {
-						// 	numSibling++
+							// } else if (_.indexOf(user.siblings, res.user_id) != -1) {
+							// 	numSibling++
 						} else {
 							numTeam++
 						}
@@ -74,7 +88,7 @@ Template.army_flag.helpers({
 						drawNum = false
 					}
 					offset += shape_size
-					flags[index] = {num: numMine, offset: offset, textOffset: offset+9, type: 'mine', x: this.x, y: this.y, drawNum: drawNum}
+					flags[index] = {num: numMine, offset: offset, textOffset: offset+9, type: 'mine', x: Template.currentData().x, y: Template.currentData().y, drawNum: drawNum}
 					index++
 				}
 
@@ -85,7 +99,7 @@ Template.army_flag.helpers({
 						drawNum = false
 					}
 					offset += shape_size
-					flags[index] = {num: numKing, offset: offset, textOffset: offset+9, type: 'king', x: this.x, y: this.y, drawNum: drawNum}
+					flags[index] = {num: numKing, offset: offset, textOffset: offset+9, type: 'king', x: Template.currentData().x, y: Template.currentData().y, drawNum: drawNum}
 					index++
 				}
 
@@ -96,7 +110,7 @@ Template.army_flag.helpers({
 						drawNum = false
 					}
 					offset += shape_size
-					flags[index] = {num: numLord, offset: offset, textOffset: offset+9, type: 'lord', x: this.x, y: this.y, drawNum: drawNum}
+					flags[index] = {num: numLord, offset: offset, textOffset: offset+9, type: 'direct_lord', x: Template.currentData().x, y: Template.currentData().y, drawNum: drawNum}
 					index++
 				}
 
@@ -107,7 +121,7 @@ Template.army_flag.helpers({
 						drawNum = false
 					}
 					offset += shape_size
-					flags[index] = {num: numAbove, offset: offset, textOffset: offset+9, type: 'above', x: this.x, y: this.y, drawNum: drawNum}
+					flags[index] = {num: numAbove, offset: offset, textOffset: offset+9, type: 'lord', x: Template.currentData().x, y: Template.currentData().y, drawNum: drawNum}
 					index++
 				}
 
@@ -118,7 +132,7 @@ Template.army_flag.helpers({
 						drawNum = false
 					}
 					offset += shape_size
-					flags[index] = {num: numVassal, offset: offset, textOffset: offset+9, type: 'vassal', x: this.x, y: this.y, drawNum: drawNum}
+					flags[index] = {num: numVassal, offset: offset, textOffset: offset+9, type: 'direct_vassal', x: Template.currentData().x, y: Template.currentData().y, drawNum: drawNum}
 					index++
 				}
 
@@ -129,7 +143,7 @@ Template.army_flag.helpers({
 						drawNum = false
 					}
 					offset += shape_size
-					flags[index] = {num: numBelow, offset: offset, textOffset: offset+9, type: 'below', x: this.x, y: this.y, drawNum: drawNum}
+					flags[index] = {num: numBelow, offset: offset, textOffset: offset+9, type: 'vassal', x: Template.currentData().x, y: Template.currentData().y, drawNum: drawNum}
 					index++
 				}
 
@@ -151,7 +165,7 @@ Template.army_flag.helpers({
 						drawNum = false
 					}
 					offset += shape_size
-					flags[index] = {num: numTeam, offset: offset, textOffset: offset+9, type: 'team', x: this.x, y: this.y, drawNum: drawNum}
+					flags[index] = {num: numTeam, offset: offset, textOffset: offset+9, type: 'enemy_ally', x: Template.currentData().x, y: Template.currentData().y, drawNum: drawNum}
 					index++
 				}
 
@@ -162,13 +176,12 @@ Template.army_flag.helpers({
 						drawNum = false
 					}
 					offset += shape_size
-					flags[index] = {num: numFoe, offset: offset, textOffset: offset+9, type: 'foe', x: this.x, y: this.y, drawNum: drawNum}
+					flags[index] = {num: numFoe, offset: offset, textOffset: offset+9, type: 'enemy', x: Template.currentData().x, y: Template.currentData().y, drawNum: drawNum}
 					index++
 				}
 
-				return flags
+				self.flags.set(flags)
 			}
 		}
-	}
-
-})
+	})
+}
