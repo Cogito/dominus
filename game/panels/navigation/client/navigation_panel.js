@@ -150,7 +150,7 @@ decrease_hex_scale = function() {
 		hex_scale = s.hex_scale_min
 	}
 	mapmover.scale = hex_scale
-	Meteor.call('set_hex_scale', hex_scale)
+	setHexScale(hex_scale)
 }
 
 increase_hex_scale = function() {
@@ -160,5 +160,5 @@ increase_hex_scale = function() {
 		hex_scale = s.hex_scale_max
 	}
 	mapmover.scale = hex_scale
-	Meteor.call('set_hex_scale', hex_scale)
+	setHexScale(hex_scale)
 }

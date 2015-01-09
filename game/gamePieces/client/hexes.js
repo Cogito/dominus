@@ -7,14 +7,14 @@ mapmover = new Mapmover(function(x,y,scale) {
 
 }, function(x,y,scale) {
 	// during move
-	Session.set('hexScale', scale)
 	offset_hexes(x-lastPos.x, y-lastPos.y)
+	setHexScale(scale)
 	lastPos = {x:x, y:y}
 
 }, function(x,y,scale) {
 	// end of move
 	offset_hexes(x-lastPos.x, y-lastPos.y)
-	Meteor.call('set_hex_scale', scale)
+	setHexScale(scale)
 })
 
 mapmover.minScale = s.hex_scale_min
@@ -83,15 +83,15 @@ Template.hexes.events({
 
 
 Template.hexes.created = function() {
-	// update hexes when player zooms in/out
+	var hasRun = false
 	this.autorun(function() {
-		var user = Meteor.users.findOne(Meteor.userId(), {fields: {hex_scale:1}})
-		if (user && user.hex_scale) {
-			Session.set('hexScale', user.hex_scale)
-			Deps.nonreactive(function() {
-				var center_hex = Session.get('center_hex')
-				center_on_hex(center_hex.x, center_hex.y)
-			})
+		if (!hasRun) {
+			var user = Meteor.users.findOne(Meteor.userId(), {fields: {hex_scale:1}})
+			if (user && user.hex_scale) {
+				Session.set('hexScale', user.hex_scale)
+				mapmover.scale = Session.get('hexScale')
+				hasRun = true
+			}
 		}
 	})
 }
@@ -101,7 +101,6 @@ Template.hexes.created = function() {
 Template.hexes.rendered = function() {
 	var self = this
 
-	mapmover.scale = Session.get('hexScale')
 	mapmover.start($('#svg_container'))
 
 	// draw hexes
@@ -116,6 +115,15 @@ Template.hexes.rendered = function() {
 				highlight_hex_id(Session.get('selected_id'))
 				Session.set('rp_template', 'rp_info_hex')
 		}
+	})
+
+	// if hexScale changes center on hex which will change the scale
+	this.autorun(function() {
+		Session.get('hexScale')
+		Tracker.nonreactive(function() {
+			var centerHex = Session.get('center_hex')
+			center_on_hex(centerHex.x, centerHex.y)
+		})
 	})
 
 	// set canvas size
