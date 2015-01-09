@@ -44,6 +44,8 @@ Template.army.created = function() {
 			Armies.find({x: Template.currentData().x, y: Template.currentData().y, _id: {$ne: Template.currentData()._id}}, {fields: {last_move_at:1}}).forEach(function(res) {
 				if (Template.currentData().last_move_at > res.last_move_at) {
 					self.draw.set(false)
+				} else {
+					self.draw.set(true)
 				}
 			})
 		}
