@@ -6,33 +6,19 @@ Template.castle.helpers({
 
 Template.castle.events({
 	'click .castle': function(event, template) {
-		//if (!Session.get('is_dragging_hexes')) {
 		if (!mapmover.isDraggingOrScaling) {
-
 			if (Session.get('mouse_mode') == 'default') {
 				Session.set('selected_type', 'castle')
 				Session.set('selected_id', this._id)
-
-			} else if (Session.get('mouse_mode') == 'finding_path') {
-				click_on_tile_while_finding_path()
 			}
-
 		}
 	},
 
 	'mouseenter .castle': function(event, template) {
-		// so that finding path works
-		var hex = Hexes.findOne({x: this.x, y: this.y}, {fields: {_id:1}})
-		if (hex) {
-			Session.set('mouseover_hex_id', hex._id)
-		}
-
 		// hover box
-		//if (Session.get('mouse_mode') == 'default') {
-			Session.set('hover_box_data', {type: 'castle', x: this.x, y: this.y})
-			Meteor.clearTimeout(Session.get('hover_on_object_timer'))
-			Session.set('hover_on_object', true)
-		//}
+		Session.set('hover_box_data', {type: 'castle', x: this.x, y: this.y})
+		Meteor.clearTimeout(Session.get('hover_on_object_timer'))
+		Session.set('hover_on_object', true)
 	},
 
 	'mouseleave .castle': function(event, template) {

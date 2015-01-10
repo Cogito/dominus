@@ -1,15 +1,13 @@
 // hexes and grid
 Session.setDefault('hexes_pos', {x: 0, y: 0})	//	x,y that the svg hex group #hexes is translated to
-Session.setDefault('canvas_size', {width: 0, height: 0, half_width: 0, half_height: 0})
-Session.setDefault('center_hex', {x: 0, y: 0})	// the hex that is in the center of the screen
-Session.setDefault('hexScale', 1)
+Session.setDefault('canvas_size', undefined)
+Session.setDefault('center_hex', undefined)	// the hex that is in the center of the screen
+Session.setDefault('hexScale', undefined)
 
 // set these to select something
 // this is the only thing you need to do to select something
 Session.setDefault('selected_type', undefined)
 Session.setDefault('selected_id', undefined)
-
-Session.setDefault('mouseover_hex_id', '')	// the id of the hex the mouse is over
 
 // used when selecting army path
 Session.setDefault('finding_path_target_id', '')	// target that path goes to
@@ -20,6 +18,7 @@ Session.setDefault('finding_path_from_y', '')
 
 Session.setDefault('is_dragging_hexes', false)
 
+Session.setDefault('mouseOverHexCoords', null)	// what hex is the mouse over, used in send army panel
 Session.setDefault('mouse_mode', 'default')	// used when selecting a hex to send army
 
 Session.setDefault('rp_template', 'none')	// what to show in right panel

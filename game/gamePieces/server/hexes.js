@@ -1,4 +1,4 @@
-Meteor.methods({	
+Meteor.methods({
 
 	generate_hexes: function(num_of_rings) {
 		if (get_user_property("admin")) {
@@ -6,7 +6,7 @@ Meteor.methods({
 		}
 	},
 
-	
+
 })
 
 
@@ -25,6 +25,10 @@ generate_hexes = function(num_of_rings) {
 		hex.is_border = false	// used in creating castle to make sure castle is not on edge of map
 		Hexes.insert(hex)
 	})
+
+	// rebake map
+	var mapbaker = new Mapbaker()
+	mapbaker.bakeHexes()
 }
 
 
@@ -63,7 +67,7 @@ delete_all_hexes = function() {
 
 function assign_properties_to_hex() {
 	var r = Random.fraction()
-	
+
 	var hex = {}
 
 	hex.has_building = false,

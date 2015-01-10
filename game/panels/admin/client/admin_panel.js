@@ -6,7 +6,6 @@ Template.admin_panel.helpers({
 	center_hex_x: function() { return Session.get('center_hex').x },
 	center_hex_y: function() { return Session.get('center_hex').y },
 
-	mouseover_hex_id: function() { return Session.get('mouseover_hex_id') },
 	mouse_mode: function() { return Session.get('mouse_mode') },
 })
 
@@ -16,7 +15,7 @@ Template.admin_panel.events({
 	'click #gen_hexes_button': function (event, template) {
 		var num_of_rings_input = template.find('#num_of_rings_input')
 		var num_of_rings = Number($(num_of_rings_input).val())
- 
+
 		if (!isNaN(num_of_rings) && num_of_rings > 0 && num_of_rings < 100) {
 			Meteor.call('generate_hexes', num_of_rings)
 		}

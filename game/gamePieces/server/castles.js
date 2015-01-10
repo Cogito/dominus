@@ -35,8 +35,8 @@ Meteor.startup(function() {
 
 
 create_castle = function(user_id) {
-	console.log('creating castle')
-	
+	console.log('--- creating castle ---')
+
 	check(user_id, String)
 	if (s.down_for_maintenance == true) {
 		return false
@@ -130,6 +130,10 @@ create_castle = function(user_id) {
 							// add a couple ring of border hexes so that new people aren't on the edge
 							add_ring(true)
 							add_ring(true)
+
+							// rebake map
+							var mapbaker = new Mapbaker()
+							mapbaker.bakeHexes()
 						}
 
 						return true

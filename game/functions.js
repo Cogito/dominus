@@ -4,11 +4,16 @@ grid_to_pixel = function(x,y) {
 
 	var canvas_size = Session.get('canvas_size')
 	var hex_scale = Session.get('hexScale')
-	x -= canvas_size.half_width
-	y -= canvas_size.half_height
-	x = x * (1/hex_scale)
-	y = y * (1/hex_scale)
-	return {x:x, y:y}
+
+	if (canvas_size && hex_scale) {
+		x -= canvas_size.half_width
+		y -= canvas_size.half_height
+		x = x * (1/hex_scale)
+		y = y * (1/hex_scale)
+		return {x:x, y:y}
+	}
+
+	return false
 }
 
 
@@ -19,11 +24,15 @@ pixel_to_grid = function(x,y) {
 	var canvas_size = Session.get('canvas_size')
 	var hex_scale = Session.get('hexScale')
 
-	x += canvas_size.half_width
-	y += canvas_size.half_height
-	x = x * (hex_scale)
-	y = y * (hex_scale)
-	return {x:x, y:y}
+	if (canvas_size && hex_scale) {
+		x += canvas_size.half_width
+		y += canvas_size.half_height
+		x = x * (hex_scale)
+		y = y * (hex_scale)
+		return {x:x, y:y}
+	}
+
+	return false	
 }
 
 

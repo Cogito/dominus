@@ -8,8 +8,7 @@ Template.rp_move_unit.helpers({
 		var self = this
 		var from = get_from_coords()
 		if (from) {
-			var mouseover_hex_id = Session.get('mouseover_hex_id')
-			var to = id_to_coords(mouseover_hex_id, 'hex')
+			var to = Session.get('mouseOverHexCoords')
 			if (to) {
 				var distance = Hx.hexDistance(from.x, from.y, to.x, to.y)
 				var army_speed = Template.instance().armySpeed.get()
@@ -161,8 +160,7 @@ Template.rp_move_unit.created = function() {
 
 		var from = get_from_coords()
 		if (from) {
-			var mouseover_hex_id = Session.get('mouseover_hex_id')
-			var to = id_to_coords(mouseover_hex_id, 'hex')
+			var to = Session.get('mouseOverHexCoords')
 			if (to) {
 				distance += Hx.hexDistance(from.x, from.y, to.x, to.y)
 			}
@@ -201,7 +199,7 @@ Template.rp_move_unit.created = function() {
 		// highlight current move
 		var from = get_from_coords()
 		if (from) {
-			var to = id_to_coords(Session.get('mouseover_hex_id'), 'hex')
+			var to = Session.get('mouseOverHexCoords')
 			if (to) {
 				highlight_hex_path(from.x, from.y, to.x, to.y)
 			}
@@ -236,28 +234,11 @@ Template.rp_move_unit.destroyed = function() {
 
 
 
-// called in hex and castle
-click_on_tile_while_finding_path = function() {
-	var target_id = Session.get('mouseover_hex_id')
-	var target_coords = id_to_coords(target_id, 'hex')
-
-	// can't click on starting point
-	if (JSON.stringify(target_coords) === JSON.stringify(get_from_coords())) {
-		return false
-	}
-
-	add_move_to_queue(target_coords.x, target_coords.y)
-}
-
-
-
-
-
 
 
 var from_coords = null
 var from_coords_dep = new Deps.Dependency
-var get_from_coords = function() {
+get_from_coords = function() {
 	from_coords_dep.depend()
 	if (from_coords) {
 		return cloneObject(from_coords)
@@ -276,11 +257,15 @@ var set_from_coords = function(x, y) {
 	from_coords_dep.changed()
 }
 
-var add_move_to_queue = function(x, y) {
+add_move_to_queue = function(x, y) {
 	check(x, validNumber)
 	check(y, validNumber)
 	var from = get_from_coords()
-	add_unit_move(from.x, from.y, x, y)
+	Meteor.call('doesHexExist', x, y, function(error, result) {
+		if (result) {
+			add_unit_move(from.x, from.y, x, y)
+		}
+	})
 }
 
 

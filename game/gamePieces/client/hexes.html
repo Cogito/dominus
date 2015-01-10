@@ -3,7 +3,13 @@
 		<g id="hexes">
 
 			<g id="hex_container"></g>
-			
+
+			<g id="hexbakes">
+				{{#each hexbakes}}
+					<image x="{{posX}}" y="{{posY}}" width="{{width}}" height="{{height}}" xlink:href="https://s3-us-west-1.amazonaws.com/dominusgame/hexes/{{filename}}.png" />
+				{{/each}}
+			</g>
+
 			<g>
 				{{#if show_coords}}
 					{{#each hexes}}

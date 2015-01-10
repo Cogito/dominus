@@ -15,6 +15,13 @@ Meteor.methods({
 		if (get_user_property("admin")) {
 			cleanupAllKingChatrooms()
 		}
+	},
+
+	admin_bakeMap: function() {
+		if (get_user_property("admin")) {
+			var mapbaker = new Mapbaker()
+			mapbaker.bakeHexes()
+		}
 	}
 
 

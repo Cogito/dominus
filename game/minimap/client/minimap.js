@@ -73,11 +73,13 @@ Template.minimap.helpers({
 
 	viewport_position: function() {
 		var center_hex = Session.get('center_hex')
-		var viewport_size = get_viewport_size()
-		var coords = minimap_coordinates_to_grid(center_hex.x, center_hex.y, hex_size)
-		coords.x = coords.x - viewport_size.width/2
-		coords.y = coords.y - viewport_size.height/2
-		return coords
+		if (center_hex) {
+			var viewport_size = get_viewport_size()
+			var coords = minimap_coordinates_to_grid(center_hex.x, center_hex.y, hex_size)
+			coords.x = coords.x - viewport_size.width/2
+			coords.y = coords.y - viewport_size.height/2
+			return coords
+		}
 	}
 })
 
@@ -113,21 +115,23 @@ Template.minimap.created = function() {
 		var canvas_size = Session.get('canvas_size')
 		var hex_scale = Session.get('hexScale')
 
-		var hex_size = s.hex_size * hex_scale
+		if (canvas_size && hex_scale) {
+			var hex_size = s.hex_size * hex_scale
 
-		var hex_width = hex_size * 2
-		var hex_height = Math.sqrt(3)/2 * hex_width
+			var hex_width = hex_size * 2
+			var hex_height = Math.sqrt(3)/2 * hex_width
 
-		var mini_hex_width = mini_hex_size * 2
-		var mini_hex_height = Math.sqrt(3)/2 * mini_hex_width
+			var mini_hex_width = mini_hex_size * 2
+			var mini_hex_height = Math.sqrt(3)/2 * mini_hex_width
 
-		var tiles_onscreen_wide = canvas_size.width / (hex_size * 3/2)
-		var tiles_onscreen_high = canvas_size.height / ((Math.sqrt(3) * s.hex_squish) * hex_size)
+			var tiles_onscreen_wide = canvas_size.width / (hex_size * 3/2)
+			var tiles_onscreen_high = canvas_size.height / ((Math.sqrt(3) * s.hex_squish) * hex_size)
 
-		 var mini_canvas_width = (canvas_size.width / hex_width) * mini_hex_width
-		 var mini_canvas_height = (canvas_size.height / hex_height) * mini_hex_height
+			var mini_canvas_width = (canvas_size.width / hex_width) * mini_hex_width
+			var mini_canvas_height = (canvas_size.height / hex_height) * mini_hex_height
 
-		 set_viewport_size(mini_canvas_width, mini_canvas_height)
+			set_viewport_size(mini_canvas_width, mini_canvas_height)
+		}
 	})
 }
 

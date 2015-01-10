@@ -220,49 +220,45 @@ Template.menu.rendered = function() {
 	Session.setDefault('show_tree_panel', false)
 	Session.setDefault('show_coords', false)
 
-	if (typeof Session.get('canvas_size') != 'undefined') {
-		$('#left_panels').css('height', Session.get('canvas_size').height - 40)
-		$('#right_panel').css('height', Session.get('canvas_size').height - 40)
-		$('#subscription_ready_panel').css('left', Session.get('canvas_size').width / 2 - 50)
-		$('#welcome_screen').css('left', Session.get('canvas_size').half_width - 250)
-		$('#welcome_screen').css('top', Session.get('canvas_size').half_height - 150)
-	}
-
 	var deps_newuser_first_run = true
 
 	this.deps_newuser = Deps.autorun(function() {
 
 		if (Meteor.userId()) {
-			var user = Meteor.users.findOne(Meteor.userId(), {fields: {show_welcome_screen:1, castle_id:1, x:1, y:1}})
-			if (user) {
+			var canvas_size = Session.get('canvas_size')
+			if (canvas_size) {
+				var fields = {show_welcome_screen:1, castle_id:1, x:1, y:1}
+				var user = Meteor.users.findOne(Meteor.userId(), {fields: fields})
+				if (user) {
 
-				if(typeof user.castle_id == 'undefined' || typeof user.x == 'undefined' || typeof user.y == 'undefined') {
-					//console.log('no castle but no loading screen either')
-					if (typeof user.show_welcome_screen != 'undefined') {
+					if(typeof user.castle_id == 'undefined' || typeof user.x == 'undefined' || typeof user.y == 'undefined') {
+						//console.log('no castle but no loading screen either')
+						if (typeof user.show_welcome_screen != 'undefined') {
 
-						// show modal
-						Session.set('show_building_castle_modal', true)
-						Session.set('mouse_mode', 'modal')
+							// show modal
+							Session.set('show_building_castle_modal', true)
+							Session.set('mouse_mode', 'modal')
+						}
+
+					} else if (user.x && user.y && user.castle_id) {
+						// we've got a castle
+						//console.log('got a castle')
+						if (deps_newuser_first_run) {
+							//console.log('first run')
+							// hide building castle modal
+							Session.set('show_building_castle_modal', false)
+							Session.set('mouse_mode', 'default')
+
+							// first run so center on castle
+							// Session.set('selected_type', 'castle')
+							// Session.set('selected_id', user.castle_id)
+							// center_on_hex(user.x, user.y)
+
+							deps_newuser_first_run = false
+						}
 					}
 
-				} else {
-					// we've got a castle
-					//console.log('got a castle')
-					if (deps_newuser_first_run) {
-						//console.log('first run')
-						// hide building castle modal
-						Session.set('show_building_castle_modal', false)
-						Session.set('mouse_mode', 'default')
-
-						// first run so center on castle
-						Session.set('selected_type', 'castle')
-						Session.set('selected_id', user.castle_id)
-						center_on_hex(user.x, user.y)
-
-						deps_newuser_first_run = false
-					}
 				}
-
 			}
 		}
 	})

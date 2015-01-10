@@ -21,7 +21,6 @@ mapmover.minScale = s.hex_scale_min
 mapmover.maxScale = s.hex_scale_max
 
 
-
 Template.hexes.helpers({
 	// this is only used for the hex coordinates
 	// not used to draw the hexes
@@ -41,6 +40,10 @@ Template.hexes.helpers({
 		return Villages.find()
 	},
 
+	hexbakes: function() {
+		return Hexbakes.find()
+	},
+
 	show_coords: function() {
 		return get_user_property("sp_show_coords")
 	}
@@ -51,29 +54,40 @@ Template.hexes.helpers({
 
 
 Template.hexes.events({
-	// selecting hex to move army to
-	'mouseenter .hex': function(event, template) {
-		var id = event.currentTarget.getAttribute('data-id')
-		Session.set('mouseover_hex_id', id)
-	},
-	'mouseleave .hex': function(event, template) {
-		Session.set('mouseover_hex_id', '');
+	'mousemove': function(event, template) {
+		var mouseMode = Session.get('mouse_mode')
+		if (mouseMode == 'finding_path') {
+			var coord = getCoordinatesFromEvent(event)
+			Session.set('mouseOverHexCoords', coord)
+		}
 	},
 
-	'click .hex': function(event, template) {
+	'mouseleave': function(event, template) {
+		Session.set('mouseOverHexCoords', null)
+	},
+
+	'click #hexbakes': function(event, template) {
 		if (!mapmover.isDraggingOrScaling) {
 
-			var id = event.currentTarget.getAttribute('data-id')
-			check(id, String)
+			var coord = getCoordinatesFromEvent(event)
 
-			if (Session.get('mouse_mode') == 'default') {
+			var mouseMode = Session.get('mouse_mode')
+			if (mouseMode == 'default') {
 
-				Session.set('selected_type', 'hex')
-				Session.set('selected_id', id)
+				Meteor.call('coords_to_id', coord.x, coord.y, 'hex', function(error, hexId) {
+					Session.set('selected_type', 'hex')
+					Session.set('selected_id', hexId)
+				})
 
-			} else if (Session.get('mouse_mode') == 'finding_path') {
-				click_on_tile_while_finding_path()
-			} else if (Session.get('mouse_mode') == 'modal') {
+			} else if (mouseMode == 'finding_path') {
+				// can't click on starting point
+				if (JSON.stringify(coord) === JSON.stringify(get_from_coords())) {
+					return false
+				}
+
+				add_move_to_queue(coord.x, coord.y)
+
+			} else if (mouseMode == 'modal') {
 
 			}
 		}
@@ -83,15 +97,25 @@ Template.hexes.events({
 
 
 Template.hexes.created = function() {
-	var hasRun = false
+	// if hexScale is undefined then set it and center on castle
 	this.autorun(function() {
-		if (!hasRun) {
-			var user = Meteor.users.findOne(Meteor.userId(), {fields: {hex_scale:1}})
-			if (user && user.hex_scale) {
-				Session.set('hexScale', user.hex_scale)
-				mapmover.scale = Session.get('hexScale')
-				hasRun = true
+		if (Session.get('canvas_size')) {
+			if (!Session.get('hexScale')) {
+				var user = Meteor.users.findOne(Meteor.userId(), {fields: {castle_id:1, hex_scale:1, x:1, y:1}})
+				if (user && user.hex_scale) {
+					Session.set('hexScale', user.hex_scale)
+					Session.set('selected_type', 'castle')
+					Session.set('selected_id', user.castle_id)
+					center_on_hex(user.x, user.y)
+				}
 			}
+		}
+	})
+
+	this.autorun(function() {
+		var hexScale = Session.get('hexScale')
+		if (hexScale) {
+			mapmover.scale = hexScale
 		}
 	})
 }
@@ -102,9 +126,6 @@ Template.hexes.rendered = function() {
 	var self = this
 
 	mapmover.start($('#svg_container'))
-
-	// draw hexes
-	observe_hexes(self)
 
 	// hex selection
 	// update when selected session variable changes
@@ -119,11 +140,14 @@ Template.hexes.rendered = function() {
 
 	// if hexScale changes center on hex which will change the scale
 	this.autorun(function() {
-		Session.get('hexScale')
-		Tracker.nonreactive(function() {
-			var centerHex = Session.get('center_hex')
-			center_on_hex(centerHex.x, centerHex.y)
-		})
+		if (Session.get('hexScale')) {
+			Tracker.nonreactive(function() {
+				var centerHex = Session.get('center_hex')
+				if (centerHex) {
+					center_on_hex(centerHex.x, centerHex.y)
+				}
+			})
+		}
 	})
 
 	// set canvas size
@@ -131,12 +155,10 @@ Template.hexes.rendered = function() {
 	// if canvas size changes redraw hexes
 	this.autorun(function() {
 		var canvas_size = Session.get('canvas_size')
-		$('#svg_container').css('height', canvas_size.height)
-		$('#svg_container').css('width', canvas_size.width)
-
-		self.handle.stop()
-		$('#hex_container').empty()
-		observe_hexes(self)
+		if (canvas_size) {
+			$('#svg_container').css('height', canvas_size.height)
+			$('#svg_container').css('width', canvas_size.width)
+		}
 	})
 
 
@@ -146,12 +168,14 @@ Template.hexes.rendered = function() {
 		var hexes_pos = Session.get('hexes_pos')
 		if (typeof hexes_pos != 'undefined') {
 			var canvas_size = Session.get('canvas_size')
-			var pixel = grid_to_pixel(hexes_pos.x, hexes_pos.y)
-			var coords = Hx.posToCoordinates(pixel.x, pixel.y, s.hex_size, s.hex_squish)
+			if (canvas_size) {
+				var pixel = grid_to_pixel(hexes_pos.x, hexes_pos.y)
+				var coords = Hx.posToCoordinates(pixel.x, pixel.y, s.hex_size, s.hex_squish)
 
-			var x = coords.x * -1 	// why -1???
-			var y = coords.y * -1
-			Session.set('center_hex', {x:x, y:y})
+				var x = coords.x * -1 	// why -1???
+				var y = coords.y * -1
+				Session.set('center_hex', {x:x, y:y})
+			}
 		}
 	})
 }
@@ -164,68 +188,32 @@ Template.hexes.destroyed = function() {
 
 
 
-observe_hexes = function(self) {
-	var query = Hexes.find()
-	var offset_x = -63
-	var offset_y = -41
-	var container = document.getElementById('hex_container')
-	self.handle = query.observe({
-		added: function(doc) {
-			var canvas_size = Session.get('canvas_size')
-
-			var grid = Hx.coordinatesToPos(doc.x, doc.y, s.hex_size, s.hex_squish)
-			// var x = Math.round(pixel.x + canvas_size.half_width + offset_x)
-			// var y = Math.round(pixel.y + canvas_size.half_height + offset_y)
-			var x = grid.x + offset_x
-			var y = grid.y + offset_y
-
-			var hex_image = document.createElementNS('http://www.w3.org/2000/svg','image')
-			hex_image.setAttribute('class', 'hex_image')
-			hex_image.setAttribute('x', x)
-			hex_image.setAttribute('y', y)
-			hex_image.setAttribute('height', 83)
-			hex_image.setAttribute('width', 126)
-			hex_image.setAttribute('data-large', doc.large)
-			hex_image.setAttribute('data-id', doc._id)
-
-			if (doc.large) {
-				var filename = 'hex_'+doc.type+'_large_'+doc.tileImage+'.png'
-			} else {
-				var filename = 'hex_'+doc.type+'_'+doc.tileImage+'.png'
-			}
-
-			hex_image.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', '/game_images/'+filename)
-
-			container.appendChild(hex_image)
-
-			var hex_polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
-			hex_polygon.setAttribute('class', 'hex')
-			var points = Hx.getHexPolygonVerts(grid.x, grid.y, s.hex_size, s.hex_squish)
-			hex_polygon.setAttribute('points', points)
-			hex_polygon.setAttribute('data-id', doc._id)
-			hex_polygon.setAttribute('data-x', doc.x)
-			hex_polygon.setAttribute('data-y', doc.y)
-			hex_polygon.setAttribute('data-type', doc.type)
-			hex_polygon.setAttribute('data-large', doc.large)
-
-			container.appendChild(hex_polygon)
-		},
-		changed: function(doc) {
-			// shouldn't be called
-			//console.table(doc)
-			//console.log('hex changed')
-		},
-		removed: function(doc) {
-			$('#hex_container').find('[data-id='+doc._id+']').remove()
-		}
-	})
-}
-
-
-
 /////////////////////////////////////////////////////////////////////////////////
 // selecting
 /////////////////////////////////////////////////////////////////////////////////
+
+
+getCoordinatesFromEvent = function(event) {
+	// get click position
+	// if is a touch event
+	if (_.contains(['touchstart', 'touchend', 'touchcancel', 'touchmove'], event.type)) {
+		var x = event.originalEvent.touches[0].pageX
+		var y = event.originalEvent.touches[0].pageY
+	} else {
+		var x = event.clientX || event.pageX
+		var y = event.clientY || event.pageY
+	}
+
+	var hexesPos = Session.get('hexes_pos')
+	var hexScale = s.hex_size * Session.get('hexScale')
+
+	if (hexesPos && hexScale) {
+		// get hex coordinates
+		var coord = Hx.posToCoordinates(x-hexesPos.x, y-hexesPos.y, hexScale, s.hex_squish)
+
+		return coord
+	}
+}
 
 
 highlight_hex_coords = function(x, y) {

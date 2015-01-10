@@ -42,10 +42,14 @@ Template.battle_report.helpers({
 
 Template.battle_report.events({
 	'click .battle_report_goto_hex': function() {
-		center_on_hex(this.x, this.y)
-		Session.set('selected_type', 'hex')
-		var id = coords_to_id(this.x, this.y, 'hex')
-		Session.set('selected_id', id)
+		var self = this
+		Meteor.call('coords_to_id', self.x, self.y, 'hex', function(error, hexId) {
+			if (!error && hexId) {
+				center_on_hex(self.x, self.y);
+				Session.set('selected_type', 'hex');
+				Session.set('selected_id', hexId);
+			}
+		});
 	},
 })
 

@@ -29,10 +29,30 @@ UI.registerHelper('grid_x', function() { return Session.get('hexes_pos').x })
 UI.registerHelper('grid_y', function() { return Session.get('hexes_pos').y })
 UI.registerHelper('negative_grid_x', function() { return Session.get('hexes_pos').x * -1 })	// used for fog
 UI.registerHelper('negative_grid_y', function() { return Session.get('hexes_pos').y * -1 })
-UI.registerHelper('canvas_width', function() { return Session.get('canvas_size').width })
-UI.registerHelper('canvas_height', function() { return Session.get('canvas_size').height })
-UI.registerHelper('half_canvas_width', function() { return Session.get('canvas_size').half_width })
-UI.registerHelper('half_canvas_height', function() { return Session.get('canvas_size').half_height })
+UI.registerHelper('canvas_width', function() {
+	var canvasSize = Session.get('canvas_size')
+	if (canvasSize) {
+		return canvasSize.width
+	}
+})
+UI.registerHelper('canvas_height', function() {
+	var canvasSize = Session.get('canvas_size')
+	if (canvasSize) {
+		return canvasSize.height
+	}
+})
+UI.registerHelper('half_canvas_width', function() {
+	var canvasSize = Session.get('canvas_size')
+	if (canvasSize) {
+		return canvasSize.half_width
+	}
+})
+UI.registerHelper('half_canvas_height', function() {
+	var canvasSize = Session.get('canvas_size')
+	if (canvasSize) {
+		return canvasSize.half_height
+	}
+})
 
 // draw the outline for the hex
 UI.registerHelper('hex_points', function(x, y) {

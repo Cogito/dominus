@@ -9,6 +9,17 @@ _.each(s.army.types, function(type) {
 	village_fields[type] = 1
 })
 
+Meteor.publish('onScreenHexbakes', function(x, y, hex_size, canvas_width, canvas_height, hex_scale) {
+	var max = max_onscreen(hex_size, canvas_width, canvas_height, hex_scale)
+	max = max * 2
+	var find = {
+		centerX: {$gt: x - max, $lt: x + max},
+		centerY: {$gt: y - max, $lt: y + max},
+	}
+
+	return Hexbakes.find(find)
+})
+
 Meteor.publish('on_screen_hexes', function (x, y, hex_size, canvas_width, canvas_height, hex_scale) {
 	var max = max_onscreen(hex_size, canvas_width, canvas_height, hex_scale)
 
@@ -51,13 +62,7 @@ max_onscreen = function(hex_size, canvas_width, canvas_height, hex_scale) {
 	var num_wide = canvas_width / (hex_size * 3/2)
 	var num_high = canvas_height / ((Math.sqrt(3) * s.hex_squish) * hex_size)
 
-	// this isn't exact at all
-	// covers entire screen, hopefully not much more
 	var max = Math.max(num_wide / 2 + 3, num_high / 2 + 3)
-	//var max = Math.ceil(max / 5) * 5
-	if (max > 16) {
-		max = 16
-	}
 
 	return max
 }
@@ -102,7 +107,7 @@ Armies.allow({insert: false, update: false, remove: false})
 Villages.allow({insert: false, update: false, remove: false})
 Moves.allow({insert: false, update: false, remove: false})
 
-Meteor.startup(function () {  
+Meteor.startup(function () {
 	Hexes._ensureIndex({x:1, y:1}, {unique:1})
 	Castles._ensureIndex({user_id:1, x:1, y:1})
 	Villages._ensureIndex({user_id:1, x:1, y:1})

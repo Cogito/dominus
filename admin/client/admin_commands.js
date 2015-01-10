@@ -8,5 +8,9 @@ Template.adminCommands.events({
 
 	'click #cleanupAllKingChatroomsButton': function(event, template) {
 		Meteor.call('admin_cleanupAllKingChatrooms')
+	},
+
+	'click #bakeMapButton': function(event, template) {
+		Meteor.call('admin_bakeMap')
 	}
 })

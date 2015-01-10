@@ -83,9 +83,12 @@ Template.game.created = function() {
 			var roundedCenterHex_y = self.roundedCenterHex_y.get()
 			var canvas_size = Session.get('canvas_size')
 			var hex_scale = Session.get('hexScale')
-			var sub = subs.subscribe('on_screen', roundedCenterHex_x, roundedCenterHex_y, s.hex_size, canvas_size.width, canvas_size.height, hex_scale)
-			var sub_hexes = subs.subscribe('on_screen_hexes', roundedCenterHex_x, roundedCenterHex_y, s.hex_size, canvas_size.width, canvas_size.height, hex_scale)
-			Session.set('subscription_ready', sub_hexes.ready())
+			if (canvas_size && hex_scale) {
+				var subBakes = subs.subscribe('onScreenHexbakes', roundedCenterHex_x, roundedCenterHex_y, s.hex_size, canvas_size.width, canvas_size.height, hex_scale)
+				var sub = subs.subscribe('on_screen', roundedCenterHex_x, roundedCenterHex_y, s.hex_size, canvas_size.width, canvas_size.height, hex_scale)
+				var sub_hexes = subs.subscribe('on_screen_hexes', roundedCenterHex_x, roundedCenterHex_y, s.hex_size, canvas_size.width, canvas_size.height, hex_scale)
+				Session.set('subscription_ready', subBakes.ready() && sub.ready())
+			}
 		}
 	})
 
@@ -104,6 +107,17 @@ Template.game.created = function() {
 
 
 Template.game.rendered = function() {
+
+	this.autorun(function() {
+		var canvasSize = Session.get('canvas_size')
+		if (canvasSize) {
+			$('#left_panels').css('height', canvasSize.height - 40)
+			$('#right_panel').css('height', canvasSize.height - 40)
+			$('#subscription_ready_panel').css('left', canvasSize.width / 2 - 50)
+		}
+	})
+
+
 	window.onresize = function() {
 		var width = $(window).outerWidth(true)
 		var height = $(window).outerHeight(true)
@@ -128,8 +142,6 @@ Template.game.rendered = function() {
 		}
 	})
 }
-
-
 
 
 Meteor.startup(function () {

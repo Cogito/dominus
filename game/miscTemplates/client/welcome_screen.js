@@ -6,15 +6,20 @@ Template.welcome_screen.events({
 
 Meteor.startup(function() {
 	Deps.autorun(function() {
-		$('#welcome_screen').css('left', Session.get('canvas_size').half_width - 250)
-		$('#welcome_screen').css('top', Session.get('canvas_size').half_height - 150)
+		resize()
 	})
 })
 
-Template.welcome_screen.rendered = function() {
-	$('#welcome_screen').css('left', Session.get('canvas_size').half_width - 250)
-	$('#welcome_screen').css('top', Session.get('canvas_size').half_height - 150)
+var resize = function() {
+	var canvasSize = Session.get('canvas_size')
+	if (canvasSize) {
+		$('#welcome_screen').css('left', Session.get('canvas_size').half_width - 250)
+		$('#welcome_screen').css('top', Session.get('canvas_size').half_height - 150)
+	}
+}
 
+Template.welcome_screen.rendered = function() {
+	resize()
 
   var _fbq = window._fbq || (window._fbq = []);
   if (!_fbq.loaded) {

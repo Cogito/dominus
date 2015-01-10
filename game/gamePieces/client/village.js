@@ -8,49 +8,36 @@ Template.village.helpers({
 		check(y, validNumber)
 
 		var canvas_size = Session.get('canvas_size')
-
-		var grid = Hx.coordinatesToPos(x, y, s.hex_size, s.hex_squish)
-		var offset_x = 0
-		var offset_y = 0
-		var points = ''
-		points = points + (0 + grid.x + offset_x) + ',' + (0 + grid.y + offset_y) + ' '
-		points = points + (0 + grid.x + offset_x) + ',' + (-20 + grid.y + offset_y) + ' '
-		points = points + (16 + grid.x + offset_x) + ',' + (-20 + grid.y + offset_y) + ' '
-		points = points + (0 + grid.x + offset_x) + ',' + (-13 + grid.y + offset_y)
-		return points
+		if (canvas_size) {
+			var grid = Hx.coordinatesToPos(x, y, s.hex_size, s.hex_squish)
+			var offset_x = 0
+			var offset_y = 0
+			var points = ''
+			points = points + (0 + grid.x + offset_x) + ',' + (0 + grid.y + offset_y) + ' '
+			points = points + (0 + grid.x + offset_x) + ',' + (-20 + grid.y + offset_y) + ' '
+			points = points + (16 + grid.x + offset_x) + ',' + (-20 + grid.y + offset_y) + ' '
+			points = points + (0 + grid.x + offset_x) + ',' + (-13 + grid.y + offset_y)
+			return points
+		}
 	},
 })
 
 
 Template.village.events({
 	'click .village': function(event, template) {
-		//if (!Session.get('is_dragging_hexes')) {
 		if (!mapmover.isDraggingOrScaling) {
-
 			if (Session.get('mouse_mode') == 'default') {
 				Session.set('selected_type', 'village')
 				Session.set('selected_id', this._id)
-
-			} else if (Session.get('mouse_mode') == 'finding_path') {
-				click_on_tile_while_finding_path()
 			}
-
 		}
 	},
 
 	'mouseenter .village': function(event, template) {
-		// so that finding path works
-		var hex = Hexes.findOne({x: this.x, y: this.y}, {fields: {_id:1}})
-		if (hex) {
-			Session.set('mouseover_hex_id', hex._id)
-		}
-
 		// hover box
-		//if (Session.get('mouse_mode') == 'default') {
-			Session.set('hover_box_data', {type: 'village', x: this.x, y: this.y})
-			Meteor.clearTimeout(Session.get('hover_on_object_timer'))
-			Session.set('hover_on_object', true)
-		//}
+		Session.set('hover_box_data', {type: 'village', x: this.x, y: this.y})
+		Meteor.clearTimeout(Session.get('hover_on_object_timer'))
+		Session.set('hover_on_object', true)
 	},
 
 	'mouseleave .village': function(event, template) {

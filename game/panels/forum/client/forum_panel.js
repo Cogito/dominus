@@ -204,22 +204,13 @@ Template.forum_panel.events({
 			y: parseInt(event.currentTarget.getAttribute('data-y'))
 		}
 
-		var id = coords_to_id(hex.x, hex.y, "hex");
-
-		if (!id) {
-			Meteor.call('coords_to_id', hex.x, hex.y, 'hex', function(error, result) {
-				if (!error && result) {
-					center_on_hex(hex.x, hex.y);
-					Session.set('selected_type', 'hex');
-					Session.set('selected_id', result);
-				}
-			});
-			return;
-		}
-
-		center_on_hex(hex.x, hex.y);
-		Session.set('selected_type', 'hex');
-		Session.set('selected_id', id);
+		Meteor.call('coords_to_id', hex.x, hex.y, 'hex', function(error, hexId) {
+			if (!error && hexId) {
+				center_on_hex(hex.x, hex.y);
+				Session.set('selected_type', 'hex');
+				Session.set('selected_id', hexId);
+			}
+		});
 	}
 })
 

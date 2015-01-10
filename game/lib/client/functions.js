@@ -18,11 +18,12 @@ offset_hexes = function(offset_x, offset_y) {
 	check(offset_y, validNumber)
 
 	var hexes_pos = Session.get('hexes_pos')
+	if (hexes_pos) {
+		x = hexes_pos.x + offset_x
+		y = hexes_pos.y + offset_y
 
-	x = hexes_pos.x + offset_x
-	y = hexes_pos.y + offset_y
-
-	move_hexes_to(x, y)
+		move_hexes_to(x, y)
+	}
 }
 
 
@@ -31,9 +32,6 @@ offset_hexes = function(offset_x, offset_y) {
 move_hexes_to = function(pixel_x, pixel_y) {
 	check(pixel_x, validNumber)
 	check(pixel_y, validNumber)
-	if (isNaN(pixel_x) || isNaN(pixel_y)) {
-		return false
-	}
 
 	$(hexes).attr('transform', 'translate('+pixel_x+','+pixel_y+') scale('+Session.get('hexScale')+')')
 
@@ -48,15 +46,17 @@ center_on_hex = function(x, y) {
 	check(y, validNumber)
 	var hex_scale = Session.get('hexScale')
 	var canvas_size = Session.get('canvas_size')
-	var grid = Hx.coordinatesToPos(x, y, s.hex_size, s.hex_squish)
+	if (canvas_size && hex_scale) {
+		var grid = Hx.coordinatesToPos(x, y, s.hex_size, s.hex_squish)
 
-	var x = canvas_size.half_width
-	var y = canvas_size.half_height
+		var x = canvas_size.half_width
+		var y = canvas_size.half_height
 
-	x += grid.x * hex_scale * -1
-	y += grid.y * hex_scale * -1
+		x += grid.x * hex_scale * -1
+		y += grid.y * hex_scale * -1
 
-	move_hexes_to(x, y)
+		move_hexes_to(x, y)
+	}
 }
 
 
