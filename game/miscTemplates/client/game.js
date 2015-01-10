@@ -113,7 +113,6 @@ Template.game.rendered = function() {
 		if (canvasSize) {
 			$('#left_panels').css('height', canvasSize.height - 40)
 			$('#right_panel').css('height', canvasSize.height - 40)
-			$('#subscription_ready_panel').css('left', canvasSize.width / 2 - 50)
 		}
 	})
 
@@ -121,7 +120,7 @@ Template.game.rendered = function() {
 	window.onresize = function() {
 		var width = $(window).outerWidth(true)
 		var height = $(window).outerHeight(true)
-		Session.set('canvas_size', {width: width, height: height, half_width: width/2, half_height: height/2})
+		Session.set('canvas_size', {width: width, height: height})
 
 		var zoom = screen.width / 1000
 		if (zoom < 1) {
@@ -131,16 +130,6 @@ Template.game.rendered = function() {
 		}
 	}
 	window.onresize()
-
-
-	// show loading map panel
-	this.autorun(function() {
-		if (Session.get('subscription_ready')) {
-			$('#subscription_ready_panel').fadeOut(50)
-		} else {
-			$('#subscription_ready_panel').fadeIn(50)
-		}
-	})
 }
 
 

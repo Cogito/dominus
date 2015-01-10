@@ -49,8 +49,8 @@ center_on_hex = function(x, y) {
 	if (canvas_size && hex_scale) {
 		var grid = Hx.coordinatesToPos(x, y, s.hex_size, s.hex_squish)
 
-		var x = canvas_size.half_width
-		var y = canvas_size.half_height
+		var x = canvas_size.width/2
+		var y = canvas_size.height/2
 
 		x += grid.x * hex_scale * -1
 		y += grid.y * hex_scale * -1

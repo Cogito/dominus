@@ -5,11 +5,23 @@ Template.castle.helpers({
 })
 
 Template.castle.events({
+
 	'click .castle': function(event, template) {
 		if (!mapmover.isDraggingOrScaling) {
-			if (Session.get('mouse_mode') == 'default') {
+			var mouseMode = Session.get('mouse_mode')
+
+			if (mouseMode == 'default') {
 				Session.set('selected_type', 'castle')
 				Session.set('selected_id', this._id)
+			} else if (mouseMode == 'finding_path') {
+				var coord = getCoordinatesFromEvent(event)
+				
+				// can't click on starting point
+				if (JSON.stringify(coord) === JSON.stringify(get_from_coords())) {
+					return false
+				}
+
+				add_move_to_queue(coord.x, coord.y)
 			}
 		}
 	},

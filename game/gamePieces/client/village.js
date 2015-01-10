@@ -26,9 +26,20 @@ Template.village.helpers({
 Template.village.events({
 	'click .village': function(event, template) {
 		if (!mapmover.isDraggingOrScaling) {
+			var mouseMode = Session.get('mouse_mode')
+			
 			if (Session.get('mouse_mode') == 'default') {
 				Session.set('selected_type', 'village')
 				Session.set('selected_id', this._id)
+			} else if (mouseMode == 'finding_path') {
+				var coord = getCoordinatesFromEvent(event)
+
+				// can't click on starting point
+				if (JSON.stringify(coord) === JSON.stringify(get_from_coords())) {
+					return false
+				}
+
+				add_move_to_queue(coord.x, coord.y)
 			}
 		}
 	},

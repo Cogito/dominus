@@ -6,8 +6,8 @@ grid_to_pixel = function(x,y) {
 	var hex_scale = Session.get('hexScale')
 
 	if (canvas_size && hex_scale) {
-		x -= canvas_size.half_width
-		y -= canvas_size.half_height
+		x -= canvas_size.width/2
+		y -= canvas_size.height/2
 		x = x * (1/hex_scale)
 		y = y * (1/hex_scale)
 		return {x:x, y:y}
@@ -25,14 +25,14 @@ pixel_to_grid = function(x,y) {
 	var hex_scale = Session.get('hexScale')
 
 	if (canvas_size && hex_scale) {
-		x += canvas_size.half_width
-		y += canvas_size.half_height
+		x += canvas_size.width/2
+		y += canvas_size.height/2
 		x = x * (hex_scale)
 		y = y * (hex_scale)
 		return {x:x, y:y}
 	}
 
-	return false	
+	return false
 }
 
 

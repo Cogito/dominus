@@ -44,7 +44,7 @@ UI.registerHelper('canvas_height', function() {
 UI.registerHelper('half_canvas_width', function() {
 	var canvasSize = Session.get('canvas_size')
 	if (canvasSize) {
-		return canvasSize.half_width
+		return canvasSize.width/2
 	}
 })
 UI.registerHelper('half_canvas_height', function() {

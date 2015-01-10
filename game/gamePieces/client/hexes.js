@@ -174,11 +174,13 @@ Template.hexes.rendered = function() {
 			var canvas_size = Session.get('canvas_size')
 			if (canvas_size) {
 				var pixel = grid_to_pixel(hexes_pos.x, hexes_pos.y)
-				var coords = Hx.posToCoordinates(pixel.x, pixel.y, s.hex_size, s.hex_squish)
+				if (pixel) {
+					var coords = Hx.posToCoordinates(pixel.x, pixel.y, s.hex_size, s.hex_squish)
 
-				var x = coords.x * -1 	// why -1???
-				var y = coords.y * -1
-				Session.set('center_hex', {x:x, y:y})
+					var x = coords.x * -1 	// why -1???
+					var y = coords.y * -1
+					Session.set('center_hex', {x:x, y:y})
+				}
 			}
 		}
 	})
