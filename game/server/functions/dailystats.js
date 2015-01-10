@@ -226,24 +226,6 @@ init_dailystats_for_new_user = function(user_id) {
 			clay:0,
 			glass:0,
 		},
-		income: {
-			gold: 0,
-			grain: 0,
-			lumber: 0,
-			ore: 0,
-			wool: 0,
-			clay: 0,
-			glass: 0
-		},
-		vassal_income: {
-			gold: 0,
-			grain: 0,
-			lumber: 0,
-			ore: 0,
-			wool: 0,
-			clay: 0,
-			glass: 0
-		},
 		networth: 0,
 		num_allies: 0,
 		losses_worth:0,

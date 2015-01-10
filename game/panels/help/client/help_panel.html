@@ -121,9 +121,15 @@
 					<div class="panel-body">
 						<p>There are six different types of resources.  Grain, lumber, ore, wool, clay and glass.  Resources are used to hire soldiers and build villages.  Each hex produces a different type of resouce.</p>
 						<div class="help_section">Collecting Resources</div>
-						<p>Resources are collected at your castle and villages.  Your castle collects resources from the {{s.resource.num_rings_castle}} rings of hexes surrounding it.  Your villages collect resources from the 6 hexes surrounding it.  Your castle also collects {{s.resource.gold_gained_at_castle}} gold and your villages each collect {{s.resource.gold_gained_at_village}} gold.  Resources are collected every {{s_resource_interval}}.</p>
+						<p>Resources are collected at your castle and villages.</p>
+
+						<p>Your castle collects {{s.castle.income.gold}} gold, {{s.castle.income.grain}} grain, {{s.castle.income.lumber}} lumber, {{s.castle.income.ore}} ore, {{s.castle.income.wool}} wool, {{s.castle.income.clay}} clay, and {{s.castle.income.glass}} glass.  Everyone's castle collects the same resources.</p>
+
+						<p>Villages collect resources from the 6 hexes surrounding them and {{s.resource.gold_gained_at_village}} gold.</p>
+
+						<p>Resources are collected every {{s_resource_interval}}.</p>
 						<p>You can see how many resources you have in the top of the summary panel.  The white number is how many you have.  The first grey number is how many you collected last resource update from your castle and villages.  The second grey number is how many you received from your vassals.</p>
-						<p>Castles and villages collect from the hexes surrounding even if there is another building on the hex.  It is ok to build villages and castles next to each other.</p>
+						<p>Villages collect from the hexes surrounding even if there is another building on the hex.  It is ok to build villages next to each other or next to another village.</p>
 						<div class="help_section">Large Resource Hexes</div>
 						<p>Some hexes produce {{resources_at_large_hexes}} resources instead of {{s.resource.gained_at_hex}}.  These hexes look different than the others.</p>
 						<div class="help_section">The Market</div>
@@ -176,7 +182,7 @@
 							<br>
 							<b>Catapults</b><br>
 							Offense: {{s.army.stats.catapults.offense}} &nbsp; Defense: {{s.army.stats.catapults.defense}} &nbsp; Speed: {{s.army.stats.catapults.speed}}<br>
-							{{s.army.stats.catapults.bonus_against_buildings}}x bonus when attacking a castle or village.<br>
+							+{{s.army.stats.catapults.bonus_against_buildings}} offense when attacking a castle or village.<br>
 						</p>
 						<p>If your army enters hex that is also occupied by an enemy army, village or castle then they will attack it.</p>
 
@@ -184,7 +190,7 @@
 						<p>There are four different kinds of soldiers.  Some gain bonuses when fighting.</p>
 						<p>Archers recieve a bonus against footmen.  Pikemen recieve a bonus against cavalry.  Calvary recieve a bonus against archers and footmen.</p>
 						<p>When an archer fights a footman because the archer has a bonus against footmen the archer is twice as powerful.</p>
-						<p>Catapults have a different kind of bonus.  Catapults have a very low offense.  When attacking a castle or village their offense is multiplied by their bonus.  If 1 catapult attacks an army it will have an offense of {{s.army.stats.catapults.offense}} but when that one catapult attacks a castle it will have an offense of {{s.army.stats.catapults.bonus_against_buildings}}.</p>
+						<p>Catapults have a different kind of bonus.  Catapults have a very low offense and defense.  When attacking a castle or village their offense is multiplied by their bonus.  If 1 catapult attacks an army it will have an offense of {{s.army.stats.catapults.offense}} but when that one catapult attacks a castle it will have an offense of {{s.army.stats.catapults.bonus_against_buildings}}.</p>
 
 						<div class="help_section">Speed</div>
 						<p>Armies move at the speed of their slowest unit.</p>

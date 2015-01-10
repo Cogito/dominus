@@ -17,6 +17,7 @@ mapmover = new Mapmover(function(x,y,scale) {
 	setHexScale(scale)
 })
 
+mapmover.throttle = 50
 mapmover.minScale = s.hex_scale_min
 mapmover.maxScale = s.hex_scale_max
 

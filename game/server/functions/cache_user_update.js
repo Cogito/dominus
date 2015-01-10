@@ -134,33 +134,5 @@ run_cached_user_update = function() {
 				"res_update.from_vassal": arr.from_vassal
 			}
 		})
-
-		var inc = {
-			'income.gold':arr.gold,
-			'income.grain':arr.grain,
-			'income.lumber':arr.lumber,
-			'income.ore':arr.ore,
-			'income.wool':arr.wool,
-			'income.clay':arr.clay,
-			'income.glass':arr.glass,
-			'vassal_income.gold':arr.from_vassal.gold,
-			'vassal_income.grain':arr.from_vassal.grain,
-			'vassal_income.lumber':arr.from_vassal.lumber,
-			'vassal_income.ore':arr.from_vassal.ore,
-			'vassal_income.wool':arr.from_vassal.wool,
-			'vassal_income.clay':arr.from_vassal.clay,
-			'vassal_income.glass':arr.from_vassal.glass,
-		}
-
-		var setOnInsert = {
-			user_id:arr.user_id,
-			created_at: new Date()
-		}
-
-		var set = {
-			updated_at: new Date()
-		}
-
-		Dailystats.upsert({user_id: arr.user_id, created_at: {$gte: statsBegin(), $lt: statsEnd()}}, {$setOnInsert:setOnInsert, $inc:inc, $set:set})
 	})
 }

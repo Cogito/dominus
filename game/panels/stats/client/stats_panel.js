@@ -22,10 +22,6 @@ Template.stats_panel.rendered = function() {
 		if (subs.ready('stats')) {
 			var dailystats = Dailystats.find({user_id: Meteor.userId()}, {sort: {created_at: 1}})
 
-			// old, remove these two soon
-			var income = {}			// income
-			var vassalIncome = {}	// vassal income
-
 			var inc = {}	// total income
 			var vInc = {}	// vassal income
 			var bInc = {}	// income from castle/villages
@@ -38,8 +34,6 @@ Template.stats_panel.rendered = function() {
 				inc[type] = []
 				vInc[type] = []
 				bInc[type] = []
-				income[type] = []
-				vassalIncome[type] = []
 			})
 
 			dailystats.forEach(function(stat) {
@@ -55,19 +49,9 @@ Template.stats_panel.rendered = function() {
 						vInc[type].push({x:stat.updated_at, y:y})
 					}
 
-					if (stat.inc && stat.vassalInc && stat.inc[type] && stat.vassalInc[type] && !isNaN(stat.vassalInc[type]) && !isNaN(stat.inc[type])) {
+					if (stat.inc && stat.inc[type] && !isNaN(stat.inc[type])) {
 						var y = stat.inc[type] - stat.vassalInc[type]
 						bInc[type].push({x:stat.updated_at, y:y})
-					}
-
-					if (stat.income && stat.income[type] && !isNaN(stat.income[type])) {
-						var y = stat.income[type]
-						income[type].push({x:stat.updated_at, y:y})
-					}
-
-					if (stat.vassal_income && stat.vassal_income[type] && !isNaN(stat.vassal_income[type])) {
-						var y = stat.vassal_income[type]
-						vassalIncome[type].push({x:stat.updated_at, y:y})
 					}
 				})
 
@@ -155,65 +139,6 @@ Template.stats_panel.rendered = function() {
 
 				return chart
 			})
-
-
-
-
-
-
-			var income_data = [
-				{values: income.gold, key: 'Gold', color: '#e6d545'},
-				{values: income.grain, key: 'Grain', color: '#82d957'},
-				{values: income.lumber, key: 'Lumber', color: '#b3823e'},
-				{values: income.ore, key: 'Ore', color: '#d9d9d9'},
-				{values: income.wool, key: 'Wool', color: '#d9cf82'},
-				{values: income.clay, key: 'Clay', color: '#d98659'},
-				{values: income.glass, key: 'Glass', color: '#5793d9'},
-			]
-
-			nv.addGraph(function() {
-				var chart = nv.models.lineChart().useInteractiveGuideline(true).showLegend(true).showYAxis(true).showXAxis(true)
-				chart.xAxis.tickFormat(function(d) { return d3.time.format('%b %d')(new Date(d)); })
-				chart.yAxis.tickFormat(d3.format(",.0f"))
-
-				d3.select('#income_chart svg').datum(income_data).transition().duration(300).call(chart)
-
-				nv.utils.windowResize(chart.update)
-
-				return chart
-			})
-
-
-
-
-			var vassal_income_data = [
-				{values: vassalIncome.gold, key: 'Gold', color: '#e6d545'},
-				{values: vassalIncome.grain, key: 'Grain', color: '#82d957'},
-				{values: vassalIncome.lumber, key: 'Lumber', color: '#b3823e'},
-				{values: vassalIncome.ore, key: 'Ore', color: '#d9d9d9'},
-				{values: vassalIncome.wool, key: 'Wool', color: '#d9cf82'},
-				{values: vassalIncome.clay, key: 'Clay', color: '#d98659'},
-				{values: vassalIncome.glass, key: 'Glass', color: '#5793d9'},
-			]
-
-			nv.addGraph(function() {
-				var chart = nv.models.lineChart().useInteractiveGuideline(true).showLegend(true).showYAxis(true).showXAxis(true)
-
-				chart.xAxis.tickFormat(function(d) { return d3.time.format('%b %d')(new Date(d)); })
-				chart.yAxis.tickFormat(d3.format(",.0f"))
-
-				d3.select('#vassal_income_chart svg').datum(vassal_income_data).transition().duration(300).call(chart)
-
-				nv.utils.windowResize(chart.update)
-
-				//d3.selectAll("rect").style("opacity", 0.3)
-
-				return chart
-			})
-
-
-
-
 
 
 

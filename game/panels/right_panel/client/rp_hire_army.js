@@ -66,6 +66,13 @@ Template.rp_hire_army.helpers({
 
 	is_gold: function(type) {
 		return (type == 'gold')
+	},
+
+	soldierWorth: function(type) {
+		var soldierWorth = Template.instance().soldierWorth.get()
+		if (soldierWorth) {
+			return soldierWorth[type]
+		}
 	}
 })
 
@@ -153,6 +160,24 @@ Template.rp_hire_army.created = function() {
 	})
 
 
+
+	self.soldierWorth = new ReactiveVar(null)
+	self.autorun(function() {
+		var worth = {}
+
+		var emptyArmy = {}
+		_.each(s.army.types, function(type) {
+			emptyArmy[type] = 0
+		})
+
+		_.each(s.army.types, function(type) {
+			var army = cloneObject(emptyArmy)
+			army[type] = 1
+			worth[type] = round_number(worth_of_army(army))
+		})
+
+		self.soldierWorth.set(worth)
+	})
 
 
 

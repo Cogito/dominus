@@ -3,7 +3,16 @@ gather_resources_new = function() {
 	var start_time = new Date()
 
 	Castles.find({}, {fields: {user_id:1, x:1, y:1}}).forEach(function(res) {
-		gather_resources_surrounding(res.x, res.y, s.resource.num_rings_castle, res.user_id, s.resource.gold_gained_at_castle)
+		receive_income_id(
+			res.user_id,
+			s.resource.gold_gained_at_castle,
+			s.castle.income.grain,
+			s.castle.income.lumber,
+			s.castle.income.ore,
+			s.castle.income.wool,
+			s.castle.income.clay,
+			s.castle.income.glass
+			)
 	})
 
 	Villages.find({under_construction:false}, {fields: {user_id:1, x:1, y:1}}).forEach(function(res) {

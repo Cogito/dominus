@@ -31,12 +31,12 @@ s.time_til_game_end_when_new_dominus = 1000 * 60 * 60 * 24 * 7 	// 7 days
 
 //s.vassal_tax = 0.25		// percentage of income that goes to lord
 
-s.market.sell_tax = 0.1
-s.market.increment = 0.000005	// how much it goes up or down when someone buys or sells
+s.market.sell_tax = 0.01
+s.market.increment = 0.000004	// how much it goes up or down when someone buys or sells
 
 s.resource.gained_at_hex = 4
 s.resource.gold_gained_at_castle = 50
-s.resource.gold_gained_at_village = 8
+s.resource.gold_gained_at_village = 5
 s.resource.num_rings_castle = 2
 s.resource.num_rings_village = 1
 s.resource.large_resource_multiplier = 4 	// large resource hexes give you x times as much
@@ -46,18 +46,28 @@ s.resource.types_plus_gold = ['gold'].concat(s.resource.types)
 
 s.army.types = ['footmen', 'archers', 'pikemen', 'cavalry', 'catapults']
 
+s.castle.income = {
+	gold: s.resource.gold_gained_at_castle,
+	grain: 30,
+	lumber: 20,
+	ore: 10,
+	wool: 8,
+	clay: 4,
+	glass: 2
+}
+
 s.army.cost = {
 	footmen: {
-		grain: 100,
+		grain: 80,
 		lumber: 5,
-		ore: 15,
+		ore: 18,
 		wool: 2,
 		clay: 0,
 		glass: 0,
 	},
 	archers: {
 		grain: 35,
-		lumber: 35,
+		lumber: 30,
 		ore: 0,
 		wool: 25,
 		clay: 0,
@@ -67,16 +77,16 @@ s.army.cost = {
 		grain: 0,
 		lumber: 15,
 		ore: 0,
-		wool: 35,
+		wool: 37,
 		clay: 0,
-		glass: 35,
+		glass: 37,
 	},
 	cavalry: {
 		grain: 30,
 		lumber: 5,
 		ore: 35,
-		wool: 5,
-		clay: 30,
+		wool: 0,
+		clay: 35,
 		glass: 0,
 	},
 	catapults: {
@@ -84,7 +94,7 @@ s.army.cost = {
 		lumber:30,
 		ore:60,
 		wool:0,
-		clay:18,
+		clay:25,
 		glass:0
 	}
 }

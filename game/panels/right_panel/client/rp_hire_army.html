@@ -172,22 +172,27 @@
 					<b>Footmen</b><br>
 					Offense: {{s.army.stats.footmen.offense}} &nbsp; Defense: {{s.army.stats.footmen.defense}} &nbsp; Speed: {{s.army.stats.footmen.speed}}<br>
 					Footmen are good all-around soldiers.<br>
+					{{#if soldierWorth 'footmen'}}One footman is currently worth {{soldierWorth 'footmen'}} gold.<br>{{/if}}
 					<br>
 					<b>Archers</b><br>
 					Offense: {{s.army.stats.archers.offense}} &nbsp; Defense: {{s.army.stats.archers.defense}} &nbsp; Speed: {{s.army.stats.archers.speed}}<br>
 					Good at defense. Bonus against footmen.<br>
+					{{#if soldierWorth 'archers'}}One archer is currently worth {{soldierWorth 'archers'}} gold.<br>{{/if}}
 					<br>
 					<b>Pikemen</b><br>
 					Offense: {{s.army.stats.pikemen.offense}} &nbsp; Defense: {{s.army.stats.pikemen.defense}} &nbsp; Speed: {{s.army.stats.pikemen.speed}}<br>
 					Good at defense. Bonus against cavalry.<br>
+					{{#if soldierWorth 'pikemen'}}One pikeman is currently worth {{soldierWorth 'pikemen'}} gold.<br>{{/if}}
 					<br>
 					<b>Cavalry</b><br>
 					Offense: {{s.army.stats.cavalry.offense}} &nbsp; Defense: {{s.army.stats.cavalry.defense}} &nbsp; Speed: {{s.army.stats.cavalry.speed}}<br>
 					Good at offense. Bonus against archers and footmen.<br>
+					{{#if soldierWorth 'cavalry'}}One cavalry is currently worth {{soldierWorth 'cavalry'}} gold.<br>{{/if}}
 					<br>
 					<b>Catapults</b><br>
 					Offense: {{s.army.stats.catapults.offense}} &nbsp; Defense: {{s.army.stats.catapults.defense}} &nbsp; Speed: {{s.army.stats.catapults.speed}}<br>
 					{{s.army.stats.catapults.bonus_against_buildings}}x bonus when attacking a castle or village.<br>
+					{{#if soldierWorth 'catapults'}}One catapult is currently worth {{soldierWorth 'catapults'}} gold.<br>{{/if}}
 				</p>
 			</div>
 		</div>
