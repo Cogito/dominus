@@ -3,7 +3,9 @@
 	"s3key":"000",
 	"s3secretKey":"000",
 	"s3bucket":"asdf",
+	"s3region":"us-west-2",
 	"public": {
-		"stripe_publishable_key":"pk_test"
+		"stripe_publishable_key":"pk_test",
+		"s3path":"https://s3-us-west-2.amazonaws.com/bucket"
 	}
 }

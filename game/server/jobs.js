@@ -1,7 +1,6 @@
 Meteor.startup(function() {
 	if (process.env.DOMINUS_WORKER == 'true') {
 
-
 		worker.empty_queue()
 		worker.start()
 
