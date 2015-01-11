@@ -15,7 +15,7 @@ Template.castle.events({
 				Session.set('selected_id', this._id)
 			} else if (mouseMode == 'finding_path') {
 				var coord = getCoordinatesFromEvent(event)
-				
+
 				// can't click on starting point
 				if (JSON.stringify(coord) === JSON.stringify(get_from_coords())) {
 					return false
@@ -40,7 +40,7 @@ Template.castle.events({
 })
 
 
-draw_castle_highlight = function(castle_id, draw_resource_hexes) {
+draw_castle_highlight = function(castle_id) {
 	check(castle_id, String)
 
 	var coords = id_to_coords(castle_id, 'castle')
@@ -56,27 +56,12 @@ draw_castle_highlight = function(castle_id, draw_resource_hexes) {
 		polygon.setAttribute('points', points)
 		$('#castle_highlights').append(polygon)
 	}
-
-	if (draw_resource_hexes) {
-		var hexes = Hx.getSurroundingHexes(coords.x, coords.y, s.resource.num_rings_castle)
-		_.each(hexes, function(hex) {
-			var grid = Hx.coordinatesToPos(hex.x, hex.y, s.hex_size, s.hex_squish)
-			var points = Hx.getHexPolygonVerts(grid.x, grid.y, s.hex_size * 0.95, s.hex_squish)
-			if (points != false) {
-				var polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
-				polygon.setAttribute('class', 'castle_resource_highlight')
-				polygon.setAttribute('points', points)
-				$('#castle_highlights').append(polygon)
-			}
-		})
-	}
 }
 
 
 
 remove_castle_highlights = function() {
 	$('polygon.castle_highlight').remove()
-	$('polygon.castle_resource_highlight').remove()
 }
 
 
@@ -92,7 +77,7 @@ Template.castle.created = function() {
 		if (Session.get('selected_type') == 'castle') {
 			if (Session.get('selected_id') == self.data._id){
 				remove_all_highlights()
-				draw_castle_highlight(Session.get('selected_id'), (self.data.user_id == Meteor.userId()))
+				draw_castle_highlight(Session.get('selected_id'))
 				Session.set('rp_template', 'rp_info_castle')
 			}
 		}
