@@ -1,0 +1,11 @@
+<template name="connection_lost_alert">
+    <div id="connectionLostPositioner" style="position:absolute;">
+        {{#if show}}
+            <div id="connection_lost_modal">
+                <h4>Connection to server lost.</h4>
+                <br>
+                Either the game code is updating or your connection is dead.  Try reloading the page if this box doesn't go away in a few seconds.
+            </div>
+        {{/if}}
+    </div>
+</template>

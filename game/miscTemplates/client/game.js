@@ -38,21 +38,6 @@ Template.game.helpers({
 	show_stats_panel: function() { return Session.get('show_stats_panel') },
 	show_store_panel: function() { return Session.get('show_store_panel') },
 	show_tree_panel: function() { return Session.get('show_tree_panel') },
-
-
-	show_welcome_screen: function() {
-		if (!Session.get('show_building_castle_modal')) {
-			var res = Meteor.users.findOne(Meteor.userId(), {fields: {show_welcome_screen: 1}})
-			if (res) {
-				if (res.show_welcome_screen) {
-					return true
-				}
-			}
-			return false
-		}
-	},
-
-
 })
 
 

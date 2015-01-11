@@ -92,12 +92,10 @@
 		</div>
 
 
-
+		{{> mapbaker_alert}}
 		{{> building_castle_modal}}
 		{{> connection_lost_alert}}
-		{{#if show_welcome_screen}}
-			{{> welcome_screen}}
-		{{/if}}
+		{{> welcome_screen}}
 
 		<div id="hex_body">
 			{{> hexes}}

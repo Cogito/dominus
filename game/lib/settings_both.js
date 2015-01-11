@@ -91,10 +91,10 @@ s.army.cost = {
 	},
 	catapults: {
 		grain:75,
-		lumber:30,
-		ore:60,
+		lumber:60,
+		ore:40,
 		wool:0,
-		clay:25,
+		clay:15,
 		glass:0
 	}
 }

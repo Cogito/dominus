@@ -1,0 +1,15 @@
+<template name="mapbaker_alert">
+    <div id="mapbakerPositioner" style="position:absolute;">
+        {{#if show}}
+            <div id="mapbaker_alert">
+                <h4>Baking Map</h4>
+                The map is baking.  This might take a bit.<br>
+                {{finished}}/{{started}} pieces done.<br>
+                <br>
+                <span class="light_text">
+                    This happens when the map expands.  If there is not enough room on the map when a new player joins then the map grows.
+                </span>
+            </div>
+        {{/if}}
+    </div>
+</template>

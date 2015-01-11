@@ -220,49 +220,6 @@ Template.menu.rendered = function() {
 	Session.setDefault('show_tree_panel', false)
 	Session.setDefault('show_coords', false)
 
-	var deps_newuser_first_run = true
-
-	this.deps_newuser = Deps.autorun(function() {
-
-		if (Meteor.userId()) {
-			var canvas_size = Session.get('canvas_size')
-			if (canvas_size) {
-				var fields = {show_welcome_screen:1, castle_id:1, x:1, y:1}
-				var user = Meteor.users.findOne(Meteor.userId(), {fields: fields})
-				if (user) {
-
-					if(typeof user.castle_id == 'undefined' || typeof user.x == 'undefined' || typeof user.y == 'undefined') {
-						//console.log('no castle but no loading screen either')
-						if (typeof user.show_welcome_screen != 'undefined') {
-
-							// show modal
-							Session.set('show_building_castle_modal', true)
-							Session.set('mouse_mode', 'modal')
-						}
-
-					} else if (user.x && user.y && user.castle_id) {
-						// we've got a castle
-						//console.log('got a castle')
-						if (deps_newuser_first_run) {
-							//console.log('first run')
-							// hide building castle modal
-							Session.set('show_building_castle_modal', false)
-							Session.set('mouse_mode', 'default')
-
-							// first run so center on castle
-							// Session.set('selected_type', 'castle')
-							// Session.set('selected_id', user.castle_id)
-							// center_on_hex(user.x, user.y)
-
-							deps_newuser_first_run = false
-						}
-					}
-
-				}
-			}
-		}
-	})
-
 	this.autorun(function() {
 		Meteor.subscribe('notifications_unread')
 		Meteor.subscribe('room_list')
@@ -296,11 +253,4 @@ Template.menu.rendered = function() {
 			}
 		}
 	})
-}
-
-
-Template.menu.destroyed = function() {
-	if (this.deps_newuser) {
-		this.deps_newuser.stop()
-	}
 }
