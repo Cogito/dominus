@@ -38,13 +38,19 @@ Template.army.created = function() {
 	self.draw = new ReactiveVar(true)
 	self.autorun(function() {
 		if (Template.currentData()) {
-			Armies.find({x: Template.currentData().x, y: Template.currentData().y, _id: {$ne: Template.currentData()._id}}, {fields: {last_move_at:1}}).forEach(function(res) {
-				if (Template.currentData().last_move_at > res.last_move_at) {
-					self.draw.set(false)
-				} else {
-					self.draw.set(true)
-				}
-			})
+			var armies = Armies.find({x: Template.currentData().x, y: Template.currentData().y, _id: {$ne: Template.currentData()._id}}, {fields: {last_move_at:1}})
+
+			if (armies.count() == 0) {
+				self.draw.set(true)
+			} else {
+				armies.forEach(function(res) {
+					if (Template.currentData().last_move_at > res.last_move_at) {
+						self.draw.set(false)
+					} else {
+						self.draw.set(true)
+					}
+				})
+			}
 		}
 	})
 

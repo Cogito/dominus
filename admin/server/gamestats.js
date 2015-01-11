@@ -77,6 +77,12 @@ gamestats_job = function() {
 		price += resource.price
 		count++
 	})
+
+	// market not created yet
+	if (count == 0) {
+		return false
+	}
+
 	stat.avg_market_price = price / count
 	check(stat.avg_market_price, validNumber)
 

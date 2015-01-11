@@ -23,6 +23,10 @@ mapmover.maxScale = s.hex_scale_max
 
 
 Template.hexes.helpers({
+	random: function() {
+		return Math.random()
+	},
+
 	s3path: function() {
 		return Meteor.settings.public.s3path
 	},

@@ -2,6 +2,7 @@ var castle_fields = {name:1, user_id:1, x:1, y:1, username:1, image:1}
 var army_fields = {name:1, user_id:1, x:1, y:1, last_move_at:1, username:1}
 var village_fields = {name:1, user_id:1, x:1, y:1, username:1, under_construction:1}
 var hex_fields = {x:1, y:1, type:1, tileImage:1, large:1}
+var hexBakesFields = {posX:1, posY:1, filename:1, width:1, height:1}
 
 _.each(s.army.types, function(type) {
 	castle_fields[type] = 1
@@ -17,7 +18,7 @@ Meteor.publish('onScreenHexbakes', function(x, y, hex_size, canvas_width, canvas
 		centerY: {$gt: y - max, $lt: y + max},
 	}
 
-	return Hexbakes.find(find)
+	return Hexbakes.find(find, {fields: hexBakesFields})
 })
 
 Meteor.publish('on_screen_hexes', function (x, y, hex_size, canvas_width, canvas_height, hex_scale) {
@@ -106,8 +107,10 @@ Castles.allow({insert: false, update: false, remove: false})
 Armies.allow({insert: false, update: false, remove: false})
 Villages.allow({insert: false, update: false, remove: false})
 Moves.allow({insert: false, update: false, remove: false})
+Hexbakes.allow({insert: false, update: false, remove: false})
 
 Meteor.startup(function () {
+	Hexbakes._ensureIndex({centerX:1, centerY:1})
 	Hexes._ensureIndex({x:1, y:1}, {unique:1})
 	Castles._ensureIndex({user_id:1, x:1, y:1})
 	Villages._ensureIndex({user_id:1, x:1, y:1})

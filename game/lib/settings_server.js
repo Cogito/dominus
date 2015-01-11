@@ -6,7 +6,7 @@ if (Meteor.isServer) {
 		s.battle_check_interval = 1000 * 10
 	} else {
 		s.army_travel_multiplier = 1 	// for debug, lower than one makes armies move faster
-		s.battle_check_interval = 1000 * 15
+		s.battle_check_interval = 1000 * 10
 	}
 
 
@@ -56,9 +56,9 @@ if (Meteor.isServer) {
 
 	s.castle.starting_garrison = {
 		footmen: 2,
-		archers: 2,
-		pikemen: 10,
-		cavalry: 0,
+		archers: 8,
+		pikemen: 8,
+		cavalry: 2,
 		catapults: 0
 	}
 
@@ -78,6 +78,7 @@ if (Meteor.isServer) {
 	s.maxNotificationsPerUser = 150
 
 	// how much time between dailystat ticks
+	// hours
 	s.statsInverval = 6
 
 
