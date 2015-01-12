@@ -25,6 +25,10 @@ UI.registerHelper('date_duration_humanize', function(ms) {
 	return moment.duration(ms).humanize()
 })
 
+UI.registerHelper('dateUnixOffset', function(date) {
+	return new Date(date).getTime()
+})
+
 
 
 

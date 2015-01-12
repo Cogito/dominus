@@ -33,7 +33,7 @@ move_hexes_to = function(pixel_x, pixel_y) {
 	check(pixel_x, validNumber)
 	check(pixel_y, validNumber)
 
-	$(hexes).attr('transform', 'translate('+pixel_x+','+pixel_y+') scale('+Session.get('hexScale')+')')
+	$('#hexes').attr('transform', 'translate('+pixel_x+','+pixel_y+') scale('+Session.get('hexScale')+')')
 
 	Session.set('hexes_pos', {x:pixel_x, y:pixel_y})
 }
