@@ -18,7 +18,7 @@ d3js:d3@3.4.13
 danimal:accounts-templates@1.0.2
 danimal:hx@1.0.6
 danimal:mapbaker@1.0.7
-danimal:mapmover@1.0.6
+danimal:mapmover@1.0.7
 danimal:readymanager@1.0.1
 ddp@1.0.13
 deps@1.0.6
