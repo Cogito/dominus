@@ -284,19 +284,19 @@ Template.rp_info_army.created = function() {
 	})
 
 	self.gamePiecesAtHexLoaded = new ReactiveVar(false)
-	self.armyUserLoaded = new ReactiveVar(false)
+	//self.armyUserLoaded = new ReactiveVar(false)
 	self.autorun(function() {
 		if (Template.currentData()) {
 			var handle = Meteor.subscribe('gamePiecesAtHex', Template.currentData().x, Template.currentData().y)
 			self.gamePiecesAtHexLoaded.set(handle.ready())
 
-			if (Template.currentData().user_id == Meteor.userId()) {
-				self.armyUserLoaded.set(true)
-			} else {
-				// this is used to tell if castle/village in this hex is our ally
-				var castleUserHandle = Meteor.subscribe('castle_user', Template.currentData().user_id)
-				self.armyUserLoaded.set(castleUserHandle.ready())
-			}
+			// if (Template.currentData().user_id == Meteor.userId()) {
+			// 	self.armyUserLoaded.set(true)
+			// } else {
+			// 	// this is used to tell if castle/village in this hex is our ally
+			// 	var castleUserHandle = Meteor.subscribe('rightPanelUser', Template.currentData().user_id)
+			// 	self.armyUserLoaded.set(castleUserHandle.ready())
+			// }
 		}
 	})
 
@@ -310,15 +310,19 @@ Template.rp_info_army.created = function() {
 	})
 
 
+	// used to tell if army can build village
 	self.userData = new ReactiveVar(null)
 	this.autorun(function() {
-		var fields = {}
-		_.each(s.resource.types, function(type) {
-			fields[type] = 1
-		})
-		var user = Meteor.users.findOne(Meteor.userId(), {fields: fields})
-		if (user) {
-			self.userData.set(user)
+		var userId = Meteor.userId()
+		if (Template.currentData() && Template.currentData().user_id == userId) {
+			var fields = {}
+			_.each(s.resource.types, function(type) {
+				fields[type] = 1
+			})
+			var user = Meteor.users.findOne(userId, {fields: fields})
+			if (user) {
+				self.userData.set(user)
+			}
 		}
 	})
 
@@ -424,11 +428,10 @@ Template.rp_info_army.created = function() {
 	// offense and defense power
 	self.power = new ReactiveVar(null)
 	self.autorun(function() {
-		if (Template.currentData() && self.gamePiecesAtHexLoaded.get() && self.armyUserLoaded.get()) {
-			Tracker.nonreactive(function() {
-				var basePower = getUnitBasePower(Template.currentData())
-				var locationMultiplier = getUnitLocationBonusMultiplier(Template.currentData(), 'army')
+		if (Template.currentData() && self.gamePiecesAtHexLoaded.get()) {
+			var basePower = getUnitBasePower(Template.currentData())
 
+			Meteor.call('getUnitLocationBonusMultiplier', Template.currentData(), 'army', function(error, locationMultiplier) {
 				var power = {
 					offense: basePower.offense.total * locationMultiplier,
 					defense: basePower.defense.total * locationMultiplier

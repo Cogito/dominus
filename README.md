@@ -16,6 +16,7 @@ Dominus is made using the web platform <a href="http://meteor.com">Meteor</a>.
 
 * Install <a href="http://meteor.com">Meteor</a>
 * Run "meteor update" to install packages.
+* Map baking requires PhantomJS http://phantomjs.org/
 * Duplicate the file "run_temp" and name it "run".
 * Duplicate the file "settings_temp.json" and name it "settings.json".
 * "chmod +x run"
