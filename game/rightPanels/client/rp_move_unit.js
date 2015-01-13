@@ -75,6 +75,19 @@ Template.rp_move_unit.helpers({
 })
 
 Template.rp_move_unit.events({
+	'input .moveUnitsInput': function(event, template) {
+		var num = Number(event.currentTarget.value)
+		var type = this.toString()
+
+		if (num <= Template.currentData()[type]) {
+			set_selected_unit(type, num)
+
+			// update slider
+			var slider = $('.send_units_slider[data-type='+type+']')
+			slider.val(get_selected_unit(type))
+		}
+	},
+
 	'click #move_unit_cancel_button': function(event, template) {
 		Session.set('rp_template', 'rp_info_'+Session.get('selected_type'))
 	},

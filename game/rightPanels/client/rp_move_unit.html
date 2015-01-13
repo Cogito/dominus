@@ -16,6 +16,9 @@
 							{{#each s.army.types}}
 								<tr>
 									<td>{{capitalize this}}</td>
+									<td>
+										<input type="number" class="form-control input-sm moveUnitsInput" style="padding:1px 8px;height:22px;width:80px;display:inline;" value={{num_units this}} />
+									</td>
 									<td style="text-align:right;">
 										selected: {{num_units this}}
 									</td>

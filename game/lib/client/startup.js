@@ -62,8 +62,10 @@ Meteor.startup(function() {
 
 	set_selected_unit = function(type, num) {
 		if (selected_units[type] != num) {
-			selected_units[type] = num
-			selected_units_dep.changed()
+			if (num >= 0) {
+				selected_units[type] = num
+				selected_units_dep.changed()
+			}
 		}
 	}
 
