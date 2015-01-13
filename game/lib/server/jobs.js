@@ -4,6 +4,7 @@ Meteor.startup(function() {
 		worker.empty_queue()
 		worker.start()
 
+
 		// make sure there are no negative armies
 		// var find = []
 		// _.each(s.army.types, function(type) {

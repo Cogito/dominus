@@ -52,7 +52,7 @@ s.castle.income = {
 	lumber: 20,
 	ore: 10,
 	wool: 8,
-	clay: 4,
+	clay: 6,
 	glass: 2
 }
 
