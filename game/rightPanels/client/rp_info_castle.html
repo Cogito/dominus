@@ -161,13 +161,20 @@
 					<div class="panel-heading">
 						Possible Duplicate Users
 					</div>
-					<div class="panel-body">
-						<ul>
+					<table class="table table-striped table-condensed">
+						<tbody>
 							{{#each dupes}}
-								<li>{{this}}</li>
+								<tr>
+									<td>
+										{{this.username}}
+									</td>
+									<td style="text-align:right;">
+										{{> center_on_button x=this.x y=this.y selected_type='castle' selected_id=this.castle_id}}
+									</td>
+								</tr>
 							{{/each}}
-						</ul>
-					</div>
+						</tbody>
+					</table>
 				</div>
 			{{/if}}
 
