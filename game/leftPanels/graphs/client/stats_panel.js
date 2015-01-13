@@ -84,11 +84,8 @@ Template.stats_panel.rendered = function() {
 				var chart = nv.models.lineChart().useInteractiveGuideline(true).showLegend(true).showYAxis(true).showXAxis(true)
 				chart.xAxis.tickFormat(function(d) { return d3.time.format('%b %d')(new Date(d)); })
 				chart.yAxis.tickFormat(d3.format(",.0f"))
-
 				d3.select('#incChart svg').datum(incData).transition().duration(300).call(chart)
-
 				nv.utils.windowResize(chart.update)
-
 				return chart
 			})
 
@@ -108,11 +105,8 @@ Template.stats_panel.rendered = function() {
 				var chart = nv.models.lineChart().useInteractiveGuideline(true).showLegend(true).showYAxis(true).showXAxis(true)
 				chart.xAxis.tickFormat(function(d) { return d3.time.format('%b %d')(new Date(d)); })
 				chart.yAxis.tickFormat(d3.format(",.0f"))
-
 				d3.select('#buildingIncChart svg').datum(bIncData).transition().duration(300).call(chart)
-
 				nv.utils.windowResize(chart.update)
-
 				return chart
 			})
 
@@ -132,11 +126,8 @@ Template.stats_panel.rendered = function() {
 				var chart = nv.models.lineChart().useInteractiveGuideline(true).showLegend(true).showYAxis(true).showXAxis(true)
 				chart.xAxis.tickFormat(function(d) { return d3.time.format('%b %d')(new Date(d)); })
 				chart.yAxis.tickFormat(d3.format(",.0f"))
-
 				d3.select('#vassalIncChart svg').datum(vIncData).transition().duration(300).call(chart)
-
 				nv.utils.windowResize(chart.update)
-
 				return chart
 			})
 
@@ -148,14 +139,10 @@ Template.stats_panel.rendered = function() {
 
 			nv.addGraph(function() {
 				var chart = nv.models.lineChart().useInteractiveGuideline(true).showLegend(true).showYAxis(true).showXAxis(true)
-
 				chart.xAxis.tickFormat(function(d) { return d3.time.format('%b %d')(new Date(d)); })
 				chart.yAxis.tickFormat(d3.format(",.0f"))
-
 				d3.select('#networth_chart svg').datum(networth_data).transition().duration(300).call(chart)
-
 				nv.utils.windowResize(chart.update)
-
 				return chart
 			})
 
@@ -165,14 +152,10 @@ Template.stats_panel.rendered = function() {
 
 			nv.addGraph(function() {
 				var chart = nv.models.lineChart().useInteractiveGuideline(true).showLegend(true).showYAxis(true).showXAxis(true)
-
 				chart.xAxis.tickFormat(function(d) { return d3.time.format('%b %d')(new Date(d)); })
 				chart.yAxis.tickFormat(d3.format(",.0f"))
-
 				d3.select('#rankIncomeChart svg').datum(incomeRankData).transition().duration(300).call(chart)
-
 				nv.utils.windowResize(chart.update)
-
 				return chart
 			})
 
@@ -186,14 +169,10 @@ Template.stats_panel.rendered = function() {
 
 			nv.addGraph(function() {
 				var chart = nv.models.lineChart().useInteractiveGuideline(true).showLegend(true).showYAxis(true).showXAxis(true)
-
 				chart.xAxis.tickFormat(function(d) { return d3.time.format('%b %d')(new Date(d)); })
 				chart.yAxis.tickFormat(d3.format(",.0f"))
-
 				d3.select('#num_allies_chart svg').datum(num_allies_data).transition().duration(300).call(chart)
-
 				nv.utils.windowResize(chart.update)
-
 				return chart
 			})
 		}
@@ -204,33 +183,76 @@ Template.stats_panel.rendered = function() {
 		if (subs.ready('stats')) {
 			var gamestats = Gamestats.find({}, {sort:{created_at:1}})
 
-			var num_users = gamestats.map(function(value, index) {
-				return {x: value.created_at, y:value.num_users }
+			var numUsers = []
+			var numActiveUsers = []
+
+			var soldierWorth = {}
+			_.each(s.army.types, function(type) {
+				soldierWorth[type] = []
 			})
 
-			var num_active_users = gamestats.map(function(value, index) {
-				return {x: value.created_at, y:value.num_active_users }
+			gamestats.forEach(function(stat) {
+				if (stat.num_users && !isNaN(stat.num_users)) {
+					numUsers.push({x:stat.created_at, y:stat.num_users})
+				}
+
+				if (stat.num_active_users && !isNaN(stat.num_active_users)) {
+					numActiveUsers.push({x:stat.created_at, y:stat.num_active_users})
+				}
+
+				if (stat.soldierWorth) {
+					_.each(s.army.types, function(type) {
+						if (!isNaN(stat.soldierWorth[type])) {
+							soldierWorth[type].push({x:stat.created_at, y:stat.soldierWorth[type]})
+						}
+					})
+				}
 			})
 
-			if (num_users.length > 0 && num_active_users.length > 0) {
-				var user_data = [
-					{values: num_users, key: 'Total Players', color: '#82d957'},
-					{values: num_active_users, key: 'Active Players', color: '#5793d9'}
-				]
+			var user_data = [
+				{values: numUsers, key: 'Total Players', color: '#82d957'},
+				{values: numActiveUsers, key: 'Active Players', color: '#5793d9'}
+			]
 
-				nv.addGraph(function() {
-					var chart = nv.models.lineChart().useInteractiveGuideline(true).showLegend(true).showYAxis(true).showXAxis(true)
+			nv.addGraph(function() {
+				var chart = nv.models.lineChart().useInteractiveGuideline(true).showLegend(true).showYAxis(true).showXAxis(true)
+				chart.xAxis.tickFormat(function(d) { return d3.time.format('%b %d')(new Date(d)); })
+				chart.yAxis.tickFormat(d3.format(",.0f"))
+				d3.select('#users_chart svg').datum(user_data).transition().duration(300).call(chart)
+				nv.utils.windowResize(chart.update)
+				return chart
+			})
 
-					chart.xAxis.tickFormat(function(d) { return d3.time.format('%b %d')(new Date(d)); })
-					chart.yAxis.tickFormat(d3.format(",.0f"))
 
-					d3.select('#users_chart svg').datum(user_data).transition().duration(300).call(chart)
 
-					nv.utils.windowResize(chart.update)
-
-					return chart
+			// soldier worth
+			var soldierColors = [
+				'#e6d545',
+				'#82d957',
+				'#d9d9d9',
+				'#d9cf82',
+				'#d98659',
+				'#5793d9'
+			]
+			var soldierWorthData = []
+			var x = 0
+			_.each(s.army.types, function(type) {
+				soldierWorthData.push({
+					values: soldierWorth[type],
+					key: type,
+					color: soldierColors[x]
 				})
-			}
+				x++
+			})
+
+			nv.addGraph(function() {
+				var chart = nv.models.lineChart().useInteractiveGuideline(true).showLegend(true).showYAxis(true).showXAxis(true)
+				chart.xAxis.tickFormat(function(d) { return d3.time.format('%b %d')(new Date(d)); })
+				chart.yAxis.tickFormat(d3.format(",.0f"))
+				d3.select('#soldierWorthChart svg').datum(soldierWorthData).transition().duration(300).call(chart)
+				nv.utils.windowResize(chart.update)
+				return chart
+			})
 
 		}
 	})

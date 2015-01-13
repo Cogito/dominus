@@ -111,6 +111,19 @@ gamestats_job = function() {
 	})
 	stat.users_with_duplicate_ip = users_with_same
 
+	// worth of soldiers
+	stat.soldierWorth = {}
+	var emptyArmy = {}
+	_.each(s.army.types, function(type) {
+		emptyArmy[type] = 0
+	})
+
+	_.each(s.army.types, function(type) {
+		var army = cloneObject(emptyArmy)
+		army[type] = 1
+		stat.soldierWorth[type] = worth_of_army(army)
+	})
+
 	Gamestats.update(stat._id, stat)
 
 	record_job_stat('gamestats', new Date() - start_time)

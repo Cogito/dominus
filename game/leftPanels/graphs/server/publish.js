@@ -8,13 +8,13 @@ Meteor.publish('my_dailystats', function() {
 
 Meteor.publish('stats_gamestats', function() {
 	if(this.userId) {
-		return Gamestats.find({}, {fields: {num_users:1, num_active_users:1, created_at:1}})
+		return Gamestats.find({}, {fields: {num_users:1, num_active_users:1, created_at:1, soldierWorth:1}})
 	} else {
 		this.ready()
 	}
 })
 
 
-Meteor.startup(function () {  
+Meteor.startup(function () {
 	Dailystats._ensureIndex({user_id:1})
 })
