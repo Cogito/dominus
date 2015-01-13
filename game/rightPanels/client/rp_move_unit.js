@@ -274,11 +274,28 @@ add_move_to_queue = function(x, y) {
 	check(x, validNumber)
 	check(y, validNumber)
 	var from = get_from_coords()
-	Meteor.call('doesHexExist', x, y, function(error, result) {
-		if (result) {
-			add_unit_move(from.x, from.y, x, y)
+	if (from) {
+		// make sure move isn't duplicated
+		// make sure this move and last aren't the same
+		var moves = get_unit_moves()
+		var move = moves[moves.length-1]
+		if (move) {
+			if (move.from_x == from.x && move.from_y == from.y && move.to_x == x && move.to_y == y) {
+				return false
+			}
 		}
-	})
+
+		Meteor.call('doesHexExist', x, y, function(error, result) {
+			if (error) {
+				throw new Meteor.Error(error)
+			}
+			if (result) {
+				add_unit_move(from.x, from.y, x, y)
+			}
+		})
+	} else {
+		throw new Meteor.Error('Could not get from coordinates.')
+	}
 }
 
 
