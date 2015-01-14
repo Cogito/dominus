@@ -152,6 +152,7 @@ Template.stats_panel.rendered = function() {
 
 			nv.addGraph(function() {
 				var chart = nv.models.lineChart().useInteractiveGuideline(true).showLegend(true).showYAxis(true).showXAxis(true)
+				.yDomain([d3.max(incomeRankValues, function(d) { return d.y }),1])
 				chart.xAxis.tickFormat(function(d) { return d3.time.format('%b %d')(new Date(d)); })
 				chart.yAxis.tickFormat(d3.format(",.0f"))
 				d3.select('#rankIncomeChart svg').datum(incomeRankData).transition().duration(300).call(chart)
