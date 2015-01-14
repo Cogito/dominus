@@ -130,7 +130,7 @@ Template.hexes.created = function() {
 Template.hexes.rendered = function() {
 	var self = this
 
-	mapmover.start($('#svg_container'))
+	mapmover.start($('#mapEvents'))
 
 	// hex selection
 	// update when selected session variable changes

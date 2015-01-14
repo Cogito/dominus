@@ -1,103 +1,104 @@
 <template name="hexes">
-	<svg id="svg_container" >
-		<g id="hexes">
+	<div id="mapEvents">
+		{{> hover_box}}
+		
+		<svg id="svg_container" >
+			<g id="hexes">
 
-			<g id="hex_container"></g>
+				<g id="hex_container"></g>
 
-			<g id="hexbakes">
-				{{#each hexbakes}}
-					<image x="{{posX}}" y="{{posY}}" width="{{width}}" height="{{height}}" xlink:href="{{s3path}}/hexes/{{filename}}.jpg?{{dateUnixOffset created_at}}" />
-				{{/each}}
-			</g>
-
-			<g>
-				{{#if show_coords}}
-					{{#each hexes}}
-						<text x="{{coord_to_pixel_x x y 0}}" y="{{coord_to_pixel_y x y 32}}" class="hex_coord_text" style="fill:#000;">{{x}},{{y}}</text>
+				<g id="hexbakes">
+					{{#each hexbakes}}
+						<image x="{{posX}}" y="{{posY}}" width="{{width}}" height="{{height}}" xlink:href="{{s3path}}/hexes/{{filename}}.jpg?{{dateUnixOffset created_at}}" />
 					{{/each}}
-				{{/if}}
+				</g>
+
+				<g>
+					{{#if show_coords}}
+						{{#each hexes}}
+							<text x="{{coord_to_pixel_x x y 0}}" y="{{coord_to_pixel_y x y 32}}" class="hex_coord_text" style="fill:#000;">{{x}},{{y}}</text>
+						{{/each}}
+					{{/if}}
+				</g>
+
+				<g id="hex_highlights"></g>
+
+				<g id="castles">
+					{{#each castles}}
+						{{> castle this}}
+					{{/each}}
+				</g>
+
+				<g id="villages">
+					{{#each villages}}
+						{{> village this}}
+					{{/each}}
+				</g>
+
+				<g id="castle_highlights"></g>
+				<g id="village_highlights"></g>
+
+				<g id="army_selected">
+					{{#each armies}}
+						{{> army_selected this}}
+					{{/each}}
+				</g>
+
+				<g id="armies">
+					{{#each armies}}
+						{{> army this}}
+					{{/each}}
+				</g>
+
+				<g id="army_flags">
+					{{#each armies}}
+						{{> army_flag this}}
+					{{/each}}
+				</g>
+
+				<g id="castle_flags">
+					{{#each castles}}
+						{{> castle_flag this}}
+					{{/each}}
+				</g>
+
 			</g>
 
-			<g id="hex_highlights"></g>
-
-			<g id="castles">
-				{{#each castles}}
-					{{> castle this}}
-				{{/each}}
-			</g>
-
-			<g id="villages">
-				{{#each villages}}
-					{{> village this}}
-				{{/each}}
-			</g>
-
-			<g id="castle_highlights"></g>
-			<g id="village_highlights"></g>
-
-			<g id="army_selected">
-				{{#each armies}}
-					{{> army_selected this}}
-				{{/each}}
-			</g>
-
-			<g id="armies">
-				{{#each armies}}
-					{{> army this}}
-				{{/each}}
-			</g>
-
-			<g id="army_flags">
-				{{#each armies}}
-					{{> army_flag this}}
-				{{/each}}
-			</g>
-
-			<g id="castle_flags">
-				{{#each castles}}
-					{{> castle_flag this}}
-				{{/each}}
-			</g>
-
-		</g>
 
 
+			<defs>
+				<linearGradient id="hexes_fog_gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+					<stop offset="0%" stop-color="#1486ff" stop-opacity="0.23" />
+					<stop offset="70%" stop-color="#1486ff" stop-opacity="0" />
+				</linearGradient>
+			</defs>
+			<rect id="hexes_fog" x="0" y="0" width="{{canvas_width}}" height="{{canvas_height}}" style="fill:url(#hexes_fog_gradient);pointer-events: none;" />
 
-		<defs>
-			<linearGradient id="hexes_fog_gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-				<stop offset="0%" stop-color="#1486ff" stop-opacity="0.23" />
-				<stop offset="70%" stop-color="#1486ff" stop-opacity="0" />
-			</linearGradient>
-		</defs>
-		<rect id="hexes_fog" x="0" y="0" width="{{canvas_width}}" height="{{canvas_height}}" style="fill:url(#hexes_fog_gradient);pointer-events: none;" />
+			<defs>
+				<linearGradient id="hexes_sunlight_gradient" x1="0%" y1="100%" x2="100%" y2="0%">
+					<stop offset="0%" stop-color="#ffc014" stop-opacity="0.18" />
+					<stop offset="70%" stop-color="#ffc014" stop-opacity="0" />
+				</linearGradient>
+			</defs>
+			<rect id="hexes_sunlight" x="0" y="0" width="{{canvas_width}}" height="{{canvas_height}}" style="fill:url(#hexes_sunlight_gradient);pointer-events: none;" />
 
-		<defs>
-			<linearGradient id="hexes_sunlight_gradient" x1="0%" y1="100%" x2="100%" y2="0%">
-				<stop offset="0%" stop-color="#ffc014" stop-opacity="0.18" />
-				<stop offset="70%" stop-color="#ffc014" stop-opacity="0" />
-			</linearGradient>
-		</defs>
-		<rect id="hexes_sunlight" x="0" y="0" width="{{canvas_width}}" height="{{canvas_height}}" style="fill:url(#hexes_sunlight_gradient);pointer-events: none;" />
+			<defs>
+				<linearGradient id="teamGradient" gradientTransform="rotate(45)">
+					<stop offset="75%" stop-color="#fa4e4b" stop-opacity="1"/>
+					<stop offset="76%" stop-color="#ffa7a6" stop-opacity="1"/>
+				</linearGradient>
+			</defs>
 
-		<defs>
-			<linearGradient id="teamGradient" gradientTransform="rotate(45)">
-				<stop offset="75%" stop-color="#fa4e4b" stop-opacity="1"/>
-				<stop offset="76%" stop-color="#ffa7a6" stop-opacity="1"/>
-			</linearGradient>
-		</defs>
-
-		<defs>
-			<linearGradient id="teamCastleGradient">
-				<stop offset="20%" stop-color="#ffa7a6" stop-opacity="1"/>
-				<stop offset="25%" stop-color="#fa4e4b" stop-opacity="1"/>
-			</linearGradient>
-		</defs>
-
-
-<!-- 		<line x1="0" y1="{{half_canvas_height}}" x2="{{canvas_width}}" y2="{{half_canvas_height}}" style="stroke: black;stroke-width:0.2;"/>
-		<line x1="{{half_canvas_width}}" y1="0" x2="{{half_canvas_width}}" y2="{{canvas_height}}" style="stroke: black;stroke-width:0.2;"/> -->
-	</svg>
+			<defs>
+				<linearGradient id="teamCastleGradient">
+					<stop offset="20%" stop-color="#ffa7a6" stop-opacity="1"/>
+					<stop offset="25%" stop-color="#fa4e4b" stop-opacity="1"/>
+				</linearGradient>
+			</defs>
 
 
-	{{> hover_box}}
+	<!-- 		<line x1="0" y1="{{half_canvas_height}}" x2="{{canvas_width}}" y2="{{half_canvas_height}}" style="stroke: black;stroke-width:0.2;"/>
+			<line x1="{{half_canvas_width}}" y1="0" x2="{{half_canvas_width}}" y2="{{canvas_height}}" style="stroke: black;stroke-width:0.2;"/> -->
+		</svg>
+	</div>
 </template>
