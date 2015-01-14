@@ -428,7 +428,7 @@ Template.rp_info_army.created = function() {
 	// offense and defense power
 	self.power = new ReactiveVar(null)
 	self.autorun(function() {
-		if (Template.currentData() && self.gamePiecesAtHexLoaded.get()) {
+		if (Template.currentData() && self.gamePiecesAtHexLoaded.get() && Template.currentData().user_id) {
 			var basePower = getUnitBasePower(Template.currentData())
 
 			Meteor.call('getUnitLocationBonusMultiplier', Template.currentData(), 'army', function(error, locationMultiplier) {

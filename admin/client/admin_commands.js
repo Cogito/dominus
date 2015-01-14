@@ -12,5 +12,10 @@ Template.adminCommands.events({
 
 	'click #bakeMapButton': function(event, template) {
 		Meteor.call('admin_bakeMap')
+	},
+
+	'click #deleteUserButton': function(event, template) {
+		var input = template.find('#deleteUserInput')
+		Meteor.call('deleteAccount', $(input).val())
 	}
 })
