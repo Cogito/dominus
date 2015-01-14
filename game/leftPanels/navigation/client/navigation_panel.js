@@ -72,7 +72,7 @@ Template.navigation_panel.rendered = function() {
 
 	$(document).keyup(function(event) {
 		if (event.keyCode == 37 || event.keyCode == 38 || event.keyCode == 39 || event.keyCode == 40) {
-			Session.set('move_map', false)
+			Session.set('move_map', null)
 		}
 	})
 
@@ -89,7 +89,7 @@ Template.navigation_panel.rendered = function() {
 		// watch for when move_map changes
 		var direction = Session.get('move_map')
 
-		if (direction == null) {
+		if (!direction) {
 			if (typeof(grid_move_timer) != "undefined") {
 				Meteor.clearInterval(grid_move_timer)
 			}
