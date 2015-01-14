@@ -21,7 +21,7 @@ Dominus is made using the web platform <a href="http://meteor.com">Meteor</a>.
 * Duplicate the file "settings_temp.json" and name it "settings.json".
 * "chmod +x run"
 * "chmod +x settings.json"
-* Fill in the run file and settings.json.  These file is in the .gitignore and never checked in.
+* Fill in the run file and settings.json file.  These files are in .gitignore and are never checked in.
     * If you create a player with DOMINUS_ADMIN_EMAIL as their email they will be an admin and have access to localhost:3000/admin
     * DOMINUS_WORKER must be true for jobs to run.
     * Images for the map background are generated whenever the map changes and stored on Amazon S3.  Add your S3 bucket info to settings.json.
