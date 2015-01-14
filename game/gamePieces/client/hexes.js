@@ -107,7 +107,7 @@ Template.hexes.created = function() {
 		if (Session.get('canvas_size')) {
 			if (!Session.get('hexScale')) {
 				var user = Meteor.users.findOne(Meteor.userId(), {fields: {castle_id:1, hex_scale:1, x:1, y:1}})
-				if (user && user.hex_scale) {
+				if (user && user.hex_scale && user.x && user.y && user.castle_id) {
 					Session.set('hexScale', user.hex_scale)
 					Session.set('selected_type', 'castle')
 					Session.set('selected_id', user.castle_id)
