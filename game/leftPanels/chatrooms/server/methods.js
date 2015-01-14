@@ -13,7 +13,7 @@ Meteor.methods({
 
 			if (other_user) {
 				// make sure there isn't another chatroom with only these two people
-				if (Rooms.find({members: {$all: [user._id, other_user._id], $size:2}}).count() > 0) {
+				if (Rooms.find({type:'normal', members: {$all: [user._id, other_user._id], $size:2}}).count() > 0) {
 					throw new Meteor.Error("You already have a chatroom with "+username+".")
 				}
 
@@ -21,7 +21,7 @@ Meteor.methods({
 				var id = createChatroom(name, 'normal', user._id, [user._id, other_user._id])
 				notification_new_chatroom_user(other_user._id, {_id: user._id, username: user.username, x: user.x, y: user.y, castle_id: user.castle_id})
 				return id
-				
+
 			} else {
 				throw new Meteor.Error("Can't find a user named "+username+".")
 			}
@@ -173,7 +173,7 @@ Meteor.methods({
 			if (room.owner == user_id || _.contains(room.admins, user_id)) {
 				if (room.owner != member_id) {
 					if (!_.contains(room.admins, member_id)) {
-						Rooms.update(room_id, {$addToSet: {admins:member_id}})						
+						Rooms.update(room_id, {$addToSet: {admins:member_id}})
 					}
 				}
 			}

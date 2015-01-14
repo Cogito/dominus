@@ -6,7 +6,7 @@ Template.chatrooms_panel.helpers({
 	normalChatrooms: function() {
 		return Rooms.find({type:'normal'})
 	},
-	
+
 	kingChatrooms: function() {
 		return Rooms.find({type:'king'})
 	},
@@ -26,6 +26,8 @@ Template.chatrooms_panel.helpers({
 
 Template.chatrooms_panel.events({
 	'click #chat_start_with_button': function(event, template) {
+		event.preventDefault()
+
 		var name = template.find('#chat_start_with_name')
 		var error_alert = template.find('#chat_error_alert')
 		var success_alert = template.find('#chat_success_alert')
@@ -72,7 +74,7 @@ Template.chatrooms_panel.events({
 
 Template.chatrooms_panel.created = function() {
 	var self = this
-	
+
 	Session.set('selectedChatroomId', null)
 
 	self.chatroomSubscriptionsReady = new ReactiveVar(false)
@@ -92,7 +94,7 @@ Template.chatrooms_panel.created = function() {
 
 Template.chatrooms_panel.rendered = function() {
 	this.firstNode.parentNode._uihooks = leftPanelAnimation
-	
+
 	// on window gain focus, if a chatroom is open hide alert
 	$(window).focus(function(event) {
 		var room_id = Session.get('selectedChatroomId')
