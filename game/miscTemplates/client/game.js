@@ -105,8 +105,8 @@ Template.game.rendered = function() {
 
 
 	window.onresize = function() {
-		var width = $(window).outerWidth(false)
-		var height = $(window).outerHeight(false)
+		var width = $(window).outerWidth(true)
+		var height = $(window).outerHeight(true)
 		Session.set('canvas_size', {width: width, height: height})
 
 		Session.set('screenWidth', screen.width)
