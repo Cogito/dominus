@@ -54,26 +54,28 @@ Template.game.created = function() {
 	self.roundedCenterHex_x = new ReactiveVar(0)
 	self.roundedCenterHex_y = new ReactiveVar(0)
 	this.autorun(function() {
-		var center_hex = Session.get('center_hex')
-		if (center_hex) {
-			self.roundedCenterHex_x.set(Math.round(center_hex.x / roundTo) * roundTo)
-			self.roundedCenterHex_y.set(Math.round(center_hex.y / roundTo) * roundTo)
+		if (!mapmover.isDraggingOrScalingReactive.get()) {
+			var center_hex = Session.get('center_hex')
+			if (center_hex) {
+				self.roundedCenterHex_x.set(Math.round(center_hex.x / roundTo) * roundTo)
+				self.roundedCenterHex_y.set(Math.round(center_hex.y / roundTo) * roundTo)
+			}
 		}
 	})
 
 
 	this.autorun(function() {
-		if (!mapmover.isDraggingOrScalingReactive.get()) {
-			var roundedCenterHex_x = self.roundedCenterHex_x.get()
-			var roundedCenterHex_y = self.roundedCenterHex_y.get()
-			var canvas_size = Session.get('canvas_size')
-			var hex_scale = Session.get('hexScale')
-			if (canvas_size && hex_scale) {
-				var subBakes = subs.subscribe('onScreenHexbakes', roundedCenterHex_x, roundedCenterHex_y, s.hex_size, canvas_size.width, canvas_size.height, hex_scale)
-				var sub = subs.subscribe('on_screen', roundedCenterHex_x, roundedCenterHex_y, s.hex_size, canvas_size.width, canvas_size.height, hex_scale)
-				var sub_hexes = subs.subscribe('on_screen_hexes', roundedCenterHex_x, roundedCenterHex_y, s.hex_size, canvas_size.width, canvas_size.height, hex_scale)
-				Session.set('subscription_ready', subBakes.ready() && sub.ready())
-			}
+		var roundedCenterHex_x = self.roundedCenterHex_x.get()
+		var roundedCenterHex_y = self.roundedCenterHex_y.get()
+		check(roundedCenterHex_x, validNumber)
+		check(roundedCenterHex_y, validNumber)
+		var canvas_size = Session.get('canvas_size')
+		var hex_scale = Session.get('hexScale')
+		if (canvas_size && hex_scale) {
+			var subBakes = subs.subscribe('onScreenHexbakes', roundedCenterHex_x, roundedCenterHex_y, canvas_size.width, canvas_size.height, hex_scale)
+			var sub = subs.subscribe('on_screen', roundedCenterHex_x, roundedCenterHex_y, canvas_size.width, canvas_size.height, hex_scale)
+			var sub_hexes = subs.subscribe('on_screen_hexes', roundedCenterHex_x, roundedCenterHex_y, canvas_size.width, canvas_size.height, hex_scale)
+			Session.set('subscription_ready', subBakes.ready() && sub.ready())
 		}
 	})
 

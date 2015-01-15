@@ -10,8 +10,8 @@ _.each(s.army.types, function(type) {
 	village_fields[type] = 1
 })
 
-Meteor.publish('onScreenHexbakes', function(x, y, hex_size, canvas_width, canvas_height, hex_scale) {
-	var max = max_onscreen(hex_size, canvas_width, canvas_height, hex_scale)
+Meteor.publish('onScreenHexbakes', function(x, y, canvas_width, canvas_height, hex_scale) {
+	var max = max_onscreen(canvas_width, canvas_height, hex_scale)
 	max = max * 2
 	var find = {
 		centerX: {$gt: x - max, $lt: x + max},
@@ -21,8 +21,8 @@ Meteor.publish('onScreenHexbakes', function(x, y, hex_size, canvas_width, canvas
 	return Hexbakes.find(find, {fields: hexBakesFields})
 })
 
-Meteor.publish('on_screen_hexes', function (x, y, hex_size, canvas_width, canvas_height, hex_scale) {
-	var max = max_onscreen(hex_size, canvas_width, canvas_height, hex_scale)
+Meteor.publish('on_screen_hexes', function (x, y, canvas_width, canvas_height, hex_scale) {
+	var max = max_onscreen(canvas_width, canvas_height, hex_scale)
 
 	return Hexes.find({
 			x: {$gt: x - max, $lt: x + max},
@@ -30,8 +30,8 @@ Meteor.publish('on_screen_hexes', function (x, y, hex_size, canvas_width, canvas
 		}, {fields: hex_fields})
 })
 
-Meteor.publish("on_screen", function (x, y, hex_size, canvas_width, canvas_height, hex_scale) {
-	var max = max_onscreen(hex_size, canvas_width, canvas_height, hex_scale)
+Meteor.publish("on_screen", function (x, y, canvas_width, canvas_height, hex_scale) {
+	var max = max_onscreen(canvas_width, canvas_height, hex_scale)
 
 	var castle_query = Castles.find({
 		x: {$gt: x - max, $lt: x + max},
@@ -53,12 +53,11 @@ Meteor.publish("on_screen", function (x, y, hex_size, canvas_width, canvas_heigh
 
 
 
-max_onscreen = function(hex_size, canvas_width, canvas_height, hex_scale) {
-	check(hex_size, validNumber)
+max_onscreen = function(canvas_width, canvas_height, hex_scale) {
 	check(canvas_width, validNumber)
 	check(canvas_height, validNumber)
 
-	hex_size = hex_size * hex_scale
+	var hex_size = s.hex_size * hex_scale
 
 	var num_wide = canvas_width / (hex_size * 3/2)
 	var num_high = canvas_height / ((Math.sqrt(3) * s.hex_squish) * hex_size)
