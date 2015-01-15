@@ -105,16 +105,33 @@ Template.game.rendered = function() {
 
 
 	window.onresize = function() {
-		var width = $(window).outerWidth(true)
-		var height = $(window).outerHeight(true)
+		var width = $(window).outerWidth(false)
+		var height = $(window).outerHeight(false)
 		Session.set('canvas_size', {width: width, height: height})
 
-		var zoom = screen.width / 1000
-		if (zoom < 1) {
-			var tag = document.getElementById('viewport')
-			var content = 'initial-scale='+zoom+', maximum-scale='+zoom+', minimum-scale='+zoom+', user-scalable=no, width='+1000
-			tag.setAttribute('content', content)
+		Session.set('screenWidth', screen.width)
+
+		if (screen.width < 700) {
+			var pageWidth = 1000
+
+			var zoom = screen.width / pageWidth
+			if (zoom < 1) {
+				var tag = document.getElementById('viewport')
+				var content = 'initial-scale='+zoom+', maximum-scale='+zoom*3+', minimum-scale='+zoom+', user-scalable=yes, width='+pageWidth
+				tag.setAttribute('content', content)
+			}
+
+		} else {
+			var pageWidth = 850
+
+			var zoom = screen.width / pageWidth
+			if (zoom < 1) {
+				var tag = document.getElementById('viewport')
+				var content = 'initial-scale='+zoom+', maximum-scale='+zoom+', minimum-scale='+zoom+', user-scalable=no, width='+pageWidth
+				tag.setAttribute('content', content)
+			}
 		}
+
 	}
 	window.onresize()
 }

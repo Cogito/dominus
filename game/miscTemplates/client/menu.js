@@ -1,4 +1,11 @@
 Template.menu.helpers({
+	smallScreen: function() {
+		var screenWidth = Session.get('screenWidth')
+		if (screenWidth) {
+			return Session.get('screenWidth') < 800
+		}
+	},
+
 	summary_active: function() {
 		if (Session.get('show_summary_panel')) { return 'active' } else { return '' }
 	},
