@@ -921,19 +921,22 @@ Units.prototype._computeBonus = function() {
 
 		// catapults
 		// if there is an enemy castle of village in this hex then catapults get bonus
+		// catapults must be attacker to get bonus
 		var isEnemyCastleOrVillageHere = false
 
-		if (castle && castle.user_id != unit.user_id) {
-			castle.type = 'castle'	// isEnemy needs this to be set
-			if (self.isEnemy(unit, castle)) {
-				isEnemyCastleOrVillageHere = true
+		if (unit.isAttacker) {
+			if (castle && castle.user_id != unit.user_id) {
+				castle.type = 'castle'	// isEnemy needs this to be set
+				if (self.isEnemy(unit, castle)) {
+					isEnemyCastleOrVillageHere = true
+				}
 			}
-		}
 
-		if (village && village.user_id != unit.user_id) {
-			village.type = 'village'	// isEnemy needs this to be set
-			if (self.isEnemy(unit, village)) {
-				isEnemyCastleOrVillageHere = true
+			if (village && village.user_id != unit.user_id) {
+				village.type = 'village'	// isEnemy needs this to be set
+				if (self.isEnemy(unit, village)) {
+					isEnemyCastleOrVillageHere = true
+				}
 			}
 		}
 
@@ -1046,6 +1049,29 @@ Units.prototype._findAttackersAndDefender = function() {
 		if (self.debug) {console.log(village.username+':'+village.name+':'+village.type+' is defender')}
 		village.isAttacker = false
 		defenderFound = true
+	}
+
+	// if an army is on their own building then they are defender
+	// getCastle only gets castles in battle
+	var castleHere = Castles.findOne({x:self.x, y:self.y}, {fields: {user_id:1}})
+	var villageHere = Villages.findOne({x:self.x, y:self.y}, {fields: {user_id:1}})
+
+	if (castleHere || villageHere) {
+		_.each(this.allUnits, function(unit) {
+			if (unit.type == 'army') {
+				if (castleHere && unit.user_id == castleHere.user_id) {
+					if (self.debug) {console.log(unit.username+':'+unit.name+':'+unit.type+' is defender')}
+					unit.isAttacker = false
+					defenderFound = true
+				}
+
+				if (villageHere && unit.user_id == villageHere.user_id) {
+					if (self.debug) {console.log(unit.username+':'+unit.name+':'+unit.type+' is defender')}
+					unit.isAttacker = false
+					defenderFound = true
+				}
+			}
+		})
 	}
 
 	// if no castle or village then get the first army that arrived here

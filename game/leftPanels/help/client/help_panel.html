@@ -253,7 +253,7 @@
 						<p>When a unit is on the same hex as an enemy they will battle.  Every {{s_battle_interval}} all units in the battle will lose soldiers.  Winners lose {{s.battle_power_lost_per_round_winner}} power worth of soldiers and losers lose {{s.battle_power_lost_per_round}} power worth of soldiers.  Larger armies and more people in a battle cause losses to go up.</p>
 
 						<div class="help_section">Attackers and Defenders</div>
-						<p>If there is a castle or village in the battle then they are a defender.  Otherwise the defender is the first army to arrive at the hex.  All allies of this defender are also defenders.</p>
+						<p>If there is a castle or village in the battle then they are a defender.  If an army is on the same hex as their castle or village then they are a defender.  Otherwise the defender is the first army to arrive at the hex.  All allies of this defender are also defenders.</p>
 
 						<div class="help_section">Power</div>
 						<p>Every round if your unit's power + your ally's power is greater than your enemies' combined power then you are a winner that round.</p>
@@ -302,9 +302,10 @@
 						<p>Archers recieve a bonus against footmen. Pikemen recieve a bonus against cavalry. Calvary recieve a bonus against archers and footmen.</p>
 						<p>When an archer fights a footman because the archer has a bonus against footmen the archer is twice as powerful.</p>
 						<p>Catapults' offense is multiplied by {{s.army.stats.catapults.bonus_against_buildings}} when attacking a castle or village.  They must be on the same hex as an enemy castle or village.</p>
+
 						<p>Armies defending a castle receive a {{castle_defense_bonus}}x bonus.  Armies defending a village receive a  {{village_defense_bonus}}x bonus.  Only armies inside the castle or village get this bonus.</p>
 
-						<p>Armies on a vassal's castle or village receive a {{ally_castle_defense_bonus}}x bonus.</p>
+						<p>Armies on a vassal's castle or village receive a {{ally_castle_defense_bonus}}x bonus.  Armies on the same hex as their own castle or village but outside also receive this bonus.</p>
 
 						<div class="help_section">Notifications</div>
 						<p>After a battle you will receive a notification with the results.  You can also see battles as they happen in the notifications panel.</p>
