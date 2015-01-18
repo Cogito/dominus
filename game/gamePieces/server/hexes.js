@@ -1,15 +1,3 @@
-Meteor.methods({
-
-	generate_hexes: function(num_of_rings) {
-		if (get_user_property("admin")) {
-			generate_hexes(num_of_rings)
-		}
-	},
-
-
-})
-
-
 generate_hexes = function(num_of_rings) {
 	delete_all_hexes()
 	destroy_all_castles()
@@ -107,4 +95,57 @@ function assign_properties_to_hex() {
 	}
 
 	return hex
+}
+
+
+resourcesFromSurroundingHexes = function(x,y,numRings) {
+	var hex_array = Hx.getSurroundingHexes(x, y, numRings)
+
+	var income = {}
+	_.each(s.resource.types, function(type) {
+		income[type] = 0
+	})
+
+	var hexes = Hexes.find({x:{$gte: x-numRings, $lte: x+numRings}, y:{$gte: y-numRings, $lte: y+numRings}}, {fields: {x:1, y:1, type:1, large:1}})
+
+	hexes.forEach(function(hex) {
+		var h = _.find(hex_array, function(arr) {
+			if (hex.x == arr.x && hex.y == arr.y) {
+				return true
+			} else {
+				return false
+			}
+		})
+
+		if (h) {
+			if (hex.large) {
+				var mult = s.resource.large_resource_multiplier
+			} else {
+				var mult = 1
+			}
+
+			switch(hex.type) {
+				case 'grain':
+					income.grain += s.resource.gained_at_hex
+					break;
+				case 'lumber':
+					income.lumber += s.resource.gained_at_hex * mult
+					break;
+				case 'ore':
+					income.ore += s.resource.gained_at_hex * mult
+					break;
+				case 'wool':
+					income.wool += s.resource.gained_at_hex * mult
+					break;
+				case 'clay':
+					income.clay += s.resource.gained_at_hex * mult
+					break;
+				case 'glass':
+					income.glass += s.resource.gained_at_hex * mult
+					break;
+			}
+		}
+	})
+
+	return income
 }

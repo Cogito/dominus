@@ -36,60 +36,8 @@ gather_resources_surrounding = function(x, y, num_rings, user_id, gold) {
 	check(num_rings, validNumber)
 	check(gold, validNumber)
 
-	var income = {
-		grain:0,
-		lumber:0,
-		ore:0,
-		wool:0,
-		clay:0,
-		glass:0
-	}
-
-	var hex_array = Hx.getSurroundingHexes(x, y, num_rings)
-	var hexes = Hexes.find({x:{$gte: x-num_rings, $lte: x+num_rings}, y:{$gte: y-num_rings, $lte: y+num_rings}}, {fields: {x:1, y:1, type:1, large:1}})
-	hexes.forEach(function(hex) {
-		// is this hex in hex_array, hexes that we should be collecting from
-		var h = _.find(hex_array, function(arr) {
-			if (hex.x == arr.x && hex.y == arr.y) {
-				return true
-			} else {
-				return false
-			}
-		})
-
-		if (h) {
-			if (hex.large) {
-				var mult = s.resource.large_resource_multiplier
-			} else {
-				var mult = 1
-			}
-
-			switch(hex.type) {
-				case 'grain':
-					income.grain += s.resource.gained_at_hex
-					break;
-				case 'lumber':
-					income.lumber += s.resource.gained_at_hex * mult
-					break;
-				case 'ore':
-					income.ore += s.resource.gained_at_hex * mult
-					break;
-				case 'wool':
-					income.wool += s.resource.gained_at_hex * mult
-					break;
-				case 'clay':
-					income.clay += s.resource.gained_at_hex * mult
-					break;
-				case 'glass':
-					income.glass += s.resource.gained_at_hex * mult
-					break;
-			}
-		}
-
-	})
-
+	var income = resourcesFromSurroundingHexes(x, y, num_rings)
 	receive_income_id(user_id, gold, income.grain, income.lumber, income.ore, income.wool, income.clay, income.glass)
-
 	income.gold = gold
 	return income
 }

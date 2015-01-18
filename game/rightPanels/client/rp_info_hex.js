@@ -41,6 +41,10 @@ Template.rp_info_hex.helpers({
 
 	interval: function() {
 		return moment.duration(s.resource.interval).humanize()
+	},
+
+	worthOfHex: function() {
+		return Template.instance().worthOfHex.get()
 	}
 
 })
@@ -60,17 +64,29 @@ Template.rp_info_hex.events({
 Template.rp_info_hex.created = function() {
 	var self = this
 
+	self.worthOfHex = new ReactiveVar(0)
 	self.autorun(function() {
-		if (Template.currentData()) {
-			Meteor.subscribe('gamePiecesAtHex', Template.currentData().x, Template.currentData().y)
+		var coords = Session.get('selected_coords')
+		if (coords) {
+			Meteor.call('getWorthOfHex', coords.x, coords.y, function(error, worth) {
+				self.worthOfHex.set(worth + s.resource.gold_gained_at_village)
+			})
+		}
+	})
+
+	self.autorun(function() {
+		var coords = Session.get('selected_coords')
+		if (coords) {
+			Meteor.subscribe('gamePiecesAtHex', coords.x, coords.y)
 		}
 	})
 
 	// If a hex is selected and there is a Castle or Village, select it instead.
 	self.autorun(function() {
-		if(Template.currentData()) {
-			var castle = Castles.findOne({x: Template.currentData().x, y: Template.currentData().y});
-			var village = Villages.findOne({x: Template.currentData().x, y: Template.currentData().y});
+		var coords = Session.get('selected_coords')
+		if(coords) {
+			var castle = Castles.findOne({x: coords.x, y: coords.y});
+			var village = Villages.findOne({x: coords.x, y: coords.y});
 			if (castle) {
 				Session.set('selected_type', 'castle');
 				Session.set('selected_id', castle._id);
@@ -87,8 +103,9 @@ Template.rp_info_hex.created = function() {
 
 	self.battleInfoLoaded = new ReactiveVar(false)
 	this.autorun(function() {
-		if (Template.currentData()) {
-			var battleInfoHandle = Meteor.subscribe('battle_notifications_at_hex', Template.currentData().x, Template.currentData().y)
+		var coords = Session.get('selected_coords')
+		if (coords) {
+			var battleInfoHandle = Meteor.subscribe('battle_notifications_at_hex', coords.x, coords.y)
 			self.battleInfoLoaded.set(battleInfoHandle.ready())
 		}
 	})

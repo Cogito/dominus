@@ -17,7 +17,7 @@ mapmover = new Mapmover(function(x,y,scale) {
 	setHexScale(scale)
 })
 
-mapmover.throttle = 50
+mapmover.throttle = 33
 mapmover.minScale = s.hex_scale_min
 mapmover.maxScale = s.hex_scale_max
 
@@ -47,10 +47,6 @@ Template.hexes.helpers({
 
 	hexbakes: function() {
 		return Hexbakes.find()
-	},
-
-	show_coords: function() {
-		return get_user_property("sp_show_coords")
 	}
 })
 
@@ -82,6 +78,7 @@ Template.hexes.events({
 				Meteor.call('coords_to_id', coord.x, coord.y, 'hex', function(error, hexId) {
 					Session.set('selected_type', 'hex')
 					Session.set('selected_id', hexId)
+					Session.set('selected_coords', coord)
 				})
 
 			} else if (mouseMode == 'finding_path') {
@@ -139,9 +136,12 @@ Template.hexes.rendered = function() {
 	this.autorun(function() {
 		Session.get('update_highlight')
 		if (Session.get('selected_type') == 'hex' && Session.get('selected_id')) {
+			var coords = Session.get('selected_coords')
+			if (coords) {
 				remove_all_highlights()
-				highlight_hex_id(Session.get('selected_id'))
+				highlight_hex_coords(coords.x, coords.y)
 				Session.set('rp_template', 'rp_info_hex')
+			}
 		}
 	})
 
@@ -240,21 +240,21 @@ highlight_hex_coords = function(x, y) {
 	}
 }
 
-highlight_hex_id = function(hex_id) {
-	check(hex_id, String)
-
-	var coords = id_to_coords(hex_id, 'hex')
-
-	// coords are false if couldn't find hex
-	if (!coords) {
-		return false
-	}
-
-	check(coords.x, validNumber)
-	check(coords.y, validNumber)
-
-	highlight_hex_coords(coords.x, coords.y)
-}
+// highlight_hex_id = function(hex_id) {
+// 	check(hex_id, String)
+//
+// 	var coords = id_to_coords(hex_id, 'hex')
+//
+// 	// coords are false if couldn't find hex
+// 	if (!coords) {
+// 		return false
+// 	}
+//
+// 	check(coords.x, validNumber)
+// 	check(coords.y, validNumber)
+//
+// 	highlight_hex_coords(coords.x, coords.y)
+// }
 
 
 hex_remove_highlights = function() {

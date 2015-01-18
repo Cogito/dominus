@@ -8,6 +8,7 @@ Session.setDefault('hexScale', undefined)
 // this is the only thing you need to do to select something
 Session.setDefault('selected_type', undefined)
 Session.setDefault('selected_id', undefined)
+Session.setDefault('selected_coords', undefined)
 
 // used when selecting army path
 Session.setDefault('finding_path_target_id', '')	// target that path goes to

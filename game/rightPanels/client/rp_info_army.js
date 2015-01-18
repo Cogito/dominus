@@ -200,7 +200,7 @@ Template.rp_info_army.helpers({
 	},
 
 	villageWorth: function() {
-		return Template.instance().villageWorth.get()
+		return Template.instance().worthOfHex.get()
 	},
 
 
@@ -296,6 +296,15 @@ Template.rp_info_army.created = function() {
 				groupName: 'rightPanelUser',
 				subscriptions: [ Meteor.subscribe('rightPanelUser', Template.currentData().user_id).ready() ]
 			}])
+		}
+	})
+
+	self.worthOfHex = new ReactiveVar(0)
+	self.autorun(function() {
+		if (Template.currentData()) {
+			Meteor.call('getWorthOfHex', Template.currentData().x, Template.currentData().y, function(error, worth) {
+				self.worthOfHex.set(worth + s.resource.gold_gained_at_village)
+			})
 		}
 	})
 
@@ -405,38 +414,6 @@ Template.rp_info_army.created = function() {
 				// if army dies remove highlights
 				remove_all_highlights()
 			}
-		}
-	})
-
-
-	self.villageWorth = new ReactiveVar(null)
-	self.autorun(function() {
-		if (Template.currentData()) {
-			var res = {
-				gold:s.resource.gold_gained_at_village,
-				grain:0,
-				lumber:0,
-				ore:0,
-				wool:0,
-				clay:0,
-				glass:0
-			}
-
-			var hexes = Hx.getSurroundingHexes(Template.currentData().x, Template.currentData().y, s.resource.num_rings_village)
-			_.each(hexes, function(hex) {
-				var h = Hexes.findOne({x:hex.x, y:hex.y}, {fields:{type:1, large:1}, reactive:false})
-				if (h) {
-					if (h.large) {
-						res[h.type] += s.resource.gained_at_hex * s.resource.large_resource_multiplier
-					} else {
-						res[h.type] += s.resource.gained_at_hex
-					}
-				}
-			})
-
-			var gold = s.resource.gold_gained_at_village
-			gold += resources_to_gold(res.grain, res.lumber, res.ore, res.wool, res.clay, res.glass)
-			self.villageWorth.set(gold)
 		}
 	})
 

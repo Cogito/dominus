@@ -127,7 +127,7 @@ Template.navigation_panel.rendered = function() {
 
 					move_hexes_to(x, y)
 				})
-			}, 50)
+			}, 33)
 		}
 	})
 }

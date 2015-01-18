@@ -44,10 +44,6 @@ Template.game.helpers({
 Template.game.created = function() {
 	var self = this
 
-	// subscribe to what's onscreen
-	// uses meteor package meteorhacks:subs-manager
-	subs = new SubsManager({cacheLimit:10, expireIn:5})
-
 
 	// round to nearest x so that there is more of a chance of subscribing to a previous subscription
 	var roundTo = 5
@@ -64,7 +60,25 @@ Template.game.created = function() {
 	})
 
 
-	this.autorun(function() {
+	// subscribe to what's onscreen
+	// uses meteor package meteorhacks:subs-manager
+	var subman = new SubsManager({cacheLimit:10, expireIn:5})
+	var submanHexbakes = new SubsManager({cacheLimit:10, expireIn:5})
+
+
+	// when user changes show coords setting create new subscription
+	// SubsManager.reset() isn't working
+	self.showCoords = new ReactiveVar(false)
+	self.autorun(function() {
+		var user = Meteor.users.findOne(Meteor.userId(), {fields: {sp_show_coords:1}})
+		if (user) {
+			submanHexbakes = new SubsManager({cacheLimit:10, expireIn:5})
+			self.showCoords.set(user.sp_show_coords)
+		}
+	})
+
+
+	self.autorun(function() {
 		var roundedCenterHex_x = self.roundedCenterHex_x.get()
 		var roundedCenterHex_y = self.roundedCenterHex_y.get()
 		check(roundedCenterHex_x, validNumber)
@@ -72,10 +86,13 @@ Template.game.created = function() {
 		var canvas_size = Session.get('canvas_size')
 		var hex_scale = Session.get('hexScale')
 		if (canvas_size && hex_scale) {
-			var subBakes = subs.subscribe('onScreenHexbakes', roundedCenterHex_x, roundedCenterHex_y, canvas_size.width, canvas_size.height, hex_scale)
-			var sub = subs.subscribe('on_screen', roundedCenterHex_x, roundedCenterHex_y, canvas_size.width, canvas_size.height, hex_scale)
-			var sub_hexes = subs.subscribe('on_screen_hexes', roundedCenterHex_x, roundedCenterHex_y, canvas_size.width, canvas_size.height, hex_scale)
-			Session.set('subscription_ready', subBakes.ready() && sub.ready())
+
+			var subBakes = submanHexbakes.subscribe('onScreenHexbakes', roundedCenterHex_x, roundedCenterHex_y, canvas_size.width, canvas_size.height, hex_scale, self.showCoords.get())
+
+			var sub = subman.subscribe('on_screen', roundedCenterHex_x, roundedCenterHex_y, canvas_size.width, canvas_size.height, hex_scale)
+			// var sub_hexes = subman.subscribe('on_screen_hexes', roundedCenterHex_x, roundedCenterHex_y, canvas_size.width, canvas_size.height, hex_scale)
+
+			Session.set('subscription_ready', sub.ready() && subBakes.ready())
 		}
 	})
 

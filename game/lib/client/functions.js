@@ -77,12 +77,12 @@ highlight_hex_path = function(from_x, from_y, to_x, to_y) {
 
 		var castle = Castles.findOne({x: hex.x, y: hex.y}, {fields: {_id: 1}})
 		if (castle) {
-			draw_castle_highlight(castle._id)
+			draw_castle_highlight(hex.x, hex.y)
 		}
 
 		var village = Villages.findOne({x: hex.x, y: hex.y}, {fields: {_id: 1}})
 		if (village) {
-			draw_village_highlight(village._id)
+			draw_village_highlight(hex.x, hex.y)
 		}
 
 	})

@@ -14,6 +14,7 @@ Template.army.events({
 			if (Session.get('mouse_mode') == 'default') {
 				Session.set('selected_type', 'army')
 				Session.set('selected_id', Template.currentData()._id)
+				Session.set('selected_coords', {x:template.data.x, y:template.data.y})
 			}
 
 		}

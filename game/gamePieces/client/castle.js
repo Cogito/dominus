@@ -12,7 +12,8 @@ Template.castle.events({
 
 			if (mouseMode == 'default') {
 				Session.set('selected_type', 'castle')
-				Session.set('selected_id', this._id)
+				Session.set('selected_id', template.data._id)
+				Session.set('selected_coords', {x:template.data.x, y:template.data.y})
 			} else if (mouseMode == 'finding_path') {
 				var coord = getCoordinatesFromEvent(event)
 
@@ -28,7 +29,7 @@ Template.castle.events({
 
 	'mouseenter .castle': function(event, template) {
 		// hover box
-		Session.set('hover_box_data', {type: 'castle', x: this.x, y: this.y})
+		Session.set('hover_box_data', {type: 'castle', x: template.data.x, y: template.data.y})
 		Meteor.clearTimeout(Session.get('hover_on_object_timer'))
 		Session.set('hover_on_object', true)
 	},
@@ -40,15 +41,11 @@ Template.castle.events({
 })
 
 
-draw_castle_highlight = function(castle_id) {
-	check(castle_id, String)
+draw_castle_highlight = function(x, y) {
+	check(x, validNumber)
+	check(y, validNumber)
 
-	var coords = id_to_coords(castle_id, 'castle')
-
-	check(coords.x, validNumber)
-	check(coords.y, validNumber)
-
-	var grid = Hx.coordinatesToPos(coords.x, coords.y, s.hex_size, s.hex_squish)
+	var grid = Hx.coordinatesToPos(x, y, s.hex_size, s.hex_squish)
 	var points = Hx.getHexPolygonVerts(grid.x, grid.y, s.hex_size * 0.95, s.hex_squish)
 	if (points != false) {
 		var polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
@@ -76,9 +73,12 @@ Template.castle.created = function() {
 
 		if (Session.get('selected_type') == 'castle') {
 			if (Session.get('selected_id') == self.data._id){
-				remove_all_highlights()
-				draw_castle_highlight(Session.get('selected_id'))
-				Session.set('rp_template', 'rp_info_castle')
+				var coords = Session.get('selected_coords')
+				if (coords) {
+					remove_all_highlights()
+					draw_castle_highlight(coords.x, coords.y)
+					Session.set('rp_template', 'rp_info_castle')
+				}
 			}
 		}
 	})

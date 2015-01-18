@@ -1,14 +1,14 @@
 <template name="rp_info_hex">
-	<div class="rp_content">
+	<div class="rp_content" id="rp_info_hex">
 		<div class="panel panel-default" style="margin-top:0;">
 			<div class="panel-body">
 				{{> hex_location}}
 				&nbsp;
 				{{> center_on_button x=x y=y selected_type='hex' selected_id=_id}}<br>
-				
+
 				<span class="light_text">Resource Type:</span> {{typeName}}<br>
 				<br>
-				Produces {{numResources}} {{type}} every {{interval}}.
+				Produces {{numResources}} {{type}} every {{interval}}.  Collects {{round worthOfHex}} worth of resources in gold.
 			</div>
 		</div>
 

@@ -1,7 +1,7 @@
 <template name="hexes">
 	<div id="mapEvents">
 		{{> hover_box}}
-		
+
 		<svg id="svg_container" >
 			<g id="hexes">
 
@@ -11,14 +11,6 @@
 					{{#each hexbakes}}
 						<image x="{{posX}}" y="{{posY}}" width="{{width}}" height="{{height}}" xlink:href="{{s3path}}/hexes/{{filename}}.jpg?{{dateUnixOffset created_at}}" />
 					{{/each}}
-				</g>
-
-				<g>
-					{{#if show_coords}}
-						{{#each hexes}}
-							<text x="{{coord_to_pixel_x x y 0}}" y="{{coord_to_pixel_y x y 32}}" class="hex_coord_text" style="fill:#000;">{{x}},{{y}}</text>
-						{{/each}}
-					{{/if}}
 				</g>
 
 				<g id="hex_highlights"></g>

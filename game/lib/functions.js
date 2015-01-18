@@ -37,12 +37,12 @@ pixel_to_grid = function(x,y) {
 
 
 // empty if you're own army are there
-is_hex_empty_id = function(id) {
-	check(id, String)
-
-	var coords = id_to_coords(id, 'hex')
-	return is_hex_empty_coords(coords.x, coords.y)
-}
+// is_hex_empty_id = function(id) {
+// 	check(id, String)
+//
+// 	var coords = id_to_coords(id, 'hex')
+// 	return is_hex_empty_coords(coords.x, coords.y)
+// }
 
 is_hex_empty_coords = function(x,y) {
 	check(x, validNumber)

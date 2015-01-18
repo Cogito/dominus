@@ -27,10 +27,11 @@ Template.village.events({
 	'click .village': function(event, template) {
 		if (!mapmover.isDraggingOrScaling) {
 			var mouseMode = Session.get('mouse_mode')
-			
+
 			if (Session.get('mouse_mode') == 'default') {
 				Session.set('selected_type', 'village')
 				Session.set('selected_id', this._id)
+				Session.set('selected_coords', {x:template.data.x, y:template.data.y})
 			} else if (mouseMode == 'finding_path') {
 				var coord = getCoordinatesFromEvent(event)
 
@@ -59,15 +60,11 @@ Template.village.events({
 
 
 
-draw_village_highlight = function(id, draw_resource_hexes) {
-	check(id, String)
+draw_village_highlight = function(x, y, draw_resource_hexes) {
+	check(x, validNumber)
+	check(y, validNumber)
 
-	var coords = id_to_coords(id, 'village')
-
-	check(coords.x, validNumber)
-	check(coords.y, validNumber)
-
-	var grid = Hx.coordinatesToPos(coords.x, coords.y, s.hex_size, s.hex_squish)
+	var grid = Hx.coordinatesToPos(x, y, s.hex_size, s.hex_squish)
 	var points = Hx.getHexPolygonVerts(grid.x, grid.y, s.hex_size * 0.95, s.hex_squish)
 	if (points != false) {
 		var polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon')
@@ -77,7 +74,7 @@ draw_village_highlight = function(id, draw_resource_hexes) {
 	}
 
 	if (draw_resource_hexes) {
-		var hexes = Hx.getSurroundingHexes(coords.x, coords.y, s.resource.num_rings_village)
+		var hexes = Hx.getSurroundingHexes(x, y, s.resource.num_rings_village)
 		_.each(hexes, function(hex) {
 			var grid = Hx.coordinatesToPos(hex.x, hex.y, s.hex_size, s.hex_squish)
 			var points = Hx.getHexPolygonVerts(grid.x, grid.y, s.hex_size * 0.95, s.hex_squish)
@@ -107,9 +104,12 @@ Template.village.created = function() {
 		Session.get('update_highlight')
 		if (Session.get('selected_type') == 'village') {
 			if (Session.get('selected_id') == self.data._id) {
-				remove_all_highlights()
-				draw_village_highlight(Session.get('selected_id'), (self.data.user_id == Meteor.userId()))
-				Session.set('rp_template', 'rp_info_village')
+				var coords = Session.get('selected_coords')
+				if (coords) {
+					remove_all_highlights()
+					draw_village_highlight(coords.x, coords.y, (self.data.user_id == Meteor.userId()))
+					Session.set('rp_template', 'rp_info_village')
+				}
 			}
 		}
 	})
