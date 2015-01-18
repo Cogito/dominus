@@ -46,7 +46,7 @@ create_army = function(user_id, army, x, y, moves) {
 		var eas = Armies.find({x:x, y:y, user_id: {$ne:user._id}}, {fields: {_id:1, user_id:1}})
 		if (eas) {
 			eas.forEach(function(ea) {
-				
+
 				// dominus' armies can attack any army
 				var otherUser = Meteor.users.findOne(ea.user_id, {fields: {is_dominus:1}})
 				if (user.is_dominus || otherUser.is_dominus) {
@@ -71,7 +71,11 @@ create_army = function(user_id, army, x, y, moves) {
 		// still alive?
 		var a = Armies.findOne(id)
 		if (a) {
-			Meteor.call('create_moves', a._id, moves)
+			var res = Meteor.call('create_moves', a._id, moves)
+			if (!res) {
+				Armies.remove(id)
+				return false
+			}
 		}
 
 		return id
