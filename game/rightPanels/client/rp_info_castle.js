@@ -93,6 +93,7 @@ Template.rp_info_castle.helpers({
 
 Template.rp_info_castle.events({
 	'click #send_army_from_castle_button': function(event, template) {
+		Session.set('addToExistingArmyMoves', false)
 		Session.set('rp_template', 'rp_move_unit')
 	},
 

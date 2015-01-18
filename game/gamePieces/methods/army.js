@@ -3,14 +3,29 @@ Meteor.methods({
 	// moves = [{from_x:0, from_y:0, to_x:0, to_y:0}, {from_x:0, from_y:0, to_x:0, to_y:0}]
 	create_moves: function(army_id, moves) {
 		this.unblock()
+		var self = this
 		check(army_id, String)
 		check(moves, Array)
+
+		if (!self.isSimulation) {
+			if (!Meteor.call('doesHexExist', moves[0].from_x, moves[0].from_y)) {
+				throw new Meteor.Error('Hex '+moves[0].from_x+','+moves[0].from_y+' does not exist.')
+			}
+		}
 
 		_.each(moves, function(move) {
 			check(move.from_x, validNumber)
 			check(move.from_y, validNumber)
 			check(move.to_x, validNumber)
 			check(move.to_y, validNumber)
+
+			// make sure hex exists
+			// only run on server
+			if (!self.isSimulation) {
+				if (!Meteor.call('doesHexExist', move.to_x, move.to_y)) {
+					throw new Meteor.Error('Hex '+move.to_x+','+move.to_y+' does not exist.')
+				}
+			}
 		})
 
 		if (moves.length < 1) {
@@ -96,7 +111,7 @@ Meteor.methods({
 				i++
 			})
 		}
-		
+
 
 		// remove last
 		if (move.index != 0 && move.index+1 == num_moves) {
@@ -149,7 +164,7 @@ Meteor.methods({
 	combine_armies: function(army_id) {
 		this.unblock()
 		check(army_id, String)
-	
+
 		var army = Armies.findOne({_id:army_id, user_id:Meteor.userId()}, {fields: {x:1, y:1}})
 		if (army) {
 			var fields = {}

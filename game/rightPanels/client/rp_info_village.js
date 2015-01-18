@@ -87,6 +87,7 @@ Template.rp_info_village.helpers({
 
 Template.rp_info_village.events({
 	'click #send_army_from_village_button': function(event, template) {
+		Session.set('addToExistingArmyMoves', false)
 		Session.set('rp_template', 'rp_move_unit')
 	},
 

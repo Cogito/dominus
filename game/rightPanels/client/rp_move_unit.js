@@ -1,3 +1,8 @@
+// set Session.set('addToExistingArmyMoves', false)
+// false if we're creating new moves
+// if adding then array of existing moves
+// [{from_x:0, from_y:0, to_x:0, to_y:0}]
+
 Template.rp_move_unit.helpers({
 	castle_or_village: function() {
 		var selected_type = Session.get('selected_type')
@@ -147,6 +152,7 @@ Template.rp_move_unit.created = function() {
 
 	Session.set('mouse_mode', 'finding_path')
 
+
 	// if army moves to a new hex while player is making a move
 	// update the queued moves with the army's new position
 	self.autorun(function() {
@@ -221,6 +227,15 @@ Template.rp_move_unit.created = function() {
 			}
 		}
 	})
+
+	// if this is true then add to existing moves instead of creating new ones
+	// required to set before showing ui
+	var movesArray = Session.get('addToExistingArmyMoves')
+	if (movesArray) {
+		_.each(movesArray, function(m) {
+			add_unit_move(m.from_x, m.from_y, m.to_x, m.to_y)
+		})
+	}
 }
 
 

@@ -218,6 +218,7 @@ Template.rp_info_army.events({
 	},
 
 	'click #move_army_button': function(event, template) {
+		Session.set('addToExistingArmyMoves', false)
 		Session.set('rp_template', 'rp_move_unit')
 	},
 
@@ -262,6 +263,21 @@ Template.rp_info_army.events({
 
 	'click .remove_move_button': function(event, template) {
 		Meteor.call('remove_move', this._id, this.index)
+	},
+
+	'click #addMoveButton': function(event, template) {
+		var moves = Moves.find({army_id:template.data._id}, {sort:{index:1}})
+		var movesArray = []
+		if (moves.count() > 0) {
+			moves.forEach(function(move) {
+				movesArray.push({from_x:move.from_x, from_y:move.from_y, to_x:move.to_x, to_y:move.to_y, index:move.index})
+			})
+			Session.set('addToExistingArmyMoves', movesArray)
+		} else {
+			Session.set('addToExistingArmyMoves', false)
+		}
+
+		Session.set('rp_template', 'rp_move_unit')
 	}
 })
 
