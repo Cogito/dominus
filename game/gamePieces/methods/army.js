@@ -3,7 +3,6 @@ Meteor.methods({
 	// moves = [{from_x:0, from_y:0, to_x:0, to_y:0}, {from_x:0, from_y:0, to_x:0, to_y:0}]
 	// don't throw errors here, just return false
 	create_moves: function(army_id, moves) {
-		this.unblock()
 		var self = this
 		check(army_id, String)
 		check(moves, Array)
@@ -64,9 +63,13 @@ Meteor.methods({
 					last_move_at:new Date()
 				})
 			})
+
+			return true
 		} else {
 			return false
 		}
+
+		return false
 	},
 
 

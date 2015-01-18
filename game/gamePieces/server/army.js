@@ -74,6 +74,7 @@ create_army = function(user_id, army, x, y, moves) {
 			var res = Meteor.call('create_moves', a._id, moves)
 			if (!res) {
 				Armies.remove(id)
+				Moves.remove({army_id:id})
 				return false
 			}
 		}
