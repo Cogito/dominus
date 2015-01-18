@@ -226,18 +226,20 @@ Template.rp_move_unit.created = function() {
 
 Template.rp_move_unit.rendered = function() {
 	var self = this
-	_.each(s.army.types, function(type) {
-		set_selected_unit(type, 0)
+	if (Template.currentData()) {
+		_.each(s.army.types, function(type) {
+			set_selected_unit(type, 0)
 
-		this.$('.send_units_slider[data-type='+type+']').attr('max', Template.currentData()[type])
-		this.$('.send_units_slider[data-type='+type+']').attr('min', 0)
+			this.$('.send_units_slider[data-type='+type+']').attr('max', Template.currentData()[type])
+			this.$('.send_units_slider[data-type='+type+']').attr('min', 0)
 
-		if (Template.currentData()[type] == 0) {
-			this.$('.send_units_slider[data-type='+type+']').prop('disabled', true)
-		} else {
-			this.$('.send_units_slider[data-type='+type+']').prop('disabled', false)
-		}
-	})
+			if (Template.currentData()[type] == 0) {
+				this.$('.send_units_slider[data-type='+type+']').prop('disabled', true)
+			} else {
+				this.$('.send_units_slider[data-type='+type+']').prop('disabled', false)
+			}
+		})
+	}
 }
 
 

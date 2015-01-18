@@ -111,7 +111,6 @@ Template.hexes.created = function() {
 					Session.set('hexScale', user.hex_scale)
 				}
 				if (user && user.hex_scale && user.castle_id) {
-					console.log('selecting castle')
 					Session.set('selected_type', 'castle')
 					Session.set('selected_id', user.castle_id)
 					center_on_hex(user.x, user.y)
