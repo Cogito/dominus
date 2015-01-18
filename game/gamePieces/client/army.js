@@ -43,11 +43,10 @@ Template.army.created = function() {
 			if (armies.count() == 0) {
 				self.draw.set(true)
 			} else {
+				self.draw.set(true)
 				armies.forEach(function(res) {
 					if (Template.currentData().last_move_at > res.last_move_at) {
 						self.draw.set(false)
-					} else {
-						self.draw.set(true)
 					}
 				})
 			}
