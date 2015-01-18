@@ -46,75 +46,83 @@ Template.navigation_panel.events({
 })
 
 
-grid_move_timer = undefined
+Template.navigation_panel.created = function() {
+	var self = this
+	self.moveUp = new ReactiveVar(false)
+	self.moveDown = new ReactiveVar(false)
+	self.moveLeft = new ReactiveVar(false)
+	self.moveRight = new ReactiveVar(false)
+	self.gridMoveTimer = undefined
+}
 
 Template.navigation_panel.rendered = function() {
+	var self = this
 
 	// arrow keys to scroll map
-	Session.set('move_map', null)
 	$(document).keydown(function(event) {
-		if (event.keyCode == 38) {
-			Session.set('move_map', 'up')
+		if (event.keyCode == 38 && canMoveMap()) {
+			self.moveUp.set(true)
 		}
 
-		if (event.keyCode == 39) {
-			Session.set('move_map', 'right')
+		if (event.keyCode == 39 && canMoveMap()) {
+			self.moveRight.set(true)
 		}
 
-		if (event.keyCode == 40) {
-			Session.set('move_map', 'down')
+		if (event.keyCode == 40 && canMoveMap()) {
+			self.moveDown.set(true)
 		}
 
-		if (event.keyCode == 37) {
-			Session.set('move_map', 'left')
+		if (event.keyCode == 37 && canMoveMap()) {
+			self.moveLeft.set(true)
 		}
 	})
 
 	$(document).keyup(function(event) {
-		if (event.keyCode == 37 || event.keyCode == 38 || event.keyCode == 39 || event.keyCode == 40) {
-			Session.set('move_map', null)
+		if (event.keyCode == 38) {
+			self.moveUp.set(false)
+		}
+
+		if (event.keyCode == 39) {
+			self.moveRight.set(false)
+		}
+
+		if (event.keyCode == 40) {
+			self.moveDown.set(false)
+		}
+
+		if (event.keyCode == 37) {
+			self.moveLeft.set(false)
 		}
 	})
 
 	// arrow keys to scroll map
-	this.deps_move_map = Deps.autorun(function() {
-		if (Session.get('show_chatrooms_panel') || Session.get('show_forum_panel') || Session.get('show_market_panel') || Session.get('show_settings_panel')) {
-			return false
+	self.autorun(function() {
+		if (typeof(self.gridMoveTimer) != "undefined") {
+			Meteor.clearInterval(self.gridMoveTimer)
 		}
 
-		if (Session.get('rp_template') == 'rp_hire_army' || Session.get('rp_template') == 'rp_move_unit' || Session.get('rp_template') == 'rp_split_armies') {
-			return false
-		}
-
-		// watch for when move_map changes
-		var direction = Session.get('move_map')
-
-		if (!direction) {
-			if (typeof(grid_move_timer) != "undefined") {
-				Meteor.clearInterval(grid_move_timer)
-			}
-		} else {
-			Meteor.clearInterval(grid_move_timer)
-			grid_move_timer = Meteor.setInterval(function() {
+		if (self.moveUp.get() || self.moveRight.get() || self.moveDown.get() || self.moveLeft.get()) {
+			self.gridMoveTimer = Meteor.setInterval(function() {
 				Deps.nonreactive(function() {
 					var hexes_pos = Session.get('hexes_pos')
 
 					var x = hexes_pos.x
 					var y = hexes_pos.y
 
-					switch(direction) {
-						case 'left':
-							x = x + s.hex_move_speed
-							break;
-						case 'up':
-							y = y + s.hex_move_speed
-							break;
-						case 'right':
-							x = x - s.hex_move_speed
-							break;
-						case 'down':
-							y = y - s.hex_move_speed
-							break;
+					if (self.moveUp.get()) {
+						y += s.hex_move_speed
+					}
+
+					if (self.moveRight.get()) {
+						x -= s.hex_move_speed
+					}
+
+					if (self.moveDown.get()) {
+						y -= s.hex_move_speed
+					}
+
+					if (self.moveLeft.get()) {
+						x += s.hex_move_speed
 					}
 
 					move_hexes_to(x, y)
@@ -125,12 +133,22 @@ Template.navigation_panel.rendered = function() {
 }
 
 
+function canMoveMap() {
+	if (Session.get('show_chatrooms_panel') || Session.get('show_forum_panel') || Session.get('show_market_panel') || Session.get('show_settings_panel')) {
+		return false
+	}
+
+	if (Session.get('rp_template') == 'rp_hire_army' || Session.get('rp_template') == 'rp_move_unit' || Session.get('rp_template') == 'rp_split_armies') {
+		return false
+	}
+
+	return true
+}
+
+
 Template.navigation_panel.destroyed = function() {
 	$(document).unbind('keydown')
 	$(document).unbind('keyup')
-	if (this.deps_move_map) {
-		this.deps_move_map.stop()
-	}
 }
 
 

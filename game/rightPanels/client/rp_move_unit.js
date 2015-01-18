@@ -70,7 +70,10 @@ Template.rp_move_unit.helpers({
 
 	// TODO: do this next meteor version
 	max_units: function(type) {
-		return Template.parentData(1)[type]
+		var data = Template.parentData(1)
+		if (data) {
+			return Template.parentData(1)[type]
+		}
 	}
 })
 
