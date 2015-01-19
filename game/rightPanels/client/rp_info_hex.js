@@ -31,6 +31,10 @@ Template.rp_info_hex.helpers({
 		}
 	},
 
+	isGrain: function() {
+		return this.type == 'grain'
+	},
+
 	numResources: function() {
 		if (this && this.large) {
 			return s.resource.gained_at_hex * s.resource.large_resource_multiplier

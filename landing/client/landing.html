@@ -31,8 +31,19 @@
 
 
 <template name="landingCreateAccount">
+	{{> aSocialError}}
+	{{> aGoogleButton}}
+	{{> aFacebookButton}}
+
+	<br>
+	<div class="divider">
+		<hr class="left">or<hr class="right"><div class="after"></div>
+	</div>
+	<br>
+
 	<div class="loginTitle">Create an an account to start playing.</div>
 	<br>
+
 	{{> aCreateAccount}}
 	<br>
 	<div class="loginLink"><a href="" id="landingSigninLink">Sign In</a></div>
@@ -40,6 +51,16 @@
 
 
 <template name="landingSignin">
+	{{> aSocialError}}
+	{{> aGoogleButton}}
+	{{> aFacebookButton}}
+
+	<br>
+	<div class="divider">
+		<hr class="left">or<hr class="right"><div class="after"></div>
+	</div>
+	<br>
+
 	<div class="loginTitle">Sign In</div>
 	<br>
 	{{> aSignin}}

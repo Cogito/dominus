@@ -5,13 +5,12 @@ Meteor.startup(function() {
 		worker.start()
 
 		// cleanup old moves
-		Moves.find().forEach(function(move) {
-			if (Armies.find({_id:move.army_id}).count() == 0) {
-				console.log('removing move')
-				Moves.remove(move._id)
-			}
-		})
-
+		// Moves.find().forEach(function(move) {
+		// 	if (Armies.find({_id:move.army_id}).count() == 0) {
+		// 		console.log('removing move')
+		// 		Moves.remove(move._id)
+		// 	}
+		// })
 
 
 		// make sure there are no negative armies

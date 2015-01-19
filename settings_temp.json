@@ -4,6 +4,18 @@
 	"s3secretKey":"000",
 	"s3bucket":"asdf",
 	"s3region":"us-west-2",
+	"googleLogin": {
+		"service":"google",
+		"clientId":"xxx",
+		"secret":"xxx",
+		"loginStyle":"popup",
+	},
+	"facebookLogin":{
+		"service":"facebook",
+		"appId":"xxx",
+		"secret":"xxx",
+		"loginStyle":"popup"
+	},
 	"public": {
 		"stripe_publishable_key":"pk_test",
 		"s3path":"https://s3-us-west-2.amazonaws.com/bucket"

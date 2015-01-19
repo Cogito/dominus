@@ -8,9 +8,25 @@ Accounts.onCreateUser(function(options, user) {
 	// set admin
 	user.admin = false;
 
-	// this should probably be changed to a env variable
-	if (user.emails[0].address == process.env.DOMINUS_ADMIN_EMAIL) {
-		user.admin = true
+	// if using a service to sign in put that email into user.emails
+	// create username
+	if (user.services) {
+		if (user.services.google) {
+			var email = user.services.google.email
+			var verified = user.services.google.verified_email
+			user.emails = [{address:email, verified:verified}]
+			user.username = user.profile.name
+
+			if (user.services.google.email == process.env.DOMINUS_ADMIN_EMAIL) {
+				user.admin = true
+			}
+		}
+
+		if (user.services.facebook) {
+			var email = user.services.facebook.email
+			user.emails = [{address:email, verified:true}]
+			user.username = user.profile.name
+		}
 	}
 
 	user.gold = s.starting_resources.gold
@@ -60,14 +76,13 @@ Accounts.onCreateUser(function(options, user) {
 
 	// set game winner
 	// xom from game 1
-	if (user.emails[0].address == 'hmliang@gmail.com') {
+	if (user.emails && user.emails[0].address == 'hmliang@gmail.com') {
 		user.is_game_winner = true
 	}
 	// hertle from game 2
-	if (user.emails[0].address == 'travel_on@hotmail.com') {
+	if (user.emails && user.emails[0].address == 'travel_on@hotmail.com') {
 		user.is_game_winner = true
 	}
-
 
 	// if someone was dominus make them not dominus
 	remove_dominus()
@@ -87,8 +102,14 @@ Accounts.onLogin(function(data) {
 
 onCreateUser = function(userId) {
 	worker.enqueue('create_castle', {user_id: userId})
-	//worker.enqueue('inc_daily_stats', {user_id: userId, new_stats: {}, add_to: false})
 	init_dailystats_for_new_user(userId)
-
 	setupEveryoneChatroom()
 }
+
+
+Meteor.startup(function() {
+	Accounts.loginServiceConfiguration.remove({service:'google'})
+	Accounts.loginServiceConfiguration.remove({service:'facebook'})
+	Accounts.loginServiceConfiguration.insert(Meteor.settings.googleLogin)
+	Accounts.loginServiceConfiguration.insert(Meteor.settings.facebookLogin)
+})

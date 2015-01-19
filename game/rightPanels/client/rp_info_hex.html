@@ -8,7 +8,10 @@
 
 				<span class="light_text">Resource Type:</span> {{typeName}}<br>
 				<br>
-				Produces {{numResources}} {{type}} every {{interval}}.  Collects {{round worthOfHex}} worth of resources in gold.
+				Produces {{numResources}} {{type}} every {{interval}}.
+				{{#if isGrain}}
+					A village here would collect {{round worthOfHex}} gold worth of resources.
+				{{/if}}
 			</div>
 		</div>
 
