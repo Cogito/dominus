@@ -209,6 +209,7 @@ Template.forum_panel.events({
 				center_on_hex(hex.x, hex.y);
 				Session.set('selected_type', 'hex');
 				Session.set('selected_id', hexId);
+				Session.set('selected_coords', {x:hex.x, y:hex.y})
 			}
 		});
 	}

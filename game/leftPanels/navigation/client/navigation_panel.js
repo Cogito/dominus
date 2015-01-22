@@ -31,6 +31,7 @@ Template.navigation_panel.events({
 					center_on_hex(x, y);
 					Session.set('selected_type', 'hex');
 					Session.set('selected_id', hexId);
+					Session.set('selected_coords', {x:x, y:y})
 				}
 			});
 		}

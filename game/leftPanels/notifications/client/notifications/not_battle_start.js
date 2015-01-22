@@ -18,6 +18,7 @@ Template.not_battle_start.events({
 				center_on_hex(self.x, self.y);
 				Session.set('selected_type', 'hex');
 				Session.set('selected_id', hexId);
+				Session.set('selected_coords', {x:self.x, y:self.y})
 			}
 		});
 	}
