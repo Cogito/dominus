@@ -10,7 +10,7 @@ BattleDb.prototype.init = function() {
 	var self = this
 
 	// get battle here
-	self.record = Battles.findOne({x:self.x, y:self.y})
+	self.record = Battles.findOne({x:self.x, y:self.y, isOver:false})
 
 	// if there is no battle here then create one
 	if (self.record) {
@@ -111,6 +111,7 @@ BattleDb.prototype.getCurrentUnits = function() {
 
 
 BattleDb.prototype.endBattle = function() {
+	if (self.debug) {console.log('endBattle called')}
 	this._trackLosses()
 	//Battles.remove(this.record._id)
 	Battles.update(this.record._id, {$set: {isOver:true}})

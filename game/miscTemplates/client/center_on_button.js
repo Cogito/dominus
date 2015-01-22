@@ -4,6 +4,7 @@ Template.center_on_button.events({
 		check(template.data.selected_id, String)
 		Session.set('selected_type', template.data.selected_type)
 		Session.set('selected_id', template.data.selected_id)
+		Session.set('selected_coords', {x:template.data.x, y:template.data.y})
 	},
 
 	'click .center_on_button': function(event, template) {

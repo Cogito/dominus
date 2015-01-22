@@ -1,7 +1,7 @@
 Battle = {
 	// if no battle exists in this hex create one
 	start_battle: function(x,y) {
-		if (Battles.find({x:x,y:y}).count() == 0) {
+		if (Battles.find({x:x,y:y,isOver:false}).count() == 0) {
 			Battle.run_battle(x,y)
 		}
 	},
