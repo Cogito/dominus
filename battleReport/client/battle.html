@@ -5,7 +5,11 @@
             <a href="/">Return to Game</a>
         </div>
         <div class="panel panel-body">
-            {{> battle_report battle}}
+            {{#if battle}}
+                {{> battle_report battle}}
+            {{else}}
+                No battle found.  Bad link or an old battle.
+            {{/if}}
         </div>
     </div>
 </template>
