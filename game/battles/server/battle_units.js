@@ -922,6 +922,8 @@ Units.prototype._computeBonus = function() {
 		// catapults
 		// if there is an enemy castle of village in this hex then catapults get bonus
 		// catapults must be attacker to get bonus
+		// catapults get bonus even if building is not in fight
+		// this is to stop building from sending out units and cats losing their bonus
 		var isEnemyCastleOrVillageHere = false
 
 		if (unit.isAttacker) {

@@ -22,7 +22,19 @@ Meteor.methods({
 			var mapbaker = new Mapbaker()
 			mapbaker.bakeHexes()
 		}
-	}
+	},
+
+	admin_enemyOnBuildingCheck: function() {
+		if (get_user_property("admin")) {
+			enemy_on_building_check()
+		}
+	},
+
+	admin_enemiesTogetherCheck: function() {
+		if (get_user_property("admin")) {
+			enemies_together_check()
+		}
+	},
 
 
 })

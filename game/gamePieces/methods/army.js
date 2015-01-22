@@ -171,16 +171,27 @@ Meteor.methods({
 		this.unblock()
 		check(army_id, String)
 
-		var army = Armies.findOne({_id:army_id, user_id:Meteor.userId()}, {fields: {x:1, y:1}})
+		var army = Armies.findOne({_id:army_id, user_id:Meteor.userId()}, {fields: {x:1, y:1, last_move_at:1}})
 		if (army) {
 			var fields = {}
+			fields.last_move_at = 1
 
 			_.each(s.army.types, function(type) {
 				fields[type] = 1
 			})
 
+			// army should get last_move_at of earliest army
+			// otherwise if someone combines armies in the middle of a battle
+			// defender/attacker could change
+			var earliestMove = moment(new Date(army.last_move_at))
+
 			Armies.find({user_id: Meteor.userId(), x: army.x, y: army.y}, {fields: fields}).forEach(function(a) {
 				if (a._id != army_id) {
+					var currentArmyMove = moment(new Date(a.last_move_at))
+					if (currentArmyMove.isBefore(earliestMove)) {
+							earliestMove = currentArmyMove
+					}
+
 					var inc = {}
 
 					_.each(s.army.types, function(type) {
@@ -193,6 +204,8 @@ Meteor.methods({
 					Moves.remove({army_id:a._id})
 				}
 			})
+
+			Armies.update(army_id, {$set: {last_move_at:earliestMove.toDate()}})
 		}
 	},
 

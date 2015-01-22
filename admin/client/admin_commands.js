@@ -17,5 +17,13 @@ Template.adminCommands.events({
 	'click #deleteUserButton': function(event, template) {
 		var input = template.find('#deleteUserInput')
 		Meteor.call('deleteAccount', $(input).val())
-	}
+	},
+
+	'click #enemyOnBuildingCheck': function(event, template) {
+		Meteor.call('admin_enemyOnBuildingCheck')
+	},
+
+	'click #enemiesTogetherCheck': function(event, template) {
+		Meteor.call('admin_enemiesTogetherCheck')
+	},
 })
