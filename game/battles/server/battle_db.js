@@ -111,7 +111,7 @@ BattleDb.prototype.getCurrentUnits = function() {
 
 
 BattleDb.prototype.endBattle = function() {
-	if (self.debug) {console.log('endBattle called')}
+	if (this.debug) {console.log('endBattle called')}
 	this._trackLosses()
 	//Battles.remove(this.record._id)
 	Battles.update(this.record._id, {$set: {isOver:true}})
