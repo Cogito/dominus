@@ -5,21 +5,21 @@ Template.navigation_panel.helpers({
 
 Template.navigation_panel.events({
 	// grid movement
-	'mousedown #move_grid_left_button': function(event, template) { Session.set('move_map', 'left') },
-	'mouseup #move_grid_left_button': function(event, template) { Session.set('move_map', null) },
-	'mouseleave #move_grid_left_button': function(event, template) { Session.set('move_map', null) },
+	'mousedown #move_grid_left_button': function(event, template) { template.moveLeft.set(true) },
+	'mouseup #move_grid_left_button': function(event, template) { template.moveLeft.set(false) },
+	'mouseleave #move_grid_left_button': function(event, template) { template.moveLeft.set(false) },
 
-	'mousedown #move_grid_up_button': function(event, template) { Session.set('move_map', 'up') },
-	'mouseup #move_grid_up_button': function(event, template) { Session.set('move_map', null) },
-	'mouseleave #move_grid_up_button': function(event, template) { Session.set('move_map', null) },
+	'mousedown #move_grid_up_button': function(event, template) { template.moveUp.set(true) },
+	'mouseup #move_grid_up_button': function(event, template) { template.moveUp.set(false) },
+	'mouseleave #move_grid_up_button': function(event, template) { template.moveUp.set(false) },
 
-	'mousedown #move_grid_right_button': function(event, template) { Session.set('move_map', 'right') },
-	'mouseup #move_grid_right_button': function(event, template) { Session.set('move_map', null) },
-	'mouseleave #move_grid_right_button': function(event, template) { Session.set('move_map', null) },
+	'mousedown #move_grid_right_button': function(event, template) { template.moveRight.set(true) },
+	'mouseup #move_grid_right_button': function(event, template) { template.moveRight.set(false) },
+	'mouseleave #move_grid_right_button': function(event, template) { template.moveRight.set(false) },
 
-	'mousedown #move_grid_down_button': function(event, template) { Session.set('move_map', 'down') },
-	'mouseup #move_grid_down_button': function(event, template) { Session.set('move_map', null) },
-	'mouseleave #move_grid_down_button': function(event, template) { Session.set('move_map', null) },
+	'mousedown #move_grid_down_button': function(event, template) { template.moveDown.set(true) },
+	'mouseup #move_grid_down_button': function(event, template) { template.moveDown.set(false) },
+	'mouseleave #move_grid_down_button': function(event, template) { template.moveDown.set(false) },
 
 	'click #move_grid_goto_button': function(event, template) {
 		var x = Number($(template.find('#move_grid_x')).val())
