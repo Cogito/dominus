@@ -1,6 +1,14 @@
+Meteor.publish('battle', function(id) {
+		if (this.userId) {
+			return Battles.find(id)
+		} else {
+			this.ready()
+		}
+})
+
 Meteor.publish('battle_notifications_at_hex', function(x,y) {
 	if (this.userId) {
-		return Battles.find({x:x,y:y})
+		return Battles.find({x:x, y:y, isOver:false})
 	} else {
 		this.ready()
 	}

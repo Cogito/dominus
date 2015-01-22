@@ -14,14 +14,10 @@ _saveHexScale = _.debounce(function() {
 // offset your position on the map
 // this is pixel position not coordinates
 offset_hexes = function(offset_x, offset_y) {
-	check(offset_x, validNumber)
-	check(offset_y, validNumber)
-
 	var hexes_pos = Session.get('hexes_pos')
 	if (hexes_pos) {
 		x = hexes_pos.x + offset_x
 		y = hexes_pos.y + offset_y
-
 		move_hexes_to(x, y)
 	}
 }

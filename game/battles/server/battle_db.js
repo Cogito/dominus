@@ -28,7 +28,8 @@ BattleDb.prototype.init = function() {
 			deaths: [],
 			//roundData: [],
 			currentUnits: self.getCurrentUnits(),
-			sendEndNotificationTo: []	// set in enteredBattle - used for end battle notifications
+			sendEndNotificationTo: [],	// set in enteredBattle - used for end battle notifications
+			isOver: false
 		}
 		self.record._id = Battles.insert(self.record)
 
@@ -111,7 +112,8 @@ BattleDb.prototype.getCurrentUnits = function() {
 
 BattleDb.prototype.endBattle = function() {
 	this._trackLosses()
-	Battles.remove(this.record._id)
+	//Battles.remove(this.record._id)
+	Battles.update(this.record._id, {$set: {isOver:true}})
 }
 
 

@@ -19,7 +19,7 @@ Template.rp_info_hex.helpers({
 
 	armies: function() {
 		if (this) {
-			return Armies.find({ x: this.x, y: this.y })
+			return Armies.find({ x: this.x, y: this.y, isOver:false})
 		}
 	},
 

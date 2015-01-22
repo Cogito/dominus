@@ -39,7 +39,7 @@ Template.rp_info_village.helpers({
 
 	battle: function() {
 		if (this) {
-			return Battles.findOne({x:this.x, y:this.y})
+			return Battles.findOne({x:this.x, y:this.y, isOver:false})
 		}
 	},
 

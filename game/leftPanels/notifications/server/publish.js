@@ -37,7 +37,7 @@ Meteor.publish('notifications_unread', function() {
 
 Meteor.publish('battle_notifications', function() {
 	if (this.userId) {
-		return Battles.find()
+		return Battles.find({isOver:false})
 	} else {
 		this.ready()
 	}

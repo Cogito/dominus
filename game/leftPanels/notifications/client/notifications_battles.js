@@ -1,6 +1,6 @@
 Template.notifications_battles.helpers({
 	battles: function() {
-		return Battles.find()
+		return Battles.find({isOver:false})
 	},
 
 	title: function() {

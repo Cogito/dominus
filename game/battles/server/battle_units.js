@@ -195,7 +195,7 @@ Units.prototype._removeUnitsWithNoEnemies = function() {
 
 Units.prototype.sendNotification = function(unit) {
 	var self = this
-	var record = Battles.findOne({x:self.x, y:self.y})
+	var record = Battles.findOne({x:self.x, y:self.y, isOver:false})
 	if (record) {
 		record.unit = unit
 		notification_battle(unit.user_id, record)
