@@ -29,7 +29,7 @@ Template.castle.events({
 
 	'mouseenter .castle': function(event, template) {
 		// hover box
-		Session.set('hover_box_data', {type: 'castle', x: template.data.x, y: template.data.y})
+		Session.set('hover_box_data', {type:'castle', x:template.data.x, y:template.data.y})
 		Meteor.clearTimeout(Session.get('hover_on_object_timer'))
 		Session.set('hover_on_object', true)
 	},

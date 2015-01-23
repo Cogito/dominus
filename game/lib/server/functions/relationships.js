@@ -93,8 +93,8 @@ set_lord_and_vassal = function(winner, loser, runUpdateAllies) {
 		}
 	}
 
-	//worker.enqueue('enemies_together_check', {})
-	//worker.enqueue('enemy_on_building_check', {})
+	worker.enqueue('enemies_together_check', {})
+	worker.enqueue('enemy_on_building_check', {})
 }
 
 

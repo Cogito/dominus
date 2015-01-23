@@ -2,15 +2,8 @@
 // if lord and vassal have armies on each others castles which are empty
 // vassal take's lord's castle
 
-// answer?  check other guy's castle and if you have an army there then nobody fights?
-
 // TODO: is there a way to check for enemies with mongodb queries?  use $or maybe
 // $nin team $or in team but not in allies or siblings
-
-// loop through every castle and village
-// if there are enemies here they should attack
-
-// TODO: what if an army starts a fight with a castle and there is another army also there that creates a loop
 
 enemy_on_building_check = function() {
 	Castles.find({}, {fields: {_id:1, user_id:1, x:1, y:1}}).forEach(function(res) {
@@ -23,14 +16,14 @@ enemy_on_building_check = function() {
 }
 
 
-check_for_enemies_here = function(building, type) {
+var check_for_enemies_here = function(building, type) {
 	var armies = Armies.find({x:building.x, y:building.y, user_id: {$ne: building.user_id}}, {fields: {user_id:1}})
 	if (armies.count() > 0) {
 		armies.forEach(function(army) {
 			var relation = getPlayersRelationType_server(army.user_id, building.user_id)
 			var canAttack = ['king', 'direct_lord', 'lord', 'enemy', 'enemy_ally']
 			if (_.contains(canAttack, relation)) {
-				if (!is_army_on_castle(building.user_id, army.user_id)) {
+				if (!attackCreatesLoop(building.x,building.y)) {
 					Battle.start_battle(building.x,building.y)
 				}
 			}
@@ -39,30 +32,17 @@ check_for_enemies_here = function(building, type) {
 }
 
 
-// this stops an infinite loop
-// if both players have an army on each other's castle
-// it will create an infinite loop
-is_army_on_castle = function(army_user_id, castle_user_id) {
-	var castle = Castles.findOne({user_id: castle_user_id}, {fields: {x:1, y:1}})
-	if (castle) {
-		if (Armies.find({user_id: army_user_id, x:castle.x, y:castle.y}).count() > 0) {
-			return true
-		}
-	}
-	return false
-}
-
-
-
-
 // loop through every army and check if there are any enemies on the same hex, if so they fight
 enemies_together_check = function() {
 	Armies.find({}, {fields: {user_id:1, x:1, y:1}}).forEach(function(army) {
+
 		// find armies here except this one
 		Armies.find({x:army.x, y:army.y, _id: {$ne: army._id}, user_id: {$ne: army.user_id}}, {fields: {user_id:1}}).forEach(function(other_army) {
+
 			// make sure army still exists
 			var a = Armies.findOne(army._id, {fields: {user_id:1}})
 			if (a) {
+
 				// if one of them is dominus then they fight
 				var user = Meteor.users.findOne(a.user_id, {fields: {is_dominus:1}})
 				var otherUser = Meteor.users.findOne(other_army.user_id, {fields: {is_dominus:1}})
@@ -70,31 +50,13 @@ enemies_together_check = function() {
 					if (user.is_dominus || otherUser.is_dominus) {
 						// dominus' armies can attack any army
 						Battle.start_battle(army.x,army.y)
+						
 					} else {
 						var relation = getPlayersRelationType_server(user._id, otherUser._id)
 						var canAttack = ['enemy', 'enemy_ally']
 						if (_.contains(canAttack, relation)) {
 
-							// make sure armies aren't on each other's castles
-							// creates infinite loop
-							var isLoop = false
-
-							// is there a castle here owned by one of the armies?
-							var armyCastle = Castles.findOne({x:army.x, y:army.y, user_id:army.user_id})
-							if (armyCastle) {
-								if (is_army_on_castle(other_army.user_id, army.user_id)) {
-									isLoop = ture
-								}
-							}
-
-							var otherArmyCastle = Castles.findOne({x:army.x, y:army.y, user_id:other_army.user_id})
-							if (otherArmyCastle) {
-								if (is_army_on_castle(army.user_id, other_army.user_id)) {
-									isLoop = ture
-								}
-							}
-
-							if (!isLoop) {
+							if (!attackCreatesLoop(army.x, army.y)) {
 								Battle.start_battle(army.x,army.y)
 							}
 						}
@@ -103,4 +65,33 @@ enemies_together_check = function() {
 			}
 		})
 	})
+}
+
+
+var attackCreatesLoop = function(x, y) {
+	var isLoop = false
+
+	var castleHere = Castles.findOne({x:x, y:y}, {fields: {user_id:1}})
+	if (castleHere) {
+
+		var armiesHere = Armies.find({x:x, y:y}, {fields: {user_id:1}})
+		armiesHere.forEach(function(armyHere) {
+
+			// don't check armies on their own castle
+			if (castleHere.user_id != armyHere.user_id) {
+
+				// get their castle
+				var castle = Castles.findOne({user_id:armyHere.user_id}, {fields: {x:1, y:1}})
+				if (castle) {
+
+					// is there an army at their castle owned by castleHere
+					if (Armies.find({x:castle.x, y:castle.y, user_id:castleHere.user_id}).count() > 0) {
+						isLoop = true
+					}
+				}
+			}
+		})
+	}
+
+	return isLoop
 }

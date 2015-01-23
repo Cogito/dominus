@@ -21,7 +21,7 @@ Template.army.events({
 	},
 
 	'mouseenter .army': function(event, template) {
-		Session.set('hover_box_data', {type: 'army', x: Template.currentData().x, y: Template.currentData().y})
+		Session.set('hover_box_data', {type: 'army', x:template.data.x, y:template.data.y})
 		Meteor.clearTimeout(Session.get('hover_on_object_timer'))
 		Session.set('hover_on_object', true)
 	},

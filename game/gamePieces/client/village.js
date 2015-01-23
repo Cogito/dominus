@@ -47,7 +47,7 @@ Template.village.events({
 
 	'mouseenter .village': function(event, template) {
 		// hover box
-		Session.set('hover_box_data', {type: 'village', x: this.x, y: this.y})
+		Session.set('hover_box_data', {type:'village', x:template.data.x, y:template.data.y})
 		Meteor.clearTimeout(Session.get('hover_on_object_timer'))
 		Session.set('hover_on_object', true)
 	},

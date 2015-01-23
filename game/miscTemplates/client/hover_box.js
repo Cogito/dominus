@@ -177,8 +177,11 @@ Template.hover_box.events({
 	},
 
 	'click .hover_box_object_link': function(event, template) {
-		Session.set('selected_type', this.type)
-		Session.set('selected_id', this._id)
+		var data = Session.get('hover_box_data')
+		var id = event.currentTarget.getAttribute('data-id')
+		Session.set('selected_type', data.type)
+		Session.set('selected_id', id)
+		Session.set('selected_coords', {x:data.x, y:data.y})
 		Session.set('hover_on_hover_box', false)
 	}
 })
