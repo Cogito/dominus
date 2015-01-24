@@ -29,6 +29,51 @@ Accounts.onCreateUser(function(options, user) {
 		}
 	}
 
+	user = setupNewUser(user)
+
+	// set game winner
+	// xom from game 1
+	if (user.emails && user.emails[0].address == 'hmliang@gmail.com') {
+		user.is_game_winner = true
+	}
+	// hertle from game 2
+	if (user.emails && user.emails[0].address == 'travel_on@hotmail.com') {
+		user.is_game_winner = true
+	}
+
+	// if someone was dominus make them not dominus
+	remove_dominus()
+
+	return user
+})
+
+
+// check when user logs in if they have a castle
+// if not then they are a new user
+Accounts.onLogin(function(data) {
+	if (data.user && !data.user.castle_id) {
+		onCreateUser(data.user._id)
+	}
+})
+
+
+onCreateUser = function(userId) {
+	worker.enqueue('create_castle', {user_id: userId})
+	init_dailystats_for_new_user(userId)
+	setupEveryoneChatroom()
+}
+
+
+Meteor.startup(function() {
+	Accounts.loginServiceConfiguration.remove({service:'google'})
+	Accounts.loginServiceConfiguration.remove({service:'facebook'})
+	Accounts.loginServiceConfiguration.insert(Meteor.settings.googleLogin)
+	Accounts.loginServiceConfiguration.insert(Meteor.settings.facebookLogin)
+})
+
+
+// also called in tests
+setupNewUser = function(user) {
 	user.gold = s.starting_resources.gold
 	user.grain = s.starting_resources.grain
 	user.lumber = s.starting_resources.lumber
@@ -74,42 +119,5 @@ Accounts.onCreateUser(function(options, user) {
 	user.sp_show_coords = false
 	user.sp_show_minimap = true
 
-	// set game winner
-	// xom from game 1
-	if (user.emails && user.emails[0].address == 'hmliang@gmail.com') {
-		user.is_game_winner = true
-	}
-	// hertle from game 2
-	if (user.emails && user.emails[0].address == 'travel_on@hotmail.com') {
-		user.is_game_winner = true
-	}
-
-	// if someone was dominus make them not dominus
-	remove_dominus()
-
 	return user
-})
-
-
-// check when user logs in if they have a castle
-// if not then they are a new user
-Accounts.onLogin(function(data) {
-	if (data.user && !data.user.castle_id) {
-		onCreateUser(data.user._id)
-	}
-})
-
-
-onCreateUser = function(userId) {
-	worker.enqueue('create_castle', {user_id: userId})
-	init_dailystats_for_new_user(userId)
-	setupEveryoneChatroom()
 }
-
-
-Meteor.startup(function() {
-	Accounts.loginServiceConfiguration.remove({service:'google'})
-	Accounts.loginServiceConfiguration.remove({service:'facebook'})
-	Accounts.loginServiceConfiguration.insert(Meteor.settings.googleLogin)
-	Accounts.loginServiceConfiguration.insert(Meteor.settings.facebookLogin)
-})

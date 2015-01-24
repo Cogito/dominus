@@ -24,7 +24,9 @@ gamestats_job = function() {
 
 	Meteor.users.find().forEach(function(user) {
 		_.each(s.resource.types_plus_gold, function(type) {
-			total_res[type] += user[type]
+			if (user[type]) {
+				total_res[type] += user[type]
+			}
 		})
 	})
 

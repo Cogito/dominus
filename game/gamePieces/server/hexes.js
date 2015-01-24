@@ -1,4 +1,6 @@
-generate_hexes = function(num_of_rings) {
+generate_hexes = function(num_of_rings, bakeMap) {
+	if (typeof bakeMap === 'undefined') bakeMap = true
+
 	delete_all_hexes()
 	destroy_all_castles()
 	destroy_all_armies()
@@ -15,8 +17,10 @@ generate_hexes = function(num_of_rings) {
 	})
 
 	// rebake map
-	var mapbaker = new Mapbaker()
-	mapbaker.bakeHexes()
+	if (bakeMap) {
+		var mapbaker = new Mapbaker()
+		mapbaker.bakeHexes()
+	}
 }
 
 

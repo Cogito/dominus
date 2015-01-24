@@ -35,21 +35,19 @@ Meteor.startup(function() {
 
 
 create_castle = function(user_id) {
-	console.log('--- creating castle ---')
-
 	check(user_id, String)
 	if (s.down_for_maintenance == true) {
 		return false
 	}
 
 	if (Castles.find({user_id: user_id}).count() > 0) {
-		//console.log('WTF: create_castle but already a castle')
+		throw new Meteor.Error('user but already a castle')
 		return false
 	}
 
 	var user = Meteor.users.findOne(user_id, {fields: {username: 1}})
 	if (!user) {
-		console.log('WTF: create_castle but no user found for this id')
+		throw new Meteor.Error('WTF: create_castle but no user found for this id')
 		return false
 	}
 
@@ -57,7 +55,7 @@ create_castle = function(user_id) {
 	// create a new map and reset market
 	// set game end date to null
 	if (Hexes.find().count() == 0) {
-		console.log('creating new game')
+		console.log('--- creating new game ---')
 		generate_hexes(4)
 		reset_market()
 		Settings.upsert({name: 'gameEndDate'}, {$set: {name: 'gameEndDate', value: null}})
@@ -134,6 +132,7 @@ create_castle = function(user_id) {
 							// rebake map
 							var mapbaker = new Mapbaker()
 							mapbaker.bakeHexes()
+
 						}
 
 						return true
@@ -148,4 +147,6 @@ create_castle = function(user_id) {
 			has_added_rings = true
 		}
 	}
+
+	return false
 }
