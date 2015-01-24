@@ -66,8 +66,68 @@ Template.army.created = function() {
 			}
 		}
 	})
+
+	// highlight past moves
+	this.autorun(function() {
+		var offsetPath = {x:12, y:30}
+		var coords = []
+		Session.get('refresh_time_field')
+
+		if (Template.currentData()) {
+			removeArmyPathHighlights(Template.currentData()._id)
+
+			var pastMoves = Template.currentData().pastMoves
+			if (pastMoves && pastMoves.length > 1) {
+				_.each(pastMoves, function(move) {
+					var cutoff = moment(new Date()).subtract(s.army.pastMovesMsLimit, 'ms')
+					if (moment(new Date(move.moveDate)).isAfter(cutoff)) {
+						coords.push({x:move.x, y:move.y})
+					}
+				})
+			}
+
+			if (coords.length > 1) {
+				var d = ""
+				var first = true
+
+				_.each(coords, function(coord) {
+					var pos = Hx.coordinatesToPos(coord.x, coord.y, s.hex_size, s.hex_squish)
+
+					pos.x += offsetPath.x
+					pos.y += offsetPath.y
+
+					if (first) {
+						d += 'M '+pos.x+' '+pos.y
+					} else {
+						d += ' L '+pos.x+' '+pos.y
+					}
+
+					var ellipse = document.createElementNS('http://www.w3.org/2000/svg',"ellipse")
+					ellipse.setAttributeNS(null, 'cx', pos.x)
+					ellipse.setAttributeNS(null, 'cy', pos.y)
+					ellipse.setAttributeNS(null, 'rx', 4)
+					ellipse.setAttributeNS(null, 'ry', 2.8)
+					ellipse.setAttribute('class', 'armyPathLinePoint')
+					ellipse.setAttribute('data-id', Template.currentData()._id)
+					$('#armyPaths').append(ellipse)
+
+					first = false
+				})
+
+				var path = document.createElementNS('http://www.w3.org/2000/svg',"path")
+				path.setAttributeNS(null, "d", d);
+				path.setAttribute('class', 'armyPathLine')
+				path.setAttribute('data-id', Template.currentData()._id)
+				$('#armyPaths').append(path)
+			}
+		}
+	})
 }
 
+
+Template.army.destroyed = function() {
+	removeArmyPathHighlights(Template.currentData()._id)
+}
 
 
 draw_army_highlight = function(army_id) {

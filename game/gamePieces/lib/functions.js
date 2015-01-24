@@ -1,3 +1,9 @@
+removeArmyPathHighlights = function(armyId) {
+	$('#armyPaths').find('path[data-id='+armyId+']').remove()
+	$('#armyPaths').find('ellipse[data-id='+armyId+']').remove()
+}
+
+
 // takes return value of getUnitRelationType and return a nice string
 getNiceRelationType = function(relationType) {
 	switch(relationType) {

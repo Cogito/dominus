@@ -14,6 +14,7 @@ create_army = function(user_id, army, x, y, moves) {
 		y: y,
 		created_at: new Date(),
 		last_move_at: new Date(),
+		pastMoves: [{x:x, y:y, moveDate:new Date()}],
 		user_id: user_id,
 		username: user.username,
 		castle_x: user.x,
@@ -167,6 +168,14 @@ move_army_to_hex = function(army_id, x, y) {
 	}
 
 	if (!has_merged) {
+
+		// update army with move
+		var pastMoves = unit.pastMoves || []
+		pastMoves.unshift({x:x, y:y, moveDate:new Date()})
+		if (pastMoves.length > s.army.pastMovesToShow) {
+			pastMoves.pop()
+		}
+		Armies.update(unit._id, {$set: {pastMoves:pastMoves}})
 
 		// get user info for later
 		var user = Meteor.users.findOne(unit.user_id, {fields: {allies:1, team:1, allies_below:1, is_dominus:1}})

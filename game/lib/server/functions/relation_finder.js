@@ -32,6 +32,8 @@ relation_finder = function(user_id) {
 		var lord = Meteor.users.findOne(user.lord, {fields: {lord:1}})
 		if (lord) {
 			if (user._id == lord._id) {
+				console.log('user: '+user.username)
+				console.log('lord: '+lord.username)
 				throw new Meteor.Error(404, "infinite loop");
 			}
 			self.find_top(lord)
@@ -113,7 +115,7 @@ relation_finder = function(user_id) {
 
 				if (user_below) {
 					user_below.allies_above = _.union(user_below.allies_above, [user._id])
-					
+
 					// remove user below
 					self.update_cache = _.reject(self.update_cache, function(cache) {
 						return cache.user_id == user_below.user_id
@@ -194,7 +196,7 @@ relation_finder = function(user_id) {
 					king: user._id,
 					siblings: cache.siblings,
 					team: _.without(self.team, cache.user_id),
-					is_king: cache.user_id == user._id 
+					is_king: cache.user_id == user._id
 				}})
 
 				update_vassal_ally_count(cache.user_id)

@@ -2,6 +2,10 @@
 set_lord_and_vassal = function(winner, loser, runUpdateAllies) {
 	if (typeof runUpdateAllies === 'undefined') { runUpdateAllies = true; }
 
+	if (winner._id == loser._id) {
+		throw new Meteor.Error('winner and loser are the same in set_lord_and_vassal')
+	}
+
 	check(winner, Object)
 	check(loser, Object)
 
@@ -104,6 +108,10 @@ remove_lord_and_vassal = function(lord_id, vassal_id) {
 	check(lord_id, String)
 	check(vassal_id, String)
 
+	if (lord_id == vassal_id) {
+		throw new Meteor.Error('winner and loser are the same in remove_lord_and_vassal')
+	}
+
 	Meteor.users.update(lord_id, {$pull: {
 		vassals: vassal_id
 	}})
@@ -121,6 +129,10 @@ remove_lord_and_vassal = function(lord_id, vassal_id) {
 create_lord_and_vassal = function(lord_id, vassal_id) {
 	check(lord_id, String)
 	check(vassal_id, String)
+
+	if (lord_id == vassal_id) {
+		throw new Meteor.Error('winner and loser are the same in create_lord_and_vassal')
+	}
 
 	// set lord
 	Meteor.users.update(vassal_id, {$set: {

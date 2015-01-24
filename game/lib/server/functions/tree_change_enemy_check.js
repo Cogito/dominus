@@ -6,6 +6,7 @@
 // $nin team $or in team but not in allies or siblings
 
 enemy_on_building_check = function() {
+	return false
 	Castles.find({}, {fields: {_id:1, user_id:1, x:1, y:1}}).forEach(function(res) {
 		check_for_enemies_here(res, 'castle')
 	})
@@ -34,6 +35,7 @@ var check_for_enemies_here = function(building, type) {
 
 // loop through every army and check if there are any enemies on the same hex, if so they fight
 enemies_together_check = function() {
+	return false
 	Armies.find({}, {fields: {user_id:1, x:1, y:1}}).forEach(function(army) {
 
 		// find armies here except this one
@@ -50,7 +52,7 @@ enemies_together_check = function() {
 					if (user.is_dominus || otherUser.is_dominus) {
 						// dominus' armies can attack any army
 						Battle.start_battle(army.x,army.y)
-						
+
 					} else {
 						var relation = getPlayersRelationType_server(user._id, otherUser._id)
 						var canAttack = ['enemy', 'enemy_ally']

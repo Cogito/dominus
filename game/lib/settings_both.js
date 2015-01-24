@@ -128,6 +128,10 @@ s.army.stats = {
 	}
 }
 
+s.army.pastMovesToShow = 3
+// s.army.pastMovesToShow times as long as catapults
+s.army.pastMovesMsLimit = 60 / s.army.stats.catapults.speed * s.army.pastMovesToShow * 1000 * 60
+
 s.village.cost = {
 	grain: 1000,
 	lumber: 500,
