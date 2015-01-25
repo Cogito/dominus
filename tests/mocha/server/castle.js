@@ -1,12 +1,20 @@
 if (!(typeof MochaWeb === 'undefined')){
     MochaWeb.testOnly(function(){
-        describe("castle", function(){
-            it("should create castle for user", function(){
+        describe("castle creation", function(){
 
+            before(function() {
+                createPlayer1()
+
+                // add some rings so that mapbaker doesn't get called
+                generate_hexes(8, false)
+            })
+
+            it("should create castle for user", function(){
                 var player1 = Meteor.users.findOne({username:'player1'}, {fields: {_id:1}})
 
                 chai.assert.isUndefined(player1.x)
                 chai.assert.isUndefined(player1.y)
+                chai.assert.isUndefined(player1.castle_id)
 
                 create_castle(player1._id)
                 var castle = Castles.findOne({user_id:player1._id})

@@ -47,23 +47,20 @@ resetDatabase = function () {
 
 loadDefaultFixtures = function () {
     console.log('Loading default fixtures');
-
-    var user = {
-        admin:false,
-        username: 'player1',
-        emails: [{address:'player1@email.com', verified:true}]
-    }
-
-    user = setupNewUser(user)
-    Meteor.users.insert(user)
-
-    // add some rings so that mapbaker doesn't get called
-    generate_hexes(8, false)
-
     console.log('Finished loading default fixtures');
 };
 
 if (process.env.IS_MIRROR) {
     resetDatabase();
-    loadDefaultFixtures();
+    //loadDefaultFixtures();
+}
+
+createPlayer1 = function() {
+    var user = {
+        admin:false,
+        username: 'player1',
+        emails: [{address:'player1@email.com', verified:true}]
+    }
+    user = setupNewUser(user)
+    Meteor.users.insert(user)
 }

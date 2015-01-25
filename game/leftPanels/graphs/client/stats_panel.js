@@ -39,31 +39,31 @@ Template.stats_panel.rendered = function() {
 			dailystats.forEach(function(stat) {
 				_.each(s.resource.types_plus_gold, function(type) {
 
-					if (stat.inc && stat.inc[type] && !isNaN(stat.inc[type])) {
+					if (stat.hasOwnProperty('inc') && stat.inc.hasOwnProperty(type) && !isNaN(stat.inc[type])) {
 						var y = stat.inc[type]
 						inc[type].push({x:stat.updated_at, y:y})
 					}
 
-					if (stat.vassalInc && stat.vassalInc[type] && !isNaN(stat.vassalInc[type])) {
+					if (stat.hasOwnProperty('vassalInc') && stat.vassalInc.hasOwnProperty(type) && !isNaN(stat.vassalInc[type])) {
 						var y = stat.vassalInc[type]
 						vInc[type].push({x:stat.updated_at, y:y})
 					}
 
-					if (stat.inc && stat.inc[type] && !isNaN(stat.inc[type])) {
+					if (stat.hasOwnProperty('inc') && stat.inc.hasOwnProperty('type') && !isNaN(stat.inc[type])) {
 						var y = stat.inc[type] - stat.vassalInc[type]
 						bInc[type].push({x:stat.updated_at, y:y})
 					}
 				})
 
-				if (stat.networth && !isNaN(stat.networth)) {
+				if (stat.hasOwnProperty('networth') && !isNaN(stat.networth)) {
 					networthValues.push({x:stat.updated_at, y:stat.networth})
 				}
 
-				if (stat.incomeRank && !isNaN(stat.incomeRank)) {
+				if (stat.hasOwnProperty('incomeRank') && !isNaN(stat.incomeRank)) {
 					incomeRankValues.push({x:stat.updated_at, y:stat.incomeRank})
 				}
 
-				if (stat.num_allies && !isNaN(stat.num_allies)) {
+				if (stat.hasOwnProperty('num_allies') && !isNaN(stat.num_allies)) {
 					numVassalsValues.push({x:stat.updated_at, y:stat.num_allies})
 				}
 

@@ -35,7 +35,7 @@ Meteor.methods({
 			return true
 		}
 
-		var army = Armies.findOne({_id:army_id, user_id:Meteor.userId()}, {fields: {x:1, y:1}})
+		var army = Armies.findOne({_id:army_id, user_id:Meteor.userId()}, {fields: {x:1, y:1, pastMoves:1}})
 		if (army) {
 
 			// make sure army is at start of first move
@@ -63,6 +63,32 @@ Meteor.methods({
 					last_move_at:new Date()
 				})
 			})
+
+			///////////////////////////////////////
+			// add current hex as a past move
+			var pastMoves = army.pastMoves || []
+			var armyX = moves[0].from_x
+			var armyY = moves[0].from_y
+
+			// is current hex is in pastMoves already
+			var alreadyIn = false
+			if (pastMoves.length > 0) {
+				if (pastMoves[0].x == armyX && pastMoves[0].y == armyY) {
+					var cutoff = moment(new Date()).subtract(s.army.pastMovesMsLimit, 'ms')
+					if (moment(new Date(pastMoves[0].moveDate)).isAfter(cutoff)) {
+						alreadyIn = true
+					}
+				}
+			}
+
+			if (!alreadyIn) {
+				pastMoves.unshift({x:moves[0].from_x, y:moves[0].from_y, moveDate: new Date()})
+				if (pastMoves.length > s.army.pastMovesToShow) {
+					pastMoves.pop()
+				}
+				Armies.update(army._id, {$set: {pastMoves:pastMoves}})
+			}
+
 
 			return true
 		} else {
