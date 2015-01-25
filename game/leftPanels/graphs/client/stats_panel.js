@@ -49,7 +49,7 @@ Template.stats_panel.rendered = function() {
 						vInc[type].push({x:stat.updated_at, y:y})
 					}
 
-					if (stat.hasOwnProperty('inc') && stat.inc.hasOwnProperty('type') && !isNaN(stat.inc[type])) {
+					if (stat.hasOwnProperty('inc') && stat.inc.hasOwnProperty(type) && !isNaN(stat.inc[type])) {
 						var y = stat.inc[type] - stat.vassalInc[type]
 						bInc[type].push({x:stat.updated_at, y:y})
 					}
