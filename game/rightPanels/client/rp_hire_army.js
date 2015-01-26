@@ -306,6 +306,7 @@ Template.rp_hire_army.created = function() {
 
 
 
+
 	// cost
 	this.autorun(function() {
 		var res_cost = resource_cost_army(get_selected_hiring_units())

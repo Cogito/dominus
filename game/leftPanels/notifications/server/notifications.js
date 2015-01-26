@@ -18,7 +18,6 @@ notification_no_longer_dominus_new_user = function(user_id, user) {
 
 notification_new_dominus = function(user, oldDominusId) {
 	check(user, Object)
-	check(oldDominusId, Match.Optional(String))
 	create_notification_for_all_players(
 		'new_dominus',
 		{_id:user._id, username: user.username, x:user.x, y:user.y, castle_id:user.castle_id, oldDominusId: oldDominusId},
