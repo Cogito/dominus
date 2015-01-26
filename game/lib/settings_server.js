@@ -66,13 +66,13 @@ if (Meteor.isServer) {
 
 	// give to new user
 	s.starting_resources = {
-		gold: 2000,
+		gold: 0,
 		grain: 2000,
 		lumber: 2000,
 		ore: 2000,
-		wool: 200,
+		wool: 300,
 		clay: 1000,
-		glass: 0
+		glass: 100
 	}
 
 	s.maxNotificationsPerUser = 150

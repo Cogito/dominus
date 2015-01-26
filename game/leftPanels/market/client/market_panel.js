@@ -99,7 +99,7 @@ Template.market_panel.events({
 								}
 							}
 						}})
-						
+
 					} else {
 						$('#market_error_alert').text('You do not have enough gold.')
 						$('#market_error_alert').show()
@@ -247,7 +247,7 @@ Template.market_panel.rendered = function() {
 			if (resource) {
 				// buy
 				var cost = total_of_buy(type, quantity)
-				$('#market_preview_buy').text('Buy '+quantity+' '+type+' for '+round_number_1(cost)+' gold.')
+				$('#market_preview_buy').text('Buy '+round_number_1(quantity)+' '+type+' for '+round_number_1(cost)+' gold.')
 				if (cost > get_user_property("gold")) {
 					$('#market_preview_buy').css('color', 'red')
 				}
@@ -257,7 +257,7 @@ Template.market_panel.rendered = function() {
 					$('#market_preview_sell').text('Not enough available.')
 				} else {
 					var total = total_of_sell(type, quantity)
-					$('#market_preview_sell').text('Sell '+quantity+' '+type+' for '+round_number_1(total)+' gold.')
+					$('#market_preview_sell').text('Sell '+round_number_1(quantity)+' '+type+' for '+round_number_1(total)+' gold.')
 				}
 			}
 		}
