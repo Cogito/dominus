@@ -31,16 +31,6 @@ Accounts.onCreateUser(function(options, user) {
 
 	user = setupNewUser(user)
 
-	// set game winner
-	// xom from game 1
-	if (user.emails && user.emails[0].address == 'hmliang@gmail.com') {
-		user.is_game_winner = true
-	}
-	// hertle from game 2
-	if (user.emails && user.emails[0].address == 'travel_on@hotmail.com') {
-		user.is_game_winner = true
-	}
-
 	// if someone was dominus make them not dominus
 	remove_dominus()
 
@@ -58,6 +48,7 @@ Accounts.onLogin(function(data) {
 
 
 onCreateUser = function(userId) {
+	check(userId, String)
 	worker.enqueue('create_castle', {user_id: userId})
 	init_dailystats_for_new_user(userId)
 	setupEveryoneChatroom()

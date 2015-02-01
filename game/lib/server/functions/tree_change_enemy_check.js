@@ -6,7 +6,8 @@
 // $nin team $or in team but not in allies or siblings
 
 enemy_on_building_check = function() {
-	return false
+	var start_time = new Date()
+
 	Castles.find({}, {fields: {_id:1, user_id:1, x:1, y:1}}).forEach(function(res) {
 		check_for_enemies_here(res, 'castle')
 	})
@@ -14,6 +15,8 @@ enemy_on_building_check = function() {
 	Villages.find({}, {fields: {_id:1, user_id:1, x:1, y:1}}).forEach(function(res) {
 		check_for_enemies_here(res, 'village')
 	})
+
+	record_job_stat('enemy_on_building_check', new Date() - start_time)
 }
 
 
@@ -35,7 +38,8 @@ var check_for_enemies_here = function(building, type) {
 
 // loop through every army and check if there are any enemies on the same hex, if so they fight
 enemies_together_check = function() {
-	return false
+	var start_time = new Date()
+
 	Armies.find({}, {fields: {user_id:1, x:1, y:1}}).forEach(function(army) {
 
 		// find armies here except this one
@@ -67,6 +71,8 @@ enemies_together_check = function() {
 			}
 		})
 	})
+
+	record_job_stat('enemies_together_check', new Date() - start_time)
 }
 
 
