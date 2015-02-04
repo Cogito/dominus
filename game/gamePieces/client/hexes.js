@@ -71,8 +71,8 @@ Template.hexes.events({
 		if (!mapmover.isDraggingOrScaling) {
 
 			var coord = getCoordinatesFromEvent(event)
-
 			var mouseMode = Session.get('mouse_mode')
+
 			if (mouseMode == 'default') {
 
 				Meteor.call('coords_to_id', coord.x, coord.y, 'hex', function(error, hexId) {

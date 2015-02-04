@@ -3,6 +3,7 @@ Meteor.methods({
 	// moves = [{from_x:0, from_y:0, to_x:0, to_y:0}, {from_x:0, from_y:0, to_x:0, to_y:0}]
 	// don't throw errors here, just return false
 	create_moves: function(army_id, moves) {
+
 		var self = this
 		check(army_id, String)
 		check(moves, Array)
@@ -38,8 +39,15 @@ Meteor.methods({
 		var army = Armies.findOne({_id:army_id, user_id:Meteor.userId()}, {fields: {x:1, y:1, pastMoves:1}})
 		if (army) {
 
-			// make sure army is at start of first move
-			if (army.x != moves[0].from_x && army.y != moves[0].from_y) {
+			// make sure army is somewhere in first move
+			var inMove = false
+			var hexesAlongMove = Hx.getHexesAlongLine(moves[0].from_x, moves[0].from_y, moves[0].to_x, moves[0].to_y, s.hex_size, s.hex_squish)
+			_.each(hexesAlongMove, function(hx) {
+				if (army.x == hx.x && army.y == hx.y) {
+					inMove = true
+				}
+			})
+			if (!inMove) {
 				return false
 			}
 
