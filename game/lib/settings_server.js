@@ -32,7 +32,7 @@ if (Meteor.isServer) {
 		clay_max: 0.97,
 		glass_min: 0.97,
 		glass_max: 1,
-		large: 0.09 		// x% chance to be a large resource hex
+		large: 0.1 		// x% chance to be a large resource hex
 	}
 
 	s.market.start_price = {
