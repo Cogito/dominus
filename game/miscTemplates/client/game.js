@@ -66,13 +66,12 @@ Template.game.created = function() {
 	var submanHexbakes = new SubsManager({cacheLimit:10, expireIn:5})
 
 
-	// when user changes show coords setting create new subscription
-	// SubsManager.reset() isn't working
+	// when user changes show coords setting clear subscription
 	self.showCoords = new ReactiveVar(false)
 	self.autorun(function() {
 		var user = Meteor.users.findOne(Meteor.userId(), {fields: {sp_show_coords:1}})
-		if (user) {
-			submanHexbakes = new SubsManager({cacheLimit:10, expireIn:5})
+		if (user && submanHexbakes) {
+			submanHexbakes.clear()
 			self.showCoords.set(user.sp_show_coords)
 		}
 	})

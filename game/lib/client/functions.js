@@ -30,6 +30,8 @@ move_hexes_to = function(pixel_x, pixel_y) {
 	check(pixel_y, validNumber)
 	var hexScale = Session.get('hexScale')
 	if (hexScale) {
+		pixel_x = parseFloat(pixel_x)
+		pixel_y = parseFloat(pixel_y)
 		$('#hexes').attr('transform', 'translate('+pixel_x+','+pixel_y+') scale('+Session.get('hexScale')+')')
 		Session.set('hexes_pos', {x:pixel_x, y:pixel_y})
 	} else {

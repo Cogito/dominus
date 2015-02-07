@@ -2,25 +2,43 @@ Template.landing.helpers({
 	form: function() {
 		return Session.get('landingForm')
 	},
-
-	
 })
+
 
 Template.landing.rendered = function() {
 	Session.set('landingForm', 'landingCreateAccount')
 
-	resizeBg()
-	window.onresize = resizeBg
+	setViewport()
+	setBackground()
+	window.onresize = function() {
+		setViewport()
+		setBackground()
+	}
 }
 
-function resizeBg() {
-	var landingBg = $("#landingBg")
-	var aspectRatio = landingBg.width() / landingBg.height()
 
-	if (($(window).width() / $(window).height()) < aspectRatio) {
-		landingBg.removeClass().addClass('bgHeight')
+var setBackground = function() {
+	document.body.style.backgroundColor = '#111';
+	document.body.style.backgroundImage = 'url(/landing/landingBg.jpg)';
+	document.body.style.backgroundPosition = 'center top';
+	document.body.style.backgroundRepeat = 'no-repeat';
+	document.body.style.backgroundSize = 'cover';
+	document.body.style.backgroundAttachment = 'fixed';
+}
+
+
+// set viewport for mobile
+var setViewport = function() {
+	var pageWidth = 550
+	var zoom = screen.width / pageWidth
+	if (zoom < 1) {
+		var tag = document.getElementById('viewport')
+		var content = 'initial-scale='+zoom+', maximum-scale='+zoom+', minimum-scale='+zoom+', user-scalable=no, width='+pageWidth
+		tag.setAttribute('content', content)
 	} else {
-		landingBg.removeClass().addClass('bgwidth')
+		var tag = document.getElementById('viewport')
+		var content = 'initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, width=device-width'
+		tag.setAttribute('content', content)
 	}
 }
 
@@ -57,3 +75,13 @@ Template.landingForgotPassword.events({
 		Session.set('landingForm', 'landingSignin')
 	}
 })
+
+
+var loginFormRendered = function() {
+	this.find('.formContainer').parentNode._uihooks = landingLoginFormAnimation
+}
+
+
+Template.landingSignin.rendered = loginFormRendered
+Template.landingCreateAccount.rendered = loginFormRendered
+Template.landingForgotPassword.rendered = loginFormRendered

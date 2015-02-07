@@ -13,50 +13,50 @@ Meteor.startup(function() {
 		// })
 
 
-		// make sure there are no negative armies
-		// var find = []
-		// _.each(s.army.types, function(type) {
-		// 	var or = {}
-		// 	or[type] = {$lt:0}
-		// 	find.push(or)
-		// })
-		//
-		// var castles = Castles.find({$or:find})
-		// var villages = Villages.find({$or:find})
-		// var armies = Armies.find({$or:find})
-		//
-		// castles.forEach(function(res) {
-		// 	_.each(s.army.types, function(type) {
-		// 		if (res[type] < 0) {
-		// 			console.log('castle '+res._id+' had '+res[type]+' '+type+'s')
-		// 			var set = {}
-		// 			set[type] = 0
-		// 			Castles.update(res._id, {$set:set})
-		// 		}
-		// 	})
-		// })
-		//
-		// villages.forEach(function(res) {
-		// 	_.each(s.army.types, function(type) {
-		// 		if (res[type] < 0) {
-		// 			console.log('village '+res._id+' had '+res[type]+' '+type+'s')
-		// 			var set = {}
-		// 			set[type] = 0
-		// 			Villages.update(res._id, {$set:set})
-		// 		}
-		// 	})
-		// })
-		//
-		// armies.forEach(function(res) {
-		// 	_.each(s.army.types, function(type) {
-		// 		if (res[type] < 0) {
-		// 			console.log('army '+res._id+' had '+res[type]+' '+type+'s')
-		// 			var set = {}
-		// 			set[type] = 0
-		// 			Armies.update(res._id, {$set:set})
-		// 		}
-		// 	})
-		// })
+		//make sure there are no negative armies
+		var find = []
+		_.each(s.army.types, function(type) {
+			var or = {}
+			or[type] = {$lt:0}
+			find.push(or)
+		})
+
+		var castles = Castles.find({$or:find})
+		var villages = Villages.find({$or:find})
+		var armies = Armies.find({$or:find})
+
+		castles.forEach(function(res) {
+			_.each(s.army.types, function(type) {
+				if (res[type] < 0) {
+					console.log('castle '+res._id+' had '+res[type]+' '+type+'s')
+					var set = {}
+					set[type] = 0
+					Castles.update(res._id, {$set:set})
+				}
+			})
+		})
+
+		villages.forEach(function(res) {
+			_.each(s.army.types, function(type) {
+				if (res[type] < 0) {
+					console.log('village '+res._id+' had '+res[type]+' '+type+'s')
+					var set = {}
+					set[type] = 0
+					Villages.update(res._id, {$set:set})
+				}
+			})
+		})
+
+		armies.forEach(function(res) {
+			_.each(s.army.types, function(type) {
+				if (res[type] < 0) {
+					console.log('army '+res._id+' had '+res[type]+' '+type+'s')
+					var set = {}
+					set[type] = 0
+					Armies.update(res._id, {$set:set})
+				}
+			})
+		})
 
 
 

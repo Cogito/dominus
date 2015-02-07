@@ -17,7 +17,7 @@ check@1.0.4
 classcraft:knox@0.9.11
 coffeescript@1.0.5
 d3@1.0.0
-d3js:d3@3.4.13
+d3js:d3@3.5.3
 danimal:accounts-templates@1.0.4
 danimal:hx@1.0.6
 danimal:mapbaker@1.0.11
@@ -55,7 +55,7 @@ localstorage@1.0.2
 logging@1.0.6
 meteor@1.1.4
 meteor-platform@1.2.1
-meteorhacks:subs-manager@1.2.4
+meteorhacks:subs-manager@1.3.0
 minifiers@1.1.3
 minimongo@1.0.6
 mizzao:timesync@0.2.2
@@ -63,7 +63,7 @@ mizzao:user-status@0.6.3
 mobile-status-bar@1.0.2
 momentjs:moment@2.9.0
 mongo@1.0.11
-mrgalaxy:stripe@1.5.6
+mrgalaxy:stripe@2.0.0
 mrt:cookies@0.3.0
 mrt:modernizr-meteor@2.6.2
 mrt:nvd3js@0.1.0

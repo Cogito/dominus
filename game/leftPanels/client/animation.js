@@ -8,3 +8,18 @@ leftPanelAnimation = {
 		}}, 150)
 	}
 }
+
+landingLoginFormAnimation = {
+	insertElement: function(node, next) {
+		if (node.className.indexOf('alert') == -1) {
+			$(node).hide().delay(51).insertBefore(next).fadeIn(100)
+		} else {
+			$(node).insertBefore(next)
+		}
+	},
+	removeElement: function(node) {
+		$(node).fadeOut(50, function() {
+			$(node).remove()
+		})
+	}
+}

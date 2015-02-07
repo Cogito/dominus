@@ -1,65 +1,60 @@
 @borderRadius:10px;
 
-#landingBg {
-	position:fixed;
-	top:0;
-	left:0;
-	z-index:-1
+#landing {
+	background-color: #fff;
+	color:#333;
+	margin-top:30px;
+	margin-bottom:80px;
+	font-size:120%;
+	width:520px;
+	margin-left:auto;
+	margin-right:auto;
+	border-radius: 3px;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+
+	button {
+		box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+	}
 }
 
-.bgWidth {
-	width:100%;
-}
-
-.bgHeight {
-	height:100%;
-}
-
-
-
-#landingContentTop {
-	background-color:rgba(20,20,20,0.85);
+#landingTop {
+	text-align:center;
+	background-color:#333;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	color:#fff;
 	font-size:120%;
 	padding-top:20px;
-	padding-bottom:40px;
-	width:520px;
-	margin-left:auto;
-	margin-right:auto;
+	padding-bottom:20px;
+
+	#logo {
+		font-size:300%;
+		margin-bottom:-10px;
+		padding-bottom:0;
+	}
 }
 
-#landingDominus {
-	font-size:300%;
-	text-align:center;
-	padding-bottom:5px;
+#landingFooter {
+	background-color:#eee;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
 }
 
-#landingContent {
-	background-color:rgba(20,20,20,0.65);
-	font-size:120%;
-	text-align:center;
-	width:520px;
-	margin-left:auto;
-	margin-right:auto;
+#landingBanner {
+	background-color:#eee;
 }
 
-#landingForm {
-	width:520px;
-	margin-left:auto;
-	margin-right:auto;
-	margin-top:20px;
-	margin-bottom:20px;
-	background-color:rgba(20,20,20,0.7);
+#gameScreenshot {
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
 }
 
-
+// stops page from scrolling to top when changing templates
+#passwordLoginContainer {
+	min-height: 615px;
+}
 
 .landingPad {
 	padding:40px;
-}
-
-
-.landingLargeText {
-	font-size:130%;
 }
 
 .loginLink {
@@ -67,7 +62,7 @@
 }
 
 .loginTitle {
-	font-size:180%;
+	font-size:140%;
 }
 
 .divider {
@@ -78,7 +73,7 @@
 		margin-left:auto;
 		margin-right:auto;
 		width:40%;
-		border-color: rgba(255,255,255,0.5);
+		border-color: rgba(0,0,0,0.3);
 	}
 
 	& .left {
@@ -96,4 +91,13 @@
 
 .socialSigninButton {
 	font-size:130%;
+}
+
+.loginSocialButton {
+	background-color: rgb(53,126,189);
+	border-radius: 50%;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+	width:60px;
+	height:60px;
+	padding:20px;
 }

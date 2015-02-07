@@ -11,7 +11,6 @@ facts
 mrt:underscore-string-latest@2.3.3
 email
 accounts-ui
-mrgalaxy:stripe@1.5.5
 mizzao:user-status@0.6.0
 mrt:modernizr-meteor@2.6.2
 mrt:cookies@0.3.0
@@ -20,7 +19,6 @@ mizzao:timesync
 danimal:accounts-templates
 danimal:hx
 iron:router
-meteorhacks:subs-manager
 underscore
 reactive-var
 spiderable
@@ -37,3 +35,5 @@ danimal:mapbaker
 accounts-google
 accounts-facebook
 fastclick
+meteorhacks:subs-manager
+mrgalaxy:stripe
