@@ -90,6 +90,13 @@
 			{{/unless}}
 
 
+			{{#if showUnverifiedEmailAlert}}
+				<div class="panel pandel-default panel-body" style="text-align:center;">
+					Email not yet verified.  {{username}} isn't receiving income.
+				</div>
+			{{/if}}
+
+
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					Castle Garrison
@@ -159,33 +166,6 @@
 				{{/if}}
 
 			{{/if}}		<!-- is owner -->
-
-			{{#if dupes}}
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						Possible Duplicate Users
-					</div>
-					<table class="table table-striped table-condensed">
-						<tbody>
-							{{#each dupes}}
-								<tr>
-									<td>
-										{{this.username}}
-									</td>
-									<td style="text-align:right;">
-										{{> center_on_button x=this.x y=this.y selected_type='castle' selected_id=this.castle_id}}
-									</td>
-								</tr>
-							{{/each}}
-						</tbody>
-					</table>
-					<div class="panel-body">
-						<div class="light_text">
-							Duplicate accounts are not allowed.  If you have more than one account please delete all but one.  For more info read the help.
-						</div>
-					</div>
-				</div>
-			{{/if}}
 
 		{{else}}
 			<div class="pad_group" style="text-align:center;">

@@ -1,18 +1,18 @@
-Meteor.methods({
-	get_duplicate_users: function(user_id) {
-		this.unblock()
-		var dupes = []
-
-		var user = Meteor.users.findOne({_id:user_id}, {fields: {"status.lastLogin.ipAddr":1, username:1}})
-		if (user) {
-			Meteor.users.find({"status.lastLogin.ipAddr":user.status.lastLogin.ipAddr, _id: {$ne: user._id}}, {fields: {username:1, x:1, y:1, castle_id:1}}).forEach(function(u) {
-				dupes.push({username: u.username, x:u.x, y:u.y, castle_id:u.castle_id})
-			})
-		}
-
-		return dupes
-	}
-})
+// Meteor.methods({
+// 	get_duplicate_users: function(user_id) {
+// 		this.unblock()
+// 		var dupes = []
+//
+// 		var user = Meteor.users.findOne({_id:user_id}, {fields: {"status.lastLogin.ipAddr":1, username:1}})
+// 		if (user) {
+// 			Meteor.users.find({"status.lastLogin.ipAddr":user.status.lastLogin.ipAddr, _id: {$ne: user._id}}, {fields: {username:1, x:1, y:1, castle_id:1}}).forEach(function(u) {
+// 				dupes.push({username: u.username, x:u.x, y:u.y, castle_id:u.castle_id})
+// 			})
+// 		}
+//
+// 		return dupes
+// 	}
+// })
 
 
 destroy_all_castles = function() {

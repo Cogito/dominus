@@ -41,7 +41,8 @@ Meteor.publish('user_data', function () {
 			losses_worth:1,
 			losses_num:1,
 			sp_show_coords:1,
-			sp_show_minimap:1
+			sp_show_minimap:1,
+			emails:1
 		}})
 	} else {
 		this.ready()

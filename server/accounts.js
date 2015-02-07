@@ -112,3 +112,15 @@ setupNewUser = function(user) {
 
 	return user
 }
+
+
+Accounts.config({
+	sendVerificationEmail:true,
+	loginExpirationInDays: null
+})
+
+Accounts.emailTemplates.siteName = s.game_name
+Accounts.emailTemplates.from = 'Dominus <dan@dominusgame.net>'
+Accounts.emailTemplates.verifyEmail.subject = function() {
+	return 'Email verification for Dominus'
+}

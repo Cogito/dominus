@@ -1,4 +1,13 @@
 Template.rp_info_castle.helpers({
+	showUnverifiedEmailAlert: function() {
+		if (Template.currentData()) {
+			var user = RightPanelUser.findOne(Template.currentData().user_id)
+			if (user) {
+				return !user.emails[0].verified
+			}
+		}
+	},
+
 	unitRelationType: function() {
 		if (Template.instance()) {
 			var type = Template.instance().relationship.get()
@@ -78,10 +87,6 @@ Template.rp_info_castle.helpers({
 		}
 	},
 
-	dupes: function() {
-		return Template.instance().dupes.get()
-	},
-
 	user: function() {
 		if (Template.currentData()) {
 			return RightPanelUser.findOne(Template.currentData().user_id)
@@ -120,7 +125,6 @@ Template.rp_info_castle.events({
 Template.rp_info_castle.created = function() {
 	var self = this
 	self.subs = new ReadyManager()
-	self.dupes = new ReactiveVar(false)
 
 	Session.set('mouse_mode', 'default')
 	Session.set('update_highlight', Random.fraction())
@@ -143,17 +147,6 @@ Template.rp_info_castle.created = function() {
 				groupName: 'rightPanelTree',
 				subscriptions: [ Meteor.subscribe('rightPanelTree', Template.currentData().user_id).ready() ]
 			}])
-		}
-	})
-
-
-	this.autorun(function() {
-		if (Template.currentData()) {
-			Meteor.call('get_duplicate_users', Template.currentData().user_id, function(error, result) {
-				if (!error) {
-					self.dupes.set(result)
-				}
-			})
 		}
 	})
 
