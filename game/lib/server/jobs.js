@@ -13,14 +13,14 @@ Meteor.startup(function() {
 		// })
 
 
-		set all emails to verified
-		Meteor.users.find().forEach(function(u) {
-			if (u.emails[0].verified == false) {
-				var emails = u.emails
-				emails[0].verified = true
-				Meteor.users.update(u._id, {$set: {emails:emails}})
-			}
-		})
+		// //set all emails to verified
+		// Meteor.users.find().forEach(function(u) {
+		// 	if (u.emails[0].verified == false) {
+		// 		var emails = u.emails
+		// 		emails[0].verified = true
+		// 		Meteor.users.update(u._id, {$set: {emails:emails}})
+		// 	}
+		// })
 
 
 		//make sure there are no negative armies
