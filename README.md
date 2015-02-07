@@ -1,7 +1,7 @@
 ![Alt text](/public/presskit/presskit_banner.jpg?raw=true "Optional Title")
 
 ### Dominus ###
-http://dominusgame.net
+https://dominusgame.net
 
 Dominus is a multiplayer browser strategy game.  Grow in power by conquering castles.   Make everyone in the game your vassal to become the Dominus.
 
