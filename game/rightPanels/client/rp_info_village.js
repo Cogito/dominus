@@ -97,6 +97,10 @@ Template.rp_info_village.events({
 
 	'click #hireArmyButton': function(event, template) {
 		Session.set('rp_template', 'rp_hire_army')
+	},
+
+	'click #createChatButton': function(event, template) {
+		Meteor.call('startChatroomWith', template.data.username)
 	}
 })
 

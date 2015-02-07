@@ -109,6 +109,10 @@ Template.rp_info_castle.events({
 	'change .image_radios': function(event, template) {
 		var castle_id = UI._templateInstance().data._id
 		Meteor.call('set_unit_image', castle_id, 'castles', this.toString())
+	},
+
+	'click #createChatButton': function(event, template) {
+		Meteor.call('startChatroomWith', template.data.username)
 	}
 })
 

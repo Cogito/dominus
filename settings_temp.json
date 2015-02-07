@@ -7,14 +7,12 @@
 	"googleLogin": {
 		"service":"google",
 		"clientId":"xxx",
-		"secret":"xxx",
-		"loginStyle":"popup",
+		"secret":"xxx"
 	},
 	"facebookLogin":{
 		"service":"facebook",
 		"appId":"xxx",
-		"secret":"xxx",
-		"loginStyle":"popup"
+		"secret":"xxx"
 	},
 	"public": {
 		"stripe_publishable_key":"pk_test",
