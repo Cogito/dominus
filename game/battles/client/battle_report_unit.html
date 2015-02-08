@@ -174,32 +174,35 @@
     <h4>&nbsp;&nbsp;&nbsp;&nbsp;{{username}}'s Losses</h4>
     <ul>
         {{#with losses}}
-        {{#if greater_than_zero footmen}}
-        <li>
-            Footmen: {{footmen}}
-        </li>
-        {{/if}}
-        {{#if greater_than_zero archers}}
-        <li>
-            Archers: {{archers}}
-        </li>
-        {{/if}}
-        {{#if greater_than_zero pikemen}}
-        <li>
-            Pikemen: {{pikemen}}
-        </li>
-        {{/if}}
-        {{#if greater_than_zero cavalry}}
-        <li>
-            Cavalry: {{cavalry}}
-        </li>
-        {{/if}}
-        {{#if greater_than_zero catapults}}
-        <li>
-            Catapults: {{catapults}}
-        </li>
-        {{/if}}
-        <li>{{total}} soldiers worth {{round power}} power.</li>
+            {{#if greater_than_zero footmen}}
+            <li>
+                Footmen: {{footmen}}
+            </li>
+            {{/if}}
+            {{#if greater_than_zero archers}}
+            <li>
+                Archers: {{archers}}
+            </li>
+            {{/if}}
+            {{#if greater_than_zero pikemen}}
+            <li>
+                Pikemen: {{pikemen}}
+            </li>
+            {{/if}}
+            {{#if greater_than_zero cavalry}}
+            <li>
+                Cavalry: {{cavalry}}
+            </li>
+            {{/if}}
+            {{#if greater_than_zero catapults}}
+                <li>
+                    Catapults: {{catapults}}
+                </li>
+            {{/if}}
+            <li>{{total}} soldiers worth {{round power}} power.</li>
+            {{#if wasDestroyed}}
+                <li>{{destroyedText}}</li>
+            {{/if}}
         {{/with}}
     </ul>
     <br>

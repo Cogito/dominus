@@ -11,12 +11,25 @@ Fight = function (x, y, unitObj, battleDb) {
 
 	if (self.unitObj._someoneHasEnemies()) {
 		_.each(units, function(unit) {
-			if (self.unitObj.hasSoldiers(unit)) {
-				if (self.unitObj.hasEnemies(unit)) {
+			if (self.unitObj.hasEnemies(unit)) {
+				if (unit.type == 'castle') {
+					if (self.unitObj.hasSoldiers(unit)) {
+						self._runFight(unit)
+						self._killSoldiers(unit)
+					}
+				} else {
 					self._runFight(unit)
 					self._killSoldiers(unit)
 				}
 			}
+
+			// old
+			//if (self.unitObj.hasSoldiers(unit)) {
+				// if (self.unitObj.hasEnemies(unit)) {
+				// 	self._runFight(unit)
+				// 	self._killSoldiers(unit)
+				// }
+			//}
 		})
 
 		battleDb.saveRecord()
@@ -212,6 +225,7 @@ Fight.prototype._killSoldiers = function(unit) {
 		// stop if everyone is dead
 		if (unitsLeft == 0) {
 			powerTakenAway = powerToLose
+			unit.dead = true
 		}
 
 		// stop if failed max times

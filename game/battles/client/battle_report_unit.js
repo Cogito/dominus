@@ -20,7 +20,16 @@ Template.battle_report_unit.helpers({
         } else {
             return 'fa-shield'
         }
+    },
 
+    wasDestroyed: function() {
+        var data = Template.parentData(1)
+        return data.dead
+    },
+
+    destroyedText: function() {
+        var data = Template.parentData(1)
+        return _.humanize(data.type+' was destroyed.')
     }
 })
 

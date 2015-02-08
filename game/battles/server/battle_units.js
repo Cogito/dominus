@@ -58,6 +58,7 @@ Units = function(x, y) {
 		_.each(s.army.types, function(type) {
 			unit.losses[type] = 0
 		})
+		unit.dead = false
 	})
 
 
