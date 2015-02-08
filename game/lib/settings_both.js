@@ -50,14 +50,24 @@ s.resource.types_plus_gold = ['gold'].concat(s.resource.types)
 
 s.army.types = ['footmen', 'archers', 'pikemen', 'cavalry', 'catapults']
 
+// s.castle.income = {
+// 	gold: s.resource.gold_gained_at_castle,
+// 	grain: 30,
+// 	lumber: 20,
+// 	ore: 10,
+// 	wool: 8,
+// 	clay: 6,
+// 	glass: 2
+// }
+
 s.castle.income = {
 	gold: s.resource.gold_gained_at_castle,
-	grain: 30,
-	lumber: 20,
-	ore: 10,
-	wool: 8,
-	clay: 6,
-	glass: 2
+	grain: 35
+	lumber: 16
+	ore: 8
+	wool: 6
+	clay: 7
+	glass: 5
 }
 
 s.army.cost = {
