@@ -186,6 +186,7 @@ Template.stats_panel.rendered = function() {
 
 			var numUsers = []
 			var numActiveUsers = []
+			var numSessions = []
 
 			var soldierWorth = {}
 			_.each(s.army.types, function(type) {
@@ -201,6 +202,10 @@ Template.stats_panel.rendered = function() {
 					numActiveUsers.push({x:stat.created_at, y:stat.num_active_users})
 				}
 
+				if (stat.activeSessions && !isNaN(stat.activeSessions)) {
+					numSessions.push({x:stat.created_at, y:stat.activeSessions})
+				}
+
 				if (stat.soldierWorth) {
 					_.each(s.army.types, function(type) {
 						if (!isNaN(stat.soldierWorth[type])) {
@@ -212,7 +217,8 @@ Template.stats_panel.rendered = function() {
 
 			var user_data = [
 				{values: numUsers, key: 'Total Players', color: '#82d957'},
-				{values: numActiveUsers, key: 'Active Players', color: '#5793d9'}
+				{values: numActiveUsers, key: 'Active Players', color: '#5793d9'},
+				{values: numSessions, key: 'Online Players', color: '#d98659'}
 			]
 
 			nv.addGraph(function() {
@@ -232,9 +238,9 @@ Template.stats_panel.rendered = function() {
 				'#e6d545',
 				'#82d957',
 				'#d9d9d9',
-				'#d9cf82',
+				'#5793d9',
 				'#d98659',
-				'#5793d9'
+				'#d9cf82'
 			]
 			var soldierWorthData = []
 			var x = 0

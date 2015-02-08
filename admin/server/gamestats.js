@@ -2,7 +2,7 @@
 gamestats_job = function() {
 	var start_time = new Date()
 
-	var stat = Gamestats.findOne({created_at: {$gte: statsBegin(), $lt: statsEnd()}})
+	var stat = Gamestats.findOne({created_at: {$gte: gamestatsBegin(), $lt: gamestatsEnd()}})
 
 	if (!stat) {
 		var stat = {
@@ -71,6 +71,13 @@ gamestats_job = function() {
 	var num_active_users = Meteor.users.find({"status.lastLogin.date": {$gt: cutoff}}).count()
 	check(num_active_users, validNumber)
 	stat.num_active_users = num_active_users
+
+	// sessions
+	var sessions = Facts._factsByPackage.livedata.sessions
+	if (sessions) {
+		stat.activeSessions = Facts._factsByPackage.livedata.sessions
+	}
+
 
 	// average market price
 	var price = 0

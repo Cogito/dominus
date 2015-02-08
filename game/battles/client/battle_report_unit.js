@@ -24,12 +24,16 @@ Template.battle_report_unit.helpers({
 
     wasDestroyed: function() {
         var data = Template.parentData(1)
-        return data.dead
+        if (data) {
+            return data.dead
+        }
     },
 
     destroyedText: function() {
         var data = Template.parentData(1)
-        return _.humanize(data.type+' was destroyed.')
+        if (data) {
+            return _.humanize(data.type+' was destroyed.')
+        }
     }
 })
 
