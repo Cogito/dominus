@@ -34,6 +34,7 @@ Template.game.helpers({
 	show_forum_panel: function() { return Session.get('show_forum_panel') },
 	show_rankings_panel: function() { return Session.get('show_rankings_panel') },
 	show_notifications_panel: function() { return Session.get('show_notifications_panel') },
+	show_notificationsNew_panel: function() { return Session.get('show_notificationsNew_panel') },
 	show_help_panel: function() { return Session.get('show_help_panel') },
 	show_stats_panel: function() { return Session.get('show_stats_panel') },
 	show_store_panel: function() { return Session.get('show_store_panel') },

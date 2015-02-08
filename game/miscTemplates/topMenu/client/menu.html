@@ -22,6 +22,17 @@
 				</a>
 			</li>
 
+			<li class="{{notificationsNew_active}}">
+				<a href="#" id="show_notificationsNew_panel_button" data-toggle="tooltip" data-placement="bottom" title="Notifications">
+					{{#if smallScreen}}
+					<i class="fa fa-bullhorn fa-lg"></i>
+					{{else}}
+					Notifications
+					{{/if}}
+					<span class="badge">{{#if has_notifications}}{{num_notifications}}{{/if}}</span>
+				</a>
+			</li>
+
 			<li class="{{market_active}}">
 				<a href="#" id="show_market_panel_button" data-toggle="tooltip" data-placement="bottom" title="Market">
 					{{#if smallScreen}}

@@ -21,6 +21,12 @@
 			</div>
 
 			<div class="left_panel_content">
+				{{#if show_notificationsNew_panel}}
+					{{> notificationsNew_panel}}
+				{{/if}}
+			</div>
+
+			<div class="left_panel_content">
 				{{#if show_market_panel}}
 					{{> market_panel}}
 				{{/if}}
