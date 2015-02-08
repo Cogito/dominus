@@ -1,8 +1,12 @@
-create_army = function(user_id, army, x, y, moves) {
+// last_move_at is optional
+create_army = function(user_id, army, x, y, moves, last_move_at) {
 	check(army, Object)
 	check(x, validNumber)
 	check(y, validNumber)
 	check(moves, Array)
+
+	// set last_move_at to now if not set
+	last_move_at = typeof last_move_at !== 'undefined' ? last_move_at : new Date()
 
 	var name = names.armies.part1[_.random(names.armies.part1.length-1)] +' '+ names.armies.part2[_.random(names.armies.part2.length-1)]
 
@@ -13,7 +17,7 @@ create_army = function(user_id, army, x, y, moves) {
 		x: x,
 		y: y,
 		created_at: new Date(),
-		last_move_at: new Date(),
+		last_move_at: last_move_at,
 		pastMoves: [{x:x, y:y, moveDate:new Date()}],
 		user_id: user_id,
 		username: user.username,

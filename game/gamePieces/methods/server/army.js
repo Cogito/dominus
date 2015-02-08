@@ -82,7 +82,7 @@ Meteor.methods({
 			check(new_army[type], validNumber)
 		})
 
-		var fields = {castle_id:1, x:1, y:1}
+		var fields = {castle_id:1, x:1, y:1, last_move_at:1}
 
 		_.each(s.army.types, function(type) {
 			fields[type] = 1
@@ -120,7 +120,7 @@ Meteor.methods({
 				throw new Meteor.Error('Old army must still have at least one soldier.')
 			}
 
-			var aid = create_army(Meteor.userId(), new_army, res.x, res.y, [])
+			var aid = create_army(Meteor.userId(), new_army, res.x, res.y, [], res.last_move_at)
 			if (aid) {
 				var set = {}
 				_.each(s.army.types, function(type) {

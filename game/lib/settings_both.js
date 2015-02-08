@@ -13,9 +13,13 @@ if (Meteor.isServer && process.env.NODE_ENV == 'development') {
 	// cheats
 	s.resource.interval = 1000 * 15
 	s.battle_interval = 1000 * 30
+	s.village.max_can_have = 7
+	s.village.time_to_build = 1000
 } else {
 	s.resource.interval = 1000 * 60 * 10
 	s.battle_interval = 1000 * 60 * 4
+	s.village.max_can_have = 7
+	s.village.time_to_build = 1000 * 60 * 30 	// 30 min
 }
 
 s.hex_size = 60
@@ -140,9 +144,6 @@ s.village.cost = {
 	clay: 500,
 	glass: 0
 }
-
-s.village.max_can_have = 7
-s.village.time_to_build = 1000 * 60 * 30 	// 30 min
 
 
 s.village.defense_bonus = 1.75
