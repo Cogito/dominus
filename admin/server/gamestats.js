@@ -72,12 +72,6 @@ gamestats_job = function() {
 	check(num_active_users, validNumber)
 	stat.num_active_users = num_active_users
 
-	// sessions
-	var sessions = Facts._factsByPackage.livedata.sessions
-	if (sessions) {
-		stat.activeSessions = Facts._factsByPackage.livedata.sessions
-	}
-
 
 	// average market price
 	var price = 0

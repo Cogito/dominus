@@ -62,11 +62,11 @@ s.army.types = ['footmen', 'archers', 'pikemen', 'cavalry', 'catapults']
 
 s.castle.income = {
 	gold: s.resource.gold_gained_at_castle,
-	grain: 35
-	lumber: 16
-	ore: 8
-	wool: 6
-	clay: 7
+	grain: 35,
+	lumber: 16,
+	ore: 8,
+	wool: 6,
+	clay: 7,
 	glass: 5
 }
 
