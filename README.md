@@ -17,11 +17,9 @@ Dominus is made using the web platform <a href="http://meteor.com">Meteor</a>.
 * Install <a href="http://meteor.com">Meteor</a>
 * Go to the dominus directory in the terminal.
 * Run `meteor update` to install packages.
-* Map baking requires PhantomJS http://phantomjs.org/
 * Duplicate the file "run_temp" and name it "run".
 * Duplicate the file "settings_temp.json" and name it "settings.json".
 * Make the run file executable. `chmod +x run`
-* Make the settings file executable. `chmod +x settings.json`
 * Fill in the run file and settings.json file.  These files are in .gitignore and are never checked in.
     * If you create a player with DOMINUS_ADMIN_EMAIL as their email they will be an admin and have access to localhost:3000/admin
     * `DOMINUS_WORKER` in the run file must be true for jobs to run.
@@ -32,3 +30,5 @@ Dominus is made using the web platform <a href="http://meteor.com">Meteor</a>.
     * Stripe is used for payments, set your stripe account keys in settings.json.
 * Start game with `./run` in the terminal.
 * Open http://localhost:3000 in your browser.
+
+Map baking is broken on OSX.  Waiting for a new PhantomJS version.
