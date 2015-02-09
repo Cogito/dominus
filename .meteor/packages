@@ -27,7 +27,6 @@ mrt:nvd3js
 meteor-platform
 
 nemo64:bootstrap
-d3js:d3
 fortawesome:fontawesome
 danimal:readymanager
 danimal:mapmover
@@ -37,3 +36,4 @@ accounts-facebook
 fastclick
 meteorhacks:subs-manager
 mrgalaxy:stripe
+d3js:d3
