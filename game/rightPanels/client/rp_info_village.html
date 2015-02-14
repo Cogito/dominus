@@ -57,52 +57,51 @@
 				<div class="panel panel-default">
 					<div class="panel-body">
 						Level {{levelPlusOne}} village is under construction and will be finished {{timeTilFinishedBuilding}}.
-						<br><br>
-						This village will collect {{round incomeInGold}} gold worth of resources every {{interval}}.
 					</div>
 				</div>
+			{{/if}}
 
-			{{else}}
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						Village Garrison
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Village Garrison
+				</div>
+				{{#if no_soldiers}}
+					<div class="panel-body">
+						Empty
 					</div>
-					{{#if no_soldiers}}
-						<div class="panel-body">
-							Empty
-						</div>
-					{{else}}
-						<table class="table table-condensed table-striped">
-							<tbody>
-								{{#each s.army.types}}
-									{{#if hasSoldierType}}
-									<tr>
-										<td>{{capitalize this}}</td>
-										<td style="text-align:right;">{{round numSoldierType}}</td>
-									</tr>
-									{{/if}}
-								{{/each}}
-
+				{{else}}
+					<table class="table table-condensed table-striped">
+						<tbody>
+							{{#each s.army.types}}
+								{{#if hasSoldierType}}
 								<tr>
-									<td>Defense Power</td>
-									<td style="text-align:right;">{{round defensePower}}</td>
+									<td>{{capitalize this}}</td>
+									<td style="text-align:right;">{{round numSoldierType}}</td>
 								</tr>
-							</tbody>
-						</table>
-					{{/if}}
-				</div>
+								{{/if}}
+							{{/each}}
 
-
-				{{#if is_owner}}
-					<div class="pad_group">
-						{{#if showHireSoldiersButton}}
-							<button type="button" class="btn btn-sm btn-primary btn-block" id="hireArmyButton">Hire Soldiers</button>
-						{{/if}}
-
-						<button type="button" class="btn btn-sm btn-primary btn-block" id="send_army_from_village_button" disabled="{{no_soldiers}}">Send Army from Village</button>
-					</div>
+							<tr>
+								<td>Defense Power</td>
+								<td style="text-align:right;">{{round defensePower}}</td>
+							</tr>
+						</tbody>
+					</table>
 				{{/if}}
+			</div>
 
+
+			{{#if is_owner}}
+				<div class="pad_group">
+					{{#unless under_construction}}
+							<button type="button" class="btn btn-sm btn-primary btn-block" id="hireArmyButton">Hire Soldiers</button>
+					{{/unless}}
+
+					<button type="button" class="btn btn-sm btn-primary btn-block" id="send_army_from_village_button" disabled="{{no_soldiers}}">Send Army from Village</button>
+				</div>
+			{{/if}}
+
+			{{#unless under_construction}}
 				 <div class="panel panel-default">
 					<div class="panel-heading">
 						Resource Collection
@@ -132,7 +131,7 @@
 						from surrounding hexes.
 					</div>
 				</div>
-			{{/if}}
+			{{/unless}}
 
 			{{#if is_owner}}
 				<br>

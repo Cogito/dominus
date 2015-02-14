@@ -33,8 +33,9 @@ gather_resources_new = function() {
 			income.gold = s.resource.gold_gained_at_village
 
 			// add production bonus for level 2 and 3 villages
+			var multiplier = s.village.productionBonus['level'+res.level]
+
 			_.each(s.resource.types, function(type) {
-				var multiplier = s.village.productionBonus['level'+res.level]
 				income[type] = income[type] * multiplier
 			})
 

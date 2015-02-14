@@ -42,6 +42,13 @@ Meteor.methods({
         // passed tests, set under construction flag to true
         Villages.update(villageId, {$set:{under_construction:true, constructionStarted:new Date()}})
 
+        // subtract cost from user
+        var inc = {}
+        _.each(s.resource.types, function(type) {
+            inc[type] = -1 * s.village.cost['level'+(village.level+1)][type]
+        })
+        Meteor.users.update(user._id, {$inc:inc})
+
         return true
     },
 })

@@ -1,10 +1,4 @@
 Template.rp_info_village.helpers({
-	showHireSoldiersButton: function() {
-		if (this) {
-			return this.level > 1
-		}
-	},
-
 	productionBonus: function() {
 		if (this) {
 			return s.village.productionBonus['level'+this.level]
@@ -14,7 +8,7 @@ Template.rp_info_village.helpers({
 	resourcesTypePerInterval: function() {
 		var village = Template.parentData(1)
 		if (village) {
-			return village.income[this] * s.village.productionBonus['level'+village.level]
+			return village.income[this] //* s.village.productionBonus['level'+village.level]
 		}
 	},
 

@@ -13,10 +13,10 @@ Template.rp_village_upgrade.helpers({
         if (village && village.level) {
             switch (village.level) {
                 case 1:
-                    var text = 'Upgrading to level 2 increases village production bonus to '+s.village.productionBonus.level2+'x and enables the hiring of archers and pikemen.'
+                    var text = 'Upgrading to level 2 increases village production bonus to '+s.village.productionBonus.level2+'x and enables the hiring of footmen and pikemen.'
                     break;
                 case 2:
-                    var text = 'Upgrading to level 3 increases village production bonus to '+s.village.productionBonus.level3+'x and enables the hiring of all soldiers except catapults.'
+                    var text = 'Upgrading to level 3 increases village production bonus to '+s.village.productionBonus.level3+'x and enables the hiring of cavalry.'
                     break;
             }
 

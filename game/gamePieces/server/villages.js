@@ -100,6 +100,21 @@ Meteor.methods({
 						// this makes building castles faster
 						Hexes.update(hex._id, {$set: {has_building: true}})
 
+						// if army is there merge them
+						Armies.find({x:x, y:y, user_id:user._id}).forEach(function(army) {
+							if (is_stopped(army._id)) {
+								var fields = {}
+
+								_.each(s.army.types, function(type) {
+									fields[type] = army[type]
+								})
+
+								Villages.update(id, {$inc: fields})
+								Armies.remove(army._id)
+								Moves.remove({army_id:army._id})
+							}
+						})
+
 						return id
 					} else {
 						throw new Meteor.Error('Hex is not empty.')

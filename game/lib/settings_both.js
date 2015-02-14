@@ -158,6 +158,36 @@ s.village.cost = {
 
 s.village.maxLevel = 3
 
+// s.village.cost = {
+// 	level1: {
+// 		grain: 1000,
+// 		lumber: 500,
+// 		ore: 500,
+// 		wool: 0,
+// 		clay: 0,
+// 		glass: 0,
+// 		timeToBuild: 1000 * 60 * 30	// 30 min
+// 	},
+// 	level2: {
+// 		grain: 1000,
+// 		lumber: 1000,
+// 		ore: 1000,
+// 		wool: 0,
+// 		clay: 0,
+// 		glass: 0,
+// 		timeToBuild: 1000 * 60 * 60 * 3	// 3 hours
+// 	},
+// 	level3: {
+// 		grain: 1000,
+// 		lumber: 1000,
+// 		ore: 1000,
+// 		wool: 1000,
+// 		clay: 1000,
+// 		glass: 0,
+// 		timeToBuild: 1000 * 60 * 60 * 24 // 24 hours
+// 	},
+// }
+
 s.village.cost = {
 	level1: {
 		grain: 1000,
@@ -169,22 +199,22 @@ s.village.cost = {
 		timeToBuild: 1000 * 60 * 30	// 30 min
 	},
 	level2: {
-		grain: 1000,
-		lumber: 1000,
-		ore: 1000,
+		grain: 100,
+		lumber: 100,
+		ore: 100,
 		wool: 0,
 		clay: 0,
 		glass: 0,
-		timeToBuild: 1000 * 60 * 60 * 3	// 3 hours
+		timeToBuild: 1000 * 60 * 60 * 1	// 1 hours
 	},
 	level3: {
-		grain: 1000,
-		lumber: 1000,
-		ore: 1000,
-		wool: 1000,
-		clay: 1000,
+		grain: 100,
+		lumber: 100,
+		ore: 100,
+		wool: 100,
+		clay: 100,
 		glass: 0,
-		timeToBuild: 1000 * 60 * 60 * 24 // 24 hours
+		timeToBuild: 1000 * 60 * 60 * 3 // 3 hours
 	},
 }
 

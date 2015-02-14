@@ -242,10 +242,20 @@ Meteor.methods({
 				}
 
 				// don't allow buying foot or cav at level 2 villages
-				if (building_type == 'village' && building.level == 2) {
+				if (building_type == 'village' && building.level == 1) {
 					if (army.footmen && army.footmen > 0) {
-						throw new Meteor.Error("Can't hire footmen at level 2 villages.")
+						throw new Meteor.Error("Can't hire footmen at level 1 villages.")
 					}
+					if (army.pikemen && army.pikemen > 0) {
+						throw new Meteor.Error("Can't hire pikemen at level 1 villages.")
+					}
+					if (army.cavalry && army.cavalry > 0) {
+						throw new Meteor.Error("Can't hire cavalry at level 1 villages.")
+					}
+				}
+
+				// don't allow buying foot or cav at level 2 villages
+				if (building_type == 'village' && building.level == 2) {
 					if (army.cavalry && army.cavalry > 0) {
 						throw new Meteor.Error("Can't hire cavalry at level 2 villages.")
 					}

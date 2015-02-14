@@ -143,7 +143,7 @@ Template.rp_info_army.helpers({
 
 	is_on_village: function() {
 		var user = Template.instance().userData.get()
-		var village = Villages.findOne({x:this.x, y:this.y, user_id:user._id, under_construction:false})
+		var village = Villages.findOne({x:this.x, y:this.y, user_id:user._id})
 		if (village) {
 			return true
 		}
