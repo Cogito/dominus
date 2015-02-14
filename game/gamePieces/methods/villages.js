@@ -40,7 +40,7 @@ Meteor.methods({
         }
 
         // passed tests, set under construction flag to true
-        Villages.update(villageId, {$set:{under_construction:true}})
+        Villages.update(villageId, {$set:{under_construction:true, constructionStarted:new Date()}})
 
         return true
     },

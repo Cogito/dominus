@@ -5,7 +5,7 @@ Meteor.startup(function() {
 		worker.start()
 
 		// give all villages a level
-		//Villages.update({}, {$set: {level:1}}, {multi:true})
+		//Villages.update({}, {$set: {constructionStarted:new Date()}}, {multi:true})
 
 		// cleanup old moves
 		// Moves.find().forEach(function(move) {
