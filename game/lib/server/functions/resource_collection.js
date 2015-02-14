@@ -28,13 +28,17 @@ gather_resources_new = function() {
 		var user = Meteor.users.findOne(res.user_id, {fields:{emails:1}})
 		if (user && user.emails[0].verified) {
 
-			var income = gather_resources_surrounding(res.x, res.y, s.resource.num_rings_village, res.user_id, s.resource.gold_gained_at_village)
+			var income = resourcesFromSurroundingHexes(res.x, res.y, s.resource.num_rings_village)
+
+			income.gold = s.resource.gold_gained_at_village
 
 			// add production bonus for level 2 and 3 villages
 			_.each(s.resource.types, function(type) {
 				var multiplier = s.village.productionBonus['level'+res.level]
 				income[type] = income[type] * multiplier
 			})
+
+			receive_income_id(res.user_id, income.gold, income.grain, income.lumber, income.ore, income.wool, income.clay, income.glass)
 
 			// find worth for rankings and right panel
 			// TODO: could this be made asynchronous? // it slows down this function
@@ -47,18 +51,4 @@ gather_resources_new = function() {
 
 	run_cached_user_update()
 	record_job_stat('gather_resources_new', new Date() - start_time)
-}
-
-
-// optimization: store x and y as one field, 13_3 and use $in
-gather_resources_surrounding = function(x, y, num_rings, user_id, gold) {
-	check(x, validNumber)
-	check(y, validNumber)
-	check(num_rings, validNumber)
-	check(gold, validNumber)
-
-	var income = resourcesFromSurroundingHexes(x, y, num_rings)
-	receive_income_id(user_id, gold, income.grain, income.lumber, income.ore, income.wool, income.clay, income.glass)
-	income.gold = gold
-	return income
 }
