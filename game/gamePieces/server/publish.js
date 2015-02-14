@@ -1,6 +1,6 @@
 var castle_fields = {name:1, user_id:1, x:1, y:1, username:1, image:1}
 var army_fields = {name:1, user_id:1, x:1, y:1, last_move_at:1, username:1, pastMoves:1}
-var village_fields = {name:1, user_id:1, x:1, y:1, username:1, under_construction:1}
+var village_fields = {name:1, user_id:1, x:1, y:1, username:1, under_construction:1, level:1}
 var hex_fields = {x:1, y:1, type:1, tileImage:1, large:1}
 var hexBakesFields = {posX:1, posY:1, filename:1, width:1, height:1, created_at:1}
 
@@ -21,15 +21,6 @@ Meteor.publish('onScreenHexbakes', function(x, y, canvas_width, canvas_height, h
 
 	return Hexbakes.find(find, {fields: hexBakesFields})
 })
-
-// Meteor.publish('on_screen_hexes', function (x, y, canvas_width, canvas_height, hex_scale) {
-// 	var max = max_onscreen(canvas_width, canvas_height, hex_scale)
-//
-// 	return Hexes.find({
-// 			x: {$gt: x - max, $lt: x + max},
-// 			y: {$gt: y - max, $lt: y + max},
-// 		}, {fields: hex_fields})
-// })
 
 Meteor.publish("on_screen", function (x, y, canvas_width, canvas_height, hex_scale) {
 	var max = max_onscreen(canvas_width, canvas_height, hex_scale)

@@ -151,42 +151,42 @@ Template.rp_info_army.helpers({
 
 	has_enough_grain: function() {
 		var user = Template.instance().userData.get()
-		if (user && user.grain >= s.village.cost.grain) {
+		if (user && user.grain >= s.village.cost.level1.grain) {
 			return true
 		}
 	},
 
 	has_enough_lumber: function() {
 		var user = Template.instance().userData.get()
-		if (user && user.lumber >= s.village.cost.lumber) {
+		if (user && user.lumber >= s.village.cost.level1.lumber) {
 			return true
 		}
 	},
 
 	has_enough_ore: function() {
 		var user = Template.instance().userData.get()
-		if (user && user.ore >= s.village.cost.ore) {
+		if (user && user.ore >= s.village.cost.level1.ore) {
 			return true
 		}
 	},
 
 	has_enough_wool: function() {
 		var user = Template.instance().userData.get()
-		if (user && user.wool >= s.village.cost.wool) {
+		if (user && user.wool >= s.village.cost.level1.wool) {
 			return true
 		}
 	},
 
 	has_enough_clay: function() {
 		var user = Template.instance().userData.get()
-		if (user && user.clay >= s.village.cost.clay) {
+		if (user && user.clay >= s.village.cost.level1.clay) {
 			return true
 		}
 	},
 
 	has_enough_glass: function() {
 		var user = Template.instance().userData.get()
-		if (user && user.glass >= s.village.cost.glass) {
+		if (user && user.glass >= s.village.cost.level1.glass) {
 			return true
 		}
 	},

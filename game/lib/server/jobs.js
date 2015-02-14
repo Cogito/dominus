@@ -4,6 +4,9 @@ Meteor.startup(function() {
 		worker.empty_queue()
 		worker.start()
 
+		// give all villages a level
+		//Villages.update({}, {$set: {level:1}}, {multi:true})
+
 		// cleanup old moves
 		// Moves.find().forEach(function(move) {
 		// 	if (Armies.find({_id:move.army_id}).count() == 0) {
@@ -160,8 +163,9 @@ Meteor.startup(function() {
 		Meteor.setInterval(function() {
 			var start_time = new Date()
 
-			Villages.find({under_construction:true}, {fields: {created_at:1}}).forEach(function(village) {
-				var finishAt = moment(new Date(village.created_at)).add(s.village.time_to_build, 'ms')
+			Villages.find({under_construction:true}, {fields: {level:1, constructionStarted:1}}).forEach(function(village) {
+				var timeToBuild = s.village.cost['level'+(village.level+1)].timeToBuild
+				var finishAt = moment(new Date(village.constructionStarted)).add(timeToBuild, 'ms')
 				if (moment().isAfter(finishAt)) {
 					finish_building_village(village._id)
 				}

@@ -4,7 +4,15 @@ Meteor.methods({
 		check(x, validNumber)
 		check(y, validNumber)
 
-		var user = Meteor.users.findOne(Meteor.userId(), {fields: {x:1, y:1, username:1, castle_id:1, grain:1, lumber:1, ore:1, wool:1, clay:1, glass:1}})
+		var fields = {
+			x:1, y:1, username:1, castle_id:1
+		}
+
+		_.each(s.resource_types, function(type) {
+			fields[type] = 1
+		})
+
+		var user = Meteor.users.findOne(Meteor.userId(), {fields: fields})
 		if (user) {
 			// make sure user doesn't have max villages already
 			if (Villages.find({user_id:user._id}).count() >= s.village.max_can_have) {
@@ -16,14 +24,15 @@ Meteor.methods({
 				throw new Meteor.Error('No army on hex.')
 			}
 
-			if (user.grain >= s.village.cost.grain &&
-				user.lumber >= s.village.cost.lumber &&
-				user.ore >= s.village.cost.ore &&
-				user.wool >= s.village.cost.wool &&
-				user.clay >= s.village.cost.clay &&
-				user.glass >= s.village.cost.glass
-				)
-			{
+			var hasEnoughRes = true
+
+			_.each(s.resource.types, function(type) {
+				if (user[type] < s.village.cost.level1[type]) {
+					hasEnoughRes = false
+				}
+			})
+
+			if (hasEnoughRes) {
 
 				var hex = Hexes.findOne({x:x, y:y}, {fields: {_id:1, type:1}})
 				if (hex) {
@@ -67,7 +76,9 @@ Meteor.methods({
 							castle_id: user.castle_id,
 							income: income,
 							under_construction:true,
-							inBattle: false
+							constructionStarted: new Date(),
+							inBattle: false,
+							level: 0	// villages are level 0 until finished building
 						}
 
 						_.each(s.army.types, function(type) {
@@ -76,16 +87,17 @@ Meteor.methods({
 
 						var id = Villages.insert(fields)
 
-						Meteor.users.update({_id: user._id}, {$inc: {
-							grain: -1 * s.village.cost.grain,
-							lumber: -1 * s.village.cost.lumber,
-							ore: -1 * s.village.cost.ore,
-							wool: -1 * s.village.cost.wool,
-							clay: -1 * s.village.cost.clay,
-							glass: -1 * s.village.cost.glass
-						}})
+						// take away resources for buying
+						var inc = {}
+
+						_.each(s.resource.types, function(type) {
+							inc[type] = -1 * s.village.cost.level1[type]
+						})
+
+						Meteor.users.update({_id: user._id}, {$inc: inc})
 
 						// set hex to occupied
+						// this makes building castles faster
 						Hexes.update(hex._id, {$set: {has_building: true}})
 
 						return id
@@ -153,7 +165,9 @@ finish_building_village = function(village_id) {
 			}
 		})
 
-		Villages.update(village_id, {$set: {under_construction:false}})
+		// increment level
+		// remove under construction flag
+		Villages.update(village_id, {$set: {under_construction:false}, $inc: {level:1}})
 
 		// TODO: send notification
 

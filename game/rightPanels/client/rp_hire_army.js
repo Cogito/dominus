@@ -6,6 +6,11 @@ Template.rp_hire_army.helpers({
 	armyTypes: function() {
 		var types = s.army.types
 		if (Session.get('selected_type') == 'village') {
+			// level 2 can only build archers and pike
+			if (this.level == 2) {
+				types = _.without(types, 'cavalry', 'footmen')
+			}
+			// no village can build catapults
 			types = _.without(types, 'catapults')
 		}
 		return types

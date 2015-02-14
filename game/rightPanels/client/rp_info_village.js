@@ -1,4 +1,48 @@
 Template.rp_info_village.helpers({
+	showHireSoldiersButton: function() {
+		if (this) {
+			return this.level > 1
+		}
+	},
+
+	productionBonus: function() {
+		if (this) {
+			return s.village.productionBonus['level'+this.level]
+		}
+	},
+
+	resourcesTypePerInterval: function() {
+		var village = Template.parentData(1)
+		if (village) {
+			return village.income[this] * s.village.productionBonus['level'+village.level]
+		}
+	},
+
+	incomeTypeGreaterThanZero: function() {
+		var village = Template.parentData(1)
+		if (village) {
+			if (village.income[this] > 0) {
+				return true
+			}
+		}
+	},
+
+	canUpgrade: function() {
+		if (this) {
+			if (this.level < s.village.maxLevel) {
+				if (!this.under_construction) {
+					return true
+				}
+			}
+		}
+	},
+
+	levelPlusOne: function() {
+		if (this) {
+			return this.level+1
+		}
+	},
+
 	unitRelationType: function() {
 		if (Template.instance()) {
 			var type = Template.instance().relationship.get()
@@ -24,7 +68,8 @@ Template.rp_info_village.helpers({
 	timeTilFinishedBuilding: function() {
 		if (this) {
 			Session.get('refresh_time_field')
-			var finishAt = moment(new Date(this.created_at)).add(s.village.time_to_build, 'ms')
+			var timeToBuild = s.village.cost['level'+(this.level+1)].timeToBuild
+			var finishAt = moment(new Date(this.constructionStarted)).add(timeToBuild, 'ms')
 			if (moment().isAfter(finishAt)) {
 				return 'soon'
 			} else {
@@ -49,6 +94,20 @@ Template.rp_info_village.helpers({
 		}
 	},
 
+	hasSoldierType: function() {
+		var village = Template.parentData(1)
+		if (village) {
+			return village[this] > 0
+		}
+	},
+
+	numSoldierType: function() {
+		var village = Template.parentData(1)
+		if (village) {
+			return village[this]
+		}
+	},
+
 	no_soldiers: function() {
 		if (this) {
 			var self = this
@@ -57,12 +116,6 @@ Template.rp_info_village.helpers({
 				count += self[type]
 			})
 			return (count == 0)
-		}
-	},
-
-	resources_per_interval: function() {
-		if (this) {
-			return this.income
 		}
 	},
 
@@ -86,6 +139,10 @@ Template.rp_info_village.helpers({
 
 
 Template.rp_info_village.events({
+	'click #upgradeVillageButton': function(event, template) {
+		Session.set('rp_template', 'rp_village_upgrade')
+	},
+
 	'click #send_army_from_village_button': function(event, template) {
 		Session.set('addToExistingArmyMoves', false)
 		Session.set('rp_template', 'rp_move_unit')

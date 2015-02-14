@@ -1,3 +1,6 @@
+// villages are level 0 when created
+// when finished construction level is incremented
+
 Template.village.helpers({
 	friend_or_foe: function() {
 		return Template.instance().flagColor.get()
@@ -20,6 +23,12 @@ Template.village.helpers({
 			return points
 		}
 	},
+
+	levelPlusOne: function() {
+		if (this) {
+			return this.level+1
+		}
+	}
 })
 
 

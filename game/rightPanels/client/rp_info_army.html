@@ -143,7 +143,7 @@
 					</div>
 					{{#if has_less_than_max_villages}}
 						{{#if is_on_grain_hex}}
-							<div class="panel-body">
+							<div class="panel-body" style="text-align:center;">
 								You can build {{how_many_villages_can_i_build}} more villages.
 							</div>
 							<table class="table table-condensed table-striped">
@@ -156,72 +156,72 @@
 									{{#if has_enough_grain}}
 										<tr>
 											<td>Grain</td>
-											<td style="text-align:right;">{{round s.village.cost.grain}}</td>
+											<td style="text-align:right;">{{round s.village.cost.level1.grain}}</td>
 										</tr>
 									{{else}}
 										<tr class="danger">
 											<td>Grain</td>
-											<td style="text-align:right;">{{round s.village.cost.grain}}</td>
+											<td style="text-align:right;">{{round s.village.cost.level1.grain}}</td>
 										</tr>
 									{{/if}}
 
 									{{#if has_enough_lumber}}
 										<tr>
 											<td>Lumber</td>
-											<td style="text-align:right;">{{round s.village.cost.lumber}}</td>
+											<td style="text-align:right;">{{round s.village.cost.level1.lumber}}</td>
 										</tr>
 									{{else}}
 										<tr class="danger">
 											<td>Lumber</td>
-											<td style="text-align:right;">{{round s.village.cost.lumber}}</td>
+											<td style="text-align:right;">{{round s.village.cost.level1.lumber}}</td>
 										</tr>
 									{{/if}}
 
 									{{#if has_enough_ore}}
 										<tr>
 											<td>Ore</td>
-											<td style="text-align:right;">{{round s.village.cost.ore}}</td>
+											<td style="text-align:right;">{{round s.village.cost.level1.ore}}</td>
 										</tr>
 									{{else}}
 										<tr class="danger">
 											<td>Ore</td>
-											<td style="text-align:right;">{{round s.village.cost.ore}}</td>
+											<td style="text-align:right;">{{round s.village.cost.level1.ore}}</td>
 										</tr>
 									{{/if}}
 
 									{{#if has_enough_wool}}
 										<tr>
 											<td>Wool</td>
-											<td style="text-align:right;">{{round s.village.cost.wool}}</td>
+											<td style="text-align:right;">{{round s.village.cost.level1.wool}}</td>
 										</tr>
 									{{else}}
 										<tr class="danger">
 											<td>Wool</td>
-											<td style="text-align:right;">{{round s.village.cost.wool}}</td>
+											<td style="text-align:right;">{{round s.village.cost.level1.wool}}</td>
 										</tr>
 									{{/if}}
 
 									{{#if has_enough_clay}}
 										<tr>
 											<td>Clay</td>
-											<td style="text-align:right;">{{round s.village.cost.clay}}</td>
+											<td style="text-align:right;">{{round s.village.cost.level1.clay}}</td>
 										</tr>
 									{{else}}
 										<tr class="danger">
 											<td>Clay</td>
-											<td style="text-align:right;">{{round s.village.cost.clay}}</td>
+											<td style="text-align:right;">{{round s.village.cost.level1.clay}}</td>
 										</tr>
 									{{/if}}
 
 									{{#if has_enough_glass}}
 										<tr>
 											<td>Glass</td>
-											<td style="text-align:right;">{{round s.village.cost.glass}}</td>
+											<td style="text-align:right;">{{round s.village.cost.level1.glass}}</td>
 										</tr>
 									{{else}}
 										<tr class="danger">
 											<td>Glass</td>
-											<td style="text-align:right;">{{round s.village.cost.glass}}</td>
+											<td style="text-align:right;">{{round s.village.cost.level1.glass}}</td>
 										</tr>
 									{{/if}}
 								</tbody>
