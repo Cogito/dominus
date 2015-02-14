@@ -241,7 +241,7 @@ Meteor.methods({
 					}
 				}
 
-				// don't allow buying foot or cav at level 2 villages
+				// can only buy archers at level 1 village
 				if (building_type == 'village' && building.level == 1) {
 					if (army.footmen && army.footmen > 0) {
 						throw new Meteor.Error("Can't hire footmen at level 1 villages.")
@@ -254,14 +254,14 @@ Meteor.methods({
 					}
 				}
 
-				// don't allow buying foot or cav at level 2 villages
+				// don't allow buying cav at level 2 villages
 				if (building_type == 'village' && building.level == 2) {
 					if (army.cavalry && army.cavalry > 0) {
 						throw new Meteor.Error("Can't hire cavalry at level 2 villages.")
 					}
 				}
 
-				// don't allow buying catapults at villages
+				// don't allow buying catapults at any villages
 				if (building_type == 'village' && army.catapults) {
 					if (army.catapults > 0) {
 						throw new Meteor.Error("Can't build catapults at villages.")
