@@ -33,10 +33,13 @@ Meteor.methods({
 
 				if (!this.isSimulation) {
 					update_market_price(type, quantity, true)
-					//worker.enqueue('update_market_price', {type: type, quantity: quantity, buy: true})
-
 					worker.enqueue('record_market_history', {quantity: quantity})
-					//record_market_history(quantity)
+
+					// save how much tax was collected
+					// tax is later distributed to castles
+					var sellCost = total_of_sell(type, quantity)
+					var tax = parseFloat(cost - sellCost)
+					Settings.upsert({name:'taxesCollected'}, {$setOnInsert:{name:'taxesCollected'}, $inc:{value:tax}})
 				}
 				check(cost, validNumber)
 				return {result: true, cost: cost}
@@ -67,7 +70,7 @@ Meteor.methods({
 			fields['gold'] = 1
 			fields[type] = 1
 			var user = Meteor.users.findOne(Meteor.userId(), {fields: fields})
-			
+
 			// does user have enough
 			if (user[type] < quantity) {
 				return {result: false, reason: 'Not enough resources.'}

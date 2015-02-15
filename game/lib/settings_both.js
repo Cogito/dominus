@@ -39,7 +39,7 @@ s.market.sell_tax = 0.02
 s.market.increment = 0.000004	// how much it goes up or down when someone buys or sells
 
 s.resource.gained_at_hex = 4
-s.resource.gold_gained_at_castle = 20
+//s.resource.gold_gained_at_castle = 20	// non longer used
 s.resource.gold_gained_at_village = 0
 s.resource.num_rings_castle = 2
 s.resource.num_rings_village = 1
@@ -61,7 +61,7 @@ s.army.types = ['footmen', 'archers', 'pikemen', 'cavalry', 'catapults']
 // }
 
 s.castle.income = {
-	gold: s.resource.gold_gained_at_castle,
+	gold: 0,	// not used
 	grain: 35,
 	lumber: 16,
 	ore: 8,

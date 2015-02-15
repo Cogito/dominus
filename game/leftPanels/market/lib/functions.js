@@ -19,7 +19,7 @@ total_of_buy_quick = function(quantity, price) {
 
 	//return cost = price / s.market.increment * (Math.pow(s.market.increment + 1, quantity) - 1)
 	//return cost = price * (1) * (1 - Math.pow(1 - s.market.increment, quantity)) / s.market.increment
-	return cost = price * (1+s.market.sell_tax/2) / s.market.increment * (Math.pow(s.market.increment + 1, quantity) - 1)
+	return cost = price * (1+s.market.sell_tax) / s.market.increment * (Math.pow(s.market.increment + 1, quantity) - 1)
 }
 
 
@@ -32,7 +32,7 @@ total_of_sell = function(type, quantity) {
 
 		var price = resource.price
 
-		var cost = price * (1 - s.market.sell_tax/2) * (1 - Math.pow(1 - s.market.increment, quantity)) / s.market.increment
+		var cost = price * (1 - Math.pow(1 - s.market.increment, quantity)) / s.market.increment
 		check(cost, validNumber)
 		return cost
 	}

@@ -2,6 +2,18 @@ gather_resources_new = function() {
 	clear_cached_user_update()
 	var start_time = new Date()
 
+	// distribute taxes collected to castles
+	var numPlayers = Meteor.users.find().count()
+	var tax = Settings.findOne({name:'taxesCollected'})
+	if (tax && tax.value) {
+		var taxPerCastle = tax.value / numPlayers
+	} else {
+		var taxPerCastle = 0
+	}
+
+	// reset taxes
+	Settings.update({name:'taxesCollected'}, {$set:{value:0}})
+
 	Castles.find({}, {fields: {user_id:1}}).forEach(function(res) {
 
 		// only receive income if email is verified
@@ -10,7 +22,7 @@ gather_resources_new = function() {
 
 			receive_income_id(
 				res.user_id,
-				s.resource.gold_gained_at_castle,
+				taxPerCastle,
 				s.castle.income.grain,
 				s.castle.income.lumber,
 				s.castle.income.ore,
