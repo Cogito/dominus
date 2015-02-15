@@ -46,7 +46,7 @@ max_buy = function(gold, price) {
 	check(price, validNumber)
 
 	var base = Math.log(s.market.increment + 1)
-	var log = Math.log(gold * s.market.increment / (price * (1+s.market.sell_tax/2)) + 1)
+	var log = Math.log(gold * s.market.increment / (price * (1+s.market.sell_tax)) + 1)
 	var num = Math.floor(log / base)
 
 	// var base = Math.log(s.market.increment + 1)
