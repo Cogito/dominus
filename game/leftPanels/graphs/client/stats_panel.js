@@ -30,14 +30,14 @@ Template.stats_panel.rendered = function() {
 			var incomeRankValues = []
 			var numVassalsValues = []
 
-			_.each(s.resource.types_plus_gold, function(type) {
+			_.each(s.resource.types, function(type) {
 				inc[type] = []
 				vInc[type] = []
 				bInc[type] = []
 			})
 
 			dailystats.forEach(function(stat) {
-				_.each(s.resource.types_plus_gold, function(type) {
+				_.each(s.resource.types, function(type) {
 
 					if (stat.hasOwnProperty('inc') && stat.inc.hasOwnProperty(type) && !isNaN(stat.inc[type])) {
 						var y = stat.inc[type]
@@ -71,7 +71,6 @@ Template.stats_panel.rendered = function() {
 
 
 			var incData = [
-				{values: inc.gold, key: 'Gold', color: '#e6d545'},
 				{values: inc.grain, key: 'Grain', color: '#82d957'},
 				{values: inc.lumber, key: 'Lumber', color: '#b3823e'},
 				{values: inc.ore, key: 'Ore', color: '#d9d9d9'},
@@ -92,7 +91,6 @@ Template.stats_panel.rendered = function() {
 
 
 			var bIncData = [
-				{values: bInc.gold, key: 'Gold', color: '#e6d545'},
 				{values: bInc.grain, key: 'Grain', color: '#82d957'},
 				{values: bInc.lumber, key: 'Lumber', color: '#b3823e'},
 				{values: bInc.ore, key: 'Ore', color: '#d9d9d9'},
@@ -113,7 +111,6 @@ Template.stats_panel.rendered = function() {
 
 
 			var vIncData = [
-				{values: vInc.gold, key: 'Gold', color: '#e6d545'},
 				{values: vInc.grain, key: 'Grain', color: '#82d957'},
 				{values: vInc.lumber, key: 'Lumber', color: '#b3823e'},
 				{values: vInc.ore, key: 'Ore', color: '#d9d9d9'},
