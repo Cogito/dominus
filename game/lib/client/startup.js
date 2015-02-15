@@ -36,7 +36,7 @@ Session.setDefault('show_connection_lost_modal', false)
 // refresh templates that use time
 Meteor.setInterval(function() {
 	Session.set('refresh_time_field', Random.fraction())
-}, 5000)
+}, 1000 * 10)
 
 Session.setDefault('num_villages', null)	// the number of villages that player has
 

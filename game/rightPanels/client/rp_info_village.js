@@ -1,4 +1,16 @@
 Template.rp_info_village.helpers({
+	// for progress bar
+	villageUpgradeProgress: function() {
+		if (this) {
+			Session.get('refresh_time_field')
+			var timeToBuild = s.village.cost['level'+(this.level+1)].timeToBuild
+			var startedAt = moment(new Date(this.constructionStarted))
+			var diff = moment().diff(startedAt)
+			var percentage = diff / timeToBuild
+			return percentage * 100
+		}
+	},
+
 	productionBonus: function() {
 		if (this) {
 			return s.village.productionBonus['level'+this.level]

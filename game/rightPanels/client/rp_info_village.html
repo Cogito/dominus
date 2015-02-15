@@ -57,6 +57,12 @@
 				<div class="panel panel-default">
 					<div class="panel-body">
 						Level {{levelPlusOne}} village is under construction and will be finished {{timeTilFinishedBuilding}}.
+						<br><br>
+						<div class="progress">
+							<div class="progress-bar" role="progressbar" aria-valuenow="{{villageUpgradeProgress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{villageUpgradeProgress}}%;">
+								<span class="sr-only">{{villageUpgradeProgress}}% Complete</span>
+							</div>
+						</div>
 					</div>
 				</div>
 			{{/if}}
