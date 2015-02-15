@@ -262,5 +262,8 @@ Meteor.methods({
 		if (latestchat) {
 			Recentchats.upsert({room_id:room_id}, {$set: {room_id:room_id, updated_at:latestchat.created_at}})
 		}
+
+		// also update room with date of most recent chat
+		Rooms.update(room_id, {$set:{latestChatDate:new Date()}})
 	}
 })

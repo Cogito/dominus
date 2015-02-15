@@ -110,7 +110,7 @@ setupKingChatroom = function(king_id) {
 			var members = []
 		}
 		members.push(king._id)
-		
+
 		// does king already have a chatroom
 		var room = Rooms.findOne({owner:king._id, type:'king'})
 		if (room) {
@@ -118,7 +118,7 @@ setupKingChatroom = function(king_id) {
 			Rooms.update(room._id, {$set: {members:members}})
 		} else {
 			// create a room for king
-			createChatroom('King '+king.username+' and Vassals', 'king', king._id, members) 
+			createChatroom('King '+king.username+' and Vassals', 'king', king._id, members)
 		}
 	}
 

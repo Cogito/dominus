@@ -1,10 +1,14 @@
 Template.adminChatrooms.helpers({
 	chatrooms: function() {
-		return Rooms.find().map(function(room) {
+		return Rooms.find({}, {sort:{latestChatDate:-1}}).map(function(room) {
 			room.numMembers = room.members.length
 			return room
 		})
 	},
+
+	room: function() {
+		return Rooms.findOne(Template.instance().openRoomId.get())
+	}
 })
 
 

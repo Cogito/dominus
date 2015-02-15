@@ -3,13 +3,26 @@
 		<div id="admin_container">
 			{{> admin_menu}}
 
-			<table class="table table-striped">
+			<table class="table table-striped table-condensed">
+				<thead>
+					<tr>
+						<td></td>
+						<td>idle</td>
+						<td>last activity</td>
+						<td>last login</td>
+						<td>user id</td>
+					</tr>
+				</thead>
 				<tbody>
 					{{#each users}}
 						<tr>
 							<td>{{username}}</td>
-							<td>{{status.idle}}</td>
-							<td>{{date_calendar status.lastActivity}}</td>
+							<td>{{#if status.idle}}idle{{/if}}</td>
+							<td>
+								{{#if status.lastActivity}}
+									{{date_calendar status.lastActivity}}
+								{{/if}}
+							</td>
 							<td>{{date_calendar status.lastLogin.date}}</td>
 							<td>{{_id}}</td>
 						</tr>
