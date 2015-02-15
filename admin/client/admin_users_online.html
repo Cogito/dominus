@@ -7,7 +7,9 @@
 				<tbody>
 					{{#each users}}
 						<tr>
-							<td>{{username}}</td> 
+							<td>{{username}}</td>
+							<td>{{status.idle}}</td>
+							<td>{{date_calendar status.lastActivity}}</td>
 							<td>{{date_calendar status.lastLogin.date}}</td>
 							<td>{{_id}}</td>
 						</tr>

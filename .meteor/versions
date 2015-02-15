@@ -17,7 +17,7 @@ check@1.0.4
 classcraft:knox@0.9.11
 coffeescript@1.0.5
 d3@1.0.0
-d3js:d3@3.5.4
+d3js:d3@3.5.5
 danimal:accounts-templates@1.0.4
 danimal:hx@1.0.6
 danimal:mapbaker@1.0.12
@@ -58,7 +58,7 @@ meteor-platform@1.2.1
 meteorhacks:subs-manager@1.3.0
 minifiers@1.1.3
 minimongo@1.0.6
-mizzao:timesync@0.2.2
+mizzao:timesync@0.3.0
 mizzao:user-status@0.6.3
 mobile-status-bar@1.0.2
 momentjs:moment@2.9.0

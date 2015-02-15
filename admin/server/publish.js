@@ -33,7 +33,7 @@ admin_publish('admin_mailchimp_list', function() {
 })
 
 Meteor.publish('admin_users_online', function() {
-	return Meteor.users.find({"status.online":true}, {fields: {username:1, "status.lastLogin.date":1, "status.online":1}})
+	return Meteor.users.find({"status.online":true}, {fields: {username:1, status:1}})
 })
 
 

@@ -99,7 +99,7 @@ Template.chatrooms_panel.rendered = function() {
 	$(window).focus(function(event) {
 		var room_id = Session.get('selectedChatroomId')
 		if (room_id) {
-			var date = new Date(TimeSync.serverTime())
+			var date = new Date(TimeSync.serverTime(null, 5000))
 			Cookie.set('room_'+room_id+'_open', date, {years: 10})
 		}
 	})

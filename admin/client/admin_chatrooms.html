@@ -3,9 +3,22 @@
 		<div id="admin_container">
 			{{> admin_menu}}
 
-			{{#each chatrooms}}
-				<div>{{name}} &nbsp; {{numMembers}}</div>
-			{{/each}}
+			<div style="float:left;margin-right:20px;">
+				{{#each chatrooms}}
+					<div>
+						<a href="" class="openRoomButton" data-id="{{_id}}">
+							{{name}}
+						</a>
+						&nbsp; {{numMembers}}
+					</div>
+				{{/each}}
+			</div>
+
+			<div style="float:left;">
+				{{> admin_chatroom}}
+			</div>
+
+			<div style="clear:both;"></div>
 		</div>
 	{{/if}}
 </template>

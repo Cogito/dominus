@@ -125,7 +125,7 @@ Template.chatroom_open.helpers({
 
 	showNewNotification: function() {
 		if (Session.get('windowHasFocus') && Session.get('selectedChatroomId') == this._id) {
-			var date = new Date(TimeSync.serverTime())
+			var date = new Date(TimeSync.serverTime(null, 5000))
 			Cookie.set('room_'+this._id+'_open', moment(date).add(1, 's').toDate(), {years: 10})
 			return false
 		}
@@ -269,7 +269,7 @@ Template.chatroom_open.events({
 			return
 		}
 
-		var date = new Date(TimeSync.serverTime())
+		var date = new Date(TimeSync.serverTime(null, 5000))
 
 		Roomchats.insert({
 			room_id: template.data._id,
@@ -324,7 +324,7 @@ Template.chatroom_open.events({
 				return
 			}
 
-			var date = new Date(TimeSync.serverTime())
+			var date = new Date(TimeSync.serverTime(null, 5000))
 
 			Roomchats.insert({
 				room_id: template.data._id,
