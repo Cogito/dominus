@@ -63,12 +63,14 @@ Template.battle_report.created = function() {
 	self.subs = new ReadyManager()
 
 	self.autorun(function() {
-		self.subs.subscriptions([{
-			groupName: 'fighttitles',
-			subscriptions: [ Meteor.subscribe('fighttitles', Template.currentData()._id).ready() ]
-		}, {
-			groupName: 'lastFight',
-			subscriptions: [ Meteor.subscribe('lastFightInBattle', Template.currentData()._id).ready() ]
-		}])
+		if (Template.currentData()) {
+			self.subs.subscriptions([{
+				groupName: 'fighttitles',
+				subscriptions: [ Meteor.subscribe('fighttitles', Template.currentData()._id).ready() ]
+			}, {
+				groupName: 'lastFight',
+				subscriptions: [ Meteor.subscribe('lastFightInBattle', Template.currentData()._id).ready() ]
+			}])
+		}
 	})
 }

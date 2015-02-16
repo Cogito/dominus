@@ -22,12 +22,12 @@
 				</a>
 			</li>
 
-			<li class="{{notificationsNew_active}}">
-				<a href="#" id="show_notificationsNew_panel_button" data-toggle="tooltip" data-placement="bottom" title="Notifications">
+			<li class="{{alerts_active}}">
+				<a href="#" id="show_alerts_panel_button" data-toggle="tooltip" data-placement="bottom" title="Alerts">
 					{{#if smallScreen}}
-					<i class="fa fa-bullhorn fa-lg"></i>
+						<i class="fa fa-bullhorn fa-lg"></i>
 					{{else}}
-					Notifications
+						Alerts
 					{{/if}}
 					<span class="badge">{{#if has_notifications}}{{num_notifications}}{{/if}}</span>
 				</a>

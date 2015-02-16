@@ -1,0 +1,21 @@
+<template name="alerts_battle">
+    <div class="alertTitle pad_group">
+        <div style="font-size:120%;">
+            <a href="" class="openAlertButton">
+                Battle at {{x}},{{y}} started {{date_calendar created_at}}
+            </a>
+        </div>
+
+        {{#each currentUnits}}
+        <div class="light_text">
+            &bull;&nbsp; {{username}}'s {{type}} {{name}}
+        </div>
+        {{/each}}
+    </div>
+
+    {{#if isOpen}}
+        <div class="alertBody">
+            {{> Template.dynamic template='battle_report' data=battle}}
+        </div>
+    {{/if}}
+</template>

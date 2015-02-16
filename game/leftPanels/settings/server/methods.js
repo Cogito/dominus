@@ -98,8 +98,10 @@ Meteor.methods({
 	change_username: function(username) {
 		check(username, String)
 
-		var user = Meteor.users.findOne(Meteor.userId(), {fields: {is_king:1}})
+		var user = Meteor.users.findOne(Meteor.userId(), {fields: {is_king:1, username:1}})
 		if (user) {
+			var previousUsername = user.username
+
 			username = _.clean(username)
 			username = username.replace(/\W/g, '')
 
@@ -135,6 +137,8 @@ Meteor.methods({
 			Messages.update({user_id: Meteor.userId()}, {$set: {username: username}}, {multi: true})
 			Charges.update({user_id: Meteor.userId()}, {$set: {user_username: username}}, {multi: true})
 			Meteor.users.update(Meteor.userId(), {$set: {username: username}})
+
+			gAlert_nameChange(Meteor.userId(), previousUsername)
 
 			return true
 		} else {

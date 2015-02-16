@@ -22,8 +22,8 @@ Template.menu.helpers({
 		if (Session.get('show_notifications_panel')) { return 'active' } else { return '' }
 	},
 
-	notificationsNew_active: function() {
-		if (Session.get('show_notificationsNew_panel')) { return 'active' } else { return '' }
+	alerts_active: function() {
+		if (Session.get('show_alerts_panel')) { return 'active' } else { return '' }
 	},
 
 	market_active: function() {
@@ -173,11 +173,11 @@ Template.menu.events({
 		}
 	},
 
-	'click #show_notificationsNew_panel_button': function(event, template) {
-		if (Session.get('show_notificationsNew_panel')) {
-			Session.set('show_notificationsNew_panel', false)
+	'click #show_alerts_panel_button': function(event, template) {
+		if (Session.get('show_alerts_panel')) {
+			Session.set('show_alerts_panel', false)
 		} else {
-			Session.set('show_notificationsNew_panel', true)
+			Session.set('show_alerts_panel', true)
 		}
 	},
 
@@ -228,7 +228,7 @@ Template.menu.rendered = function() {
 	Session.setDefault('show_summary_panel', true)
 	Session.setDefault('show_help_panel', false)
 	Session.setDefault('show_notifications_panel', false)
-	Session.setDefault('show_notificationsNew_panel', false)
+	Session.setDefault('show_alerts_panel', false)
 	Session.setDefault('show_admin_panel', false)
 	Session.setDefault('show_market_panel', false)
 	Session.setDefault('show_settings_panel', false)
