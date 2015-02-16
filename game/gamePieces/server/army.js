@@ -132,7 +132,7 @@ move_army_to_hex = function(army_id, x, y) {
 
 		// check for my village
 		if (!has_merged) {
-			var res = Villages.findOne({under_construction:false, x:x, y:y, user_id: unit.user_id}, {fields: {_id: 1}})
+			var res = Villages.findOne({x:x, y:y, user_id: unit.user_id}, {fields: {_id: 1}})
 			if (res) {
 				// merge with
 				var inc = {}

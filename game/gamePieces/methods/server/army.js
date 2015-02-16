@@ -220,13 +220,6 @@ Meteor.methods({
 		check(building_id, String)
 		check(building_type, String)
 
-		// don't allow buying catapults at villages
-		if (building_type == 'village' && army.catapults) {
-			if (army.catapults > 0) {
-				throw new Meteor.Error("Can't buy catapults at villages.")
-			}
-		}
-
 		var user = Meteor.users.findOne(Meteor.userId(), {fields: {username:1, x:1, y:1, allies_below:1, castle_id:1, gold:1, grain:1, lumber:1, ore:1, wool:1, clay:1, glass:1}})
 		if (user) {
 			var fields = {user_id:1}
@@ -241,6 +234,40 @@ Meteor.methods({
 			}
 
 			if (building) {
+				// can't hire army from level 1 villages
+				if (building_type == 'village') {
+					if (building.level < 2) {
+						throw new Meteor.Error("Can't hire soldiers at level 1 villages.")
+					}
+				}
+
+				// can only buy archers at level 1 village
+				if (building_type == 'village' && building.level == 1) {
+					if (army.footmen && army.footmen > 0) {
+						throw new Meteor.Error("Can't hire footmen at level 1 villages.")
+					}
+					if (army.pikemen && army.pikemen > 0) {
+						throw new Meteor.Error("Can't hire pikemen at level 1 villages.")
+					}
+					if (army.cavalry && army.cavalry > 0) {
+						throw new Meteor.Error("Can't hire cavalry at level 1 villages.")
+					}
+				}
+
+				// don't allow buying cav at level 2 villages
+				if (building_type == 'village' && building.level == 2) {
+					if (army.cavalry && army.cavalry > 0) {
+						throw new Meteor.Error("Can't hire cavalry at level 2 villages.")
+					}
+				}
+
+				// don't allow buying catapults at any villages
+				if (building_type == 'village' && army.catapults) {
+					if (army.catapults > 0) {
+						throw new Meteor.Error("Can't build catapults at villages.")
+					}
+				}
+
 				// is castle mine for my ally below's
 				if (building.user_id == Meteor.userId() || _.indexOf(user.allies_below, building.user_id) != -1) {
 

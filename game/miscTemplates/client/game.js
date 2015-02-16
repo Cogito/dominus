@@ -90,7 +90,6 @@ Template.game.created = function() {
 			var subBakes = submanHexbakes.subscribe('onScreenHexbakes', roundedCenterHex_x, roundedCenterHex_y, canvas_size.width, canvas_size.height, hex_scale, self.showCoords.get())
 
 			var sub = subman.subscribe('on_screen', roundedCenterHex_x, roundedCenterHex_y, canvas_size.width, canvas_size.height, hex_scale)
-			// var sub_hexes = subman.subscribe('on_screen_hexes', roundedCenterHex_x, roundedCenterHex_y, canvas_size.width, canvas_size.height, hex_scale)
 
 			Session.set('subscription_ready', sub.ready() && subBakes.ready())
 		}

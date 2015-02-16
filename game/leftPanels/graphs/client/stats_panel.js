@@ -30,14 +30,14 @@ Template.stats_panel.rendered = function() {
 			var incomeRankValues = []
 			var numVassalsValues = []
 
-			_.each(s.resource.types_plus_gold, function(type) {
+			_.each(s.resource.types, function(type) {
 				inc[type] = []
 				vInc[type] = []
 				bInc[type] = []
 			})
 
 			dailystats.forEach(function(stat) {
-				_.each(s.resource.types_plus_gold, function(type) {
+				_.each(s.resource.types, function(type) {
 
 					if (stat.hasOwnProperty('inc') && stat.inc.hasOwnProperty(type) && !isNaN(stat.inc[type])) {
 						var y = stat.inc[type]
@@ -71,7 +71,6 @@ Template.stats_panel.rendered = function() {
 
 
 			var incData = [
-				{values: inc.gold, key: 'Gold', color: '#e6d545'},
 				{values: inc.grain, key: 'Grain', color: '#82d957'},
 				{values: inc.lumber, key: 'Lumber', color: '#b3823e'},
 				{values: inc.ore, key: 'Ore', color: '#d9d9d9'},
@@ -92,7 +91,6 @@ Template.stats_panel.rendered = function() {
 
 
 			var bIncData = [
-				{values: bInc.gold, key: 'Gold', color: '#e6d545'},
 				{values: bInc.grain, key: 'Grain', color: '#82d957'},
 				{values: bInc.lumber, key: 'Lumber', color: '#b3823e'},
 				{values: bInc.ore, key: 'Ore', color: '#d9d9d9'},
@@ -113,7 +111,6 @@ Template.stats_panel.rendered = function() {
 
 
 			var vIncData = [
-				{values: vInc.gold, key: 'Gold', color: '#e6d545'},
 				{values: vInc.grain, key: 'Grain', color: '#82d957'},
 				{values: vInc.lumber, key: 'Lumber', color: '#b3823e'},
 				{values: vInc.ore, key: 'Ore', color: '#d9d9d9'},
@@ -186,7 +183,6 @@ Template.stats_panel.rendered = function() {
 
 			var numUsers = []
 			var numActiveUsers = []
-			var numSessions = []
 
 			var soldierWorth = {}
 			_.each(s.army.types, function(type) {
@@ -202,10 +198,6 @@ Template.stats_panel.rendered = function() {
 					numActiveUsers.push({x:stat.created_at, y:stat.num_active_users})
 				}
 
-				if (stat.activeSessions && !isNaN(stat.activeSessions)) {
-					numSessions.push({x:stat.created_at, y:stat.activeSessions})
-				}
-
 				if (stat.soldierWorth) {
 					_.each(s.army.types, function(type) {
 						if (!isNaN(stat.soldierWorth[type])) {
@@ -217,8 +209,7 @@ Template.stats_panel.rendered = function() {
 
 			var user_data = [
 				{values: numUsers, key: 'Total Players', color: '#82d957'},
-				{values: numActiveUsers, key: 'Active Players', color: '#5793d9'},
-				{values: numSessions, key: 'Online Players', color: '#d98659'}
+				{values: numActiveUsers, key: 'Active Players', color: '#5793d9'}
 			]
 
 			nv.addGraph(function() {

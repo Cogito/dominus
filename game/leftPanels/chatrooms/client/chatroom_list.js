@@ -11,7 +11,7 @@ Template.chatroom_list.helpers({
 		if (Session.get('windowHasFocus') && Session.get('selectedChatroomId') == this._id) {
 			return false
 		}
-		
+
 		var recent = Recentchats.findOne({room_id:Template.currentData()._id})
 		if (recent) {
 			var latest_open = Cookie.get('room_'+this._id+'_open')
@@ -35,7 +35,7 @@ Template.chatroom_list.events({
 			Session.set('selectedChatroomId', null)
 		} else {
 			Session.set('selectedChatroomId', template.data._id)
-			var date = new Date(TimeSync.serverTime())
+			var date = new Date(TimeSync.serverTime(null, 5000))
 			Cookie.set('room_'+template.data._id+'_open', moment(date).add(1, 's').toDate(), {years: 10})
 		}
 	},

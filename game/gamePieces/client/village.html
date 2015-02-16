@@ -1,8 +1,8 @@
 <template name="village">
 	{{#if under_construction}}
-		<image xlink:href="/game_images/village_construction_01.png" x="{{coord_to_pixel_x x y -63}}" y="{{coord_to_pixel_y x y -41}}" height="83" width="126" style="pointer-events: none;"/>
+		<image xlink:href="/game_images/village_construction_lvl0{{levelPlusOne}}.png" x="{{coord_to_pixel_x x y -63}}" y="{{coord_to_pixel_y x y -41}}" height="83" width="126" style="pointer-events: none;"/>
 	{{else}}
-		<image xlink:href="/game_images/village_01.png" x="{{coord_to_pixel_x x y -63}}" y="{{coord_to_pixel_y x y -41}}" height="83" width="126" style="pointer-events: none;"/>
+		<image xlink:href="/game_images/village_lvl0{{level}}.png" x="{{coord_to_pixel_x x y -63}}" y="{{coord_to_pixel_y x y -41}}" height="83" width="126" style="pointer-events: none;"/>
 	{{/if}}
 
 	<polygon points="{{hex_points x y}}" class="village" data-id="{{_id}}" data-x="{{x}}" data-y="{{y}}" />

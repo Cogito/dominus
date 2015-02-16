@@ -8,7 +8,7 @@ Meteor.methods({
 				if (forums.count() == 0) {
 					Meteor.call('admin_create_forum', 'News', '')
 					Meteor.call('admin_create_forum', 'General', '')
-					Meteor.call('admin_create_forum', 'Feature Requests', 'Issues are tracked <a href="https://github.com/dan335/dominus/issues">here</a>')
+					Meteor.call('admin_create_forum', 'Feature Requests', 'Issues are tracked <a href="https://trello.com/b/q40VdLBJ/dominus">here</a>')
 					Meteor.call('admin_create_forum', 'Report a Bug', 'Issues are tracked <a href="https://github.com/dan335/dominus/issues">here</a>')
 				}
 			}

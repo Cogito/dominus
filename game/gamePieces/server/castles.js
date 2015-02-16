@@ -60,6 +60,7 @@ create_castle = function(user_id) {
 		reset_market()
 		Settings.upsert({name: 'gameEndDate'}, {$set: {name: 'gameEndDate', value: null}})
 		Settings.upsert({name: 'lastDominusUserId'}, {$set: {name: 'lastDominusUserId', value: null}})
+		Settings.upsert({name: 'taxesCollected'}, {$set: {name:'taxesCollected', value:0}})
 	}
 
 	var found = false

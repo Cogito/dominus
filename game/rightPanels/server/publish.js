@@ -11,7 +11,9 @@ var village_fields = {
 	castle_id:1,
 	income:1,
 	under_construction:1,
-	created_at:1
+	created_at:1,
+	level:1,
+	constructionStarted:1
 }
 
 _.each(s.army.types, function(type) {

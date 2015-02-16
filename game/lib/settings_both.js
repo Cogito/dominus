@@ -14,12 +14,12 @@ if (Meteor.isServer && process.env.NODE_ENV == 'development') {
 	s.resource.interval = 1000 * 15
 	s.battle_interval = 1000 * 30
 	s.village.max_can_have = 7
-	s.village.time_to_build = 1000
+	s.village.time_to_build = 1000	// old
 } else {
 	s.resource.interval = 1000 * 60 * 10
 	s.battle_interval = 1000 * 60 * 4
 	s.village.max_can_have = 7
-	s.village.time_to_build = 1000 * 60 * 30 	// 30 min
+	s.village.time_to_build = 1000 * 60 * 30 	// 30 min	// old
 }
 
 s.hex_size = 60
@@ -39,7 +39,7 @@ s.market.sell_tax = 0.02
 s.market.increment = 0.000004	// how much it goes up or down when someone buys or sells
 
 s.resource.gained_at_hex = 4
-s.resource.gold_gained_at_castle = 20
+//s.resource.gold_gained_at_castle = 20	// non longer used
 s.resource.gold_gained_at_village = 0
 s.resource.num_rings_castle = 2
 s.resource.num_rings_village = 1
@@ -50,14 +50,24 @@ s.resource.types_plus_gold = ['gold'].concat(s.resource.types)
 
 s.army.types = ['footmen', 'archers', 'pikemen', 'cavalry', 'catapults']
 
+// s.castle.income = {
+// 	gold: s.resource.gold_gained_at_castle,
+// 	grain: 30,
+// 	lumber: 20,
+// 	ore: 10,
+// 	wool: 8,
+// 	clay: 6,
+// 	glass: 2
+// }
+
 s.castle.income = {
-	gold: s.resource.gold_gained_at_castle,
-	grain: 30,
-	lumber: 20,
-	ore: 10,
-	wool: 8,
-	clay: 6,
-	glass: 2
+	gold: 0,	// not used
+	grain: 35,
+	lumber: 16,
+	ore: 8,
+	wool: 6,
+	clay: 7,
+	glass: 5
 }
 
 s.army.cost = {
@@ -136,6 +146,7 @@ s.army.pastMovesToShow = 3
 // s.army.pastMovesToShow times as long as catapults
 s.army.pastMovesMsLimit = 60 / s.army.stats.catapults.speed * s.army.pastMovesToShow * 1000 * 60
 
+// old
 s.village.cost = {
 	grain: 1000,
 	lumber: 500,
@@ -143,6 +154,75 @@ s.village.cost = {
 	wool: 0,
 	clay: 500,
 	glass: 0
+}
+
+s.village.maxLevel = 3
+
+// s.village.cost = {
+// 	level1: {
+// 		grain: 1000,
+// 		lumber: 500,
+// 		ore: 500,
+// 		wool: 0,
+// 		clay: 0,
+// 		glass: 0,
+// 		timeToBuild: 1000 * 60 * 30	// 30 min
+// 	},
+// 	level2: {
+// 		grain: 1000,
+// 		lumber: 1000,
+// 		ore: 1000,
+// 		wool: 0,
+// 		clay: 0,
+// 		glass: 0,
+// 		timeToBuild: 1000 * 60 * 60 * 3	// 3 hours
+// 	},
+// 	level3: {
+// 		grain: 1000,
+// 		lumber: 1000,
+// 		ore: 1000,
+// 		wool: 1000,
+// 		clay: 1000,
+// 		glass: 0,
+// 		timeToBuild: 1000 * 60 * 60 * 24 // 24 hours
+// 	},
+// }
+
+s.village.cost = {
+	level1: {
+		grain: 1000,
+		lumber: 500,
+		ore: 500,
+		wool: 0,
+		clay: 0,
+		glass: 0,
+		timeToBuild: 1000 * 60 * 30	// 30 min
+	},
+	level2: {
+		grain: 100,
+		lumber: 100,
+		ore: 100,
+		wool: 0,
+		clay: 0,
+		glass: 0,
+		timeToBuild: 1000 * 60 * 60 * 1	// 1 hours
+	},
+	level3: {
+		grain: 100,
+		lumber: 100,
+		ore: 100,
+		wool: 100,
+		clay: 100,
+		glass: 0,
+		timeToBuild: 1000 * 60 * 60 * 3 // 3 hours
+	},
+}
+
+// multiplier on how many resources they collect
+s.village.productionBonus = {
+	level1: 1,
+	level2: 1.5,
+	level3: 2
 }
 
 

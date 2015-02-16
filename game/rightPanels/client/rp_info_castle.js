@@ -1,4 +1,18 @@
 Template.rp_info_castle.helpers({
+	hasSoldierType: function() {
+		var village = Template.parentData(1)
+		if (village) {
+			return village[this] > 0
+		}
+	},
+
+	numSoldierType: function() {
+		var village = Template.parentData(1)
+		if (village) {
+			return village[this]
+		}
+	},
+	
 	showUnverifiedEmailAlert: function() {
 		if (Template.currentData()) {
 			var user = RightPanelUser.findOne(Template.currentData().user_id)

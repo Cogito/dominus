@@ -100,7 +100,7 @@ Template.menu.helpers({
 						}
 					} else {
 						// they don't have a cookie so give them one
-						var date = new Date(TimeSync.serverTime())
+						var date = new Date(TimeSync.serverTime(null, 5000))
 						Cookie.set('room_'+room._id+'_open', moment(date).subtract(1, 's').toDate(), {years: 10})
 						isNew = true
 					}

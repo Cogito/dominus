@@ -5,211 +5,31 @@
 		<div class="panel-group" id="accordion_help">
 
 			<div class="panel panel-default">
-				<div class="panel-heading">
-					<a data-toggle="collapse" data-parent="#accordion_help" href="#help-objective">
-						Game Objective
-					</a>
-				</div>
-				<div id="help-objective" class="panel-collapse collapse in">
-					<div class="panel-body">
-						<p>Become the Dominus to win the game.</p>
-						<blockquote>
-							<span style="font-size:120%;">Dominus</span> &nbsp; /doˈminus/<br>
-							Latin for emperor, master or owner.
-						</blockquote>
-						<p>To become the Dominus, everyone else in the game must be your vassal.</p>
-						<blockquote>
-							<span style="font-size:120%;">Vassal</span> &nbsp; /ˈva-səl/<br>
-							A person in the past who received protection and land from a lord in return for loyalty and service.
-						</blockquote>
-						<p>To gain a vassal attack someone's castle.  If you win then you become their lord and they become your vassal.  Vassals send their lords part of their income.</p>
-					</div>
-				</div>
+				{{> help_objective}}
 			</div>
 
 			<div class="panel panel-default">
-				<div class="panel-heading">
-					<a data-toggle="collapse" data-parent="#accordion_help" href="#help-start">
-						How to start playing
-					</a>
-				</div>
-				<div id="help-start" class="panel-collapse collapse">
-					<div class="panel-body">
-						<p>{{game_name}} is a slow strategy game that does not require a lot of time to play.  Give your armies their orders then come back in a few hours to check on them.</p>
-
-						<p>Games last about a month.  When someone wins everything is reset and a new game starts.</p>
-
-						<div class="help_section">Build a Village</div>
-
-						<p>When you start playing you should focus on building up your income.  One way to do that is to build villages. A village collects resources from the ring of hexes surrounding it.</p>
-
-						<p>Villages are built using armies.</p>
-						<ul>
-							<li>Find a good hex to build your village at.  You can only build villages on grain hexes, those are the light green ones.  Find a grain hex near your castle that is surrounded by hexes other than grain.</li>
-							<li>Click on your castle.</li>
-							<li>Click the "Send Army from Castle" button.</li>
-							<li>Move the cavalry slider to the right.</li>
-							<li>Click on the hex where you want to build your village.</li>
-						</ul>
-						<p>You should now see your army next to your castle.  If you click on your army you will see their path highlighted and how long it will take to reach their destination.</p>
-
-						<p>When they reach their destination they will have a "Build Village" button which you can click on to build your village.</p>
-
-						<div class="help_section">Next Steps</div>
-
-						<p>Continue building viillages to gain more income.  You can have up to {{s.village.max_can_have}} villages at one time.</p>
-						<p>Hire soldiers to protect your castle and villages.</p>
-						<p>After you have an army try attacking someone's castle.  If you win then they become your vassal and will send you part of their income.</p>
-						<p>When you gain a vassal it's usually a good idea to place an army on their castle to prevent someone else from stealing your vassal.</p>
-					</div>
-				</div>
+				{{> help_howToStart}}
 			</div>
 
 			<div class="panel panel-default">
-				<div class="panel-heading">
-					<a data-toggle="collapse" data-parent="#accordion_help" href="#help-flags">
-						Unit Colors
-					</a>
-				</div>
-				<div id="help-flags" class="panel-collapse collapse">
-					<div class="panel-body">
-						<p>The color of a unit's flag or square is based on it's relationship to you.</p>
-						<p><div class="help_flag mine">&nbsp;</div> Your units are green.</p>
-						<p><div class="help_flag foe">&nbsp;</div> <div class="help_flag team">&nbsp;</div> Enemy units are red.</p>
-						<p><div class="help_flag king">&nbsp;</div> <div class="help_flag above">&nbsp;</div> <div class="help_flag lord">&nbsp;</div> Units that are above you in the tree are cool colors.  You can attack their castles but not their armies or villages.</p>
-						<p><div class="help_flag vassal">&nbsp;</div> <div class="help_flag below">&nbsp;</div> Units that are yellow or orange are below you in the tree.  You cannot attack these units.</p>
-
-						<div class="help_section">Enemies</div>
-						<p>Gain vassals by attacking these units.</p>
-
-						<p><div class="help_flag foe">&nbsp;</div> Units that have a different king than you are solid red.</p>
-						<p><div class="help_flag team">&nbsp;</div> Units that are red and light red share the same king as you but are in a different branch.</p>
-
-						<div class="help_section">People Above You</div>
-						<p>Attack these units to climb the tree.</p>
-
-						<p><div class="help_flag king">&nbsp;</div> Units that are purple belong to your king.  You can attack your king's castle but not his armies or villages.  If you attack his castle and win then you become king and he becomes your vassal.</p>
-						<p><div class="help_flag above">&nbsp;</div> These units are below your king but above your lord.  You can attack their castle only.  If you attack their castle and win then they become your vassal and their lord becomes your lord.</p>
-						<p><div class="help_flag lord">&nbsp;</div> These units belong to your lord.  You can attack your lord's castle only.  If you attack your lord's castle and win then you become his lord and his lord becomes your lord.</p>
-
-						<div class="help_section">People Below You</div>
-						<p>You cannot attack these units.</p>
-
-						<p><div class="help_flag vassal">&nbsp;</div> These units are directly below you in the tree.  You cannot attack them.</p>
-						<p><div class="help_flag below">&nbsp;</div> These units are below you in the tree.  You cannot attack them.</p>
-					</div>
-				</div>
+				{{> help_colors}}
 			</div>
 
 			<div class="panel panel-default">
-				<div class="panel-heading">
-					<a data-toggle="collapse" data-parent="#accordion_help" href="#help-market">
-						Resources and the Market
-					</a>
-				</div>
-				<div id="help-market" class="panel-collapse collapse">
-					<div class="panel-body">
-						<p>There are six different types of resources.  Grain, lumber, ore, wool, clay and glass.  Resources are used to hire soldiers and build villages.  Each hex produces a different type of resouce.</p>
-						<div class="help_section">Collecting Resources</div>
-						<p>Resources are collected at your castle and villages.</p>
-
-						<p>Your castle collects {{s.castle.income.gold}} gold, {{s.castle.income.grain}} grain, {{s.castle.income.lumber}} lumber, {{s.castle.income.ore}} ore, {{s.castle.income.wool}} wool, {{s.castle.income.clay}} clay, and {{s.castle.income.glass}} glass.  Everyone's castle collects the same resources.</p>
-
-						<p>Villages collect resources from the 6 hexes surrounding them and {{s.resource.gold_gained_at_village}} gold.</p>
-
-						<p>Resources are collected every {{s_resource_interval}}.</p>
-						<p>You can see how many resources you have in the top of the summary panel.  The white number is how many you have.  The first grey number is how many you collected last resource update from your castle and villages.  The second grey number is how many you received from your vassals.</p>
-						<p>Villages collect from the hexes surrounding even if there is another building on the hex.  It is ok to build villages next to each other or next to another village.</p>
-						<div class="help_section">Large Resource Hexes</div>
-						<p>Some hexes produce {{resources_at_large_hexes}} resources instead of {{s.resource.gained_at_hex}}.  These hexes look different than the others.</p>
-						<div class="help_section">The Market</div>
-						<p>The market is where you can exchange resources for gold.  Prices for resources go up and down based on demand.  If grain is in high demand and many people buy grain then the price will go up.</p>
-					</div>
-				</div>
+				{{> help_market}}
 			</div>
 
 			<div class="panel panel-default">
-				<div class="panel-heading">
-					<a data-toggle="collapse" data-parent="#accordion_help" href="#help-castles">
-						Castles
-					</a>
-				</div>
-				<div id="help-castles" class="panel-collapse collapse">
-					<div class="panel-body">
-						<p>Your castle is the center of your kingdom.  It is where you hire soldiers.</p>
-						<p>Castles are very defensive.  They have a {{castle_defense_bonus}}x defense bonus.</p>
-						<p>If you attack someone's castle and win then you become their lord and they become your vassal.</p>
-						<p>If an army of yours stops on the same hex as your castle then they will join your castle's garrison.</p>
-					</div>
-				</div>
+				{{> help_castles}}
 			</div>
 
 			<div class="panel panel-default">
-				<div class="panel-heading">
-					<a data-toggle="collapse" data-parent="#accordion_help" href="#help-armies">
-						Armies
-					</a>
-				</div>
-				<div id="help-armies" class="panel-collapse collapse">
-					<div class="panel-body">
-						<p>Use armies to protect your castle and villages and to gain vassals.</p>
-						<p>
-							<b>Footmen</b><br>
-							Offense: {{s.army.stats.footmen.offense}} &nbsp; Defense: {{s.army.stats.footmen.defense}} &nbsp; Speed: {{s.army.stats.footmen.speed}}<br>
-							Footmen are good all-around soldiers.<br>
-							<br>
-							<b>Archers</b><br>
-							Offense: {{s.army.stats.archers.offense}} &nbsp; Defense: {{s.army.stats.archers.defense}} &nbsp; Speed: {{s.army.stats.archers.speed}}<br>
-							Good at defense. Bonus against footmen.<br>
-							<br>
-							<b>Pikemen</b><br>
-							Offense: {{s.army.stats.pikemen.offense}} &nbsp; Defense: {{s.army.stats.pikemen.defense}} &nbsp; Speed: {{s.army.stats.pikemen.speed}}<br>
-							Good at defense. Bonus against cavalry.<br>
-							<br>
-							<b>Cavalry</b><br>
-							Offense: {{s.army.stats.cavalry.offense}} &nbsp; Defense: {{s.army.stats.cavalry.defense}} &nbsp; Speed: {{s.army.stats.cavalry.speed}}<br>
-							Good at offense. Bonus against archers and footmen.<br>
-							<br>
-							<b>Catapults</b><br>
-							Offense: {{s.army.stats.catapults.offense}} &nbsp; Defense: {{s.army.stats.catapults.defense}} &nbsp; Speed: {{s.army.stats.catapults.speed}}<br>
-							+{{s.army.stats.catapults.bonus_against_buildings}} offense when attacking a castle or village.<br>
-						</p>
-						<p>If your army enters hex that is also occupied by an enemy army, village or castle then they will attack it.</p>
-
-						<div class="help_section">Bonuses</div>
-						<p>There are four different kinds of soldiers.  Some gain bonuses when fighting.</p>
-						<p>Archers recieve a bonus against footmen.  Pikemen recieve a bonus against cavalry.  Calvary recieve a bonus against archers and footmen.</p>
-						<p>When an archer fights a footman because the archer has a bonus against footmen the archer is twice as powerful.</p>
-						<p>Catapults have a different kind of bonus.  Catapults have a very low offense and defense.  When attacking a castle or village their offense is multiplied by their bonus.  If 1 catapult attacks an army it will have an offense of {{s.army.stats.catapults.offense}} but when that one catapult attacks a castle it will have an offense of {{s.army.stats.catapults.bonus_against_buildings}}.</p>
-
-						<div class="help_section">Speed</div>
-						<p>Armies move at the speed of their slowest unit.</p>
-
-						<p>Footmen have a speed of {{s.army.stats.footmen.speed}}, archers have a speed of {{s.army.stats.archers.speed}}, pikemen have a speed of {{s.army.stats.pikemen.speed}} and cavalry have a speed of {{s.army.stats.cavalry.speed}}.</p>
-						<p>An army of cavalry will travel {{s.army.stats.cavalry.speed}} hexes per hour but an army of cavalry and footmen will travel at {{s.army.stats.footmen.speed}} hexes per hour.</p>
-
-						<div class="help_section">Ally Bonuses</div>
-						<p>Armies that are on the same hex as your vassal's castle or village get {{ally_castle_defense_bonus}}x bonus.</p>
-					</div>
-				</div>
+				{{> help_armies}}
 			</div>
 
 			<div class="panel panel-default">
-				<div class="panel-heading">
-					<a data-toggle="collapse" data-parent="#accordion_help" href="#help-villages">
-						Villages
-					</a>
-				</div>
-				<div id="help-villages" class="panel-collapse collapse">
-					<div class="panel-body">
-						<p>Villages give you resources.</p>
-						<p>You can build up to {{s.village.max_can_have}} villages at a time.  Villages gain resources from the 6 surrounding hexes and {{s.resource.gold_gained_at_village}} gold every {{s_resource_interval}}.</p>
-						<p>Villages cost {{s.village.cost.grain}} grain, {{s.village.cost.lumber}} lumber, {{s.village.cost.ore}} ore, and {{s.village.cost.clay}} clay.</p>
-
-						<p>Villages have a {{village_defense_bonus}}x defense bonus.</p>
-						<p>If an army of yours is stopped on the same hex as your village then they will join the village's garrison.</p>
-					</div>
-				</div>
+				{{> help_villages}}
 			</div>
 
 			<div class="panel panel-default">
@@ -403,10 +223,15 @@
 				<div id="help-etc" class="panel-collapse collapse">
 					<div class="panel-body">
 						<p>Dominus on <a href="https://github.com/dan335/dominus">Github</a>.</p>
+						<p>Issues on <a href="https://trello.com/b/q40VdLBJ/dominus">Trello</a>.</p>
 						<p>Follow <a href="https://twitter.com/DominusGame">@DominusGame</a> on Twitter.</p>
 						<p>Dominus on <a href="https://www.facebook.com/dominusgame">Facebook</a></p>
 						<p>Dominus <a href="https://medium.com/@Dominus">Blog</a> on Medium</p>
+						<p>Domin on the <a href="https://chrome.google.com/webstore/detail/dominus/pbnhiikmohpnlplijjljcamfnkllinic">Chrome app store</a></p>
 
+
+						<br>
+						<a href="https://docs.google.com/spreadsheets/d/1XjlgPet_nngzJ6oeLkKKggn9evIa0raAA5ag-DQ01aE/">Battle Calculator by ShadowHawk</a> Losses are a bit off.<br>
 						<br>
 						These may no longer be correct<br>
 						<a href="https://docs.google.com/spreadsheets/d/1TBZwucFoGp8xyaaNmGaHzI_-KO5N2zg4knNRwR8-e8w/edit?usp=sharing" target="_blank">Battle and Trade Calculator by Cogito</a><br>
@@ -414,12 +239,16 @@
 
 						<br><br>
 
-						<p><a href="https://www.desmos.com/calculator/wjlvy7f8pa">Market Formulas</a></p>
+						<p><a href="https://www.desmos.com/calculator/ltoauhpcdf">Market Formulas</a></p>
 
 						<p>
 							<a href="/privacy">Privacy Policy</a><br>
 							<a href="/terms">Terms of Service</a>
 						</p>
+
+						<p><a href="http://newrpg.com/browser-games/dominus/">NewRPG</a></p>
+
+						<p><a href="http://gametrove.net">Gametrove</a></p>
 					</div>
 				</div>
 			</div>

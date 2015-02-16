@@ -85,7 +85,7 @@
 				{{/if}}
 
 				<div class="pad_group">
-					<button class="btn btn-primary btn-block" id="createChatButton">Create chatroom with {{username}}</button>
+					<button class="btn btn-primary btn-block" id="createChatButton">Create chatroom</button>
 				</div>
 			{{/unless}}
 
@@ -101,34 +101,29 @@
 				<div class="panel-heading">
 					Castle Garrison
 				</div>
-				<table class="table table-condensed table-striped">
-					<tbody>
-						<tr>
-							<td>Footmen</td>
-							<td style="text-align:right;">{{round footmen}}</td>
-						</tr>
-						<tr>
-							<td>Archers</td>
-							<td style="text-align:right;">{{round archers}}</td>
-						</tr>
-						<tr>
-							<td>Pikemen</td>
-							<td style="text-align:right;">{{round pikemen}}</td>
-						</tr>
-						<tr>
-							<td>Cavalry</td>
-							<td style="text-align:right;">{{round cavalry}}</td>
-						</tr>
-						<tr>
-							<td>Catapults</td>
-							<td style="text-align:right;">{{round catapults}}</td>
-						</tr>
-						<tr>
-							<td>Defense Power</td>
-							<td style="text-align:right;">{{round defensePower}}</td>
-						</tr>
-					</tbody>
-				</table>
+				{{#if no_soldiers}}
+					<div class="panel-body">
+						Empty
+					</div>
+				{{else}}
+					<table class="table table-condensed table-striped">
+						<tbody>
+							{{#each s.army.types}}
+								{{#if hasSoldierType}}
+								<tr>
+									<td>{{capitalize this}}</td>
+									<td style="text-align:right;">{{round numSoldierType}}</td>
+								</tr>
+								{{/if}}
+							{{/each}}
+
+							<tr>
+								<td>Defense Power</td>
+								<td style="text-align:right;">{{round defensePower}}</td>
+							</tr>
+						</tbody>
+					</table>
+				{{/if}}
 			</div>
 
 			{{#if is_vassal}}

@@ -29,6 +29,9 @@ UI.registerHelper('dateUnixOffset', function(date) {
 	return new Date(date).getTime()
 })
 
+UI.registerHelper('greater_than_zero', function(num) {
+	return num > 0
+})
 
 
 

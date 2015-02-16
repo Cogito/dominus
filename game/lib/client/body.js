@@ -81,11 +81,14 @@ UI.registerHelper('ally_castle_defense_bonus', function() {
 	return s.castle.ally_defense_bonus
 })
 
-
 UI.registerHelper('resource_interval', function() {
 	return moment.duration(s.resource.interval).humanize()
 })
 
-UI.registerHelper('greater_than_zero', function(num) {
-	return num > 0
+UI.registerHelper('s_battle_interval', function() {
+	return moment.duration(s.battle_interval).humanize()
+})
+
+UI.registerHelper('resources_at_large_hexes', function() {
+	return s.resource.large_resource_multiplier * s.resource.gained_at_hex
 })
