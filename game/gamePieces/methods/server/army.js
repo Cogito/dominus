@@ -361,6 +361,11 @@ Meteor.methods({
 							worker.enqueue('update_networth', {user_id: user._id})
 							worker.enqueue('update_networth', {user_id: to._id})
 						}
+
+						var from = Meteor.userId()
+						var to = building.user_id
+						alert_receivedArmy(to, from, army)
+						gAlert_sentArmy(from, to, army)
 					}
 
 					return true

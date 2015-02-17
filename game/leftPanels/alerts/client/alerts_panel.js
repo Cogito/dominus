@@ -16,6 +16,10 @@ Template.alerts_panel.helpers({
             return 'active'
         }
     },
+
+    numUnreadAlerts: function() {
+        return UnreadAlerts.find().count()
+    },
 })
 
 

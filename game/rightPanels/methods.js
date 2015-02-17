@@ -77,6 +77,11 @@ Meteor.methods({
 						}, amount)
 					}
 
+					var from = user._id
+					var to = user_id
+					alert_receivedGoldFrom(to, from, amount)
+					gAlert_sentGold(from, to, amount)
+
 					worker.enqueue('update_networth', {user_id: user_id})
 					worker.enqueue('update_networth', {user_id: Meteor.userId()})
 				}

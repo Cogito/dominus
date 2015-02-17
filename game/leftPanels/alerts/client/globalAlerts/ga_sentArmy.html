@@ -1,0 +1,34 @@
+<template name="ga_sentArmy">
+    {{> ga_titleTemplate title=title iconName='fa-envelope' date=created_at}}
+    {{#if isOpen}}
+    <div class="alertBody">
+        <a href="" data-x="{{fromUser.x}}" data-y="{{fromUser.y}}" data-castle_id="{{fromUser.castle_id}}" class="userLink">{{fromUser.username}}</a>
+
+        sent
+
+        <a href="" data-x="{{toUser.x}}" data-y="{{toUser.y}}" data-castle_id="{{toUser.castle_id}}" class="userLink">{{toUser.username}}</a>
+
+        an army.
+
+        <br><br>
+
+        <table class="table table-striped">
+            <tbody>
+                {{#each s.army.types}}
+                    <tr>
+                        <td>
+                            {{capitalize this}}
+                        </td>
+                        <td style="text-align:right;">
+                            {{numSoldiers this}}
+                        </td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+        <br><br>
+        <a href="/alert/{{_id}}">link for sharing</a>
+    </div>
+    {{/if}}
+</template>

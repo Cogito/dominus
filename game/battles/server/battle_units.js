@@ -107,7 +107,12 @@ Units.prototype.enteredBattle = function(unit) {
 	record.unit = unit
 	notification_battle_start(unit.user_id, record)
 
-	//
+	// send new battle sert if not already sent
+	if (!self.battleDb.hasStartAlertBeenSentTo(unit)) {
+		alert_battleStart(unit.user_id, unit._id, unit.type, record._id)
+		self.battleDb.addToSentStartAlertTo(unit)
+	}
+
 	switch(unit.type) {
 		case 'castle':
 			Castles.update(unit._id, {$set:{inBattle:true}})

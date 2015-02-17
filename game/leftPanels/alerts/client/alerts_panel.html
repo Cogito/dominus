@@ -2,12 +2,16 @@
     <div id="alerts_panel">
         <div class="panel_title"><i class="fa fa-bullhorn fa-lg"></i> &nbsp;Alerts</div>
 
+        <div class="panel panel-body">
+            Alerts will soon replace notifications.  They're the same thing but re-written and better.  Many alerts are still missing.
+        </div>
 
         <div class="pad_group">
             <div class="btn-group btn-group-justified" role="group">
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-default btn-primary {{mineActive}}" id="mineButton">
                         Mine
+                        <span class="badge">{{#if numUnreadAlerts}}{{numUnreadAlerts}}{{/if}}</span>
                     </button>
                 </div>
                 <div class="btn-group" role="group">

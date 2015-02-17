@@ -28,8 +28,9 @@ BattleDb.prototype.init = function() {
 			deaths: [],
 			//roundData: [],
 			currentUnits: self.getCurrentUnits(),
-			sendEndNotificationTo: [],	// set in enteredBattle - used for end battle notifications
-			isOver: false
+			sendEndNotificationTo: [],	// set in enteredBattle - used for end battle notifications, no longer used
+			isOver: false,
+			sentStartAlertTo: []
 		}
 		self.record._id = Battles.insert(self.record)
 
@@ -44,6 +45,33 @@ BattleDb.prototype.init = function() {
 }
 
 
+BattleDb.prototype.hasStartAlertBeenSentTo = function(unit) {
+	var self = this
+
+	var foundRecord = _.find(self.record.sentStartAlertTo, function(u) {
+		return u == unit._id
+	})
+
+	return foundRecord
+}
+
+// keep track of who we've sent battle started alert to
+// so that we don't send twice
+BattleDb.prototype.addToSentStartAlertTo = function(unit) {
+	var self = this
+
+	var foundRecord = _.find(self.record.sentStartAlertTo, function(u) {
+		return u == unit._id
+	})
+
+	if (!foundRecord) {
+		self.record.sentStartAlertTo.push(unit._id)
+		if (self.debug) {console.log(unit.username+':'+unit.name+':'+unit.type+' added to sentStartAlertTo list')}
+	}
+}
+
+
+// no longer used
 // list of who to send end battle notifications to
 // add unit to list if not already in it
 BattleDb.prototype.addToSendEndNotificationTo = function(unit) {
@@ -60,6 +88,7 @@ BattleDb.prototype.addToSendEndNotificationTo = function(unit) {
 }
 
 
+// no longer used
 BattleDb.prototype.getSendEndNotificationTo = function() {
 	return this.record.sendEndNotificationTo
 }
@@ -133,13 +162,13 @@ BattleDb.prototype.saveRecord = function() {
 		roundNumber: self.record.roundNumber,
 		deaths: self.record.deaths,
 		currentUnits: self.getCurrentUnits(),
-		sendEndNotificationTo: self.record.sendEndNotificationTo
+		sendEndNotificationTo: self.record.sendEndNotificationTo,
+		sentStartAlertTo: self.record.sentStartAlertTo
 	}
 
 	//Battles.update(self.record._id, {$set: set, $addToSet: {roundData: roundData}})
 	Fights.insert(roundData)
 	Battles.update(self.record._id, {$set: set})
-
 }
 
 

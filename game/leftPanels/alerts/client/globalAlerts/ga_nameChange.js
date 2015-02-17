@@ -1,4 +1,4 @@
-Template.ga_nameChange.helpers({
+var helpers = {
     user: function() {
         return AlertUsers.findOne(this.vars.user_id)
     },
@@ -13,9 +13,10 @@ Template.ga_nameChange.helpers({
     isOpen: function() {
         return Template.instance().isOpen.get()
     }
-})
+}
 
 
+Template.ga_nameChange.helpers(_.extend(globalAlertSharedHelpers, helpers))
 Template.ga_nameChange.events = alertSharedEvents
 
 

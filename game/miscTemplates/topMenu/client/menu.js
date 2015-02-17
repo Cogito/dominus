@@ -18,6 +18,10 @@ Template.menu.helpers({
 		return NotificationsUnread.find().count()
 	},
 
+	numUnreadAlerts: function() {
+		return UnreadAlerts.find().count()
+	},
+
 	notifications_active: function() {
 		if (Session.get('show_notifications_panel')) { return 'active' } else { return '' }
 	},
@@ -242,6 +246,7 @@ Template.menu.rendered = function() {
 
 	this.autorun(function() {
 		Meteor.subscribe('notifications_unread')
+		Meteor.subscribe('unreadAlerts')
 		Meteor.subscribe('room_list')
 		Meteor.subscribe('market')
 		Meteor.subscribe('recentchats')
