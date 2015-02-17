@@ -18,6 +18,11 @@ var helpers = {
     numSoldiers: function() {
         var army = Template.parentData(1).vars.army
         return round_number(army[this])
+    },
+
+    hasSoldierType: function() {
+        var army = Template.parentData(1).vars.army
+        return army[this] > 0
     }
 }
 

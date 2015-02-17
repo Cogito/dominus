@@ -29,6 +29,50 @@ alert_receivedArmy = function(user_id, fromUser_id, army) {
 }
 
 
+alert_addedToChatroom = function(user_id, addedByUser_id, room_id) {
+    check(user_id, String)
+    check(addedByUser_id, String)
+    check(room_id, String)
+
+    var vars = {addedByUser_id:addedByUser_id, room_id:room_id}
+    newAlert('alert_addedToChatroom', [user_id], vars)
+}
+
+
+alert_kickedFromChatroom = function(user_id, room_id) {
+    check(user_id, String)
+    check(room_id, String)
+
+    vars = {room_id:room_id}
+    newAlert('alert_kickedFromChatroom', [user_id], vars)
+}
+
+
+alert_chatroomMadeAdmin = function(user_id, room_id) {
+    check(user_id, String)
+    check(room_id, String)
+
+    vars = {room_id:room_id}
+    newAlert('alert_chatroomMadeAdmin', [user_id], vars)
+}
+
+
+alert_chatroomRemovedFromAdmin = function(user_id, room_id) {
+    check(user_id, String)
+    check(room_id, String)
+
+    vars = {room_id:room_id}
+    newAlert('alert_chatroomRemovedFromAdmin', [user_id], vars)
+}
+
+
+alert_chatroomNowOwner = function(user_id, room_id) {
+    check(user_id, String)
+    check(room_id, String)
+
+    vars = {room_id:room_id}
+    newAlert('alert_chatroomNowOwner', [user_id], vars)
+}
 
 // --------
 

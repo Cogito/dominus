@@ -52,6 +52,8 @@ removeOwnerFromRoom = function(room_id) {
 								$set:{owner:highest_id},
 								$pull:{admins:highest_id}
 							})
+
+							alert_chatroomNowOwner(highest_id, room_id)
 						} else {
 							throw new Meteor.Error('Cannot find someone make owner of room.')
 						}
@@ -76,6 +78,8 @@ removeOwnerFromRoom = function(room_id) {
 								Rooms.update(room2._id, {
 									$set:{owner:highest_id}
 								})
+
+								alert_chatroomNowOwner(highest_id, room_id)
 							} else {
 								throw new Meteor.Error('Cannot find someone make owner of room.')
 							}

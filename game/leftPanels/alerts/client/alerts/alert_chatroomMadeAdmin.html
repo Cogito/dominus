@@ -1,0 +1,8 @@
+<template name="alert_chatroomMadeAdmin">
+    {{> alert_titleTemplate title=title iconName='fa-comments' date=created_at read=read}}
+    {{#if isOpen}}
+    <div class="alertBody">
+        You are now an admin in the chatroom <b>{{chatroom.name}}</b>.
+    </div>
+    {{/if}}
+</template>

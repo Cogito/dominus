@@ -20,6 +20,9 @@ Meteor.methods({
 				var name = user.username+' and '+other_user.username
 				var id = createChatroom(name, 'normal', user._id, [user._id, other_user._id])
 				notification_new_chatroom_user(other_user._id, {_id: user._id, username: user.username, x: user.x, y: user.y, castle_id: user.castle_id})
+
+				alert_addedToChatroom(other_user._id, user._id, id)
+
 				return id
 
 			} else {
@@ -100,6 +103,8 @@ Meteor.methods({
 						throw new Meteor.Error(name+" is already in this chatroom.")
 					}
 
+					alert_addedToChatroom(member._id, Meteor.userId(), room._id)
+
 					Rooms.update(room_id, {$addToSet: {members:member._id}})
 
 				} else {
@@ -147,6 +152,8 @@ Meteor.methods({
 			Rooms.update(room_id, {
 				$pull: {admins:member_id}
 			})
+
+			alert_chatroomNowOwner(member_id, room_id)
 		}
 	},
 
@@ -174,6 +181,7 @@ Meteor.methods({
 				if (room.owner != member_id) {
 					if (!_.contains(room.admins, member_id)) {
 						Rooms.update(room_id, {$addToSet: {admins:member_id}})
+						alert_chatroomMadeAdmin(member_id, room_id)
 					}
 				}
 			}
@@ -210,6 +218,7 @@ Meteor.methods({
 			}
 
 			Rooms.update(room_id, {$pull: {admins:member_id}})
+			alert_chatroomRemovedFromAdmin(member_id, room_id)
 		}
 	},
 
@@ -249,6 +258,8 @@ Meteor.methods({
 					}
 				}
 			}
+
+			alert_kickedFromChatroom(member_id, room_id)
 		}
 	},
 

@@ -1,0 +1,8 @@
+<template name="alert_chatroomNowOwner">
+    {{> alert_titleTemplate title=title iconName='fa-comments' date=created_at read=read}}
+    {{#if isOpen}}
+    <div class="alertBody">
+        You are now owner of the chatroom <b>{{chatroom.name}}</b>.
+    </div>
+    {{/if}}
+</template>

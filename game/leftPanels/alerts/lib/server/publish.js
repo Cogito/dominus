@@ -30,6 +30,15 @@ Meteor.publish('alertUser', function(user_id) {
     return self.ready();
 })
 
+
+Meteor.publish('alertChatroom', function(room_id) {
+    var self = this
+    var cur = Rooms.find(room_id, {fields: {name:1}})
+    Mongo.Collection._publishCursor(cur, self, 'alertchatrooms')
+    return self.ready();
+})
+
+
 Meteor.publish('battleAlertTitles', function() {
     var self = this
     var fields = {

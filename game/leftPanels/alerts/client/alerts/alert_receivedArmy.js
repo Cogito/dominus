@@ -7,6 +7,8 @@ var helpers = {
         var user = AlertUsers.findOne(this.vars.fromUser_id)
         if (user) {
             return user.username+' sent you an army.'
+        } else {
+            return 'Someone sent you an army.'
         }
     },
 
