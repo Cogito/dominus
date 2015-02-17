@@ -135,7 +135,7 @@ Meteor.startup(function() {
 							if (!foundArmyPosition) {
 								move_army_to_hex(army._id, move.from_x, move.from_y)
 								Moves.update(move._id, {$set: {last_move_at:new Date()}})
-								console.log('Error: Army was not on path.')
+								console.log('Error: Army '+army._id+' was not on path.')
 							}
 
 							// if this is last hex in this move

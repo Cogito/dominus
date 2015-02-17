@@ -2,15 +2,17 @@ update_networth = function(user_id) {
 
 	var user = Meteor.users.findOne(user_id)
 
-	if (!user) { return false }
+	if (!user) {
+		throw new Meteor.Error('User not found.')
+	}
 
-	if (isNaN(user.gold) || !isFinite(user.gold)) {return false}
-	if (isNaN(user.grain) || !isFinite(user.grain)) {return false}
-	if (isNaN(user.lumber) || !isFinite(user.lumber)) {return false}
-	if (isNaN(user.ore) || !isFinite(user.ore)) {return false}
-	if (isNaN(user.wool) || !isFinite(user.wool)) {return false}
-	if (isNaN(user.clay) || !isFinite(user.clay)) {return false}
-	if (isNaN(user.glass) || !isFinite(user.glass)) {return false}
+	check(user.gold, validNumber)
+	check(user.grain, validNumber)
+	check(user.lumber, validNumber)
+	check(user.ore, validNumber)
+	check(user.wool, validNumber)
+	check(user.clay, validNumber)
+	check(user.glass, validNumber)
 
 	var worth = {
 		gold: user.gold,
@@ -36,16 +38,34 @@ update_networth = function(user_id) {
 		})
 	})
 
+	check(worth.gold, validNumber)
+	check(worth.grain, validNumber)
+	check(worth.lumber, validNumber)
+	check(worth.ore, validNumber)
+	check(worth.wool, validNumber)
+	check(worth.clay, validNumber)
+	check(worth.glass, validNumber)
+
+	var villageFields = _.extend(fields, {level:1})
+
 	// villages and village garrison
-	Villages.find({user_id: user._id}, {fields: fields}).forEach(function(res) {
+	Villages.find({user_id: user._id}, {fields: villageFields}).forEach(function(res) {
 		_.each(s.resource.types, function(t) {
-			worth[t] += s.village.cost[t]
+			worth[t] += s.village.cost['level'+res.level][t]
 
 			_.each(s.army.types, function(type) {
 				worth[t] += s.army.cost[type][t] * res[type]
 			})
 		})
 	})
+
+	check(worth.gold, validNumber)
+	check(worth.grain, validNumber)
+	check(worth.lumber, validNumber)
+	check(worth.ore, validNumber)
+	check(worth.wool, validNumber)
+	check(worth.clay, validNumber)
+	check(worth.glass, validNumber)
 
 	// castle garrison
 	Castles.find({user_id: user._id}, {fields: fields}).forEach(function(res) {
@@ -56,6 +76,14 @@ update_networth = function(user_id) {
 		})
 	})
 
+	check(worth.gold, validNumber)
+	check(worth.grain, validNumber)
+	check(worth.lumber, validNumber)
+	check(worth.ore, validNumber)
+	check(worth.wool, validNumber)
+	check(worth.clay, validNumber)
+	check(worth.glass, validNumber)
+
 	worth.total = worth.gold
 
 	// convert to gold
@@ -65,9 +93,7 @@ update_networth = function(user_id) {
 		worth.total += m.price * worth[t]
 	})
 
-	if (!isFinite(worth.total) || isNaN(worth.total)) {
-		return false
-	}
+	check(worth.total, validNumber)
 
 	Dailystats.upsert({user_id: user_id, created_at: {$gte: statsBegin(), $lt: statsEnd()}}, {$setOnInsert: {user_id:user_id, created_at: new Date()}, $set: {networth:worth.total, updated_at:new Date()}})
 	Meteor.users.update(user_id, {$set: {networth: worth.total}})
