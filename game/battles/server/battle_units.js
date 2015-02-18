@@ -106,11 +106,16 @@ Units.prototype.enteredBattle = function(unit) {
 	var record = self.battleDb.getRecord()
 	record.unit = unit
 	notification_battle_start(unit.user_id, record)
-
 	// send new battle sert if not already sent
 	if (!self.battleDb.hasStartAlertBeenSentTo(unit)) {
 		alert_battleStart(unit.user_id, unit._id, unit.type, record._id)
 		self.battleDb.addToSentStartAlertTo(unit)
+
+		// if this is a castle send alert to lords that vassal is under attack
+		if (unit.type == 'castle') {
+			var user = self.getUserOfUnit(unit._id)
+			alert_vassalIsUnderAttack(user.allies_above, user._id, record._id)
+		}
 	}
 
 	switch(unit.type) {

@@ -26,6 +26,15 @@ gAlert_sentArmy = function(fromUser_id, toUser_id, army) {
 }
 
 
+gAlert_mapExpanded = function(numHexes, numRings) {
+    check(numHexes, validNumber)
+    check(numRings, validNumber)
+
+    var vars = {numHexes:numHexes, numRings:numRings}
+    newGlobalAlert('ga_mapExpanded', vars)
+}
+
+
 // --------
 
 

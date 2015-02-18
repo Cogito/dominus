@@ -74,6 +74,15 @@ alert_chatroomNowOwner = function(user_id, room_id) {
     newAlert('alert_chatroomNowOwner', [user_id], vars)
 }
 
+
+alert_vassalIsUnderAttack = function(arrayOfLordIds, vassal_id, battle_id) {
+    check(arrayOfLordIds, Array)
+    check(vassal_id, String)
+    check(battle_id, String)
+    var vars = {vassal_id:vassal_id, battle_id:battle_id}
+    newAlert('alert_vassalIsUnderAttack', arrayOfLordIds, vars)
+}
+
 // --------
 
 

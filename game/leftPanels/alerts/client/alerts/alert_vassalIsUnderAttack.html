@@ -1,0 +1,16 @@
+<template name="alert_vassalIsUnderAttack">
+    {{> alert_titleTemplate title=title iconName='fa-shield' date=created_at read=read}}
+    {{#if isOpen}}
+        <div class="alertBody">
+            Your vassal
+
+            <a href="" data-x="{{vassal.x}}" data-y="{{vassal.y}}" data-castle_id="{{vassal.castle_id}}" class="userLink">{{vassal.username}}</a>
+
+            is under attack at his castle.
+
+            <br><br>
+
+            {{> battle_report battle}}
+        </div>
+    {{/if}}
+</template>

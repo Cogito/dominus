@@ -130,6 +130,10 @@ create_castle = function(user_id) {
 							add_ring(true)
 							add_ring(true)
 
+							var numHexes = Hexes.find().count()
+							var numRings = Hexes.findOne({}, {sort:{x:-1}, limit:1}).x
+							gAlert_mapExpanded(numHexes, numRings)
+
 							// rebake map
 							var mapbaker = new Mapbaker()
 							mapbaker.bakeHexes()
