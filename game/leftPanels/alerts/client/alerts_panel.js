@@ -46,3 +46,8 @@ Template.alerts_panel.created = function() {
 
     self.activeTab = new ReactiveVar('mine')
 }
+
+
+Template.alerts_panel.rendered = function() {
+    this.firstNode.parentNode._uihooks = leftPanelAnimation
+}
