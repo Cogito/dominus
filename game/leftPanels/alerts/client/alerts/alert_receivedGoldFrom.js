@@ -6,7 +6,7 @@ var helpers = {
     title: function() {
         var user = AlertUsers.findOne(this.vars.fromUser_id)
         if (user) {
-            return user.username+' sent you '+this.vars.amount+' gold.'
+            return user.username+' sent you '+round_number(this.vars.amount)+' gold.'
         } else {
             return 'Someone sent you gold.'
         }

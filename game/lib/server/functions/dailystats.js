@@ -51,7 +51,10 @@ update_networth = function(user_id) {
 	// villages and village garrison
 	Villages.find({user_id: user._id}, {fields: villageFields}).forEach(function(res) {
 		_.each(s.resource.types, function(t) {
-			worth[t] += s.village.cost['level'+res.level][t]
+			// villages are level 0 while they're being built
+			if (res.level > 0) {
+				worth[t] += s.village.cost['level'+res.level][t]
+			}
 
 			_.each(s.army.types, function(type) {
 				worth[t] += s.army.cost[type][t] * res[type]

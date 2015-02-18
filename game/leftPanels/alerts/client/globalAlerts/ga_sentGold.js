@@ -11,7 +11,7 @@ var helpers = {
         var fromUser = AlertUsers.findOne(this.vars.fromUser_id)
         var toUser = AlertUsers.findOne(this.vars.toUser_id)
         if (toUser && fromUser) {
-            return fromUser.username +' sent '+this.vars.amount+' gold to '+toUser.username
+            return fromUser.username +' sent '+round_number(this.vars.amount)+' gold to '+toUser.username
         }
     }
 }
