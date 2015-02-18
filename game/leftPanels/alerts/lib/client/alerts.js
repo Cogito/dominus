@@ -63,3 +63,17 @@ globalAlertSharedHelpers = {
         return Template.instance().isOpen.get()
     }
 }
+
+
+alertSharedRendered = function() {
+    this.find('.alertAnimationWrapper')._uihooks = {
+        insertElement: function(node, next) {
+            $(node).hide().insertBefore(next).slideDown(120)
+        },
+        removeElement: function(node) {
+            $(node).slideUp(80, function() {
+                $(this).remove()
+            })
+        }
+    }
+}

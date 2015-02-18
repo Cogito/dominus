@@ -1,15 +1,17 @@
 <template name="ga_sentGold">
     {{> ga_titleTemplate title=title iconName='fa-dollar' date=created_at}}
-    {{#if isOpen}}
-    <div class="alertBody">
-        <a href="" data-x="{{fromUser.x}}" data-y="{{fromUser.y}}" data-castle_id="{{fromUser.castle_id}}" class="userLink">{{fromUser.username}}</a>
+    <div class="alertAnimationWrapper">
+        {{#if isOpen}}
+            <div class="alertBody">
+                <a href="" data-x="{{fromUser.x}}" data-y="{{fromUser.y}}" data-castle_id="{{fromUser.castle_id}}" class="userLink">{{fromUser.username}}</a>
 
-        sent {{round vars.amount}} gold to
+                sent {{round vars.amount}} gold to
 
-        <a href="" data-x="{{toUser.x}}" data-y="{{toUser.y}}" data-castle_id="{{toUser.castle_id}}" class="userLink">{{toUser.username}}</a>.
+                <a href="" data-x="{{toUser.x}}" data-y="{{toUser.y}}" data-castle_id="{{toUser.castle_id}}" class="userLink">{{toUser.username}}</a>.
 
-        <br><br>
-        <a href="/alert/{{_id}}">link for sharing</a>
+                <br><br>
+                <a href="/alert/{{_id}}">link for sharing</a>
+            </div>
+        {{/if}}
     </div>
-    {{/if}}
 </template>

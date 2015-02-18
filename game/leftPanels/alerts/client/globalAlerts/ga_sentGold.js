@@ -19,6 +19,7 @@ var helpers = {
 
 Template.ga_sentGold.helpers(_.extend(globalAlertSharedHelpers, helpers))
 Template.ga_sentGold.events = globalAlertSharedEvents
+Template.ga_sentGold.rendered = alertSharedRendered
 
 
 Template.ga_sentGold.created = function() {

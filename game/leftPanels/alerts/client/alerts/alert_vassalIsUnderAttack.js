@@ -20,6 +20,7 @@ var helpers = {
 
 Template.alert_vassalIsUnderAttack.helpers(_.extend(alertSharedHelpers, helpers))
 Template.alert_vassalIsUnderAttack.events = alertSharedEvents
+Template.alert_vassalIsUnderAttack.rendered = alertSharedRendered
 
 
 Template.alert_vassalIsUnderAttack.created = function() {

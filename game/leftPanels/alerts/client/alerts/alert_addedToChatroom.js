@@ -19,6 +19,7 @@ var helpers = {
 
 Template.alert_addedToChatroom.helpers(_.extend(alertSharedHelpers, helpers))
 Template.alert_addedToChatroom.events = alertSharedEvents
+Template.alert_addedToChatroom.rendered = alertSharedRendered
 
 Template.alert_addedToChatroom.created = function() {
     var self = this

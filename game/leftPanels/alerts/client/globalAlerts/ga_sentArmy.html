@@ -1,38 +1,40 @@
 <template name="ga_sentArmy">
     {{> ga_titleTemplate title=title iconName='fa-envelope' date=created_at}}
-    {{#if isOpen}}
-    <div class="alertBody">
-        <a href="" data-x="{{fromUser.x}}" data-y="{{fromUser.y}}" data-castle_id="{{fromUser.castle_id}}" class="userLink">{{fromUser.username}}</a>
+    <div class="alertAnimationWrapper">
+        {{#if isOpen}}
+            <div class="alertBody">
+                <a href="" data-x="{{fromUser.x}}" data-y="{{fromUser.y}}" data-castle_id="{{fromUser.castle_id}}" class="userLink">{{fromUser.username}}</a>
 
-        sent
+                sent
 
-        <a href="" data-x="{{toUser.x}}" data-y="{{toUser.y}}" data-castle_id="{{toUser.castle_id}}" class="userLink">{{toUser.username}}</a>
+                <a href="" data-x="{{toUser.x}}" data-y="{{toUser.y}}" data-castle_id="{{toUser.castle_id}}" class="userLink">{{toUser.username}}</a>
 
-        an army.
+                an army.
 
-        <br><br>
+                <br><br>
 
-        <table class="table table-striped">
-            <tbody>
-                {{#each s.army.types}}
-                    {{#if hasSoldierType}}
-                        <tr>
-                            <td>
-                                {{capitalize this}}
-                            </td>
-                            <td style="text-align:right;">
-                                {{numSoldiers}}
-                            </td>
-                        </tr>
-                    {{/if}}
-                {{/each}}
-            </tbody>
-        </table>
+                <table class="table table-striped">
+                    <tbody>
+                        {{#each s.army.types}}
+                            {{#if hasSoldierType}}
+                                <tr>
+                                    <td>
+                                        {{capitalize this}}
+                                    </td>
+                                    <td style="text-align:right;">
+                                        {{numSoldiers}}
+                                    </td>
+                                </tr>
+                            {{/if}}
+                        {{/each}}
+                    </tbody>
+                </table>
 
-        <div class="light_text">Lords can send their vassals soldiers.  Usually to help defend their castle against other lords trying to steal their vassal.</div>
+                <div class="light_text">Lords can send their vassals soldiers.  Usually to help defend their castle against other lords trying to steal their vassal.</div>
 
-        <br><br>
-        <a href="/alert/{{_id}}">link for sharing</a>
+                <br><br>
+                <a href="/alert/{{_id}}">link for sharing</a>
+            </div>
+        {{/if}}
     </div>
-    {{/if}}
 </template>

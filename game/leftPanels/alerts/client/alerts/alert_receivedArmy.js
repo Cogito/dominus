@@ -20,6 +20,7 @@ var helpers = {
 
 Template.alert_receivedArmy.helpers(_.extend(alertSharedHelpers, helpers))
 Template.alert_receivedArmy.events = alertSharedEvents
+Template.alert_receivedArmy.rendered = alertSharedRendered
 
 Template.alert_receivedArmy.created = function() {
     var self = this

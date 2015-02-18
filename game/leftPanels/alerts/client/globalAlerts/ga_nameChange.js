@@ -18,6 +18,7 @@ var helpers = {
 
 Template.ga_nameChange.helpers(_.extend(globalAlertSharedHelpers, helpers))
 Template.ga_nameChange.events = alertSharedEvents
+Template.ga_nameChange.rendered = alertSharedRendered
 
 
 Template.ga_nameChange.created = function() {

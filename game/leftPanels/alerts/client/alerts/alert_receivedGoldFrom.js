@@ -15,6 +15,7 @@ var helpers = {
 
 Template.alert_receivedGoldFrom.helpers(_.extend(alertSharedHelpers, helpers))
 Template.alert_receivedGoldFrom.events = alertSharedEvents
+Template.alert_receivedGoldFrom.rendered = alertSharedRendered
 
 Template.alert_receivedGoldFrom.created = function() {
     var self = this

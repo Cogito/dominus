@@ -10,6 +10,7 @@ var helpers = {
 
 Template.alert_chatroomRemovedFromAdmin.helpers(_.extend(alertSharedHelpers, helpers))
 Template.alert_chatroomRemovedFromAdmin.events = alertSharedEvents
+Template.alert_chatroomRemovedFromAdmin.rendered = alertSharedRendered
 
 Template.alert_chatroomRemovedFromAdmin.created = function() {
     var self = this

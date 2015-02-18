@@ -10,6 +10,7 @@ var helpers = {
 
 Template.alert_kickedFromChatroom.helpers(_.extend(alertSharedHelpers, helpers))
 Template.alert_kickedFromChatroom.events = alertSharedEvents
+Template.alert_kickedFromChatroom.rendered = alertSharedRendered
 
 Template.alert_kickedFromChatroom.created = function() {
     var self = this

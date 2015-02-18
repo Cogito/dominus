@@ -6,17 +6,9 @@ Template.battle.helpers({
 
 
 Template.battle.rendered = function() {
-    window.onresize = function() {
-        $('#battlePage').css('min-height', $(window).height())
-    }
-
-    $('#battlePage').css('min-height', $(window).height())
+    document.body.style.backgroundColor = '#333';
 }
 
 Template.battleLoading.rendered = function() {
-    window.onresize = function() {
-        $('#battlePage').css('min-height', $(window).height())
-    }
-
-    $('#battlePage').css('min-height', $(window).height())
+    document.body.style.backgroundColor = '#333';
 }

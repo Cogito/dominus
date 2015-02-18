@@ -11,6 +11,7 @@ var helpers = {
 
 Template.ga_mapExpanded.helpers(_.extend(globalAlertSharedHelpers, helpers))
 Template.ga_mapExpanded.events = alertSharedEvents
+Template.ga_mapExpanded.rendered = alertSharedRendered
 
 
 Template.ga_mapExpanded.created = function() {

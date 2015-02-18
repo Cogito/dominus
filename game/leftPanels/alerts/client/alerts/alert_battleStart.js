@@ -19,11 +19,28 @@ var helpers = {
                     break;
             }
         }
+    },
+
+    iconName: function() {
+        if (this) {
+            switch(this.vars.type) {
+                case 'castle':
+                    return 'fa-shield'
+                    break;
+                case 'village':
+                    return 'fa-shield'
+                    break;
+                case 'army':
+                    return 'fa-gavel'
+                    break;
+            }
+        }
     }
 }
 
 Template.alert_battleStart.helpers(_.extend(alertSharedHelpers, helpers))
 Template.alert_battleStart.events = alertSharedEvents
+Template.alert_battleStart.rendered = alertSharedRendered
 
 Template.alert_battleStart.created = function() {
     var self = this

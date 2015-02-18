@@ -29,6 +29,7 @@ var helpers = {
 
 Template.ga_sentArmy.helpers(_.extend(globalAlertSharedHelpers, helpers))
 Template.ga_sentArmy.events = alertSharedEvents
+Template.ga_sentArmy.rendered = alertSharedRendered
 
 
 Template.ga_sentArmy.created = function() {
