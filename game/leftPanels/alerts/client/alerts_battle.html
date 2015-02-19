@@ -13,9 +13,11 @@
         {{/each}}
     </div>
 
-    {{#if isOpen}}
-        <div class="alertBody">
-            {{> Template.dynamic template='battle_report' data=battle}}
-        </div>
-    {{/if}}
+    <div class="alertAnimationWrapper">
+        {{#if isOpen}}
+            <div class="alertBody">
+                {{> Template.dynamic template='battle_report' data=battle}}
+            </div>
+        {{/if}}
+    </div>
 </template>

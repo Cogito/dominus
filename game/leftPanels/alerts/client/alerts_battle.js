@@ -12,6 +12,7 @@ Template.alerts_battle.helpers({
 
 
 Template.alerts_battle.events = alertSharedEvents
+Template.alerts_battle.rendered = alertSharedRendered
 
 
 Template.alerts_battle.created = function() {

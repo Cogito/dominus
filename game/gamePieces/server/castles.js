@@ -126,7 +126,9 @@ create_castle = function(user_id) {
 						built_castle = true		// forEach is async?
 
 						if (has_added_rings) {
-							// add a couple ring of border hexes so that new people aren't on the edge
+							// add some rings of border hexes so that new people aren't on the edge
+							add_ring(true)
+							add_ring(true)
 							add_ring(true)
 							add_ring(true)
 
