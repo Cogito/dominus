@@ -10,7 +10,7 @@
             <p>
                 <b>Footmen</b><br>
                 Offense: {{s.army.stats.footmen.offense}} &nbsp; Defense: {{s.army.stats.footmen.defense}} &nbsp; Speed: {{s.army.stats.footmen.speed}}<br>
-                Footmen are good all-around soldiers.<br>
+                Footmen are good all-around soldiers.  Bonus against pikemen.<br>
                 <br>
                 <b>Archers</b><br>
                 Offense: {{s.army.stats.archers.offense}} &nbsp; Defense: {{s.army.stats.archers.defense}} &nbsp; Speed: {{s.army.stats.archers.speed}}<br>
@@ -32,7 +32,7 @@
 
             <div class="help_section">Bonuses</div>
             <p>There are four different kinds of soldiers.  Some gain bonuses when fighting.</p>
-            <p>Archers recieve a bonus against footmen.  Pikemen recieve a bonus against cavalry.  Calvary recieve a bonus against archers and footmen.</p>
+            <p>Footmen recieve a bonus against pikemen. Archers recieve a bonus against footmen.  Pikemen recieve a bonus against cavalry.  Calvary recieve a bonus against archers and footmen.</p>
             <p>When an archer fights a footman because the archer has a bonus against footmen the archer is twice as powerful.</p>
             <p>Catapults have a different kind of bonus.  Catapults have a very low offense and defense.  When attacking a castle or village their offense is multiplied by their bonus.  If 1 catapult attacks an army it will have an offense of {{s.army.stats.catapults.offense}} but when that one catapult attacks a castle it will have an offense of {{s.army.stats.catapults.bonus_against_buildings}}.</p>
 

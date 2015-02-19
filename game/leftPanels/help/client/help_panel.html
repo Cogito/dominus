@@ -53,77 +53,7 @@
 			</div>
 
 			<div class="panel panel-default">
-				<div class="panel-heading">
-					<a data-toggle="collapse" data-parent="#accordion_help" href="#help-battles">
-						Battles
-					</a>
-				</div>
-				<div id="help-battles" class="panel-collapse collapse">
-					<div class="panel-body">
-						<p>When a unit is on the same hex as an enemy they will battle.  Every {{s_battle_interval}} all units in the battle will lose soldiers.  Winners lose {{s.battle_power_lost_per_round_winner}} power worth of soldiers and losers lose {{s.battle_power_lost_per_round}} power worth of soldiers.  Larger armies and more people in a battle cause losses to go up.</p>
-
-						<div class="help_section">Attackers and Defenders</div>
-						<p>If there is a castle or village in the battle then they are a defender.  If an army is on the same hex as their castle or village then they are a defender.  Otherwise the defender is the first army to arrive at the hex.  All allies of this defender are also defenders.</p>
-
-						<div class="help_section">Power</div>
-						<p>Every round if your unit's power + your ally's power is greater than your enemies' combined power then you are a winner that round.</p>
-
-						<p>If you are a defender then your soldiers use their defend power.  If you're an attacker then they use their attack power.</p>
-
-						<table class="table table-condensed">
-							<thead>
-								<tr>
-									<td></td>
-									<td>Attack Power</td>
-									<td>Defend Power</td>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Footmen</td>
-									<td>{{s.army.stats.footmen.offense}}</td>
-									<td>{{s.army.stats.footmen.defense}}</td>
-								</tr>
-								<tr>
-									<td>Archers</td>
-									<td>{{s.army.stats.archers.offense}}</td>
-									<td>{{s.army.stats.archers.defense}}</td>
-								</tr>
-								<tr>
-									<td>Pikemen</td>
-									<td>{{s.army.stats.pikemen.offense}}</td>
-									<td>{{s.army.stats.pikemen.defense}}</td>
-								</tr>
-								<tr>
-									<td>Cavalry</td>
-									<td>{{s.army.stats.cavalry.offense}}</td>
-									<td>{{s.army.stats.cavalry.defense}}</td>
-								</tr>
-								<tr>
-									<td>Catapults</td>
-									<td>{{s.army.stats.catapults.offense}}</td>
-									<td>{{s.army.stats.catapults.defense}}</td>
-								</tr>
-							</tbody>
-						</table>
-
-						<div class="help_section">Bonuses</div>
-						<p>Bonuses can increase an army's power.</p>
-						<p>Archers recieve a bonus against footmen. Pikemen recieve a bonus against cavalry. Calvary recieve a bonus against archers and footmen.</p>
-						<p>When an archer fights a footman because the archer has a bonus against footmen the archer is twice as powerful.</p>
-						<p>Catapults' offense is multiplied by {{s.army.stats.catapults.bonus_against_buildings}} when attacking a castle or village.  They must be on the same hex as an enemy castle or village.</p>
-
-						<p>Armies defending a castle receive a {{castle_defense_bonus}}x bonus.  Armies defending a village receive a  {{village_defense_bonus}}x bonus.  Only armies inside the castle or village get this bonus.</p>
-
-						<p>Armies on a vassal's castle or village receive a {{ally_castle_defense_bonus}}x bonus.  Armies on the same hex as their own castle or village but outside also receive this bonus.</p>
-
-						<div class="help_section">Notifications</div>
-						<p>After a battle you will receive a notification with the results.  You can also see battles as they happen in the notifications panel.</p>
-
-						<div class="help_section">Who Gets the Spoils</div>
-						<p>Multiple armies can attack a castle at the same time.  If they win the castle will go to the first army to arrive that is still alive.</p>
-					</div>
-				</div>
+				{{> help_battles}}
 			</div>
 
 			<div class="panel panel-default">
@@ -163,55 +93,7 @@
 			</div>
 
 			<div class="panel panel-default">
-				<div class="panel-heading">
-					<a data-toggle="collapse" data-parent="#accordion_help" href="#help-faq">
-						FAQ
-					</a>
-				</div>
-				<div id="help-faq" class="panel-collapse collapse">
-					<div class="panel-body">
-						<div class="help_section">Contributing</div>
-						<p>
-							You're already contributing by playing but here are a few other ways you can help.
-						</p>
-
-						<p>
-							<b>Spread the Word</b><br>
-							It's very hard to find new players without paying for ads.  There's a graph in the graph panel showing number of people playing.  Help make it grow. Please tweet, like, star, review Dominus and tell your friends.
-						</p>
-
-						<p>
-							<b>Code</b><br>
-							Check out Dominus on <a href="https://github.com/dan335/dominus">Github</a>.  Pull requests are appreciated.  Message Danimal for more info.
-						</p>
-
-						<p>
-							<b>Money</b><br>
-							Dominus' only income is through the store.  Help Dominus grow by buying cosmetic upgrades or donating money through the store panel.
-						</p>
-
-						<div class="help_section">Performance</div>
-						<p>Performance can be improved by closing panels and groups.</p>
-						<ul>
-							<li>In the summary panel minimize the armies, lords and vassals groups.  To do this click on the blue heading.</li>
-							<li>Closing panels.</li>
-							<li>Hiding the minimap and hex coordinates in the settings.</li>
-							<li>Having less hexes on screen at once by making your browser window smaller or zooming in.</li>
-						</ul>
-
-						<div class="help_section">UI Tips</div>
-						<ul>
-							<li>Ctrl + Shift + Mousewheel zooms in and out.</li>
-							<li>Hover over chat messages to see the date and time.</li>
-							<li>Change the size of the UI by using browser zoom.  Ctrl+mousewheel in chrome.</li>
-						</ul>
-
-						<div class="help_section">Strategy</div>
-						<ul>
-							<li>Always combine your armies when in battle.  Each army in a battle takes losses.  Having two armies in a battle will cause you to lose twice as many soldiers.</li>
-						</ul>
-					</div>
-				</div>
+				{{> help_faq}}
 			</div>
 
 			<div class="panel panel-default">

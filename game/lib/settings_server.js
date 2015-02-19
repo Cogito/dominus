@@ -23,20 +23,20 @@ if (Meteor.isServer) {
 		grain_min: 0,
 		grain_max: 0.5,
 		lumber_min: 0.5,
-		lumber_max: 0.68,
-		ore_min: 0.68,
-		ore_max: 0.81,
-		wool_min: 0.81,
-		wool_max: 0.93,
-		clay_min: 0.93,
-		clay_max: 0.97,
-		glass_min: 0.97,
+		lumber_max: 0.6111,
+		ore_min: 0.6111,
+		ore_max: 0.7222,
+		wool_min: 0.7222,
+		wool_max: 0.8333,
+		clay_min: 0.8333,
+		clay_max: 0.9444,
+		glass_min: 0.9444,
 		glass_max: 1,
 		large: 0.1 		// x% chance to be a large resource hex
 	}
 
 	s.market.start_price = {
-		grain:2,
+		grain:10,
 		lumber:10,
 		ore:10,
 		wool:10,
@@ -67,12 +67,12 @@ if (Meteor.isServer) {
 	// give to new user
 	s.starting_resources = {
 		gold: 0,
-		grain: 2000,
-		lumber: 2000,
-		ore: 2000,
-		wool: 300,
-		clay: 1000,
-		glass: 100
+		grain: 600,
+		lumber: 600,
+		ore: 600,
+		wool: 600,
+		clay: 600,
+		glass: 600
 	}
 
 	s.maxNotificationsPerUser = 150

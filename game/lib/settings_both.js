@@ -13,12 +13,12 @@ if (Meteor.isServer && process.env.NODE_ENV == 'development') {
 	// cheats
 	s.resource.interval = 1000 * 15
 	s.battle_interval = 1000 * 30
-	s.village.max_can_have = 7
+	s.village.max_can_have = 6
 	s.village.time_to_build = 1000	// old
 } else {
 	s.resource.interval = 1000 * 60 * 10
 	s.battle_interval = 1000 * 60 * 4
-	s.village.max_can_have = 7
+	s.village.max_can_have = 6
 	s.village.time_to_build = 1000 * 60 * 30 	// 30 min	// old
 }
 
@@ -35,7 +35,7 @@ s.time_til_game_end_when_new_dominus = 1000 * 60 * 60 * 24 * 7 	// 7 days
 
 //s.vassal_tax = 0.25		// percentage of income that goes to lord
 
-s.market.sell_tax = 0.02
+s.market.sell_tax = 0.25
 s.market.increment = 0.000004	// how much it goes up or down when someone buys or sells
 
 s.resource.gained_at_hex = 4
@@ -62,54 +62,54 @@ s.army.types = ['footmen', 'archers', 'pikemen', 'cavalry', 'catapults']
 
 s.castle.income = {
 	gold: 0,	// not used
-	grain: 35,
-	lumber: 16,
-	ore: 8,
-	wool: 6,
-	clay: 7,
-	glass: 5
+	grain: 10,
+	lumber: 10,
+	ore: 10,
+	wool: 10,
+	clay: 10,
+	glass: 10
 }
 
 s.army.cost = {
 	footmen: {
-		grain: 30,
+		grain: 20,
 		lumber: 0,
-		ore: 35,
+		ore: 100,
 		wool: 0,
-		clay: 5,
+		clay: 0,
 		glass: 0,
 	},
 	archers: {
-		grain: 30,
-		lumber: 20,
+		grain: 20,
+		lumber: 100,
 		ore: 0,
-		wool: 30,
+		wool: 0,
 		clay: 0,
-		glass: 10,
+		glass: 0,
 	},
 	pikemen: {
-		grain: 30,
-		lumber: 15,
+		grain: 20,
+		lumber: 0,
 		ore: 0,
-		wool: 20,
-		clay: 0,
-		glass: 50,
+		wool: 0,
+		clay: 100,
+		glass: 0,
 	},
 	cavalry: {
-		grain: 30,
-		lumber: 5,
-		ore: 20,
-		wool: 0,
-		clay: 50,
+		grain: 20,
+		lumber: 0,
+		ore: 0,
+		wool: 100,
+		clay: 0,
 		glass: 0,
 	},
 	catapults: {
-		grain:30,
-		lumber:100,
-		ore:15,
+		grain:20,
+		lumber:0,
+		ore:0,
 		wool:0,
-		clay:15,
-		glass:0
+		clay:0,
+		glass:100
 	}
 }
 
@@ -126,7 +126,7 @@ s.army.stats = {
 	},
 	pikemen: {
 		offense: 2,
-		defense: 15,
+		defense: 20,
 		speed: 7
 	},
 	cavalry: {
@@ -146,77 +146,38 @@ s.army.pastMovesToShow = 3
 // s.army.pastMovesToShow times as long as catapults
 s.army.pastMovesMsLimit = 60 / s.army.stats.catapults.speed * s.army.pastMovesToShow * 1000 * 60
 
-// old
-s.village.cost = {
-	grain: 1000,
-	lumber: 500,
-	ore: 500,
-	wool: 0,
-	clay: 500,
-	glass: 0
-}
-
 s.village.maxLevel = 3
-
-// s.village.cost = {
-// 	level1: {
-// 		grain: 1000,
-// 		lumber: 500,
-// 		ore: 500,
-// 		wool: 0,
-// 		clay: 0,
-// 		glass: 0,
-// 		timeToBuild: 1000 * 60 * 30	// 30 min
-// 	},
-// 	level2: {
-// 		grain: 1000,
-// 		lumber: 1000,
-// 		ore: 1000,
-// 		wool: 0,
-// 		clay: 0,
-// 		glass: 0,
-// 		timeToBuild: 1000 * 60 * 60 * 3	// 3 hours
-// 	},
-// 	level3: {
-// 		grain: 1000,
-// 		lumber: 1000,
-// 		ore: 1000,
-// 		wool: 1000,
-// 		clay: 1000,
-// 		glass: 0,
-// 		timeToBuild: 1000 * 60 * 60 * 24 // 24 hours
-// 	},
-// }
 
 s.village.cost = {
 	level1: {
-		grain: 1000,
-		lumber: 500,
-		ore: 500,
-		wool: 0,
-		clay: 0,
-		glass: 0,
+		grain: 200,
+		lumber: 200,
+		ore: 200,
+		wool: 200,
+		clay: 200,
+		glass: 200,
 		timeToBuild: 1000 * 60 * 30	// 30 min
 	},
 	level2: {
-		grain: 100,
-		lumber: 100,
-		ore: 100,
-		wool: 0,
-		clay: 0,
-		glass: 0,
-		timeToBuild: 1000 * 60 * 60 * 1	// 1 hours
+		grain: 400,
+		lumber: 400,
+		ore: 400,
+		wool: 400,
+		clay: 400,
+		glass: 400,
+		timeToBuild: 1000 * 60 * 60 * 6	// 6 hours
 	},
 	level3: {
-		grain: 100,
-		lumber: 100,
-		ore: 100,
-		wool: 100,
-		clay: 100,
-		glass: 0,
-		timeToBuild: 1000 * 60 * 60 * 3 // 3 hours
+		grain: 800,
+		lumber: 800,
+		ore: 800,
+		wool: 800,
+		clay: 800,
+		glass: 800,
+		timeToBuild: 1000 * 60 * 60 * 24 // 24 hours
 	},
 }
+
 
 // multiplier on how many resources they collect
 s.village.productionBonus = {
