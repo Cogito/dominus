@@ -2,6 +2,17 @@ Template.landing.helpers({
 	form: function() {
 		return Session.get('landingForm')
 	},
+
+	startText: function() {
+		var start = moment(new Date(s.game_start_date))
+		if (moment().isAfter(start)) {
+			// game has already started
+			return 'Game '+s.game_number+' started '+ start.fromNow()+'.'
+		} else {
+			// game has not started yet
+			return 'Game '+s.game_number+' starts in '+ start.fromNow()+'.'
+		}
+	}
 })
 
 

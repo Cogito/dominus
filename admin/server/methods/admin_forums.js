@@ -8,7 +8,7 @@ Meteor.methods({
 				if (forums.count() == 0) {
 					Meteor.call('admin_create_forum', 'News', '')
 					Meteor.call('admin_create_forum', 'General', '')
-					Meteor.call('admin_create_forum', 'Feature Requests', 'The Dominus roadmap is on <a href="https://trello.com/b/q40VdLBJ/dominus">Trello</a>.')
+					Meteor.call('admin_create_forum', 'Feature Requests', 'The Dominus roadmap is on <a href="https://trello.com/b/q40VdLBJ/dominus">Trello</a>.  Vote for features you would like added soon.')
 					Meteor.call('admin_create_forum', 'Report a Bug', 'Bugs are tracked <a href="https://github.com/dan335/dominus/issues">on Github</a>.')
 				}
 			}

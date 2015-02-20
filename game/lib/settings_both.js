@@ -38,7 +38,7 @@ s.time_til_game_end_when_new_dominus = 1000 * 60 * 60 * 24 * 7 	// 7 days
 s.market.sell_tax = 0.25
 s.market.increment = 0.000004	// how much it goes up or down when someone buys or sells
 
-s.resource.gained_at_hex = 4
+s.resource.gained_at_hex = 3
 //s.resource.gold_gained_at_castle = 20	// non longer used
 s.resource.gold_gained_at_village = 0
 s.resource.num_rings_castle = 2
