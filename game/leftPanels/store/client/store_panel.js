@@ -6,20 +6,32 @@ Template.store_panel.helpers({
 	prize_pool: function() {
 		var pool = 0
 		Charges.find().forEach(function(charge) {
-			pool += charge.amount
+			if (typeof charge.percentToWinner == "undefined") {
+				charge.percentToWinner = 0.25
+			}
+			pool += charge.amount * charge.percentToWinner
 		})
-		return pool / 4 / 100
-	}
+		return pool / 100
+	},
+
+	percentToWinner: function() {
+		return Template.instance().percentToWinner.get()
+	},
+
+	percentToDev: function() {
+		return 100 - Template.instance().percentToWinner.get()
+	},
 })
 
 
 Template.store_panel.events({
-	'click #store_donate_button': function(event, template) {
+	'click .store_donate_button': function(event, template) {
 		var button = $(event.currentTarget)
 		var button_html = $(button).html()
 		var error_alert = template.find('#donation_error_alert')
 		var success_alert = template.find('#store_success_alert')
-		var amount_in_cents = 1000
+		var amount = event.currentTarget.getAttribute('data-amount')
+		var percentToWinner = Template.instance().percentToWinner.get()
 
 		$(error_alert).hide()
 		$(success_alert).hide()
@@ -30,19 +42,19 @@ Template.store_panel.events({
 		var handler = StripeCheckout.configure({
 			key: Meteor.settings.public.stripe_publishable_key,
 			image: '/stripe_logo.jpg',
+			bitcoin: true,
 			token: function(token) {
-				Meteor.call('stripe_donation_checkout', amount_in_cents, token, function(error, charge_id) {
+				Meteor.call('stripe_donation_checkout', amount * 100, percentToWinner, token, function(error, charge_id) {
 					if (error) {
 						$(button).attr('disabled', false)
 						$(button).html(button_html)
 						$(error_alert).show()
 						$(error_alert).html('Error charging card.  Card declined.')
 					} else {
-						//log_gold_purchase(charge_id, amount_in_cents)
 						$(button).attr('disabled', false)
 						$(button).html(button_html)
 						$(success_alert).show()
-						$(success_alert).html('Donated $10. Thanks!')
+						$(success_alert).html('Donated $'+amount+'. Thanks!')
 					}
 				})
 			}
@@ -50,11 +62,16 @@ Template.store_panel.events({
 
 		handler.open({
 			name: s.game_name,
-			description: 'Donate $10 to '+s.game_name,
-			amount: amount_in_cents,
+			description: 'Donate $'+amount+' to '+s.game_name,
+			amount: amount * 100,
 			email: get_user_property("emails")[0].address
 		})
-	}
+	},
+
+	'change #donatePercentage, input #donatePercentage': function(event, template) {
+		var num = Number(event.currentTarget.value)
+		Template.instance().percentToWinner.set(num)
+	},
 })
 
 
@@ -63,6 +80,8 @@ Template.store_panel.created = function() {
 	this.autorun(function() {
 		Meteor.subscribe('store_charges')
 	})
+
+	this.percentToWinner = new ReactiveVar(25)
 }
 
 

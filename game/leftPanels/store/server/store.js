@@ -29,7 +29,7 @@ Meteor.methods({
 					}
 				}
 			}
-			
+
 		}
 
 		return false
@@ -76,8 +76,9 @@ Meteor.methods({
 		return fut.wait()
 	},
 
-	stripe_donation_checkout: function(amount_in_cents, token) {
+	stripe_donation_checkout: function(amount_in_cents, percentToWinner, token) {
 		check(amount_in_cents, validNumber)
+		check(percentToWinner, validNumber)
 		check(token, Object)
 
 		var fut = new Future()
@@ -97,6 +98,7 @@ Meteor.methods({
 					created_at: new Date(),
 					user_id: Meteor.userId(),
 					amount: amount_in_cents,
+					percentToWinner: percentToWinner / 100,
 					type: 'donation',
 					user_email: get_user_property("emails")[0].address,
 					user_username: get_user_property("username"),

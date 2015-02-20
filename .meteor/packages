@@ -11,7 +11,6 @@ facts
 mrt:underscore-string-latest@2.3.3
 email
 accounts-ui
-mizzao:user-status@0.6.0
 mrt:modernizr-meteor@2.6.2
 mrt:cookies@0.3.0
 reactive-dict
@@ -35,5 +34,7 @@ accounts-google
 accounts-facebook
 fastclick
 meteorhacks:subs-manager
-mrgalaxy:stripe
 d3js:d3
+msavin:mongol
+mrgalaxy:stripe
+mizzao:user-status

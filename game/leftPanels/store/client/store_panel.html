@@ -19,9 +19,18 @@
 		<div class="panel panel-default panel-body">
 			<div class="alert alert-danger" id="donation_error_alert" style="display:none;"></div>
 			<div class="alert alert-success" id="donation_success_alert" style="display:none;"></div>
-			<p>Help Dominus grow by donating.  25% goes to the prize pool.</p>
+			<div style="text-align:center;">Dominus is a free game.<br>Please donate if you enjoy it.  Thanks.</div>
+			<br>
 
-			<button class="btn btn-primary btn-block" type="button" id="store_donate_button">Donate $10 to {{game_name}}</button>
+			<button class="btn btn-primary btn-block store_donate_button" type="button" data-amount="2">Donate $2 to {{game_name}}</button>
+			<button class="btn btn-primary btn-block store_donate_button" type="button" data-amount="10">Donate $10 to {{game_name}}</button>
+			<button class="btn btn-primary btn-block store_donate_button" type="button" data-amount="50">Donate $50 to {{game_name}}</button>
+
+			<br>
+
+			<p>{{percentToWinner}}% goes to the prize pool and {{percentToDev}}% goes to the developer.</p>
+
+			<input type="range" data-type="{{this}}" id="donatePercentage" value="25" min="0" step="1" max="50">
 		</div>
 
 		<div class="panel panel-default">
