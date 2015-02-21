@@ -6,6 +6,8 @@ if (Meteor.isClient) {
     AlertUsers = new Mongo.Collection('alertusers')
     AlertChatrooms = new Mongo.Collection('alertchatrooms')
     AlertArmies = new Mongo.Collection('alertarmies')
+    AlertCastles = new Mongo.Collection('alertcastles')
+    AlertVillages = new Mongo.Collection('alertvillages')
 
     AlertBattleTitles = new Mongo.Collection('alertbattletitles')
     UnreadAlerts = new Mongo.Collection('unreadalerts')

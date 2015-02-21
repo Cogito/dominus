@@ -263,6 +263,7 @@ Units.prototype.removeDeadUnits = function() {
 					Villages.remove(unit._id)
 					break
 				case 'army':
+					alert_armyDestroyed(unit.user_id, self.battleDb.getRecord()._id, unit.name)
 					Armies.remove(unit._id)
 					Moves.remove({army_id:unit._id})
 					break;

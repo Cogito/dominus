@@ -114,8 +114,11 @@ move_army_to_hex = function(army_id, x, y) {
 	var has_merged = false
 
 	if (is_stopped(unit._id)) {
-		// send alert
-		alert_armyFinishedAllMoves(unit.user_id, army_id, x, y)
+		// for alerts
+		var joinedCastle = null
+		var joinedVillage = null
+		var joinedArmy = null
+		var userId = unit.user_id
 
 		// check for my castle
 		var res = Castles.findOne({x:x, y:y, user_id: unit.user_id}, {fields: {_id: 1}})
@@ -130,6 +133,7 @@ move_army_to_hex = function(army_id, x, y) {
 			Armies.remove(unit._id)
 			Moves.remove({army_id:unit._id})
 			has_merged = true
+			joinedCastle = res._id
 		}
 
 		// check for my village
@@ -146,6 +150,7 @@ move_army_to_hex = function(army_id, x, y) {
 				Armies.remove(unit._id)
 				Moves.remove({army_id:unit._id})
 				has_merged = true
+				joinedVillage = res._id
 			}
 		}
 
@@ -168,9 +173,14 @@ move_army_to_hex = function(army_id, x, y) {
 					// we still need to check for enemies
 					// replace unit with combined one
 					unit = res
+
+					joinedArmy = res._id
 				}
 			}
 		}
+
+		// send alert
+		alert_armyFinishedAllMoves(userId, army_id, x, y, joinedCastle, joinedVillage, joinedArmy)
 	}
 
 	if (!has_merged) {

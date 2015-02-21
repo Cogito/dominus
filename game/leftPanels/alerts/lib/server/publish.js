@@ -38,6 +38,20 @@ Meteor.publish('alertArmy', function(army_id) {
 })
 
 
+Meteor.publish('alertVillage', function(village_id) {
+    var cur = Villages.find({_id:village_id, user_id:this.userId}, {fields: {name:1, username:1, x:1, y:1, castle_id:1}})
+    Mongo.Collection._publishCursor(cur, this, 'alertvillages')
+    return this.ready();
+})
+
+
+Meteor.publish('alertCastle', function(castle_id) {
+    var cur = Castles.find({_id:castle_id, user_id:this.userId}, {fields: {name:1, username:1, x:1, y:1, castle_id:1}})
+    Mongo.Collection._publishCursor(cur, this, 'alertcastles')
+    return this.ready();
+})
+
+
 Meteor.publish('alertChatroom', function(room_id) {
     var self = this
     var cur = Rooms.find(room_id, {fields: {name:1}})

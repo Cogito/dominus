@@ -84,12 +84,17 @@ alert_vassalIsUnderAttack = function(arrayOfLordIds, vassal_id, battle_id) {
 }
 
 
-alert_armyFinishedAllMoves = function(user_id, army_id, x, y) {
+// joinedCastle is either null or the castle id
+// same with village and army
+alert_armyFinishedAllMoves = function(user_id, army_id, x, y, joinedCastle, joinedVillage, joinedArmy) {
     check(user_id, String)
     check(army_id, String)
     check(x, validNumber)
     check(y, validNumber)
-    var vars = {army_id:army_id, x:x, y:y}
+    check(joinedCastle, Match.OneOf(null, String))
+    check(joinedVillage, Match.OneOf(null, String))
+    check(joinedArmy, Match.OneOf(null, String))
+    var vars = {army_id:army_id, x:x, y:y, joinedCastle:joinedCastle, joinedVillage:joinedVillage, joinedArmy:joinedArmy}
     newAlert('alert_armyFinishedAllMoves', [user_id], vars)
 }
 
@@ -100,6 +105,15 @@ alert_villageDestroyed = function(user_id, battle_id, villageName) {
     check(villageName, String)
     var vars = {battle_id:battle_id, villageName:villageName}
     newAlert('alert_villageDestroyed', [user_id], vars)
+}
+
+
+alert_armyDestroyed = function(user_id, battle_id, armyName) {
+    check(user_id, String)
+    check(battle_id, String)
+    check(armyName, String)
+    var vars = {battle_id:battle_id, armyName:armyName}
+    newAlert('alert_armyDestroyed', [user_id], vars)
 }
 
 // --------
