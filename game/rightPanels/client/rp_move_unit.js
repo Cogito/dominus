@@ -109,6 +109,7 @@ Template.rp_move_unit.events({
 	'input .send_units_slider, change .send_units_slider': function(event, template) {
 		var type = event.currentTarget.getAttribute('data-type')
 		var num = Number(event.currentTarget.value)
+		console.log('sliding '+type+' '+num)
 		set_selected_unit(type, num)
 	},
 
@@ -240,6 +241,7 @@ Template.rp_move_unit.created = function() {
 
 
 Template.rp_move_unit.rendered = function() {
+	console.log('do you see this text?  do you see more text when you slide the sliders?')
 	var self = this
 	if (Template.currentData()) {
 		_.each(s.army.types, function(type) {
