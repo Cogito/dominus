@@ -83,6 +83,25 @@ alert_vassalIsUnderAttack = function(arrayOfLordIds, vassal_id, battle_id) {
     newAlert('alert_vassalIsUnderAttack', arrayOfLordIds, vars)
 }
 
+
+alert_armyFinishedAllMoves = function(user_id, army_id, x, y) {
+    check(user_id, String)
+    check(army_id, String)
+    check(x, validNumber)
+    check(y, validNumber)
+    var vars = {army_id:army_id, x:x, y:y}
+    newAlert('alert_armyFinishedAllMoves', [user_id], vars)
+}
+
+
+alert_villageDestroyed = function(user_id, battle_id, villageName) {
+    check(user_id, String)
+    check(battle_id, String)
+    check(villageName, String)
+    var vars = {battle_id:battle_id, villageName:villageName}
+    newAlert('alert_villageDestroyed', [user_id], vars)
+}
+
 // --------
 
 

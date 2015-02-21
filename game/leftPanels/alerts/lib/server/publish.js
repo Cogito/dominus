@@ -31,6 +31,13 @@ Meteor.publish('alertUser', function(user_id) {
 })
 
 
+Meteor.publish('alertArmy', function(army_id) {
+    var cur = Armies.find({_id:army_id, user_id:this.userId}, {fields: {name:1, username:1, x:1, y:1, castle_id:1}})
+    Mongo.Collection._publishCursor(cur, this, 'alertarmies')
+    return this.ready();
+})
+
+
 Meteor.publish('alertChatroom', function(room_id) {
     var self = this
     var cur = Rooms.find(room_id, {fields: {name:1}})

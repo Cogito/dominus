@@ -5,6 +5,7 @@ if (Meteor.isClient) {
     // client only collections to hold data for alerts
     AlertUsers = new Mongo.Collection('alertusers')
     AlertChatrooms = new Mongo.Collection('alertchatrooms')
+    AlertArmies = new Mongo.Collection('alertarmies')
 
     AlertBattleTitles = new Mongo.Collection('alertbattletitles')
     UnreadAlerts = new Mongo.Collection('unreadalerts')

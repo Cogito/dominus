@@ -113,8 +113,10 @@ move_army_to_hex = function(army_id, x, y) {
 
 	var has_merged = false
 
-	//var is_stopped = (Moves.find({army_id:army_id}).count() > 0)
 	if (is_stopped(unit._id)) {
+		// send alert
+		alert_armyFinishedAllMoves(unit.user_id, army_id, x, y)
+
 		// check for my castle
 		var res = Castles.findOne({x:x, y:y, user_id: unit.user_id}, {fields: {_id: 1}})
 		if (res) {

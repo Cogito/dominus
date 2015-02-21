@@ -1,32 +1,37 @@
 Meteor.methods({
 
 	returnToCastle: function(army_id) {
-		var user_id = Meteor.userId()
-		if (user_id) {
-			var army = Armies.findOne({_id:army_id, user_id:Meteor.userId()})
-			if (army) {
-				var castle = Castles.findOne({user_id:user_id})
-				if (castle) {
-					if (castle.x == army.x && castle.y == army.y) {
-						Meteor.call('army_join_building', army._id)
-					} else {
-						var moves = [{
-							from_x:army.x,
-							from_y:army.y,
-							to_x:castle.x,
-							to_y:castle.y
-						}]
-						Meteor.call('create_moves', army._id, moves)
-					}
-				} else {
-					throw new Meteor.Error('Could not find castle.')
-				}
-			} else {
-				throw new Meteor.Error('Could not find army.')
-			}
-		} else {
-			throw new Meteor.Error('Could not find user.')
-		}
+	    var user_id = Meteor.userId()
+	    if (user_id) {
+	        var army = Armies.findOne({
+	            _id: army_id,
+	            user_id: Meteor.userId()
+	        })
+	        if (army) {
+	            var castle = Castles.findOne({
+	                user_id: user_id
+	            })
+	            if (castle) {
+	                if (castle.x == army.x && castle.y == army.y) {
+	                    Meteor.call('army_join_building', army._id)
+	                } else {
+	                    var moves = [{
+	                        from_x: army.x,
+	                        from_y: army.y,
+	                        to_x: castle.x,
+	                        to_y: castle.y
+	                    }]
+	                    Meteor.call('create_moves', army._id, moves)
+	                }
+	            } else {
+	                throw new Meteor.Error('Could not find castle.')
+	            }
+	        } else {
+	            throw new Meteor.Error('Could not find army.')
+	        }
+	    } else {
+	        throw new Meteor.Error('Could not find user.')
+	    }
 	},
 
 	army_join_building: function(army_id) {
@@ -216,11 +221,19 @@ Meteor.methods({
 
 
 	hire_army: function(army, building_id, building_type) {
-		check(army, Object)
+		_.each(s.army.types, function(type) {
+			check(army[type], validNumber)
+		})
 		check(building_id, String)
 		check(building_type, String)
 
-		var user = Meteor.users.findOne(Meteor.userId(), {fields: {username:1, x:1, y:1, allies_below:1, castle_id:1, gold:1, grain:1, lumber:1, ore:1, wool:1, clay:1, glass:1}})
+		var userFields = {username:1, x:1, y:1, allies_below:1, castle_id:1}
+
+		_.each(s.resource.types_plus_gold, function(type) {
+			userFields[type] = 1
+		})
+
+		var user = Meteor.users.findOne(Meteor.userId(), {fields:userFields})
 		if (user) {
 			var fields = {user_id:1}
 			_.each(s.army.types, function(type) {
@@ -310,7 +323,6 @@ Meteor.methods({
 					})
 
 					// test if we have enough with cost_adjusted
-
 					_.each(s.resource.types_plus_gold, function(type) {
 						if (user[type] < cost_adjusted[type]) {
 							throw new Meteor.Error('Not enough resources.')
