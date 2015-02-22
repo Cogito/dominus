@@ -12,8 +12,9 @@ BattleDb.prototype.init = function() {
 
 	self.record.currentUnits = self.getCurrentUnits()
 
-	if (self.record.round == 1) {
-		if (self.debug) {console.log('--- round 1 ---')}
+	if (self.debug) {console.log('--- round '+self.record.roundNumber+' ---')}
+
+	if (self.record.roundNumber == 1) {
 
 		_.each(self.unitObj.getAllUnits(), function(unit) {
 			self.addToSendEndNotificationTo(unit)
@@ -22,9 +23,6 @@ BattleDb.prototype.init = function() {
 		_.each(self.unitObj.getAllUnits(), function(unit) {
 			self.unitObj.enteredBattle(unit)
 		})
-
-	} else {
-		if (self.debug) {console.log('--- round '+self.record.roundNumber+' ---')}
 	}
 }
 
