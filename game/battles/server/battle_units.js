@@ -926,7 +926,7 @@ Units.prototype._computeBonus = function() {
 
 		// bonus
 		unit.bonus = {}
-		unit.bonus.footmen = unit.basePower.footmen * unit.percentage.pikemen * enemy_percentage.pikemen
+		unit.bonus.footmen = unit.basePower.footmen * unit.percentage.footmen * enemy_percentage.pikemen
 		unit.bonus.archers = unit.basePower.archers * unit.percentage.archers * enemy_percentage.footmen
 		unit.bonus.pikemen = unit.basePower.pikemen * unit.percentage.pikemen * enemy_percentage.cavalry
 		unit.bonus.cavalry = unit.basePower.cavalry * unit.percentage.cavalry * (enemy_percentage.archers + enemy_percentage.footmen)
