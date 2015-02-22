@@ -100,6 +100,8 @@ set_lord_and_vassal = function(winner, loser, runUpdateAllies) {
 	// send notification
 	notification_new_lord(loser._id, {_id: winner._id, username: winner.username, x: winner.x, y: winner.y, castle_id: winner.castle_id})
 
+	alert_newLord(loser._id, winner._id)
+
 	if (runUpdateAllies) {
 		worker.enqueue('update_allies', {user_id: winner._id})
 

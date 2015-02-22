@@ -134,6 +134,14 @@ alert_gainedVassal = function(user_id, newVassalUser_id, vassalsNewLord_id) {
     newAlert('alert_gainedVassal', [user_id], vars)
 }
 
+
+alert_newLord = function(user_id, lord_id) {
+    check(user_id, String)
+    check(lord_id, String)
+    var vars = {lord_id:lord_id}
+    newAlert('alert_newLord', [user_id], vars)
+}
+
 // --------
 
 

@@ -22,7 +22,7 @@ gather_resources_new = function() {
 
 			receive_income_id(
 				res.user_id,
-				taxPerCastle + 20,
+				taxPerCastle * 2 + 10,
 				s.castle.income.grain,
 				s.castle.income.lumber,
 				s.castle.income.ore,

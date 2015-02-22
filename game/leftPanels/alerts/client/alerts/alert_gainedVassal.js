@@ -11,6 +11,10 @@ var helpers = {
         if (this.vars.vassalsNewLord_id != Meteor.userId()) {
             return AlertUsers.findOne(this.vars.vassalsNewLord_id)
         }
+    },
+
+    lordTax: function() {
+        return s.income.percentToLords * 100
     }
 }
 
