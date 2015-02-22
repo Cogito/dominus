@@ -1,6 +1,6 @@
 Meteor.publish('globalAlerts', function() {
     if(this.userId) {
-        return GlobalAlerts.find({},{sort:{created_at:-1}, limit:150})
+        return GlobalAlerts.find({},{sort:{created_at:-1}, limit:100})
     } else {
         this.ready()
     }
@@ -16,7 +16,7 @@ Meteor.publish('globalAlert', function(id) {
 
 Meteor.publish('myAlerts', function() {
     if(this.userId) {
-        return Alerts.find({user_ids: {$elemMatch: {user_id:this.userId}}})
+        return Alerts.find({user_ids: {$elemMatch: {user_id:this.userId}}}, {limit:100})
     } else {
         this.ready()
     }
@@ -76,7 +76,7 @@ Meteor.publish('battleAlertTitles', function() {
     fields['currentUnits.dead'] = 1
     fields['currentUnits._id'] = 1
 
-    var cur = Battles.find({},{sort:{created_at:-1}, limit:150, fields:fields})
+    var cur = Battles.find({},{sort:{created_at:-1}, limit:100, fields:fields})
     Mongo.Collection._publishCursor(cur, self, 'alertbattletitles')
     return self.ready();
 })
