@@ -6,25 +6,35 @@
 	<a href="/battle/{{_id}}">link for sharing</a><br>
 	<br>
 
-	{{#unless conqueredEmptyCastle}}
-		{{#if lastFightReady}}
+	{{#if lastFightReady}}
+		{{#if winnersLastRound}}
 			Won last round.
 			<ul>
 				{{#each winnersLastRound}}
 					<li>{{username}}'s {{type}} {{name}}</li>
 				{{/each}}
 			</ul>
+		{{/if}}
 
+		{{#if lostLastRound}}
 			Lost last round.
 			<ul>
 				{{#each lostLastRound}}
 					<li>{{username}}'s {{type}} {{name}}</li>
 				{{/each}}
 			</ul>
-		{{else}}
-			{{> loading}}
 		{{/if}}
+	{{else}}
+		{{> loading}}
+	{{/if}}
 
+
+	{{#if castleWasTaken}}
+		{{castle.username}}'s castle <b>{{castle.name}}</b> was defeated by {{castleTakenBy.username}}'s army <b>{{castleTakenBy.name}}</b>.<br><br>
+	{{/if}}
+
+
+	{{#if deaths}}
 		<div class="panel panel-default">
 			<div class="panel-heading" style="text-align:left;">
 				<a data-toggle="collapse" href="#losses">
@@ -73,13 +83,15 @@
 				</div>
 			</div>
 		</div>
+	{{/if}}
 
-		{{#if fighttitlesReady}}
+	{{#if fighttitlesReady}}
+		{{#if fightTitles}}
 			{{#each fightTitles}}
 				{{> fightTitle}}
 			{{/each}}
-		{{else}}
-			{{> loading}}
 		{{/if}}
-	{{/unless}}
+	{{else}}
+		{{> loading}}
+	{{/if}}
 </template>

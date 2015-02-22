@@ -619,7 +619,7 @@ Units.prototype.getUserOfUnit = function(unit_id) {
 
 Units.prototype.hasEnemies = function(unit) {
 	var hasEnemies = this.getEnemies(unit).length > 0
-	//if (this.debug) {console.log(unit.username+':'+unit.name+':'+unit.type+' hasEnemies is '+hasEnemies)}
+	// if (this.debug) {console.log(unit.username+':'+unit.name+':'+unit.type+' hasEnemies is '+hasEnemies)}
 	return hasEnemies
 }
 
@@ -750,7 +750,7 @@ Units.prototype.isEnemy = function(unit, otherUnit) {
 		return false
 	}
 
-	//if (self.debug) {console.log('running isEnemy for '+unit.username+':'+unit.name+':'+unit.type+' and '+otherUnit.username+':'+otherUnit.name+':'+otherUnit.type)}
+	// if (self.debug) {console.log('running isEnemy for '+unit.username+':'+unit.name+':'+unit.type+' and '+otherUnit.username+':'+otherUnit.name+':'+otherUnit.type)}
 
 	var isEnemy = false
 	var user = Meteor.users.findOne(unit.user_id, {fields: {allies:1, team:1, allies_below:1, allies_above:1, is_dominus:1}})
@@ -760,7 +760,7 @@ Units.prototype.isEnemy = function(unit, otherUnit) {
 		// dominus' armies can attack all other armies
 		if (user.is_dominus || otherUser.is_dominus) {
 			if (unit.type == 'army' && otherUnit.type == 'army') {
-				//if (self.debug) {console.log(otherUnit.username+':'+otherUnit.name+':'+otherUnit.type+' is enemy of '+unit.username+':'+unit.name+':'+unit.type+' because one side is dominus. ')}
+				// if (self.debug) {console.log('. . . '+otherUnit.username+':'+otherUnit.name+':'+otherUnit.type+' is enemy of '+unit.username+':'+unit.name+':'+unit.type+' because one side is dominus. ')}
 				isEnemy = true
 			}
 		}
@@ -786,10 +786,10 @@ Units.prototype.isEnemy = function(unit, otherUnit) {
 						}
 					} else {
 						if (_.indexOf(user.allies, otherUnit.user_id) == -1) {
-							//if (self.debug) {console.log(otherUnit.username+':'+otherUnit.name+':'+otherUnit.type+' is enemy of '+unit.username+':'+unit.name+':'+unit.type)}
+							// if (self.debug) {console.log('. . . '+otherUnit.username+':'+otherUnit.name+':'+otherUnit.type+' is enemy of '+unit.username+':'+unit.name+':'+unit.type)}
 							isEnemy = true
 						} else {
-							//if (self.debug) {console.log(otherUnit.username+':'+otherUnit.name+':'+otherUnit.type+' is NOT enemy of '+unit.username+':'+unit.name+':'+unit.type)}
+							// if (self.debug) {console.log('. . . '+otherUnit.username+':'+otherUnit.name+':'+otherUnit.type+' is NOT enemy of '+unit.username+':'+unit.name+':'+unit.type)}
 						}
 					}
 					break

@@ -196,23 +196,22 @@ move_army_to_hex = function(army_id, x, y) {
 		// get user info for later
 		var user = Meteor.users.findOne(unit.user_id, {fields: {allies:1, team:1, allies_below:1, is_dominus:1}})
 
+		// so that battle isn't called once for each enemy in hex
+		var startBattle = false
+
 		// check for armies
 		var armies = Armies.find({x:x, y:y, user_id: {$ne: unit.user_id}}, {fields: {user_id:1}})
 		if (armies.count() > 0) {
+
 			armies.forEach(function(a) {
 				var otherUser = Meteor.users.findOne(a.user_id, {fields: {is_dominus:1}})
 				if (user.is_dominus || otherUser.is_dominus) {
 					// dominus' armies can attack any army
-					Battle.start_battle(x,y)
+					startBattle = true
 				} else {
-					if (_.indexOf(user.allies, a.user_id) != -1) {
-						// army is an ally
-					// } else if (_.indexOf(user.siblings, a.user_id) != -1) {
-					// 	// sibling
-					} else {
+					if (_.indexOf(user.allies, a.user_id) == -1) {
 						// army is enemy
-						Battle.start_battle(x,y)
-						//battle(unit._id, 'army', a._id, 'army')
+						startBattle = true
 					}
 				}
 			})
@@ -222,34 +221,26 @@ move_army_to_hex = function(army_id, x, y) {
 		var ec = Castles.findOne({x:x, y:y, user_id: {$ne: unit.user_id}}, {fields: {user_id: 1}})
 		if (ec) {
 			if (_.indexOf(user.team, ec.user_id) != -1) {
-				if (_.indexOf(user.allies_below, ec.user_id) != -1) {
-					// castle is ally_below
-				// } else if (_.indexOf(user.siblings, ec.user_id) != -1) {
-				// 	// castle is sibling
-				} else {
+				if (_.indexOf(user.allies_below, ec.user_id) == -1) {
 					// castle is above or enemy-ally (another branch)
-					Battle.start_battle(x,y)
-					//battle(unit._id, 'army', ec._id, 'castle')
+					startBattle = true
 				}
 			} else {
 				// castle is enemy
-				Battle.start_battle(x,y)
-				//battle(unit._id, 'army', ec._id, 'castle')
+				startBattle = true
 			}
 		}
 
 		// check for enemy villages
 		var ev = Villages.findOne({x:x, y:y, user_id: {$ne: unit.user_id}}, {fields: {user_id: 1}})
 		if (ev) {
-			if (_.indexOf(user.allies, ev.user_id) != -1) {
-				// village is ally
-			// } else if (_.indexOf(user.siblings, ev.user_id) != -1) {
-			// 		// sibling
-			} else {
-				// village is enemy
-				Battle.start_battle(x,y)
-				//battle(unit._id, 'army', ev._id, 'village')
+			if (_.indexOf(user.allies, ev.user_id) == -1) {
+				startBattle = true
 			}
+		}
+
+		if (startBattle) {
+			Battle.start_battle(x,y)
 		}
 	}
 }

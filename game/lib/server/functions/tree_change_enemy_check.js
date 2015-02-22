@@ -38,6 +38,7 @@ var check_for_enemies_here = function(building, type) {
 
 // loop through every army and check if there are any enemies on the same hex, if so they fight
 enemies_together_check = function() {
+	console.log('--- running enemies_together_check ---')
 	var start_time = new Date()
 
 	Armies.find({}, {fields: {user_id:1, x:1, y:1}}).forEach(function(army) {

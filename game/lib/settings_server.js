@@ -66,7 +66,7 @@ if (Meteor.isServer) {
 
 	// give to new user
 	s.starting_resources = {
-		gold: 0,
+		gold: 10,
 		grain: 600,
 		lumber: 600,
 		ore: 600,

@@ -1,15 +1,26 @@
 <template name="alerts_battle">
     <div class="alertTitle pad_group">
         <div style="font-size:120%;">
-            <a href="" class="openAlertButton">
-                Battle at {{x}},{{y}} started {{date_calendar created_at}}
-            </a>
+            <table style="width:100%;">
+                <tbody>
+                    <tr>
+                        <td>
+                            <a href="" class="openAlertButton">
+                                Battle at {{x}},{{y}}
+                            </a>
+                        </td>
+                        <td style="text-align:right;">
+                            {{date_calendar created_at}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
 
         {{#each currentUnits}}
-        <div class="light_text">
-            &bull;&nbsp; {{username}}'s {{type}} {{name}}
-        </div>
+            <div class="light_text">
+                &bull;&nbsp; {{username}}'s {{type}} {{name}} {{wasDefeated}}
+            </div>
         {{/each}}
     </div>
 

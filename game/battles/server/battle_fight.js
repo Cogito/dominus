@@ -9,7 +9,7 @@ Fight = function (x, y, unitObj, battleDb) {
 
 	var units = self.unitObj.getAllUnits()
 
-	if (self.unitObj._someoneHasEnemies()) {
+	//if (self.unitObj._someoneHasEnemies()) {
 		_.each(units, function(unit) {
 			if (self.unitObj.hasEnemies(unit)) {
 				if (unit.type == 'castle') {
@@ -22,23 +22,29 @@ Fight = function (x, y, unitObj, battleDb) {
 					self._killSoldiers(unit)
 				}
 			}
-
-			// old
-			//if (self.unitObj.hasSoldiers(unit)) {
-				// if (self.unitObj.hasEnemies(unit)) {
-				// 	self._runFight(unit)
-				// 	self._killSoldiers(unit)
-				// }
-			//}
 		})
 
 		battleDb.saveRecord()
 		self.unitObj.removeDeadSoldiers()
 		self.unitObj.removeDeadUnits()
 		self._endBattle()
-	} else {
-		self._endBattle()
-	}
+	//} else {
+		// if there is a castle here that has an enemy then we should save
+		// var castle_fields = {name:1, user_id:1, x:1, y:1, username:1, image:1}
+		// _.each(s.army.types, function(type) {
+		// 	castle_fields[type] = 1
+		// })
+		// var castle = Castles.findOne({x:self.x, y:self.y}, {fields: castle_fields})
+		//
+		// if (castle) {
+		// 	castle.type = 'castle'
+		// 	if (self.unitObj.hasEnemies(castle)) {
+		// 		battleDb.saveRecord()
+		// 	}
+		// }
+
+	//	self._endBattle()
+	//}
 
 	record_job_stat('battle', new Date() - start_time)
 }
@@ -55,34 +61,46 @@ Fight = function (x, y, unitObj, battleDb) {
 // 	}
 // }
 
+Fight.prototype._handleCastle = function() {
+	var self = this
+
+	// is there a castle in this hex
+	// it might not be in allUnits so check mongodb
+	var castle_fields = {name:1, user_id:1, x:1, y:1, username:1, image:1}
+	_.each(s.army.types, function(type) {
+		castle_fields[type] = 1
+	})
+	var castle = Castles.findOne({x:self.x, y:self.y}, {fields: castle_fields})
+
+	if (castle) {
+		self.battleDb.record.castle_id = castle._id
+		castle.type = 'castle'
+		var getsCastle = self._whoGetsCastle(castle)
+		if (getsCastle) {
+			var lord = Meteor.users.findOne(getsCastle.user_id)
+			var vassal = Meteor.users.findOne(castle.user_id)
+			if (lord && vassal) {
+				set_lord_and_vassal(lord, vassal, true)
+				self.battleDb.record.castleWasTaken = true
+				self.battleDb.record.castleTakenByArmy_id = getsCastle._id
+			}
+		}
+
+		self.battleDb.saveAfterCastleTaken()
+	}
+}
+
+
 
 Fight.prototype._endBattle = function() {
 	var self = this
 
 	if (self._isBattleOver()) {
+		self._handleCastle()
+
 		_.each(self.battleDb.getSendEndNotificationTo(), function(unit) {
 			self.unitObj.exitedBattle(unit)
 		})
-
-		// is there a castle in this hex
-		// it might not be in allUnits so check mongodb
-		var castle_fields = {name:1, user_id:1, x:1, y:1, username:1, image:1}
-		_.each(s.army.types, function(type) {
-			castle_fields[type] = 1
-		})
-		var castle = Castles.findOne({x:self.x, y:self.y}, {fields: castle_fields})
-
-		if (castle) {
-			castle.type = 'castle'
-			var getsCastle = self._whoGetsCastle(castle)
-			if (getsCastle) {
-				var lord = Meteor.users.findOne(getsCastle.user_id)
-				var vassal = Meteor.users.findOne(castle.user_id)
-				if (lord && vassal) {
-					set_lord_and_vassal(lord, vassal, true)
-				}
-			}
-		}
 
 		self.battleDb.endBattle()
 	}

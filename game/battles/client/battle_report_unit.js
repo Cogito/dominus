@@ -32,7 +32,7 @@ Template.battle_report_unit.helpers({
     destroyedText: function() {
         var data = Template.parentData(1)
         if (data) {
-            return _.humanize(data.type+' was destroyed.')
+            return _.humanize(data.type+' was defeated.')
         }
     }
 })

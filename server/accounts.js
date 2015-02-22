@@ -29,6 +29,10 @@ Accounts.onCreateUser(function(options, user) {
 		}
 	}
 
+	if (Meteor.isServer && process.env.NODE_ENV == 'development') {
+		user.emails[0].verified = true
+	}
+
 	user = setupNewUser(user)
 
 	// if someone was dominus make them not dominus

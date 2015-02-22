@@ -61,7 +61,6 @@ gamestats_job = function() {
 	})
 
 	_.each(s.army.types, function(type) {
-		console.log(total_army[type])
 		check(total_army[type], validNumber)
 		stat['total_'+type] = total_army[type]
 	})

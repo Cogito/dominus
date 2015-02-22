@@ -68,7 +68,6 @@ mrt:cookies@0.3.0
 mrt:modernizr-meteor@2.6.2
 mrt:nvd3js@0.1.0
 mrt:underscore-string-latest@2.3.3
-msavin:mongol@0.1.1
 nemo64:bootstrap@3.3.1_1
 nemo64:bootstrap-data@3.3.1_1
 npm-bcrypt@0.7.7

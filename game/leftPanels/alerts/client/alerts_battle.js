@@ -7,6 +7,23 @@ Template.alerts_battle.helpers({
 
 	isOpen: function() {
 		return Template.instance().isOpen.get()
+	},
+
+	wasDefeated: function() {
+		if (this) {
+			var data = Template.parentData(1)
+			if (data) {
+				if (data.castleWasTaken) {
+					if (this.type == 'castle') {
+						return 'was defeated'
+					}
+				}
+			}
+
+			if (this.dead) {
+				return 'was defeated'
+			}
+		}
 	}
 })
 

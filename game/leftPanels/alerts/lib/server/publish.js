@@ -32,21 +32,21 @@ Meteor.publish('alertUser', function(user_id) {
 
 
 Meteor.publish('alertArmy', function(army_id) {
-    var cur = Armies.find({_id:army_id, user_id:this.userId}, {fields: {name:1, username:1, x:1, y:1, castle_id:1}})
+    var cur = Armies.find({_id:army_id}, {fields: {name:1, username:1, x:1, y:1, castle_id:1}})
     Mongo.Collection._publishCursor(cur, this, 'alertarmies')
     return this.ready();
 })
 
 
 Meteor.publish('alertVillage', function(village_id) {
-    var cur = Villages.find({_id:village_id, user_id:this.userId}, {fields: {name:1, username:1, x:1, y:1, castle_id:1}})
+    var cur = Villages.find({_id:village_id}, {fields: {name:1, username:1, x:1, y:1, castle_id:1}})
     Mongo.Collection._publishCursor(cur, this, 'alertvillages')
     return this.ready();
 })
 
 
 Meteor.publish('alertCastle', function(castle_id) {
-    var cur = Castles.find({_id:castle_id, user_id:this.userId}, {fields: {name:1, username:1, x:1, y:1, castle_id:1}})
+    var cur = Castles.find({_id:castle_id}, {fields: {name:1, username:1, x:1, y:1, castle_id:1}})
     Mongo.Collection._publishCursor(cur, this, 'alertcastles')
     return this.ready();
 })
@@ -66,12 +66,15 @@ Meteor.publish('battleAlertTitles', function() {
         created_at:1,
         isOver:1,
         x:1,
-        y:1
+        y:1,
+        castleWasTaken:1
         }
 
     fields['currentUnits.username'] = 1
     fields['currentUnits.type'] = 1
     fields['currentUnits.name'] = 1
+    fields['currentUnits.dead'] = 1
+    fields['currentUnits._id'] = 1
 
     var cur = Battles.find({},{sort:{created_at:-1}, limit:150, fields:fields})
     Mongo.Collection._publishCursor(cur, self, 'alertbattletitles')

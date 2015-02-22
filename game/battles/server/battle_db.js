@@ -1,38 +1,19 @@
-BattleDb = function(x,y, unitObj) {
+BattleDb = function(x,y, unitObj, record) {
 	this.unitObj = unitObj
 	this.debug = false
 	this.x = x
 	this.y = y
+	this.record = record
 }
 
 
 BattleDb.prototype.init = function() {
 	var self = this
 
-	// get battle here
-	self.record = Battles.findOne({x:self.x, y:self.y, isOver:false})
+	self.record.currentUnits = self.getCurrentUnits()
 
-	// if there is no battle here then create one
-	if (self.record) {
-		self.record.roundNumber++
-		if (self.debug) {console.log('--- round '+self.record.roundNumber+' ---')}
-	} else {
+	if (self.record.round == 1) {
 		if (self.debug) {console.log('--- round 1 ---')}
-
-		self.record = {
-			x:self.x,
-			y:self.y,
-			created_at:new Date(),
-			updated_at:new Date(),
-			roundNumber: 1,
-			deaths: [],
-			//roundData: [],
-			currentUnits: self.getCurrentUnits(),
-			sendEndNotificationTo: [],	// set in enteredBattle - used for end battle notifications, no longer used
-			isOver: false,
-			sentStartAlertTo: []
-		}
-		self.record._id = Battles.insert(self.record)
 
 		_.each(self.unitObj.getAllUnits(), function(unit) {
 			self.addToSendEndNotificationTo(unit)
@@ -41,6 +22,9 @@ BattleDb.prototype.init = function() {
 		_.each(self.unitObj.getAllUnits(), function(unit) {
 			self.unitObj.enteredBattle(unit)
 		})
+
+	} else {
+		if (self.debug) {console.log('--- round '+self.record.roundNumber+' ---')}
 	}
 }
 
@@ -112,8 +96,8 @@ BattleDb.prototype.getCurrentUnits = function() {
 	var allUnits = []
 
 	_.each(self.unitObj.getAllUnits(), function(unit) {
-		if (self.unitObj.hasSoldiers(unit)) {
-			if (self.unitObj.hasEnemies(unit)) {
+//		if (self.unitObj.hasSoldiers(unit)) {
+//			if (self.unitObj.hasEnemies(unit)) {
 				var cloned = cloneObject(unit)
 				cloned.allies = self.unitObj.getAllies(unit)
 				cloned.teamFinalPower = self.unitObj.getTeamFinalPower(unit)
@@ -130,8 +114,8 @@ BattleDb.prototype.getCurrentUnits = function() {
 				cloned.onAllyCastleBonus = unit.onAllyCastleBonus
 				cloned.onAllyVillageBonus = unit.onAllyVillageBonus
 				allUnits.push(cloned)
-			}
-		}
+//			}
+//		}
 	})
 
 	return allUnits
@@ -140,15 +124,28 @@ BattleDb.prototype.getCurrentUnits = function() {
 
 
 BattleDb.prototype.endBattle = function() {
-	if (this.debug) {console.log('endBattle called')}
+	if (this.debug) {console.log('db endBattle called')}
 	this._trackLosses()
-	//Battles.remove(this.record._id)
 	Battles.update(this.record._id, {$set: {isOver:true}})
+	this.record.isOver = true
 }
 
 
 BattleDb.prototype.saveRecord = function() {
 	var self = this
+
+	var currentUnits = self.getCurrentUnits()
+
+	// if there is not a castle in the fight
+	// check if there is a castle in the hex
+	// if so add it so that it's listed in the report
+	var castle = self.unitObj.getCastle()
+	if (!castle) {
+		var castle_fields = {name:1, user_id:1, x:1, y:1, username:1, image:1}
+		var castle = Castles.findOne({x:self.x, y:self.y}, {fields: castle_fields})
+		castle.type = 'castle'
+		currentUnits.push(castle)
+	}
 
 	var roundData = {
 		roundNumber: self.record.roundNumber,
@@ -161,13 +158,26 @@ BattleDb.prototype.saveRecord = function() {
 		updated_at:new Date(),
 		roundNumber: self.record.roundNumber,
 		deaths: self.record.deaths,
-		currentUnits: self.getCurrentUnits(),
+		currentUnits: currentUnits,
 		sendEndNotificationTo: self.record.sendEndNotificationTo,
-		sentStartAlertTo: self.record.sentStartAlertTo
+		sentStartAlertTo: self.record.sentStartAlertTo,
+		castleWasTaken: self.record.castleWasTaken,
+		castle_id: self.record.castle_id,
+		castleTakenByArmy_id: self.record.castleTakenByArmy_id
 	}
 
-	//Battles.update(self.record._id, {$set: set, $addToSet: {roundData: roundData}})
 	Fights.insert(roundData)
+	Battles.update(self.record._id, {$set: set})
+}
+
+
+BattleDb.prototype.saveAfterCastleTaken = function() {
+	var self = this
+	var set = {
+		castleWasTaken: self.record.castleWasTaken,
+		castle_id: self.record.castle_id,
+		castleTakenByArmy_id: self.record.castleTakenByArmy_id
+	}
 	Battles.update(self.record._id, {$set: set})
 }
 

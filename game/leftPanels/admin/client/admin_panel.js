@@ -35,7 +35,7 @@ Template.admin_panel.events({
 	},
 
 	'click #give_gold_button': function(event, template) {
-		Meteor.call('give_gold', 1000)
+		Meteor.call('give_gold', 100000)
 	},
 
 	'click #delete_all_users_button': function(event, template) {
