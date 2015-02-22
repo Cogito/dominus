@@ -103,12 +103,14 @@ gamestats_job = function() {
 	var ips = []
 	var users_with_same = 0
 	Meteor.users.find({"status.lastLogin.ipAddr": {$ne: "10.112.144.11"}}, {fields: {"status.lastLogin.ipAddr":1}}).forEach(function(user) {
-		var ip = user.status.lastLogin.ipAddr
-		if (ip) {
-			if (_.indexOf(ips, user.status.lastLogin.ipAddr) == -1) {
-				ips.push(ip)
-			} else {
-				users_with_same++
+		if (user.status && user.status.lastLogin && user.status.ipAddr) {
+			var ip = user.status.lastLogin.ipAddr
+			if (ip) {
+				if (_.indexOf(ips, user.status.lastLogin.ipAddr) == -1) {
+					ips.push(ip)
+				} else {
+					users_with_same++
+				}
 			}
 		}
 	})

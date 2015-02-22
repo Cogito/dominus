@@ -23,18 +23,29 @@ set_lord_and_vassal = function(winner, loser, runUpdateAllies) {
 
 	_.each(above_loser, function(above_loser_lord_id) {
 		if (_.indexOf(above_winner, above_loser_lord_id) == -1) {
-			notification_lost_vassal(above_loser_lord_id, loser, winner)
+
+			// make sure we don't send it to winner or loser
+			if (above_loser_lord_id != winner._id && above_loser_lord_id != loser._id) {
+				notification_lost_vassal(above_loser_lord_id, loser, winner)
+				alert_lostVassal(above_loser_lord_id, loser._id, winner._id)
+			}
 		}
 	})
 
 	_.each(above_winner, function(above_winner_lord_id) {
 		if (_.indexOf(above_loser, above_winner_lord_id) == -1) {
-			notification_gained_vassal(above_winner_lord_id, loser, winner)
+
+			// make sure we don't send it to winner or loser
+			if (above_winner_lord_id != winner._id && above_winner_lord_id != loser._id) {
+				notification_gained_vassal(above_winner_lord_id, loser, winner)
+				alert_gainedVassal(above_winner_lord_id, loser._id, winner._id)
+			}
 		}
 	})
 
 	// send notification to winner
 	notification_gained_vassal(winner._id, loser, winner)
+	alert_gainedVassal(winner._id, loser._id, winner._id)
 
 
 

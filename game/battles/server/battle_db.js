@@ -143,8 +143,10 @@ BattleDb.prototype.saveRecord = function() {
 	if (!castle) {
 		var castle_fields = {name:1, user_id:1, x:1, y:1, username:1, image:1}
 		var castle = Castles.findOne({x:self.x, y:self.y}, {fields: castle_fields})
-		castle.type = 'castle'
-		currentUnits.push(castle)
+		if (castle) {
+			castle.type = 'castle'
+			currentUnits.push(castle)
+		}
 	}
 
 	var roundData = {

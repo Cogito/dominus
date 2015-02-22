@@ -116,6 +116,24 @@ alert_armyDestroyed = function(user_id, battle_id, armyName) {
     newAlert('alert_armyDestroyed', [user_id], vars)
 }
 
+
+alert_lostVassal = function(user_id, lostVassalUser_id, vassalsNewLord_id) {
+    check(user_id, String)
+    check(lostVassalUser_id, String)
+    check(vassalsNewLord_id, String)
+    var vars = {lostVassalUser_id:lostVassalUser_id, vassalsNewLord_id:vassalsNewLord_id}
+    newAlert('alert_lostVassal', [user_id], vars)
+}
+
+
+alert_gainedVassal = function(user_id, newVassalUser_id, vassalsNewLord_id) {
+    check(user_id, String)
+    check(newVassalUser_id, String)
+    check(vassalsNewLord_id, String)
+    var vars = {newVassalUser_id:newVassalUser_id, vassalsNewLord_id:vassalsNewLord_id}
+    newAlert('alert_gainedVassal', [user_id], vars)
+}
+
 // --------
 
 
