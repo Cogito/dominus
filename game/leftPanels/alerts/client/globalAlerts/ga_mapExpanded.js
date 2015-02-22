@@ -1,10 +1,6 @@
 var helpers = {
     title: function() {
         return 'New hexes have been added to the map.'
-    },
-
-    isOpen: function() {
-        return Template.instance().isOpen.get()
     }
 }
 

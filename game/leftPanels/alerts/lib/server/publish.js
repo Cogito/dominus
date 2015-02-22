@@ -88,3 +88,39 @@ Meteor.publish('unreadAlerts', function() {
     Mongo.Collection._publishCursor(cur, self, 'unreadalerts')
     return self.ready();
 })
+
+
+
+Meteor.publish('alertGameEndDate', function() {
+    if(this.userId) {
+        return Settings.find({name:'gameEndDate'})
+    } else {
+        this.ready()
+    }
+})
+
+
+Meteor.publish('isGameOver', function() {
+    if(this.userId) {
+        return Settings.find({name:'isGameOver'})
+    } else {
+        this.ready()
+    }
+})
+
+
+Meteor.publish('alertPreviousDominus', function() {
+    var sub = this
+    var lastDominusId = Settings.findOne({name: 'lastDominusUserId'})
+    if (lastDominusId && lastDominusId.value) {
+        var cur = Meteor.users.find(lastDominusId.value, {fields: {
+            username:1,
+            castle_id:1,
+            x:1,
+            y:1,
+            is_dominus:1
+        }})
+        Mongo.Collection._publishCursor(cur, sub, 'alertPreviousDominus')
+    }
+    return sub.ready();
+})

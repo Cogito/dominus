@@ -18,6 +18,8 @@ Meteor.methods({
 			}
 
 			if (user) {
+				gAlert_accountDeleted(user.username)
+
 				var appendToName = '(deleted)'
 
 				Villages.find({user_id: user._id}).forEach(function(village) {

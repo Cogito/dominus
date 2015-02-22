@@ -123,6 +123,7 @@ setupKingChatroom = function(king_id) {
 		} else {
 			// create a room for king
 			createChatroom('King '+king.username+' and Vassals', 'king', king._id, members)
+			alert_newKingChatroom(king._id)
 		}
 	}
 

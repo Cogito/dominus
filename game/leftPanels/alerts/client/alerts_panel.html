@@ -2,9 +2,27 @@
     <div id="alerts_panel">
         <div class="panel_title"><i class="fa fa-bullhorn fa-lg"></i> &nbsp;Alerts</div>
 
-        <div class="panel panel-body">
-            Alerts will soon replace notifications.  They're the same thing but re-written and better.  Many alerts are still missing.
-        </div>
+        {{#unless isGameOver}}
+            {{#if isGameEndDateSet}}
+                <div class="panel panel-body">
+                    {{#if dominus}}
+                        <a href="" data-x="{{dominus.x}}" data-y="{{dominus.y}}" data-castle_id="{{dominus.castle_id}}" class="userLink">
+                            {{dominus.username}}
+                        </a>
+                    {{else}}
+                        <a href="" data-x="{{previousDominus.x}}" data-y="{{previousDominus.y}}" data-castle_id="{{previousDominus.castle_id}}" class="userLink">
+                            {{previousDominus.username}}
+                        </a>
+                    {{/if}}
+
+                    will win {{date_from_now gameEndDate}} on {{date_calendar gameEndDate}} unless someone new becomes the Dominus.
+
+                    <br><br>
+
+                    <div class="light_text">If someone wins the game will end.  Everything will be reset and a new game will start.  If someone new becomes the Dominus before then the countdown will be reset to {{timeTilGameEndWhenNewDominus}}.</div>
+                </div>
+            {{/if}}
+        {{/unless}}
 
         <div class="pad_group">
             <div class="btn-group btn-group-justified" role="group">

@@ -142,6 +142,34 @@ alert_newLord = function(user_id, lord_id) {
     newAlert('alert_newLord', [user_id], vars)
 }
 
+
+alert_newKingChatroom = function(user_id) {
+    check(user_id, String)
+    var vars = {}
+    newAlert('alert_newKingChatroom', [user_id], vars)
+}
+
+
+alert_noLongerDominus = function(user_id) {
+    check(user_id, String)
+    var vars = {}
+    newAlert('alert_noLongerDominus', [user_id], vars)
+}
+
+
+alert_noLongerDominusNewUser = function(user_id) {
+    check(user_id, String)
+    var vars = {}
+    newAlert('alert_noLongerDominusNewUser', [user_id], vars)
+}
+
+
+alert_youAreDominus = function(user_id) {
+    check(user_id, String)
+    var vars = {}
+    newAlert('alert_youAreDominus', [user_id], vars)
+}
+
 // --------
 
 

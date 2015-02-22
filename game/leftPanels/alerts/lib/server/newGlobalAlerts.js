@@ -29,9 +29,37 @@ gAlert_sentArmy = function(fromUser_id, toUser_id, army) {
 gAlert_mapExpanded = function(numHexes, numRings) {
     check(numHexes, validNumber)
     check(numRings, validNumber)
-
     var vars = {numHexes:numHexes, numRings:numRings}
     newGlobalAlert('ga_mapExpanded', vars)
+}
+
+
+gAlert_noLongerDominusNewUser = function(oldDominusUser_id) {
+    check(oldDominusUser_id, String)
+    var vars = {oldDominusUser_id:oldDominusUser_id}
+    newGlobalAlert('ga_noLongerDominusNewUser', vars)
+}
+
+
+gAlert_newDominus = function(newDominusUser_id, previousDominusUser_id) {
+    check(newDominusUser_id, String)
+    check(previousDominusUser_id, Match.OneOf(null, String))
+    var vars = {newDominusUser_id:newDominusUser_id, previousDominusUser_id:previousDominusUser_id}
+    newGlobalAlert('ga_newDominus', vars)
+}
+
+
+gAlert_gameOver = function(winnerUser_id) {
+    check(winnerUser_id, String)
+    var vars = {winnerUser_id:winnerUser_id}
+    newGlobalAlert('ga_gameOver', vars)
+}
+
+
+gAlert_accountDeleted = function(username) {
+    check(username, String)
+    var vars = {username:username}
+    newGlobalAlert('ga_accountDeleted', vars)
 }
 
 

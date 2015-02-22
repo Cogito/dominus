@@ -39,11 +39,6 @@ Template.notifications_panel.helpers({
 		}
 	},
 
-	game_end_date: function() {
-		Session.get('refresh_time_field')
-		return moment(new Date(s.game_end)).calendar()
-	},
-
 	time_until_game_end: function() {
 		Session.get('refresh_time_field')
 		return moment.duration(moment(new Date(s.game_end)) - moment()).humanize()

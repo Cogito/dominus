@@ -8,10 +8,6 @@ var helpers = {
         if (user) {
             return this.vars.previousName +"'s new name is "+user.username
         }
-    },
-
-    isOpen: function() {
-        return Template.instance().isOpen.get()
     }
 }
 

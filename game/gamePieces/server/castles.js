@@ -61,6 +61,8 @@ create_castle = function(user_id) {
 		Settings.upsert({name: 'gameEndDate'}, {$set: {name: 'gameEndDate', value: null}})
 		Settings.upsert({name: 'lastDominusUserId'}, {$set: {name: 'lastDominusUserId', value: null}})
 		Settings.upsert({name: 'taxesCollected'}, {$set: {name:'taxesCollected', value:0}})
+		Settings.upsert({name: 'hasGameOverAlertBeenSent'}, {$set: {name: 'hasGameOverAlertBeenSent', value:false}})
+		Settings.upsert({name: 'isGameOver'}, {$set: {name: 'isGameOver', value:false}})
 	}
 
 	var found = false
