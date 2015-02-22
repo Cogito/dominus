@@ -284,7 +284,6 @@ resource_interval_jobs = function() {
 nightly_job = function() {
 	console.log('running nightly job at '+moment().format("dddd, MMMM Do YYYY, h:mm:ss a"))
 
-	delete_old_notifications()
 	resetJobStatRunCounter()
 
 	Meteor.users.find().forEach(function(user) {

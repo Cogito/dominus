@@ -27,7 +27,6 @@ check_for_dominus = function() {
 	// there is a new dominus
 	if (dominus) {
 		if (!is_still_dominus) {
-			notification_no_longer_dominus(dominus._id, dominus)
 			alert_noLongerDominus(dominus._id)
 		}
 	}
@@ -68,7 +67,6 @@ new_dominus_event = function(dominus_user) {
 	}
 
 	// send notifications
-	notification_new_dominus(dominus_user, lastDominusUserId)
 	gAlert_newDominus(dominus_user._id, lastDominusUserId)
 	alert_youAreDominus(dominus_user._id)
 }

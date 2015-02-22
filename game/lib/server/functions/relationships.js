@@ -26,7 +26,6 @@ set_lord_and_vassal = function(winner, loser, runUpdateAllies) {
 
 			// make sure we don't send it to winner or loser
 			if (above_loser_lord_id != winner._id && above_loser_lord_id != loser._id) {
-				notification_lost_vassal(above_loser_lord_id, loser, winner)
 				alert_lostVassal(above_loser_lord_id, loser._id, winner._id)
 			}
 		}
@@ -37,14 +36,12 @@ set_lord_and_vassal = function(winner, loser, runUpdateAllies) {
 
 			// make sure we don't send it to winner or loser
 			if (above_winner_lord_id != winner._id && above_winner_lord_id != loser._id) {
-				notification_gained_vassal(above_winner_lord_id, loser, winner)
 				alert_gainedVassal(above_winner_lord_id, loser._id, winner._id)
 			}
 		}
 	})
 
 	// send notification to winner
-	notification_gained_vassal(winner._id, loser, winner)
 	alert_gainedVassal(winner._id, loser._id, winner._id)
 
 
@@ -55,7 +52,6 @@ set_lord_and_vassal = function(winner, loser, runUpdateAllies) {
 	if (loser.is_king) {
 		destroyKingChatroom(loser._id)
 		Meteor.users.update(loser._id, {$set: {is_king: false}})
-		notification_no_longer_a_king(loser._id, {_id:winner._id, username:winner.username, x:winner.x, y:winner.y, castle_id:winner.castle_id})
 	}
 
 
@@ -93,13 +89,10 @@ set_lord_and_vassal = function(winner, loser, runUpdateAllies) {
 	// has he conquered his lord?
 	if (winner.king == loser._id) {
 		Meteor.users.update(winner._id, {$set: {is_king:true}})
-		notification_now_a_king(winner._id, {_id: loser._id, username: loser.username, x: loser.x, y: loser.y, castle_id: loser.castle_id})
 	}
 
 
 	// send notification
-	notification_new_lord(loser._id, {_id: winner._id, username: winner.username, x: winner.x, y: winner.y, castle_id: winner.castle_id})
-
 	alert_newLord(loser._id, winner._id)
 
 	if (runUpdateAllies) {

@@ -10,20 +10,8 @@ Template.menu.helpers({
 		if (Session.get('show_summary_panel')) { return 'active' } else { return '' }
 	},
 
-	has_notifications: function() {
-		return NotificationsUnread.find().count() > 0
-	},
-
-	num_notifications: function() {
-		return NotificationsUnread.find().count()
-	},
-
 	numUnreadAlerts: function() {
 		return UnreadAlerts.find().count()
-	},
-
-	notifications_active: function() {
-		if (Session.get('show_notifications_panel')) { return 'active' } else { return '' }
 	},
 
 	alerts_active: function() {
@@ -169,14 +157,6 @@ Template.menu.events({
 		}
 	},
 
-	'click #show_notifications_panel_button': function(event, template) {
-		if (Session.get('show_notifications_panel')) {
-			Session.set('show_notifications_panel', false)
-		} else {
-			Session.set('show_notifications_panel', true)
-		}
-	},
-
 	'click #show_alerts_panel_button': function(event, template) {
 		if (Session.get('show_alerts_panel')) {
 			Session.set('show_alerts_panel', false)
@@ -231,7 +211,6 @@ Template.menu.events({
 Template.menu.rendered = function() {
 	Session.setDefault('show_summary_panel', true)
 	Session.setDefault('show_help_panel', false)
-	Session.setDefault('show_notifications_panel', false)
 	Session.setDefault('show_alerts_panel', false)
 	Session.setDefault('show_admin_panel', false)
 	Session.setDefault('show_market_panel', false)
@@ -245,7 +224,6 @@ Template.menu.rendered = function() {
 	Session.setDefault('show_coords', false)
 
 	this.autorun(function() {
-		Meteor.subscribe('notifications_unread')
 		Meteor.subscribe('unreadAlerts')
 		Meteor.subscribe('room_list')
 		Meteor.subscribe('market')

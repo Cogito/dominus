@@ -17,10 +17,6 @@ BattleDb.prototype.init = function() {
 	if (self.record.roundNumber == 1) {
 
 		_.each(self.unitObj.getAllUnits(), function(unit) {
-			self.addToSendEndNotificationTo(unit)
-		})
-
-		_.each(self.unitObj.getAllUnits(), function(unit) {
 			self.unitObj.enteredBattle(unit)
 		})
 	}
@@ -50,41 +46,6 @@ BattleDb.prototype.addToSentStartAlertTo = function(unit) {
 		self.record.sentStartAlertTo.push(unit._id)
 		if (self.debug) {console.log(unit.username+':'+unit.name+':'+unit.type+' added to sentStartAlertTo list')}
 	}
-}
-
-
-// no longer used
-// list of who to send end battle notifications to
-// add unit to list if not already in it
-BattleDb.prototype.addToSendEndNotificationTo = function(unit) {
-	var self = this
-
-	var foundRecord = _.find(self.getSendEndNotificationTo(), function(u) {
-		return u._id == unit._id
-	})
-
-	if (!foundRecord) {
-		self.record.sendEndNotificationTo.push(unit)
-		if (self.debug) {console.log(unit.username+':'+unit.name+':'+unit.type+' added to sendEndNotificationTo list')}
-	}
-}
-
-
-// no longer used
-BattleDb.prototype.getSendEndNotificationTo = function() {
-	return this.record.sendEndNotificationTo
-}
-
-
-BattleDb.prototype.removeFromSendEndNotificationTo = function(unit) {
-	var self = this
-	if (self.debug) {console.log(unit.username+':'+unit.name+':'+unit.type+' removed from sendEndNotificationTo list')}
-	self.record.sendEndNotificationTo = _.reject(self.record.sendEndNotificationTo, function(u) {
-		if (unit._id == u._id) {
-			return true
-		}
-		return false
-	})
 }
 
 
@@ -159,7 +120,6 @@ BattleDb.prototype.saveRecord = function() {
 		roundNumber: self.record.roundNumber,
 		deaths: self.record.deaths,
 		currentUnits: currentUnits,
-		sendEndNotificationTo: self.record.sendEndNotificationTo,
 		sentStartAlertTo: self.record.sentStartAlertTo,
 		castleWasTaken: self.record.castleWasTaken,
 		castle_id: self.record.castle_id,

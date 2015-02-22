@@ -75,8 +75,6 @@ if (Meteor.isServer) {
 		glass: 600
 	}
 
-	s.maxNotificationsPerUser = 150
-
 	// how much time between dailystat ticks
 	// hours
 	s.statsInverval = 6

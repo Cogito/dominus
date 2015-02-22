@@ -19,7 +19,6 @@ Meteor.methods({
 
 				var name = user.username+' and '+other_user.username
 				var id = createChatroom(name, 'normal', user._id, [user._id, other_user._id])
-				notification_new_chatroom_user(other_user._id, {_id: user._id, username: user.username, x: user.x, y: user.y, castle_id: user.castle_id})
 
 				alert_addedToChatroom(other_user._id, user._id, id)
 

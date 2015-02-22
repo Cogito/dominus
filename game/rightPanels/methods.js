@@ -68,15 +68,8 @@ Meteor.methods({
 				Meteor.users.update(Meteor.userId(), {$inc: {gold: amount * -1}})
 
 				if (!this.isSimulation) {
-					// get info for notification
-					var to = Meteor.users.findOne(user_id, {fields: {gold:1, allies_below:1, username:1, castle_id:1, x:1, y:1}})
-					if (to) {
-						notification_sent_gold(user_id, {
-							to: {_id: to._id, username: to.username, castle_id: to.castle_id, x: to.x, y: to.y},
-							from: {_id: user._id, username: user.username, castle_id: user.castle_id, x: user.x, y: user.y}
-						}, amount)
-					}
 
+					// send alert
 					var from = user._id
 					var to = user_id
 					alert_receivedGoldFrom(to, from, amount)

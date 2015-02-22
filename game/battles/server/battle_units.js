@@ -105,7 +105,7 @@ Units.prototype.enteredBattle = function(unit) {
 
 	var record = self.battleDb.getRecord()
 	record.unit = unit
-	notification_battle_start(unit.user_id, record)
+	
 	// send new battle sert if not already sent
 	if (!self.battleDb.hasStartAlertBeenSentTo(unit)) {
 		alert_battleStart(unit.user_id, unit._id, unit.type, record._id)
@@ -135,9 +135,6 @@ Units.prototype.exitedBattle = function(unit) {
 	var self = this
 
 	if (self.debug) {console.log(unit.username+':'+unit.name+':'+unit.type+' exited battle')}
-
-	self.sendNotification(unit)
-	self.battleDb.removeFromSendEndNotificationTo(unit)
 
 	switch(unit.type) {
 		case 'castle':
@@ -200,22 +197,6 @@ Units.prototype._removeUnitsWithNoEnemies = function() {
 			self._removeFromAllUnits(unit)
 		}
 	})
-}
-
-
-
-Units.prototype.sendNotification = function(unit) {
-	var self = this
-	var record = Battles.findOne({x:self.x, y:self.y, isOver:false})
-	if (record) {
-		record.unit = unit
-		notification_battle(unit.user_id, record)
-
-		if (self.debug) {console.log('sending exit notification to '+unit.username+':'+unit.name+':'+unit.type)}
-	} else {
-		console.log('Error: No battle record found.')
-	}
-
 }
 
 

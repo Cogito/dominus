@@ -363,21 +363,14 @@ Meteor.methods({
 
 					// send notification if this is not your building
 					if (user._id != building.user_id) {
-						var to = Meteor.users.findOne(building.user_id, {fields: {gold:1, allies_below:1, username:1, castle_id:1, x:1, y:1}})
-						if (to) {
-							notification_sent_army(to._id, {
-								to: {_id: to._id, username: to.username, castle_id: to.castle_id, x: to.x, y: to.y},
-								from: {_id: user._id, username: user.username, castle_id: user.castle_id, x: user.x, y: user.y}
-							}, army)
-
-							worker.enqueue('update_networth', {user_id: user._id})
-							worker.enqueue('update_networth', {user_id: to._id})
-						}
 
 						var from = Meteor.userId()
 						var to = building.user_id
 						alert_receivedArmy(to, from, army)
 						gAlert_sentArmy(from, to, army)
+
+						worker.enqueue('update_networth', {user_id: from})
+						worker.enqueue('update_networth', {user_id: to})
 					}
 
 					return true

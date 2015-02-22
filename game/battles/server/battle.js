@@ -28,7 +28,6 @@ Battle = {
 				roundNumber: 1,
 				deaths: [],
 				currentUnits: null,
-				sendEndNotificationTo: [],	// set in enteredBattle - used for end battle notifications, no longer used
 				isOver: false,
 				sentStartAlertTo: [],
 

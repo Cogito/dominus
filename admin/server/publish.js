@@ -40,7 +40,3 @@ Meteor.publish('admin_users_online', function() {
 admin_publish('admin_chatrooms', function() {
 	return Rooms.find()
 })
-
-admin_publish('admin_notification_counts', function() {
-	return Notifications.find({}, {fields:{type:1}})
-})

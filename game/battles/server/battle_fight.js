@@ -49,18 +49,6 @@ Fight = function (x, y, unitObj, battleDb) {
 	record_job_stat('battle', new Date() - start_time)
 }
 
-
-// Fight.prototype._sendEndBattleNotifications = function() {
-// 	var self = this
-
-// 	if (self._isBattleOver()) {
-// 		// send notification to remaining units
-// 		_.each(self.battleDb.getAllUnitsEverInBattle(), function(unit) {
-// 			self.unitObj.exitedBattle(unit)
-// 		})
-// 	}
-// }
-
 Fight.prototype._handleCastle = function() {
 	var self = this
 
@@ -97,11 +85,6 @@ Fight.prototype._endBattle = function() {
 
 	if (self._isBattleOver()) {
 		self._handleCastle()
-
-		_.each(self.battleDb.getSendEndNotificationTo(), function(unit) {
-			self.unitObj.exitedBattle(unit)
-		})
-
 		self.battleDb.endBattle()
 	}
 }

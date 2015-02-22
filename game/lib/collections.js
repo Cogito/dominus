@@ -4,7 +4,6 @@ Jobstats = new Meteor.Collection('jobstats')
 Jobqueue = new Meteor.Collection('jobqueue')
 
 if (Meteor.isServer) {
-	Notifications.allow({insert: false, update: false, remove: false})
 	Dailystats.allow({insert: false, update: false, remove: false})
 	Meteor.users.allow({insert: false, update: false, remove: false})
 	Gamestats.allow({insert: false, update: false, remove: false})
