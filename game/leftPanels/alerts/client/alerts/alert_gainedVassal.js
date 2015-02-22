@@ -1,6 +1,13 @@
 var helpers = {
     title: function() {
-        return 'You have a new vassal.'
+        if (this) {
+            var vassal = AlertUsers.findOne(this.vars.newVassalUser_id)
+            if (vassal) {
+                return vassal.username+' is now your vassal.'
+            } else {
+                return 'You have a new vassal.'
+            }
+        }        
     },
 
     vassal: function() {
@@ -30,9 +37,10 @@ Template.alert_gainedVassal.created = function() {
     self.autorun(function() {
         if (Template.currentData()) {
             if (self.isOpen.get()) {
-                Meteor.subscribe('alertUser', Template.currentData().vars.newVassalUser_id)
                 Meteor.subscribe('alertUser', Template.currentData().vars.vassalsNewLord_id)
             }
+
+            Meteor.subscribe('alertUser', Template.currentData().vars.newVassalUser_id)
         }
     })
 }
