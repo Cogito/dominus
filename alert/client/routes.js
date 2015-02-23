@@ -1,6 +1,6 @@
 Router.route('/alert/:_id', function() {
     this.wait(Meteor.subscribe('globalAlert', this.params._id))
-
+    GAnalytics.pageview('/alert/'+this.params._id);
     if (this.ready()) {
         this.render('alertLink', {
             data: function() {

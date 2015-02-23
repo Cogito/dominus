@@ -1,7 +1,4 @@
-Router.map(function() {
-
-	this.route('presskit', {
-		path: '/presskit'
-	})
-
-});
+Router.route('/presskit', function() {
+	GAnalytics.pageview('/presskit');
+	this.render('presskit')
+})
