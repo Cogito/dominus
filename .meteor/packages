@@ -8,10 +8,8 @@ less
 random
 accounts-password
 facts
-mrt:underscore-string-latest@2.3.3
 email
 accounts-ui
-mrt:modernizr-meteor@2.6.2
 mrt:cookies@0.3.0
 reactive-dict
 mizzao:timesync
@@ -22,7 +20,6 @@ underscore
 reactive-var
 spiderable
 momentjs:moment
-mrt:nvd3js
 meteor-platform
 
 nemo64:bootstrap
@@ -37,3 +34,5 @@ meteorhacks:subs-manager
 d3js:d3
 mrgalaxy:stripe
 mizzao:user-status
+wizonesolutions:underscore-string
+pfafman:nvd3

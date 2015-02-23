@@ -1,8 +1,6 @@
 @import (reference) url("/lib/client/custom.bootstrap.import.less");
 
 
-@mapsize: 300px;
-
 .minimap_castle {
 	&.mine {
 		fill:@icon_mine_fill
@@ -73,13 +71,13 @@
 
 #minimap_container {
 	width: 300px;
+	position:absolute;
+	bottom:0px;
+	left:0;
 }
 
 #minimap {
-	width: 300px;
-	height: 300px;
-	position:absolute;
-	bottom:-40px;
+	height:260px;
 }
 
 #minimap_bg {

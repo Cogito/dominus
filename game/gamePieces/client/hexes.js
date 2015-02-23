@@ -163,6 +163,7 @@ Template.hexes.rendered = function() {
 	this.autorun(function() {
 		var canvas_size = Session.get('canvas_size')
 		if (canvas_size) {
+			$('#hex_body').css('height', canvas_size.height)
 			$('#svg_container').css('height', canvas_size.height)
 			$('#svg_container').css('width', canvas_size.width)
 		}
