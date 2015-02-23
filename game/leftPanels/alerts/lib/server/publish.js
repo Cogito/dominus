@@ -16,7 +16,7 @@ Meteor.publish('globalAlert', function(id) {
 
 Meteor.publish('myAlerts', function() {
     if(this.userId) {
-        return Alerts.find({user_ids: {$elemMatch: {user_id:this.userId}}}, {limit:100})
+        return Alerts.find({user_ids: {$elemMatch: {user_id:this.userId}}}, {sort:{created_at:-1}, limit:100})
     } else {
         this.ready()
     }
