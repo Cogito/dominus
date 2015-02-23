@@ -3,13 +3,29 @@ gather_resources_new = function() {
 	var start_time = new Date()
 
 	// distribute taxes collected to castles
-	var numPlayers = Meteor.users.find().count()
+	// var numPlayers = Meteor.users.find().count()
+	// var tax = Settings.findOne({name:'taxesCollected'})
+	// if (tax && tax.value) {
+	// 	var taxPerCastle = tax.value / numPlayers
+	// } else {
+	// 	var taxPerCastle = 0
+	// }
+
+	// buy resources in the market with the collected taxes
+	// this is to keep the market from going down
 	var tax = Settings.findOne({name:'taxesCollected'})
 	if (tax && tax.value) {
-		var taxPerCastle = tax.value / numPlayers
-	} else {
-		var taxPerCastle = 0
+		var taxPerResource = tax.value / s.resource.types.length
+		check(taxPerResource, validNumber)
+
+		_.each(s.resource.types, function(type) {
+			var price = Market.findOne({type: type}, {fields: {price:1}}).price
+			var amount = max_buy_withoutRounding(taxPerResource, price)
+			update_market_price(type, amount, true)
+		})
 	}
+
+
 
 	// reset taxes
 	Settings.update({name:'taxesCollected'}, {$set:{value:0}})
@@ -22,7 +38,8 @@ gather_resources_new = function() {
 
 			receive_income_id(
 				res.user_id,
-				taxPerCastle * 5 + 50,
+				//taxPerCastle * 5 + 50,
+				10,
 				s.castle.income.grain,
 				s.castle.income.lumber,
 				s.castle.income.ore,

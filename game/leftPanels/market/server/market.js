@@ -1,5 +1,5 @@
 Meteor.methods({
-	
+
 	reset_market: function() {
 		if (get_user_property("admin")) {
 			this.unblock()
@@ -20,10 +20,6 @@ update_market_price = function(type, quantity, buy) {
 	check(type, String)
 	check(quantity, validNumber)
 	check(buy, Boolean)
-
-	if (!isFinite(quantity)) {
-		throw new Meteor.Error(404, "update_market_price quantity !isFinite");
-	}
 
 	var resource = Market.findOne({type: type}, {fields: {price:1}})
 	if (resource) {

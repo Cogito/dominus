@@ -1,8 +1,9 @@
-gAlert_nameChange = function(user_id, previousName) {
+gAlert_nameChange = function(user_id, previousName, newName) {
     check(user_id, String)
     check(previousName, String)
+    check(newName, String)
 
-    var vars = {user_id:user_id, previousName:previousName}
+    var vars = {user_id:user_id, previousName:previousName, newName:newName}
     newGlobalAlert('ga_nameChange', vars)
 }
 

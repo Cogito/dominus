@@ -140,7 +140,7 @@ Meteor.methods({
 			Charges.update({user_id: Meteor.userId()}, {$set: {user_username: username}}, {multi: true})
 			Meteor.users.update(Meteor.userId(), {$set: {username: username}})
 
-			gAlert_nameChange(Meteor.userId(), previousUsername)
+			gAlert_nameChange(Meteor.userId(), previousUsername, username)
 
 			return true
 		} else {

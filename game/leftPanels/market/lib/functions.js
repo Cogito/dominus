@@ -45,12 +45,16 @@ max_buy = function(gold, price) {
 	check(gold, validNumber)
 	check(price, validNumber)
 
+	return Math.floor(max_buy_withoutRounding(gold, price))
+	return num
+}
+
+max_buy_withoutRounding = function(gold, price) {
+	check(gold, validNumber)
+	check(price, validNumber)
+
 	var base = Math.log(s.market.increment + 1)
 	var log = Math.log(gold * s.market.increment / (price * (1+s.market.sell_tax)) + 1)
-	var num = Math.floor(log / base)
-
-	// var base = Math.log(s.market.increment + 1)
-	// var log = Math.log(gold * s.market.increment / price + 1)
-	// var num = Math.floor(log / base)
+	var num = log / base
 	return num
 }

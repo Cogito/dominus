@@ -32,6 +32,7 @@ Meteor.methods({
 				Meteor.users.update(user._id, {$inc: fields})
 
 				if (!this.isSimulation) {
+
 					update_market_price(type, quantity, true)
 					worker.enqueue('record_market_history', {quantity: quantity})
 
@@ -88,6 +89,7 @@ Meteor.methods({
 			Meteor.users.update(user._id, {$inc: fields})
 
 			if (!this.isSimulation) {
+
 				update_market_price(type, quantity, false)
 				//worker.enqueue('update_market_price', {type: type, quantity: quantity, buy: false})
 
