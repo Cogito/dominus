@@ -1,5 +1,5 @@
 Meteor.startup(function() {
-	console.log('is worker: '+process.env.DOMINUS_WORKER)
+	
 	if (process.env.DOMINUS_WORKER == 'true') {
 
 		worker.empty_queue()
@@ -300,6 +300,7 @@ tenMin_job = function() {
 	gamestats_job()
 	updateIncomeRank()
 	updateIncomeStats()
+	generateTree()
 
 	record_job_stat('tenMin_job', new Date() - start_time)
 }
