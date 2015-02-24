@@ -41,13 +41,13 @@ create_castle = function(user_id) {
 	}
 
 	if (Castles.find({user_id: user_id}).count() > 0) {
-		throw new Meteor.Error('user but already a castle')
+		console.error('user but already a castle')
 		return false
 	}
 
 	var user = Meteor.users.findOne(user_id, {fields: {username: 1}})
 	if (!user) {
-		throw new Meteor.Error('create_castle called but no user found for this id')
+		console.error('create_castle called but no user found for this id')
 		return false
 	}
 

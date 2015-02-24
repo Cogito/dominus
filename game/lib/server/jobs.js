@@ -1,4 +1,5 @@
 Meteor.startup(function() {
+	console.log('is worker: '+process.env.DOMINUS_WORKER)
 	if (process.env.DOMINUS_WORKER == 'true') {
 
 		worker.empty_queue()
@@ -79,7 +80,6 @@ Meteor.startup(function() {
 		// army moves
 		Meteor.setInterval(function() {
 			var start_time = new Date()
-
 			Moves.find({index:0}).forEach(function(move) {
 				var army = Armies.findOne(move.army_id)
 				if (army) {
