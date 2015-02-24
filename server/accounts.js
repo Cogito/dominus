@@ -123,7 +123,7 @@ Accounts.config({
 	loginExpirationInDays: null
 })
 
-Accounts.emailTemplates.siteName = s.game_name
+Accounts.emailTemplates.siteName = 'Dominus'
 Accounts.emailTemplates.from = 'Dominus <dan@dominusgame.net>'
 Accounts.emailTemplates.verifyEmail.subject = function() {
 	return 'Email verification for Dominus'
