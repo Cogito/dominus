@@ -109,8 +109,7 @@ create_castle = function(user_id) {
 							created_at: new Date(),
 							user_id: user._id,
 							username: user.username,
-							image: s.castle.starting_image,
-							inBattle: false
+							image: s.castle.starting_image
 						}
 
 						_.each(s.army.types, function(type) {

@@ -77,7 +77,6 @@ Meteor.methods({
 							income: income,
 							under_construction:true,
 							constructionStarted: new Date(),
-							inBattle: false,
 							level: 0	// villages are level 0 until finished building
 						}
 

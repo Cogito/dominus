@@ -6,8 +6,7 @@ Meteor.publish('left_panel_allies', function() {
 				castle_id:1,
 				x:1,
 				y:1,
-				income:1,	// sort by income
-				inBattle:1
+				income:1	// sort by income
 			}})
 		Mongo.Collection._publishCursor(cur, sub, 'left_panel_allies')
 		return sub.ready();
@@ -25,8 +24,7 @@ Meteor.publish('left_panel_lords', function() {
 				castle_id:1,
 				x:1,
 				y:1,
-				income:1,
-				inBattle:1
+				income:1
 			}})
 		Mongo.Collection._publishCursor(cur, sub, 'left_panel_lords')
 		return sub.ready();
@@ -39,7 +37,7 @@ Meteor.publish('left_panel_castle', function() {
 	if(this.userId) {
 		var sub = this
 
-		var fields = {name:1, x:1, y:1, user_id:1, inBattle:1}
+		var fields = {name:1, x:1, y:1, user_id:1}
 		_.each(s.army.types, function(type) {
 			fields[type] = 1
 		})
@@ -55,7 +53,7 @@ Meteor.publish('left_panel_castle', function() {
 Meteor.publish('left_panel_armies', function() {
 	if(this.userId) {
 		var sub = this
-		var fields = {name:1, x:1, y:1, to_x:1, to_y:1, from_x:1, from_x:1, last_move_at:1, inBattle:1}
+		var fields = {name:1, x:1, y:1, to_x:1, to_y:1, from_x:1, from_x:1, last_move_at:1}
 
 		_.each(s.army.types, function(type) {
 			fields[type] = 1
@@ -72,7 +70,7 @@ Meteor.publish('left_panel_armies', function() {
 Meteor.publish('left_panel_villages', function() {
 	if(this.userId) {
 		var sub = this
-		var fields = {name:1, x:1, y:1, user_id:1, inBattle:1}
+		var fields = {name:1, x:1, y:1, user_id:1}
 
 		_.each(s.army.types, function(type) {
 			fields[type] = 1

@@ -23,8 +23,7 @@ create_army = function(user_id, army, x, y, moves, last_move_at) {
 		username: user.username,
 		castle_x: user.x,
 		castle_y: user.y,
-		castle_id: user.castle_id,
-		inBattle: false
+		castle_id: user.castle_id
 	}
 
 	_.each(s.army.types, function(type) {

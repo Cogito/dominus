@@ -105,7 +105,7 @@ Units.prototype.enteredBattle = function(unit) {
 
 	var record = self.battleDb.getRecord()
 	record.unit = unit
-	
+
 	// send new battle sert if not already sent
 	if (!self.battleDb.hasStartAlertBeenSentTo(unit)) {
 		alert_battleStart(unit.user_id, unit._id, unit.type, record._id)
@@ -117,38 +117,12 @@ Units.prototype.enteredBattle = function(unit) {
 			alert_vassalIsUnderAttack(user.allies_above, user._id, record._id)
 		}
 	}
-
-	switch(unit.type) {
-		case 'castle':
-			Castles.update(unit._id, {$set:{inBattle:true}})
-			break;
-		case 'village':
-			Villages.update(unit._id, {$set:{inBattle:true}})
-			break;
-		case 'army':
-			Armies.update(unit._id, {$set:{inBattle:true}})
-			break;
-	}
 }
 
 Units.prototype.exitedBattle = function(unit) {
 	var self = this
 
 	if (self.debug) {console.log(unit.username+':'+unit.name+':'+unit.type+' exited battle')}
-
-	switch(unit.type) {
-		case 'castle':
-			Castles.update(unit._id, {$set:{inBattle:false}})
-			break;
-		case 'village':
-			Villages.update(unit._id, {$set:{inBattle:false}})
-			break;
-		case 'army':
-			Armies.update(unit._id, {$set:{inBattle:false}})
-			break;
-	}
-
-	Meteor.users.update(unit.user_id, {$set:{inBattle:false}})
 }
 
 
