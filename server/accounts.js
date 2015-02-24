@@ -1,3 +1,8 @@
+Accounts.validateNewUser(function(user) {
+	throw new Meteor.Error(503,'Dominus is full.  Please come back later.')
+})
+
+
 Accounts.onCreateUser(function(options, user) {
 	if (options.profile) {
 		user.profile = options.profile;

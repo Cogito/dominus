@@ -6,12 +6,12 @@ if (Meteor.isServer) {
 		s.battle_check_interval = 1000 * 10
 	} else {
 		s.army_travel_multiplier = 1 	// for debug, lower than one makes armies move faster
-		s.battle_check_interval = 1000 * 10
+		s.battle_check_interval = 1000 * 30
 	}
 
 
-	s.army_update_interval = 1000 * 5	// how often does army movement job run
-	s.village.construction_update_interval = 1000 * 5 	// how often to check for building villages
+	s.army_update_interval = 1000 * 30	// how often does army movement job run
+	s.village.construction_update_interval = 1000 * 30 	// how often to check for building villages
 
 	s.create_castle = {
 		check_buildings_num_rings: 5,

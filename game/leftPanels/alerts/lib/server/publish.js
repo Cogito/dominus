@@ -1,6 +1,6 @@
 Meteor.publish('globalAlerts', function() {
     if(this.userId) {
-        return GlobalAlerts.find({},{sort:{created_at:-1}, limit:100})
+        return GlobalAlerts.find({},{sort:{created_at:-1}, limit:80})
     } else {
         this.ready()
     }
@@ -16,7 +16,7 @@ Meteor.publish('globalAlert', function(id) {
 
 Meteor.publish('myAlerts', function() {
     if(this.userId) {
-        return Alerts.find({user_ids: {$elemMatch: {user_id:this.userId}}}, {sort:{created_at:-1}, limit:100})
+        return Alerts.find({user_ids: {$elemMatch: {user_id:this.userId}}}, {sort:{created_at:-1}, limit:80})
     } else {
         this.ready()
     }

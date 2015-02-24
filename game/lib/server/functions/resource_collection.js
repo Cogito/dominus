@@ -2,15 +2,6 @@ gather_resources_new = function() {
 	clear_cached_user_update()
 	var start_time = new Date()
 
-	// distribute taxes collected to castles
-	// var numPlayers = Meteor.users.find().count()
-	// var tax = Settings.findOne({name:'taxesCollected'})
-	// if (tax && tax.value) {
-	// 	var taxPerCastle = tax.value / numPlayers
-	// } else {
-	// 	var taxPerCastle = 0
-	// }
-
 	// buy resources in the market with the collected taxes
 	// this is to keep the market from going down
 	var tax = Settings.findOne({name:'taxesCollected'})
@@ -25,20 +16,15 @@ gather_resources_new = function() {
 		})
 	}
 
-
-
 	// reset taxes
 	Settings.update({name:'taxesCollected'}, {$set:{value:0}})
 
-	Castles.find({}, {fields: {user_id:1}}).forEach(function(res) {
-
-		// only receive income if email is verified
-		var user = Meteor.users.findOne(res.user_id, {fields:{emails:1}})
+	// only receive income if email is verified
+	Meteor.users.find({}, {fields:{emails:1}}).forEach(function(user) {
 		if (user && user.emails[0].verified) {
 
 			receive_income_id(
-				res.user_id,
-				//taxPerCastle * 5 + 50,
+				user._id,
 				10,
 				s.castle.income.grain,
 				s.castle.income.lumber,
@@ -47,9 +33,9 @@ gather_resources_new = function() {
 				s.castle.income.clay,
 				s.castle.income.glass
 			)
-
 		}
 	})
+
 
 	Villages.find({under_construction:false}, {fields: {user_id:1, x:1, y:1, level:1}}).forEach(function(res) {
 

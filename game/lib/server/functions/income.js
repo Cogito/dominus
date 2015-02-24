@@ -7,7 +7,7 @@ receive_income_id = function(user_id, numGold, numGrain, numLumber, numOre, numW
 	check(numWool, validNumber)
 	check(numClay, validNumber)
 
-	var user = Meteor.users.findOne(user_id, {fields: {lord:1}})
+	var user = Meteor.users.findOne(user_id, {fields: {allies_above:1}})
 	if (user) {
 		receive_income(user, numGold, numGrain, numLumber, numOre, numWool, numClay, numGlass)
 	}
@@ -24,8 +24,8 @@ receive_income = function(user, numGold, numGrain, numLumber, numOre, numWool, n
 	check(numClay, validNumber)
 
 	// get array of lord, lord's lord, his lord etc
-	var peopleAbove = getPeopleAbove(user._id)
-	var numAbove = peopleAbove.length
+	//var peopleAbove = getPeopleAbove(user._id)
+	var numAbove = user.allies_above.length
 
 	var has_lord = numAbove != 0
 
@@ -44,7 +44,7 @@ receive_income = function(user, numGold, numGrain, numLumber, numOre, numWool, n
 		numGold * percentageUserGets,
 		numGrain * percentageUserGets,
 		numLumber * percentageUserGets,
-		numOre * percentageUserGets, 
+		numOre * percentageUserGets,
 		numWool * percentageUserGets,
 		numClay * percentageUserGets,
 		numGlass * percentageUserGets,
@@ -52,7 +52,7 @@ receive_income = function(user, numGold, numGrain, numLumber, numOre, numWool, n
 		)
 
 	// give to lords
-	_.each(peopleAbove, function(personAbove) {
+	_.each(user.allies_above, function(personAbove) {
 		cache_user_update(
 			personAbove,
 			numGold * percentPerLord,
@@ -68,17 +68,17 @@ receive_income = function(user, numGold, numGrain, numLumber, numOre, numWool, n
 }
 
 
-// get array of lord, lord's lord, his lord etc
-getPeopleAbove = function(user_id) {
-	arr = _getPeopleAbove(user_id, [])
-	return arr
-}
-
-_getPeopleAbove = function(user_id, arr) {
-	var user = Meteor.users.findOne(user_id, {fields: {lord:1}})
-	if (user && user.lord) {
-		arr.push(user.lord)
-		arr.concat(_getPeopleAbove(user.lord, arr))
-	}
-	return arr
-}
+// // get array of lord, lord's lord, his lord etc
+// getPeopleAbove = function(user_id) {
+// 	arr = _getPeopleAbove(user_id, [])
+// 	return arr
+// }
+//
+// _getPeopleAbove = function(user_id, arr) {
+// 	var user = Meteor.users.findOne(user_id, {fields: {lord:1}})
+// 	if (user && user.lord) {
+// 		arr.push(user.lord)
+// 		arr.concat(_getPeopleAbove(user.lord, arr))
+// 	}
+// 	return arr
+// }

@@ -1,4 +1,3 @@
-var tree = []
 var fields = {x:1,y:1,castle_id:1,income:1, networth:1, username:1}
 
 var findVassals = function(user_id) {
@@ -13,6 +12,7 @@ var findVassals = function(user_id) {
 
 generateTree = function() {
     var start_time = new Date()
+    var tree = []
 
     Meteor.users.find({lord:null}, {fields:fields}).forEach(function(king) {
         king.vassals = findVassals(king._id)

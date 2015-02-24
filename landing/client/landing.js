@@ -17,7 +17,7 @@ Template.landing.helpers({
 
 
 Template.landing.rendered = function() {
-	Session.set('landingForm', 'landingCreateAccount')
+	Session.set('landingForm', 'landingSignin')
 
 	setViewport()
 	setBackground()
