@@ -25,7 +25,15 @@ var check_for_enemies_here = function(building, type) {
 	if (armies.count() > 0) {
 		armies.forEach(function(army) {
 			var relation = getPlayersRelationType_server(army.user_id, building.user_id)
-			var canAttack = ['king', 'direct_lord', 'lord', 'enemy', 'enemy_ally']
+			
+			if (type == 'village') {
+				var canAttack = ['enemy', 'enemy_ally']
+			}
+
+			if (type == 'castle') {
+				var canAttack = ['king', 'direct_lord', 'lord', 'enemy', 'enemy_ally']
+			}
+
 			if (_.contains(canAttack, relation)) {
 				if (!attackCreatesLoop(building.x,building.y)) {
 					Battle.start_battle(building.x,building.y)
