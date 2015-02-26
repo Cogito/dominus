@@ -1,4 +1,9 @@
 // admin game stats
+Cue.addJob('gamestats_job', {retryOnError:false}, function(task, done) {
+	gamestats_job()
+	done()
+})
+
 gamestats_job = function() {
 	var start_time = new Date()
 

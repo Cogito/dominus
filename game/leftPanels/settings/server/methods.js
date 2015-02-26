@@ -18,80 +18,7 @@ Meteor.methods({
 			}
 
 			if (user) {
-				gAlert_accountDeleted(user.username)
-
-				var appendToName = '(deleted)'
-
-				Villages.find({user_id: user._id}).forEach(function(village) {
-					Meteor.call('destroy_village', village._id)
-				})
-
-				Armies.remove({user_id: user._id})
-				Moves.remove({user_id: user._id})
-				Threads.update({user_id: user._id}, {$set: {username: user.username+appendToName}}, {multi: true})
-				Threads.update({last_post_username: user.username}, {$set: {last_post_username: user.username+appendToName}}, {multi: true})
-				Messages.update({user_id: user._id}, {$set: {username: user.username+appendToName}}, {multi: true})
-				Charges.update({user_id: user._id}, {$set: {user_username: user.username+appendToName}}, {multi: true})
-
-
-				// fix chat
-				Roomchats.remove({user_id:user._id})
-				Rooms.find({members:user._id}).forEach(function(room) {
-					// remove from admins and members
-					Rooms.update(room._id, {$pull: {admins:user._id, members:user._id}})
-
-					// is user owner?
-					// give owner to someone else
-					if (room.owner == user._id) {
-						removeOwnerFromRoom(room._id)
-					}
-				})
-
-
-				// fix tree
-				if (user.lord) {
-					var lord = Meteor.users.findOne(user.lord)
-					if (lord) {
-						// give vassals to lord
-						_.each(user.vassals, function(vassal_id) {
-							var vassal = Meteor.users.findOne(vassal_id)
-							if (vassal) {
-								set_lord_and_vassal(lord, vassal, false)
-							}
-						})
-
-						// remove from lord
-						remove_lord_and_vassal(lord._id, user._id)
-
-						// update lord's tree
-						var rf = new relation_finder(lord._id)
-						rf.start()
-					}
-				} else {
-					// make vassals kings
-					_.each(user.vassals, function(vassal_id) {
-						var vassal = Meteor.users.findOne(vassal_id)
-						if (vassal) {
-							remove_lord_and_vassal(user._id, vassal._id)
-							var rf = new relation_finder(vassal._id)
-							rf.start()
-						}
-					})
-				}
-
-				// remove from everyone's allies
-				// Meteor.users.find().forEach(function(u) {
-				// 	if (_.indexOf(u.allies))
-				// })
-
-
-				Castles.remove({user_id: user._id})
-				Hexes.update({x:user.x, y:user.y}, {$set: {has_building:false, nearby_buildings:false}})
-
-				Meteor.users.remove({_id:user._id})
-
-				setupEveryoneChatroom()
-				worker.enqueue('check_for_dominus', {})
+				Cue.addTask('deleteAccount', {isAsync:true, unique:true}, {user_id:user._id})
 			}
 		}
 	},
@@ -165,3 +92,92 @@ Meteor.methods({
 		Meteor.users.update(Meteor.userId(), {$set: {sp_show_minimap: false}})
 	}
 })
+
+
+Cue.addJob('deleteAccount', {retryOnError:false}, function(task, done) {
+	deleteAccount(task.data.user_id)
+	done()
+})
+
+deleteAccount = function(user_id) {
+	var user = Meteor.users.findOne(user_id)
+
+	if (!user) {
+		return false
+	}
+
+	gAlert_accountDeleted(user.username)
+
+	var appendToName = '(deleted)'
+
+	Villages.find({user_id: user._id}).forEach(function(village) {
+		Meteor.call('destroy_village', village._id)
+	})
+
+	Armies.remove({user_id: user._id})
+	Moves.remove({user_id: user._id})
+	Threads.update({user_id: user._id}, {$set: {username: user.username+appendToName}}, {multi: true})
+	Threads.update({last_post_username: user.username}, {$set: {last_post_username: user.username+appendToName}}, {multi: true})
+	Messages.update({user_id: user._id}, {$set: {username: user.username+appendToName}}, {multi: true})
+	Charges.update({user_id: user._id}, {$set: {user_username: user.username+appendToName}}, {multi: true})
+
+
+	// fix chat
+	Roomchats.remove({user_id:user._id})
+	Rooms.find({members:user._id}).forEach(function(room) {
+		// remove from admins and members
+		Rooms.update(room._id, {$pull: {admins:user._id, members:user._id}})
+
+		// is user owner?
+		// give owner to someone else
+		if (room.owner == user._id) {
+			removeOwnerFromRoom(room._id)
+		}
+	})
+
+
+	// fix tree
+	if (user.lord) {
+		var lord = Meteor.users.findOne(user.lord)
+		if (lord) {
+			// give vassals to lord
+			_.each(user.vassals, function(vassal_id) {
+				var vassal = Meteor.users.findOne(vassal_id)
+				if (vassal) {
+					set_lord_and_vassal(lord, vassal, false)
+				}
+			})
+
+			// remove from lord
+			remove_lord_and_vassal(lord._id, user._id)
+
+			// update lord's tree
+			var rf = new relation_finder(lord._id)
+			rf.start()
+		}
+	} else {
+		// make vassals kings
+		_.each(user.vassals, function(vassal_id) {
+			var vassal = Meteor.users.findOne(vassal_id)
+			if (vassal) {
+				remove_lord_and_vassal(user._id, vassal._id)
+				var rf = new relation_finder(vassal._id)
+				rf.start()
+			}
+		})
+	}
+
+	// remove from everyone's allies
+	// Meteor.users.find().forEach(function(u) {
+	// 	if (_.indexOf(u.allies))
+	// })
+
+
+	Castles.remove({user_id: user._id})
+	Hexes.update({x:user.x, y:user.y}, {$set: {has_building:false, nearby_buildings:false}})
+
+	Meteor.users.remove({_id:user._id})
+
+	setupEveryoneChatroom()
+	Cue.addTask('check_for_dominus', {isAsync:true, unique:false}, {})
+}

@@ -24,10 +24,6 @@ admin_publish('admin_jobstats', function() {
 	return Jobstats.find()
 })
 
-Meteor.publish('admin_jobqueue', function() {
-	return Jobqueue.find()
-})
-
 admin_publish('admin_mailchimp_list', function() {
 	return Meteor.users.find({}, {fields: {username:1, emails:1}})
 })

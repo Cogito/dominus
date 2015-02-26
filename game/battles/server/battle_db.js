@@ -229,7 +229,7 @@ BattleDb.prototype._trackLosses =  function() {
 				Meteor.users.update(user._id, {$set: inc})
 			}
 
-			worker.enqueue('update_losses_worth', {user_id: user._id})
+			Cue.addTask('update_losses_worth',{isAsync:true, unique:false}, {user_id: user._id})
 		}
 	})
 }

@@ -152,7 +152,7 @@ Meteor.methods({
 			}
 		}
 
-		throw new Meteor.Error('Village not found.')
+		return false
 	}
 
 })
@@ -193,4 +193,20 @@ finish_building_village = function(village_id) {
 
 destroy_all_villages = function() {
 	Villages.remove({})
+}
+
+
+Cue.addJob('villageConstructionJob', {retryOnError:false}, function(task, done) {
+	villageConstructionJob()
+	done()
+})
+
+villageConstructionJob = function() {
+	Villages.find({under_construction:true}, {fields: {level:1,constructionStarted:1}}).forEach(function(village) {
+		var timeToBuild = s.village.cost['level'+(village.level+1)].timeToBuild
+		var finishAt = moment(new Date(village.constructionStarted)).add(timeToBuild, 'ms')
+		if (moment().isAfter(finishAt)) {
+			finish_building_village(village._id)
+		}
+	})
 }

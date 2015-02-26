@@ -1,5 +1,6 @@
 Accounts.validateNewUser(function(user) {
 	throw new Meteor.Error(503,'Dominus is full.  Please come back later.')
+	//return true
 })
 
 
@@ -49,6 +50,7 @@ Accounts.onCreateUser(function(options, user) {
 
 // check when user logs in if they have a castle
 // if not then they are a new user
+// this gets called multiple times per user, careful
 Accounts.onLogin(function(data) {
 	if (data.user && !data.user.castle_id) {
 		onCreateUser(data.user._id)
@@ -58,7 +60,7 @@ Accounts.onLogin(function(data) {
 
 onCreateUser = function(userId) {
 	check(userId, String)
-	worker.enqueue('create_castle', {user_id: userId})
+	Cue.addTask('create_castle', {isAsync:false, unique:true}, {user_id:userId})
 	init_dailystats_for_new_user(userId)
 	setupEveryoneChatroom()
 }

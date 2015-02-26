@@ -197,7 +197,7 @@ Meteor.methods({
 			Moves.remove({army_id:id})
 		}
 		if (!this.isSimulation) {
-			worker.enqueue('update_networth', {user_id: Meteor.userId()})
+			Cue.addTask('update_networth', {isAsync:true, unique:false}, {user_id: Meteor.userId()})
 		}
 	},
 

@@ -369,8 +369,8 @@ Meteor.methods({
 						alert_receivedArmy(to, from, army)
 						gAlert_sentArmy(from, to, army)
 
-						worker.enqueue('update_networth', {user_id: from})
-						worker.enqueue('update_networth', {user_id: to})
+						Cue.addTask('update_networth', {isAsync:true, unique:false}, {user_id: from})
+						Cue.addTask('update_networth', {isAsync:true, unique:false}, {user_id: to})
 					}
 
 					return true

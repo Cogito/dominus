@@ -26,7 +26,7 @@ removeOwnerFromRoom = function(room_id) {
 				// if king leaves game then kill the king chatroom
 				Roomchats.remove({room_id:room._id})
 				Rooms.remove(room._id)
-				cleanupAllKingChatrooms()
+				Cue.addTask('cleanupAllKingChatrooms', {isAsync:true, unique:false}, {})
 			} else {
 				Rooms.update(room_id, {$pull: {members:owner, admins:owner}})
 
@@ -98,12 +98,15 @@ removeOwnerFromRoom = function(room_id) {
 
 
 
+Cue.addJob('setupKingChatroom', {retryOnError:false}, function(task, done) {
+	setupKingChatroom(task.data.king_id)
+	done()
+})
+
 
 // create or update members in king's chatroom
 setupKingChatroom = function(king_id) {
 	check(king_id, String)
-
-	var start_time = new Date()
 
 	var king = Meteor.users.findOne(king_id, {fields: {is_king:1, team:1, username:1}})
 	if (king && king.is_king) {
@@ -126,8 +129,6 @@ setupKingChatroom = function(king_id) {
 			alert_newKingChatroom(king._id)
 		}
 	}
-
-	record_job_stat('setupKingChatroom', new Date() - start_time)
 }
 
 
@@ -174,8 +175,13 @@ setupEveryoneChatroom = function() {
 
 
 
+Cue.addJob('cleanupAllKingChatrooms', {retryOnError:false}, function(task, done) {
+	cleanupAllKingChatrooms()
+	done()
+})
+
+
 cleanupAllKingChatrooms = function() {
-	var start_time = new Date()
 
 	// delete rooms where owner doesn't exist
 	Rooms.find({type:'king'}).forEach(function(room) {
@@ -215,6 +221,4 @@ cleanupAllKingChatrooms = function() {
 			Rooms.update(room._id, {$set: {name:'King '+owner.username+' and Vassals'}})
 		}
 	})
-
-	record_job_stat('cleanupAllKingChatrooms', new Date() - start_time)
 }

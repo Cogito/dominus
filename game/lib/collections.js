@@ -1,14 +1,12 @@
 Dailystats = new Meteor.Collection('dailystats')
 Gamestats = new Meteor.Collection('gamestats')
 Jobstats = new Meteor.Collection('jobstats')
-Jobqueue = new Meteor.Collection('jobqueue')
 
 if (Meteor.isServer) {
 	Dailystats.allow({insert: false, update: false, remove: false})
 	Meteor.users.allow({insert: false, update: false, remove: false})
 	Gamestats.allow({insert: false, update: false, remove: false})
 	Jobstats.allow({insert: false, update: false, remove: false})
-	Jobqueue.allow({insert: false, update: false, remove: false})
 }
 
 // // //log every find

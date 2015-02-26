@@ -272,3 +272,84 @@ is_stopped = function(army_id) {
 
 	return false
 }
+
+
+
+Cue.addJob('armyMovementJob', {retryOnError:false}, function(task, done) {
+	Moves.find({index:0}).forEach(function(move) {
+		var army = Armies.findOne(move.army_id)
+		if (army) {
+			var army_speed = speed_of_army(army)
+			if (moment(new Date(move.last_move_at)).add(army_speed, 'minutes') < moment()) {
+
+				// we're somewhere along path
+				// test until we find where
+				var from_pos = Hx.coordinatesToPos(move.from_x, move.from_y, s.hex_size, s.hex_squish)
+				var to_pos = Hx.coordinatesToPos(move.to_x, move.to_y, s.hex_size, s.hex_squish)
+
+				// get distance
+				var distance = Hx.hexDistance(move.from_x, move.from_y, move.to_x, move.to_y)
+
+				// get move again to make sure it still exists
+				move = Moves.findOne(move._id)
+				if (move) {
+					var move_army_to_next_hex = false
+					var move_is_finished = false
+					var foundArmyPosition = false
+
+					// march along move
+					for (i = 0; i <= distance; i++) {
+						// pick point along line
+						var x = from_pos.x * (1 - i/distance) + to_pos.x * i/distance
+						var y = from_pos.y * (1 - i/distance) + to_pos.y * i/distance
+
+						// find hex at point
+						var coords = Hx.posToCoordinates(x, y, s.hex_size, s.hex_squish)
+
+						// move army
+						if (move_army_to_next_hex) {
+							move_army_to_hex(army._id, coords.x, coords.y)
+							move_army_to_next_hex = false
+							Moves.update(move._id, {$set: {last_move_at:new Date()}})
+
+							// check if this is last move
+							if (coords.x == move.to_x && coords.y == move.to_y) {
+								move_is_finished = true
+							}
+						}
+
+						// is this the spot we're at?
+						// if so then next time we loop move army
+						if (army.x == coords.x && army.y == coords.y) {
+							move_army_to_next_hex = true
+							foundArmyPosition = true
+						}
+					}
+
+					// if this is still false then the army isn't on the path
+					// something is broke, move army to start of path to fix
+					if (!foundArmyPosition) {
+						move_army_to_hex(army._id, move.from_x, move.from_y)
+						Moves.update(move._id, {$set: {last_move_at:new Date()}})
+						console.log('Error: Army '+army._id+' was not on path.')
+					}
+
+					// if this is last hex in this move
+					if (move_is_finished) {
+						// remove this move
+						Moves.remove(move._id)
+
+						// update index numbers and last_move_at of other moves
+						var i = 0
+						Moves.find({army_id:army._id}, {sort: {index:1}}).forEach(function(m) {
+							Moves.update(m._id, {$set: {index:i, last_move_at:new Date()}})
+							i++
+						})
+					}
+				}
+			}
+		}
+	})
+
+	done()
+})

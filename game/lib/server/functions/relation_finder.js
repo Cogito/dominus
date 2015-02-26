@@ -6,6 +6,12 @@
 // siblings - vassals of your lord
 // team - everyone under your king
 
+Cue.addJob('update_allies', {retryOnError:false}, function(task, done) {
+	var rf = new relation_finder(task.data.user_id)
+	rf.start()
+	done()
+})
+
 relation_finder = function(user_id) {
 	check(user_id, String)
 
@@ -202,9 +208,8 @@ relation_finder = function(user_id) {
 				update_vassal_ally_count(cache.user_id)
 			})
 
-			worker.enqueue('check_for_dominus', {})
-			//worker.enqueue('setupKingChatroom', {king_id: user._id})
-			worker.enqueue('cleanupAllKingChatrooms', {})
+			Cue.addTask('check_for_dominus', {isAsync:true, unique:false}, {})
+			Cue.addTask('cleanupAllKingChatrooms', {isAsync:true, unique:false}, {})
 		}
 	}
 

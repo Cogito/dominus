@@ -5,8 +5,12 @@
 // TODO: is there a way to check for enemies with mongodb queries?  use $or maybe
 // $nin team $or in team but not in allies or siblings
 
+Cue.addJob('enemy_on_building_check', {retryOnError:false}, function(task, done) {
+	enemy_on_building_check()
+	done()
+})
+
 enemy_on_building_check = function() {
-	var start_time = new Date()
 
 	Castles.find({}, {fields: {_id:1, user_id:1, x:1, y:1}}).forEach(function(res) {
 		check_for_enemies_here(res, 'castle')
@@ -15,8 +19,6 @@ enemy_on_building_check = function() {
 	Villages.find({}, {fields: {_id:1, user_id:1, x:1, y:1}}).forEach(function(res) {
 		check_for_enemies_here(res, 'village')
 	})
-
-	record_job_stat('enemy_on_building_check', new Date() - start_time)
 }
 
 
@@ -25,7 +27,7 @@ var check_for_enemies_here = function(building, type) {
 	if (armies.count() > 0) {
 		armies.forEach(function(army) {
 			var relation = getPlayersRelationType_server(army.user_id, building.user_id)
-			
+
 			if (type == 'village') {
 				var canAttack = ['enemy', 'enemy_ally']
 			}
@@ -44,10 +46,13 @@ var check_for_enemies_here = function(building, type) {
 }
 
 
+Cue.addJob('enemies_together_check', {retryOnError:false}, function(task, done) {
+	enemy_on_building_check()
+	done()
+})
+
 // loop through every army and check if there are any enemies on the same hex, if so they fight
 enemies_together_check = function() {
-	console.log('--- running enemies_together_check ---')
-	var start_time = new Date()
 
 	Armies.find({}, {fields: {user_id:1, x:1, y:1}}).forEach(function(army) {
 
@@ -80,8 +85,6 @@ enemies_together_check = function() {
 			}
 		})
 	})
-
-	record_job_stat('enemies_together_check', new Date() - start_time)
 }
 
 

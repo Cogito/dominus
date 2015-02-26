@@ -32,9 +32,8 @@ Meteor.methods({
 				Meteor.users.update(user._id, {$inc: fields})
 
 				if (!this.isSimulation) {
-
 					update_market_price(type, quantity, true)
-					worker.enqueue('record_market_history', {quantity: quantity})
+					Cue.addTask('record_market_history', {isAsync:true, unique:false}, {quantity:quantity})
 
 					// save how much tax was collected
 					// tax is later distributed to castles
@@ -89,12 +88,8 @@ Meteor.methods({
 			Meteor.users.update(user._id, {$inc: fields})
 
 			if (!this.isSimulation) {
-
 				update_market_price(type, quantity, false)
-				//worker.enqueue('update_market_price', {type: type, quantity: quantity, buy: false})
-
-				//record_market_history(quantity)
-				worker.enqueue('record_market_history', {quantity: quantity})
+				Cue.addTask('record_market_history', {isAsync:true, unique:false}, {quantity:quantity})
 			}
 
 			return {result: true, total: total}

@@ -21,6 +21,10 @@ Router.map(function() {
 		waitOn: function() { return Meteor.subscribe('admin_gamestats') }
 	})
 
+	this.route('adminJobqueue', {
+		path: '/admin/admin_jobqueue',
+	})
+
 	this.route('adminJobstats', {
 		path: '/admin/jobstats',
 		waitOn: function() { return Meteor.subscribe('admin_jobstats') }
@@ -34,11 +38,6 @@ Router.map(function() {
 	this.route('adminUsersOnline', {
 		path: '/admin/admin_users_online',
 		waitOn: function() { return Meteor.subscribe('admin_users_online') }
-	})
-
-	this.route('adminJobqueue', {
-		path: '/admin/admin_jobqueue',
-		waitOn: function() { return Meteor.subscribe('admin_jobqueue')}
 	})
 
 	this.route('adminCommands', {

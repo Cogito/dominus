@@ -20,18 +20,10 @@ destroy_all_castles = function() {
 }
 
 
-Meteor.startup(function() {
-	if (Meteor.isServer) {
-		worker.register({
-			create_castle: function(params, done) {
-				check(params.user_id, String)
-				create_castle(params.user_id)
-				done()
-			}
-		})
-	}
+Cue.addJob('create_castle', {retryOnError:true}, function(task, done) {
+	create_castle(task.data.user_id)
+	done()
 })
-
 
 
 create_castle = function(user_id) {

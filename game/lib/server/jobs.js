@@ -1,9 +1,8 @@
 Meteor.startup(function() {
-	
+
 	if (process.env.DOMINUS_WORKER == 'true') {
 
-		worker.empty_queue()
-		worker.start()
+		Cue.start()
 
 		// give all villages a level
 		//Villages.update({}, {$set: {constructionStarted:new Date()}}, {multi:true})
@@ -80,98 +79,14 @@ Meteor.startup(function() {
 		// army moves
 		Meteor.setInterval(function() {
 			var start_time = new Date()
-			Moves.find({index:0}).forEach(function(move) {
-				var army = Armies.findOne(move.army_id)
-				if (army) {
-					var army_speed = speed_of_army(army)
-					if (moment(new Date(move.last_move_at)).add(army_speed, 'minutes') < moment()) {
-
-						// we're somewhere along path
-						// test until we find where
-						var from_pos = Hx.coordinatesToPos(move.from_x, move.from_y, s.hex_size, s.hex_squish)
-						var to_pos = Hx.coordinatesToPos(move.to_x, move.to_y, s.hex_size, s.hex_squish)
-
-						// get distance
-						var distance = Hx.hexDistance(move.from_x, move.from_y, move.to_x, move.to_y)
-
-						// get move again to make sure it still exists
-						move = Moves.findOne(move._id)
-						if (move) {
-							var move_army_to_next_hex = false
-							var move_is_finished = false
-							var foundArmyPosition = false
-
-							// march along move
-							for (i = 0; i <= distance; i++) {
-								// pick point along line
-								var x = from_pos.x * (1 - i/distance) + to_pos.x * i/distance
-								var y = from_pos.y * (1 - i/distance) + to_pos.y * i/distance
-
-								// find hex at point
-								var coords = Hx.posToCoordinates(x, y, s.hex_size, s.hex_squish)
-
-								// move army
-								if (move_army_to_next_hex) {
-									move_army_to_hex(army._id, coords.x, coords.y)
-									move_army_to_next_hex = false
-									Moves.update(move._id, {$set: {last_move_at:new Date()}})
-
-									// check if this is last move
-									if (coords.x == move.to_x && coords.y == move.to_y) {
-										move_is_finished = true
-									}
-								}
-
-								// is this the spot we're at?
-								// if so then next time we loop move army
-								if (army.x == coords.x && army.y == coords.y) {
-									move_army_to_next_hex = true
-									foundArmyPosition = true
-								}
-							}
-
-							// if this is still false then the army isn't on the path
-							// something is broke, move army to start of path to fix
-							if (!foundArmyPosition) {
-								move_army_to_hex(army._id, move.from_x, move.from_y)
-								Moves.update(move._id, {$set: {last_move_at:new Date()}})
-								console.log('Error: Army '+army._id+' was not on path.')
-							}
-
-							// if this is last hex in this move
-							if (move_is_finished) {
-								// remove this move
-								Moves.remove(move._id)
-
-								// update index numbers and last_move_at of other moves
-								var i = 0
-								Moves.find({army_id:army._id}, {sort: {index:1}}).forEach(function(m) {
-									Moves.update(m._id, {$set: {index:i, last_move_at:new Date()}})
-									i++
-								})
-							}
-						}
-					}
-				}
-			})
-
-			record_job_stat('army_moves', new Date() - start_time)
+			Cue.addTask('armyMovementJob', {isAsync:true, unique:false}, {})
+			record_job_stat('all_army_moves', new Date() - start_time)
 		}, s.army_update_interval)
 
 
 		// village construction
 		Meteor.setInterval(function() {
-			var start_time = new Date()
-
-			Villages.find({under_construction:true}, {fields: {level:1, constructionStarted:1}}).forEach(function(village) {
-				var timeToBuild = s.village.cost['level'+(village.level+1)].timeToBuild
-				var finishAt = moment(new Date(village.constructionStarted)).add(timeToBuild, 'ms')
-				if (moment().isAfter(finishAt)) {
-					finish_building_village(village._id)
-				}
-			})
-
-			record_job_stat('villageConstructionJob', new Date() - start_time)
+			Cue.addTask('villageConstructionJob', {isAsync:true, unique:false}, {})
 		}, s.village.construction_update_interval)
 
 
@@ -204,7 +119,12 @@ Meteor.startup(function() {
 		Meteor.setTimeout(function() {
 			nightly_job()
 			Meteor.setInterval(function() {
-				nightly_job()
+
+				resetJobStatRunCounter()
+				Meteor.users.find().forEach(function(user) {
+					Cue.addTask('update_num_allies', {isAsync:true, unique:false}, {user_id:user._id})
+				})
+
 			}, 1000 * 60 * 60 * 24)
 		}, timeUntilMidnight)
 
@@ -215,51 +135,25 @@ Meteor.startup(function() {
 		var time_til_next_tenMin = moment().add(10 - minute, 'minutes').seconds(0)
 
 		Meteor.setTimeout(function() {
-			tenMin_job()
 			Meteor.setInterval(function() {
-				tenMin_job()
+				Cue.addTask('gamestats_job', {isAsync:true, unique:false}, {})
+				Cue.addTask('updateIncomeRank', {isAsync:true, unique:false}, {})
+				Cue.addTask('updateIncomeStats', {isAsync:true, unique:false}, {})
+				Cue.addTask('generateTree', {isAsync:true, unique:false}, {})
 			}, 1000 * 60 * 10)
 		}, time_til_next_tenMin)
+
+
+		// hourly job
+		Meteor.setTimeout(function() {
+			Cue.addTask('deleteInactiveUsers', {isAsync:true, unique:false}, {})
+		}, 1000 * 60 * 60)
 
 
 		// game over job
 		// check to see if game is over and send alert
 		Meteor.setTimeout(function() {
-			var end = Settings.findOne({name: 'gameEndDate'})
-			if (end && end.value != null) {
-				var endDate = moment(end.value)
-				if (endDate) {
-					if (moment().isAfter(endDate)) {
-
-						// has alert already been sent
-						var hasBeenSent = Settings.findOne({name:'hasGameOverAlertBeenSent'})
-						if (!hasBeenSent || !hasBeenSent.value) {
-
-							// find who won
-							var winner = Meteor.users.findOne({is_dominus:true}, {fields:{_id:1}})
-							if (!winner) {
-
-								// if nobody is currently dominus see who was last dominus
-								var lastDominus = Settings.findOne({name: 'lastDominusUserId'})
-								if (lastDominus && lastDominus.value) {
-									winner = Meteor.users.findOne(lastDominus.value, {fields:{_id:1}})
-								}
-							}
-
-							if (winner) {
-								gAlert_gameOver(winner._id)
-								Settings.upsert({name: 'hasGameOverAlertBeenSent'}, {$set: {name: 'hasGameOverAlertBeenSent', value:true}})
-								Settings.upsert({name: 'isGameOver'}, {$set: {name: 'isGameOver', value:true}})
-
-							} else {
-								console.error('Game is over but no dominus found.')
-							}
-
-
-						}
-					}
-				}
-			}
+			Cue.addTask('checkForGameOver', {isAsync:true, unique:false}, {})
 		}, 1000 * 60)
 	}
 })
@@ -270,37 +164,11 @@ Meteor.startup(function() {
 
 
 resource_interval_jobs = function() {
-	worker.enqueue('record_market_history', {quantity: 0})
+	Cue.addTask('record_market_history', {isAsync:true, unique:false}, {quantity:0})
 
 	gather_resources_new()
 
 	Meteor.users.find().forEach(function(user) {
-		update_networth(user._id)
+		Cue.addTask('update_networth', {isAsync:true, unique:false}, {user_id: user._id})
 	})
-}
-
-
-
-nightly_job = function() {
-	console.log('running nightly job at '+moment().format("dddd, MMMM Do YYYY, h:mm:ss a"))
-
-	resetJobStatRunCounter()
-
-	Meteor.users.find().forEach(function(user) {
-		update_num_allies(user._id)
-		update_losses_worth(user._id)	// can remove this after next game starts
-	})
-}
-
-
-
-tenMin_job = function() {
-	var start_time = new Date()
-
-	gamestats_job()
-	updateIncomeRank()
-	updateIncomeStats()
-	generateTree()
-
-	record_job_stat('tenMin_job', new Date() - start_time)
 }

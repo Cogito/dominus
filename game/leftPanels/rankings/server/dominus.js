@@ -1,4 +1,4 @@
-check_for_dominus = function() {
+Cue.addJob('check_for_dominus', {retryOnError:false}, function(task, done) {
 	var num_users = Meteor.users.find({castle_id: {$exists: true}}).count()
 	var dominus = Meteor.users.findOne({is_dominus: true}, {fields: {_id:1}})
 	var is_still_dominus = false
@@ -30,7 +30,9 @@ check_for_dominus = function() {
 			alert_noLongerDominus(dominus._id)
 		}
 	}
-}
+
+	done()
+})
 
 
 // called when new user joins the game

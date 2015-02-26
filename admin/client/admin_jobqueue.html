@@ -2,20 +2,8 @@
 	{{#if currentUser.admin}}
 		<div id="admin_container">
 			{{> admin_menu}}
-			
-			<button class="btn btn-primary btn-xs" type="button" id="empty_queue_button">Empty Queue</button>
-			
-			<table class="table">
-				<tbody>
-					{{#each jobs}}
-						<tr>
-							<td>{{name}}</td>
-							<td>{{date_calendar created_at}}</td>
-							<td>{{params}}</td>
-						</tr>
-					{{/each}}
-				</tbody>
-			</table>
+
+			{{> cueTasks}}
 		</div>
 	{{/if}}
 </template>

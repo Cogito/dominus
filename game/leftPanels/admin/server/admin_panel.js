@@ -31,12 +31,12 @@ Meteor.methods({
 			Recentchats.remove({})
 			Messages.remove({})
 			Threads.remove({})
-			Jobqueue.remove({})
 			Moves.remove({})
 			Forums.update({}, {$set: {
 				numThreads: 0,
 				numMessages: 0
 			}}, {multi: true})
+			Cue.dropTasks()
 		}
 	},
 

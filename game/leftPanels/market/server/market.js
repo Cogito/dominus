@@ -62,12 +62,14 @@ update_market_price = function(type, quantity, buy) {
 }
 
 
+
+Cue.addJob('record_market_history', {retryOnError:false}, function(task, done) {
+	record_market_history(task.data.quantity)
+	done()
+})
+
 record_market_history = function(quantity) {
 	check(quantity, validNumber)
-
-	if (!isFinite(quantity)) {
-		throw new Meteor.Error(404, "record_market_history quantity !isFinite");
-	}
 
 	var begin = moment().startOf('hour').toDate()
 	var end = moment().endOf('hour').toDate()

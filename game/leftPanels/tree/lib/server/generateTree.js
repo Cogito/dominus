@@ -10,6 +10,11 @@ var findVassals = function(user_id) {
 }
 
 
+Cue.addJob('generateTree', {retryOnError:false}, function(task, done) {
+    generateTree()
+    done()
+})
+
 generateTree = function() {
     var start_time = new Date()
     var tree = []

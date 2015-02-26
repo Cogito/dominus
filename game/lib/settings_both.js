@@ -11,7 +11,7 @@ s.rankings.perPage = 10
 
 if (Meteor.isServer && process.env.NODE_ENV == 'development') {
 	// cheats
-	s.resource.interval = 1000 * 15
+	s.resource.interval = 1000 * 60
 	s.battle_interval = 1000 * 30
 	s.village.max_can_have = 6
 	s.village.time_to_build = 1000	// old
