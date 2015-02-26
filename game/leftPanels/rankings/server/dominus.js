@@ -1,4 +1,4 @@
-Cue.addJob('check_for_dominus', {retryOnError:false}, function(task, done) {
+Cue.addJob('check_for_dominus', {retryOnError:false, maxMs:1000*60*2}, function(task, done) {
 	var num_users = Meteor.users.find({castle_id: {$exists: true}}).count()
 	var dominus = Meteor.users.findOne({is_dominus: true}, {fields: {_id:1}})
 	var is_still_dominus = false

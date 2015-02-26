@@ -18,7 +18,7 @@ Meteor.methods({
 			}
 
 			if (user) {
-				Cue.addTask('deleteAccount', {isAsync:true, unique:true}, {user_id:user._id})
+				Cue.addTask('deleteAccount', {isAsync:false, unique:true}, {user_id:user._id})
 			}
 		}
 	},
@@ -94,7 +94,7 @@ Meteor.methods({
 })
 
 
-Cue.addJob('deleteAccount', {retryOnError:false}, function(task, done) {
+Cue.addJob('deleteAccount', {retryOnError:false, maxMs:1000*60*5}, function(task, done) {
 	deleteAccount(task.data.user_id)
 	done()
 })
@@ -179,5 +179,5 @@ deleteAccount = function(user_id) {
 	Meteor.users.remove({_id:user._id})
 
 	setupEveryoneChatroom()
-	Cue.addTask('check_for_dominus', {isAsync:true, unique:false}, {})
+	Cue.addTask('check_for_dominus', {isAsync:true, unique:true}, {})
 }

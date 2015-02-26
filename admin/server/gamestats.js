@@ -1,5 +1,5 @@
 // admin game stats
-Cue.addJob('gamestats_job', {retryOnError:false}, function(task, done) {
+Cue.addJob('gamestats_job', {retryOnError:false, maxMs:1000*60*5}, function(task, done) {
 	gamestats_job()
 	done()
 })

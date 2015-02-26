@@ -1,4 +1,4 @@
-Cue.addJob('checkForGameOver', {retryOnError:false}, function(task, done) {
+Cue.addJob('checkForGameOver', {retryOnError:false, maxMs:1000*60*5}, function(task, done) {
     checkForGameOver()
     done()
 })

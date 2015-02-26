@@ -20,7 +20,7 @@ destroy_all_castles = function() {
 }
 
 
-Cue.addJob('create_castle', {retryOnError:true}, function(task, done) {
+Cue.addJob('create_castle', {retryOnError:true, maxMs:1000*60*5}, function(task, done) {
 	create_castle(task.data.user_id)
 	done()
 })

@@ -10,7 +10,7 @@ var findVassals = function(user_id) {
 }
 
 
-Cue.addJob('generateTree', {retryOnError:false}, function(task, done) {
+Cue.addJob('generateTree', {retryOnError:false, maxMs:1000*60*5}, function(task, done) {
     generateTree()
     done()
 })

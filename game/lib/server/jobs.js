@@ -79,14 +79,14 @@ Meteor.startup(function() {
 		// army moves
 		Meteor.setInterval(function() {
 			var start_time = new Date()
-			Cue.addTask('armyMovementJob', {isAsync:true, unique:false}, {})
+			Cue.addTask('armyMovementJob', {isAsync:false, unique:true}, {})
 			record_job_stat('all_army_moves', new Date() - start_time)
 		}, s.army_update_interval)
 
 
 		// village construction
 		Meteor.setInterval(function() {
-			Cue.addTask('villageConstructionJob', {isAsync:true, unique:false}, {})
+			Cue.addTask('villageConstructionJob', {isAsync:false, unique:true}, {})
 		}, s.village.construction_update_interval)
 
 
@@ -122,7 +122,7 @@ Meteor.startup(function() {
 
 				resetJobStatRunCounter()
 				Meteor.users.find().forEach(function(user) {
-					Cue.addTask('update_num_allies', {isAsync:true, unique:false}, {user_id:user._id})
+					Cue.addTask('update_num_allies', {isAsync:true, unique:true}, {user_id:user._id})
 				})
 
 			}, 1000 * 60 * 60 * 24)
@@ -136,24 +136,24 @@ Meteor.startup(function() {
 
 		Meteor.setTimeout(function() {
 			Meteor.setInterval(function() {
-				Cue.addTask('gamestats_job', {isAsync:true, unique:false}, {})
-				Cue.addTask('updateIncomeRank', {isAsync:true, unique:false}, {})
-				Cue.addTask('updateIncomeStats', {isAsync:true, unique:false}, {})
-				Cue.addTask('generateTree', {isAsync:true, unique:false}, {})
+				Cue.addTask('gamestats_job', {isAsync:true, unique:true}, {})
+				Cue.addTask('updateIncomeRank', {isAsync:true, unique:true}, {})
+				Cue.addTask('updateIncomeStats', {isAsync:true, unique:true}, {})
+				Cue.addTask('generateTree', {isAsync:true, unique:true}, {})
 			}, 1000 * 60 * 10)
 		}, time_til_next_tenMin)
 
 
 		// hourly job
 		Meteor.setTimeout(function() {
-			Cue.addTask('deleteInactiveUsers', {isAsync:true, unique:false}, {})
+			Cue.addTask('deleteInactiveUsers', {isAsync:false, unique:true}, {})
 		}, 1000 * 60 * 60)
 
 
 		// game over job
 		// check to see if game is over and send alert
 		Meteor.setTimeout(function() {
-			Cue.addTask('checkForGameOver', {isAsync:true, unique:false}, {})
+			Cue.addTask('checkForGameOver', {isAsync:false, unique:true}, {})
 		}, 1000 * 60)
 	}
 })
@@ -165,10 +165,6 @@ Meteor.startup(function() {
 
 resource_interval_jobs = function() {
 	Cue.addTask('record_market_history', {isAsync:true, unique:false}, {quantity:0})
-
 	gather_resources_new()
-
-	Meteor.users.find().forEach(function(user) {
-		Cue.addTask('update_networth', {isAsync:true, unique:false}, {user_id: user._id})
-	})
+	Cue.addTask('updateEveryonesNetworth', {isAsync:false, unique:true}, {})
 }

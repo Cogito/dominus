@@ -275,7 +275,7 @@ is_stopped = function(army_id) {
 
 
 
-Cue.addJob('armyMovementJob', {retryOnError:false}, function(task, done) {
+Cue.addJob('armyMovementJob', {retryOnError:false, maxMs:1000*60*5}, function(task, done) {
 	Moves.find({index:0}).forEach(function(move) {
 		var army = Armies.findOne(move.army_id)
 		if (army) {

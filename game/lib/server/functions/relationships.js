@@ -96,15 +96,15 @@ set_lord_and_vassal = function(winner, loser, runUpdateAllies) {
 	alert_newLord(loser._id, winner._id)
 
 	if (runUpdateAllies) {
-		Cue.addTask('update_allies', {isAsync:true, unique:false}, {user_id:winner._id})
+		Cue.addTask('update_allies', {isAsync:true, unique:true}, {user_id:winner._id})
 
 		if (loser_prev_lord_id) {
-			Cue.addTask('update_allies', {isAsync:true, unique:false}, {user_id:loser_prev_lord_id})
+			Cue.addTask('update_allies', {isAsync:true, unique:true}, {user_id:loser_prev_lord_id})
 		}
 	}
 
-	Cue.addTask('enemies_together_check', {isAsync:true, unique:false}, {})
-	Cue.addTask('enemy_on_building_check', {isAsync:true, unique:false}, {})
+	Cue.addTask('enemies_together_check', {isAsync:true, unique:true}, {})
+	Cue.addTask('enemy_on_building_check', {isAsync:true, unique:true}, {})
 }
 
 

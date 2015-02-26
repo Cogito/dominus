@@ -63,7 +63,7 @@ update_market_price = function(type, quantity, buy) {
 
 
 
-Cue.addJob('record_market_history', {retryOnError:false}, function(task, done) {
+Cue.addJob('record_market_history', {retryOnError:false, maxMs:1000*60*2}, function(task, done) {
 	record_market_history(task.data.quantity)
 	done()
 })

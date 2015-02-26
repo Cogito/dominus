@@ -1,4 +1,4 @@
-Cue.addJob('deleteInactiveUsers', {retryOnError:false}, function(task, done) {
+Cue.addJob('deleteInactiveUsers', {retryOnError:false, maxMs:1000*60*20}, function(task, done) {
 
     var cutoff = moment().subtract(2, 'days').toDate()
 
@@ -6,7 +6,7 @@ Cue.addJob('deleteInactiveUsers', {retryOnError:false}, function(task, done) {
     var fields = {_id:1}
 
     Meteor.users.find(find, {fields:fields}).forEach(function(user) {
-        Cue.addTask('deleteAccount', {isAsync:true, unique:true}, {user_id:user._id})
+        Cue.addTask('deleteAccount', {isAsync:false, unique:true}, {user_id:user._id})
     })
 
     done()

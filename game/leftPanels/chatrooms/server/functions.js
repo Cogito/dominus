@@ -26,7 +26,7 @@ removeOwnerFromRoom = function(room_id) {
 				// if king leaves game then kill the king chatroom
 				Roomchats.remove({room_id:room._id})
 				Rooms.remove(room._id)
-				Cue.addTask('cleanupAllKingChatrooms', {isAsync:true, unique:false}, {})
+				Cue.addTask('cleanupAllKingChatrooms', {isAsync:true, unique:true}, {})
 			} else {
 				Rooms.update(room_id, {$pull: {members:owner, admins:owner}})
 
@@ -98,7 +98,7 @@ removeOwnerFromRoom = function(room_id) {
 
 
 
-Cue.addJob('setupKingChatroom', {retryOnError:false}, function(task, done) {
+Cue.addJob('setupKingChatroom', {retryOnError:false, maxMs:1000*60*2}, function(task, done) {
 	setupKingChatroom(task.data.king_id)
 	done()
 })
@@ -175,7 +175,7 @@ setupEveryoneChatroom = function() {
 
 
 
-Cue.addJob('cleanupAllKingChatrooms', {retryOnError:false}, function(task, done) {
+Cue.addJob('cleanupAllKingChatrooms', {retryOnError:false, maxMs:1000*60*2}, function(task, done) {
 	cleanupAllKingChatrooms()
 	done()
 })

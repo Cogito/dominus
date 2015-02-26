@@ -196,7 +196,7 @@ destroy_all_villages = function() {
 }
 
 
-Cue.addJob('villageConstructionJob', {retryOnError:false}, function(task, done) {
+Cue.addJob('villageConstructionJob', {retryOnError:false, maxMs:1000*60*5}, function(task, done) {
 	villageConstructionJob()
 	done()
 })
