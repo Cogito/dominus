@@ -2,6 +2,7 @@ Meteor.startup(function() {
 
 	if (process.env.DOMINUS_WORKER == 'true') {
 
+		Cue.dropInProgressTasks()
 		Cue.start()
 
 		// give all villages a level
@@ -122,7 +123,7 @@ Meteor.startup(function() {
 
 				resetJobStatRunCounter()
 				Meteor.users.find().forEach(function(user) {
-					Cue.addTask('update_num_allies', {isAsync:true, unique:true}, {user_id:user._id})
+					Cue.addTask('update_num_allies', {isAsync:false, unique:true}, {user_id:user._id})
 				})
 
 			}, 1000 * 60 * 60 * 24)
@@ -136,10 +137,10 @@ Meteor.startup(function() {
 
 		Meteor.setTimeout(function() {
 			Meteor.setInterval(function() {
-				Cue.addTask('gamestats_job', {isAsync:true, unique:true}, {})
-				Cue.addTask('updateIncomeRank', {isAsync:true, unique:true}, {})
-				Cue.addTask('updateIncomeStats', {isAsync:true, unique:true}, {})
-				Cue.addTask('generateTree', {isAsync:true, unique:true}, {})
+				Cue.addTask('gamestats_job', {isAsync:false, unique:true}, {})
+				Cue.addTask('updateIncomeRank', {isAsync:false, unique:true}, {})
+				Cue.addTask('updateIncomeStats', {isAsync:false, unique:true}, {})
+				Cue.addTask('generateTree', {isAsync:false, unique:true}, {})
 			}, 1000 * 60 * 10)
 		}, time_til_next_tenMin)
 

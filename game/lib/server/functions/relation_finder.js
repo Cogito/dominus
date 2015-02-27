@@ -208,8 +208,8 @@ relation_finder = function(user_id) {
 				update_vassal_ally_count(cache.user_id)
 			})
 
-			Cue.addTask('check_for_dominus', {isAsync:true, unique:true}, {})
-			Cue.addTask('cleanupAllKingChatrooms', {isAsync:true, unique:true}, {})
+			Cue.addTask('check_for_dominus', {isAsync:false, unique:true}, {})
+			Cue.addTask('cleanupAllKingChatrooms', {isAsync:false, unique:true}, {})
 		}
 	}
 

@@ -8,10 +8,18 @@ Template.alerts_battles.helpers({
     }
 })
 
+Template.alerts_battles.events({
+    'click #showMoreButton': function() {
+        Template.instance().numShow.set(Template.instance().numShow.get() + 5)
+    }
+})
+
 Template.alerts_battles.created = function() {
     var self = this
 
+    self.numShow = new ReactiveVar(10)
+
     self.autorun(function() {
-        Meteor.subscribe('battleAlertTitles')
+        Meteor.subscribe('battleAlertTitles', self.numShow.get())
     })
 }

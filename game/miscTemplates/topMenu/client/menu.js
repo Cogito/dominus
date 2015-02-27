@@ -229,8 +229,8 @@ Template.menu.rendered = function() {
 		Meteor.subscribe('market')
 		Meteor.subscribe('recentchats')
 		Meteor.subscribe('latest_forum_posts')
-		Meteor.subscribe('left_panel_villages')
-		Meteor.subscribe('left_panel_castle')
+		//Meteor.subscribe('left_panel_villages')
+		//Meteor.subscribe('left_panel_castle')
 	})
 
 

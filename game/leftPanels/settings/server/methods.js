@@ -179,5 +179,5 @@ deleteAccount = function(user_id) {
 	Meteor.users.remove({_id:user._id})
 
 	setupEveryoneChatroom()
-	Cue.addTask('check_for_dominus', {isAsync:true, unique:true}, {})
+	Cue.addTask('check_for_dominus', {isAsync:false, unique:true}, {})
 }

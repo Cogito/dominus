@@ -6,7 +6,7 @@ Meteor.methods({
 
 			var user = Meteor.users.findOne({username:username}, {fields: {_id:1}})
 			if (user) {
-				Cue.addTask('update_allies', {isAsync:true, unique:true}, {user_id:user._id})
+				Cue.addTask('update_allies', {isAsync:false, unique:true}, {user_id:user._id})
 			}
 		}
 	},
@@ -26,13 +26,13 @@ Meteor.methods({
 
 	admin_enemyOnBuildingCheck: function() {
 		if (get_user_property("admin")) {
-			Cue.addTask('enemy_on_building_check', {isAsync:true, unique:true}, {})
+			Cue.addTask('enemy_on_building_check', {isAsync:false, unique:true}, {})
 		}
 	},
 
 	admin_enemiesTogetherCheck: function() {
 		if (get_user_property("admin")) {
-			Cue.addTask('enemies_together_check', {isAsync:true, unique:true}, {})
+			Cue.addTask('enemies_together_check', {isAsync:false, unique:true}, {})
 		}
 	},
 

@@ -49,7 +49,9 @@ Template.alert_battleStart.created = function() {
 
     self.autorun(function() {
         if (Template.currentData()) {
-            Meteor.subscribe('battle', Template.currentData().vars.battle_id)
+            if (self.isOpen.get()) {
+                Meteor.subscribe('battle', Template.currentData().vars.battle_id)
+            }
         }
     })
 }

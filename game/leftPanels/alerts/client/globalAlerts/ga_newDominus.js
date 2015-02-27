@@ -29,7 +29,9 @@ Template.ga_newDominus.created = function() {
     self.autorun(function() {
         if (Template.currentData()) {
             Meteor.subscribe('alertUser', Template.currentData().vars.newDominusUser_id)
-            Meteor.subscribe('alertUser', Template.currentData().vars.previousDominusUser_id)
+            if (self.isOpen.get()) {
+                Meteor.subscribe('alertUser', Template.currentData().vars.previousDominusUser_id)
+            }
         }
     })
 }

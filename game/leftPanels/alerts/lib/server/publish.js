@@ -1,6 +1,6 @@
-Meteor.publish('globalAlerts', function() {
+Meteor.publish('globalAlerts', function(numShow) {
     if(this.userId) {
-        return GlobalAlerts.find({},{sort:{created_at:-1}, limit:80})
+        return GlobalAlerts.find({},{sort:{created_at:-1}, limit:numShow})
     } else {
         this.ready()
     }
@@ -14,9 +14,9 @@ Meteor.publish('globalAlert', function(id) {
     }
 })
 
-Meteor.publish('myAlerts', function() {
+Meteor.publish('myAlerts', function(numShow) {
     if(this.userId) {
-        return Alerts.find({user_ids: {$elemMatch: {user_id:this.userId}}}, {sort:{created_at:-1}, limit:80})
+        return Alerts.find({user_ids: {$elemMatch: {user_id:this.userId}}}, {sort:{created_at:-1}, limit:numShow})
     } else {
         this.ready()
     }
@@ -60,7 +60,7 @@ Meteor.publish('alertChatroom', function(room_id) {
 })
 
 
-Meteor.publish('battleAlertTitles', function() {
+Meteor.publish('battleAlertTitles', function(numShow) {
     var self = this
     var fields = {
         created_at:1,
@@ -76,7 +76,7 @@ Meteor.publish('battleAlertTitles', function() {
     fields['currentUnits.dead'] = 1
     fields['currentUnits._id'] = 1
 
-    var cur = Battles.find({},{sort:{created_at:-1}, limit:100, fields:fields})
+    var cur = Battles.find({},{sort:{created_at:-1}, limit:numShow, fields:fields})
     Mongo.Collection._publishCursor(cur, self, 'alertbattletitles')
     return self.ready();
 })

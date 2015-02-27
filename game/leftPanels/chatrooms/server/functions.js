@@ -26,7 +26,7 @@ removeOwnerFromRoom = function(room_id) {
 				// if king leaves game then kill the king chatroom
 				Roomchats.remove({room_id:room._id})
 				Rooms.remove(room._id)
-				Cue.addTask('cleanupAllKingChatrooms', {isAsync:true, unique:true}, {})
+				Cue.addTask('cleanupAllKingChatrooms', {isAsync:false, unique:true}, {})
 			} else {
 				Rooms.update(room_id, {$pull: {members:owner, admins:owner}})
 

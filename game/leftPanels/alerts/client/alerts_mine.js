@@ -8,6 +8,10 @@ Template.alerts_mine.helpers({
 Template.alerts_mine.events({
     'click #markAllAlertsAsReadButton': function() {
         Meteor.call('markAllAlertsAsRead')
+    },
+
+    'click #showMoreButton': function() {
+        Template.instance().numShow.set(Template.instance().numShow.get() + 5)
     }
 })
 
@@ -15,7 +19,9 @@ Template.alerts_mine.events({
 Template.alerts_mine.created = function() {
     var self = this
 
+    self.numShow = new ReactiveVar(10)
+
     self.autorun(function() {
-        Meteor.subscribe('myAlerts')
+        Meteor.subscribe('myAlerts', self.numShow.get())
     })
 }

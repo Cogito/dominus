@@ -34,7 +34,6 @@ Template.alert_vassalIsUnderAttack.created = function() {
             if (self.isOpen.get()) {
                 Meteor.subscribe('battle', Template.currentData().vars.battle_id)
             }
-
         }
     })
 }

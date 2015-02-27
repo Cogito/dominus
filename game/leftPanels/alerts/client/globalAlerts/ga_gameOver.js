@@ -23,7 +23,9 @@ Template.ga_gameOver.created = function() {
 
     self.autorun(function() {
         if (Template.currentData()) {
-            Meteor.subscribe('alertUser', Template.currentData().vars.winnerUser_id)
+            if (self.isOpen.get()) {
+                Meteor.subscribe('alertUser', Template.currentData().vars.winnerUser_id)
+            }
         }
     })
 }
