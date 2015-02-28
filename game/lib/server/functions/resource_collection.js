@@ -30,7 +30,7 @@ gatherResources = function() {
 
 			receive_income_id(
 				user._id,
-				20,
+				30,
 				s.castle.income.grain,
 				s.castle.income.lumber,
 				s.castle.income.ore,

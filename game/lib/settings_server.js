@@ -4,7 +4,7 @@ if (Meteor.isServer) {
 		// cheats
 		s.army_travel_multiplier = 0.000001
 		s.battle_check_interval = 1000 * 10
-		s.army_update_interval = 1000 * 5	// how often does army movement job run
+		s.army_update_interval = 1000 * 2	// how often does army movement job run
 	} else {
 		s.army_travel_multiplier = 1 	// for debug, lower than one makes armies move faster
 		s.battle_check_interval = 1000 * 30

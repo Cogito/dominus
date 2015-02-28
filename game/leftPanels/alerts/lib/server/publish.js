@@ -67,6 +67,7 @@ Meteor.publish('battleAlertTitles', function(numShow) {
     var self = this
     var fields = {
         created_at:1,
+        updated_at:1,
         isOver:1,
         x:1,
         y:1,
@@ -79,7 +80,7 @@ Meteor.publish('battleAlertTitles', function(numShow) {
     fields['currentUnits.dead'] = 1
     fields['currentUnits._id'] = 1
 
-    var cur = Battles.find({},{sort:{created_at:-1}, limit:numShow, fields:fields})
+    var cur = Battles.find({},{sort:{updated_at:-1}, limit:numShow, fields:fields})
     Mongo.Collection._publishCursor(cur, self, 'alertbattletitles')
     return self.ready();
 })
