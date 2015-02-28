@@ -20,10 +20,6 @@ admin_publish('admin_gamestats', function() {
 	return Gamestats.find()
 })
 
-admin_publish('admin_jobstats', function() {
-	return Jobstats.find()
-})
-
 admin_publish('admin_mailchimp_list', function() {
 	return Meteor.users.find({}, {fields: {username:1, emails:1}})
 })

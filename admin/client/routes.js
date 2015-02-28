@@ -31,7 +31,6 @@ Router.map(function() {
 
 	this.route('adminJobstats', {
 		path: '/admin/jobstats',
-		waitOn: function() { return Meteor.subscribe('admin_jobstats') }
 	})
 
 	this.route('adminMailchimpList', {

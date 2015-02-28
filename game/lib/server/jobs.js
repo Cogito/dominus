@@ -3,7 +3,7 @@ Meteor.startup(function() {
 	if (process.env.DOMINUS_WORKER == 'true') {
 
 		Cue.dropInProgressTasks()
-		//Cue.start()
+		Cue.start()
 
 		Meteor.defer(function() {
 
@@ -160,7 +160,6 @@ Meteor.startup(function() {
 
 
 var midnightJob = function() {
-	resetJobStatRunCounter()
 
 	// is this still needed?
 	Meteor.users.find().forEach(function(user) {
