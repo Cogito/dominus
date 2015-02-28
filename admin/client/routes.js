@@ -21,6 +21,10 @@ Router.map(function() {
 		waitOn: function() { return Meteor.subscribe('admin_gamestats') }
 	})
 
+	this.route('adminJobs', {
+		path: '/admin/jobs'
+	})
+
 	this.route('adminJobqueue', {
 		path: '/admin/admin_jobqueue',
 	})

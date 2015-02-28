@@ -35,6 +35,7 @@ Cue.addJob('check_for_dominus', {retryOnError:false, maxMs:1000*60*2}, function(
 })
 
 
+
 // called when new user joins the game
 remove_dominus = function() {
 	var dominus = Meteor.users.findOne({is_dominus:true}, {fields:{_id:1}})

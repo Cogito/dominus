@@ -98,10 +98,12 @@ removeOwnerFromRoom = function(room_id) {
 
 
 
+
 Cue.addJob('setupKingChatroom', {retryOnError:false, maxMs:1000*60*2}, function(task, done) {
 	setupKingChatroom(task.data.king_id)
 	done()
 })
+
 
 
 // create or update members in king's chatroom
@@ -179,6 +181,7 @@ Cue.addJob('cleanupAllKingChatrooms', {retryOnError:false, maxMs:1000*60*2}, fun
 	cleanupAllKingChatrooms()
 	done()
 })
+
 
 
 cleanupAllKingChatrooms = function() {

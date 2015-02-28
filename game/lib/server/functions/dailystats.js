@@ -12,6 +12,7 @@ Cue.addJob('update_networth', {retryOnError:false, maxMs:1000*60*2}, function(ta
 })
 
 
+
 update_networth = function(user_id) {
 
 	var user = Meteor.users.findOne(user_id)
@@ -117,10 +118,12 @@ update_networth = function(user_id) {
 }
 
 
+
 Cue.addJob('update_num_allies', {retryOnError:false, maxMs:1000*60*5}, function(task, done) {
 	update_num_allies(task.data.user_id)
 	done()
 })
+
 
 update_num_allies = function(user_id) {
 	var user = Meteor.users.findOne(user_id, {fields: {num_allies_below:1}})
@@ -136,11 +139,11 @@ update_num_allies = function(user_id) {
 }
 
 
-
 Cue.addJob('update_losses_worth', {retryOnError:false, maxMs:1000*60*5}, function(task, done) {
 	update_losses_worth(task.data.user_id)
 	done()
 })
+
 
 update_losses_worth = function(user_id) {
 
@@ -194,6 +197,7 @@ Cue.addJob('updateIncomeStats', {retryOnError:false, maxMs:1000*60*5}, function(
 	done()
 })
 
+
 updateIncomeStats = function() {
 	var start_time = new Date()
 
@@ -230,10 +234,13 @@ updateIncomeStats = function() {
 
 
 
+
 Cue.addJob('updateIncomeRank', {retryOnError:false, maxMs:1000*60*5}, function(task, done) {
 	updateIncomeRank()
 	done()
 })
+
+
 
 updateIncomeRank = function() {
 	var start_time = new Date()

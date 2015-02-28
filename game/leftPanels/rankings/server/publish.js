@@ -6,80 +6,6 @@ Meteor.publish('villageCount', function() {
 	return Settings.find({name:'villageCount'})
 })
 
-Meteor.publish('findPlayerCount', function() {
-	var self = this
-	var count = 0
-	var initializing = true
-
-	var setting = Settings.findOne({name:'playerCount'})
-	if (!setting) {
-		var setting = {name:'playerCount', value:0}
-		setting._id = Settings.insert(setting)
-	}
-
-	var handle = Meteor.users.find().observeChanges({
-		added: function(id) {
-			count++
-			if (!initializing) {
-				Settings.update(setting._id, {$set: {value:count}})
-			}
-		},
-
-		removed: function(id) {
-			count--
-			if (!initializing) {
-				Settings.update(setting._id, {$set: {value:count}})
-			}
-		}
-	})
-	initializing = false
-	Settings.update(setting._id, {$set: {value:count}})
-	self.ready()
-
-	self.onStop(function() {
-		handle.stop()
-	})
-})
-
-
-Meteor.publish('findVillageCount', function() {
-	var self = this
-	var count = 0
-	var initializing = true
-
-	var setting = Settings.findOne({name:'villageCount'})
-	if (!setting) {
-		var setting = {name:'villageCount', value:0}
-		setting._id = Settings.insert(setting)
-	}
-
-	var handle = Villages.find().observeChanges({
-		added: function(id) {
-			count++
-			if (!initializing) {
-				Settings.update(setting._id, {$set: {value:count}})
-			}
-		},
-
-		removed: function(id) {
-			count--
-			if (!initializing) {
-				Settings.update(setting._id, {$set: {value:count}})
-			}
-		}
-	})
-
-	initializing = false
-	Settings.update(setting._id, {$set: {value:count}})
-	self.ready()
-
-	self.onStop(function() {
-		handle.stop()
-	})
-})
-
-
-
 Meteor.publish('networth_rankings', function(page) {
 	var skip = (page-1) * s.rankings.perPage
 
@@ -160,7 +86,7 @@ Meteor.publish('dominus_rankings', function() {
 
 Meteor.publish('village_rankings', function(page) {
 	var skip = (page-1) * s.rankings.perPage
-	
+
 	var sub = this
 	var cur = Villages.find({}, {skip:skip, sort: {"income.worth": -1}, fields: {
 			username:1,

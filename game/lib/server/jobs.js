@@ -118,10 +118,11 @@ Meteor.startup(function() {
 		var timeUntilMidnight = endOfDay - moment()
 
 		Meteor.setTimeout(function() {
-			nightly_job()
 			Meteor.setInterval(function() {
 
 				resetJobStatRunCounter()
+
+				// is this still needed?
 				Meteor.users.find().forEach(function(user) {
 					Cue.addTask('update_num_allies', {isAsync:false, unique:true}, {user_id:user._id})
 				})

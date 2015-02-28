@@ -1,4 +1,5 @@
 Meteor.publish('globalAlerts', function(numShow) {
+    numShow = Math.min(numShow, 150)
     if(this.userId) {
         return GlobalAlerts.find({},{sort:{created_at:-1}, limit:numShow})
     } else {
@@ -15,6 +16,7 @@ Meteor.publish('globalAlert', function(id) {
 })
 
 Meteor.publish('myAlerts', function(numShow) {
+    numShow = Math.min(numShow, 150)
     if(this.userId) {
         return Alerts.find({user_ids: {$elemMatch: {user_id:this.userId}}}, {sort:{created_at:-1}, limit:numShow})
     } else {
@@ -61,6 +63,7 @@ Meteor.publish('alertChatroom', function(room_id) {
 
 
 Meteor.publish('battleAlertTitles', function(numShow) {
+    numShow = Math.min(numShow, 150)
     var self = this
     var fields = {
         created_at:1,

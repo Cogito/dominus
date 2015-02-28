@@ -229,8 +229,11 @@ Template.menu.rendered = function() {
 		Meteor.subscribe('market')
 		Meteor.subscribe('recentchats')
 		Meteor.subscribe('latest_forum_posts')
-		//Meteor.subscribe('left_panel_villages')
-		//Meteor.subscribe('left_panel_castle')
+		
+		// villages must always be loaded
+		// so that we know how many villages a player has
+		Meteor.subscribe('left_panel_villages')
+		Meteor.subscribe('left_panel_castle')
 	})
 
 

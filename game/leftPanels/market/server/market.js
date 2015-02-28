@@ -68,6 +68,8 @@ Cue.addJob('record_market_history', {retryOnError:false, maxMs:1000*60*2}, funct
 	done()
 })
 
+
+
 record_market_history = function(quantity) {
 	check(quantity, validNumber)
 

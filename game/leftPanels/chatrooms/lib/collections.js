@@ -10,15 +10,3 @@ if (Meteor.isClient) {
 	// need to keep a list of which rooms you are in
 	Roomlist = new Mongo.Collection('room_list')
 }
-
-
-
-
-
-// TEMP
-// remove this
-// if (Meteor.isServer) {
-// 	Meteor.users.find().forEach(function(user) {
-// 		Meteor.users.update(user._id, {$set: {max_chatroom_height:500}})
-// 	})
-// }

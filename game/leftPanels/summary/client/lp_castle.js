@@ -13,10 +13,3 @@ Template.lp_castle.helpers({
 		return false
 	},
 })
-
-Template.lp_castle.created = function() {
-	
-	this.autorun(function() {
-		Meteor.subscribe('left_panel_castle')
-	})
-}

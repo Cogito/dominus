@@ -185,15 +185,13 @@ Template.rankings_panel.created = function() {
 		{
 			groupName: 'playerCount',
 			subscriptions: [
-				Meteor.subscribe('playerCount').ready(),
-				Meteor.subscribe('findPlayerCount').ready()
+				Meteor.subscribe('playerCount').ready()
 			]
 		},{
 			groupName: 'villageRanks',
 			subscriptions: [
 				Meteor.subscribe('village_rankings', self.villagesPage.get()).ready(),
 				Meteor.subscribe('villageCount').ready(),
-				Meteor.subscribe('findVillageCount').ready()
 			]
 		}, {
 			groupName: 'dominus',

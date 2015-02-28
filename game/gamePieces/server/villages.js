@@ -196,10 +196,12 @@ destroy_all_villages = function() {
 }
 
 
+
 Cue.addJob('villageConstructionJob', {retryOnError:false, maxMs:1000*60*5}, function(task, done) {
 	villageConstructionJob()
 	done()
 })
+
 
 villageConstructionJob = function() {
 	Villages.find({under_construction:true}, {fields: {level:1,constructionStarted:1}}).forEach(function(village) {

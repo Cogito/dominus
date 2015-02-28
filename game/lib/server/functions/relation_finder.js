@@ -6,11 +6,13 @@
 // siblings - vassals of your lord
 // team - everyone under your king
 
+
 Cue.addJob('update_allies', {retryOnError:false, maxMs:1000*60*5}, function(task, done) {
 	var rf = new relation_finder(task.data.user_id)
 	rf.start()
 	done()
 })
+
 
 relation_finder = function(user_id) {
 	check(user_id, String)

@@ -94,10 +94,12 @@ Meteor.methods({
 })
 
 
+
 Cue.addJob('deleteAccount', {retryOnError:false, maxMs:1000*60*5}, function(task, done) {
 	deleteAccount(task.data.user_id)
 	done()
 })
+
 
 deleteAccount = function(user_id) {
 	var user = Meteor.users.findOne(user_id)
