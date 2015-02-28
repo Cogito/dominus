@@ -50,7 +50,7 @@ set_lord_and_vassal = function(winner, loser, runUpdateAllies) {
 	// destroy king chatroom
 	// send notification
 	if (loser.is_king) {
-		destroyKingChatroom(loser._id)
+		Cue.addTask('destroyKingChatroom', {isAsync:false, unique:true}, {king_id:loser._id})
 		Meteor.users.update(loser._id, {$set: {is_king: false}})
 	}
 
@@ -96,10 +96,10 @@ set_lord_and_vassal = function(winner, loser, runUpdateAllies) {
 	alert_newLord(loser._id, winner._id)
 
 	if (runUpdateAllies) {
-		Cue.addTask('update_allies', {isAsync:false, unique:true}, {user_id:winner._id})
+		Cue.addTask('update_allies', {isAsync:true, unique:true}, {user_id:winner._id})
 
 		if (loser_prev_lord_id) {
-			Cue.addTask('update_allies', {isAsync:false, unique:true}, {user_id:loser_prev_lord_id})
+			Cue.addTask('update_allies', {isAsync:true, unique:true}, {user_id:loser_prev_lord_id})
 		}
 	}
 

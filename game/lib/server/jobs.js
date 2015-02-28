@@ -3,86 +3,94 @@ Meteor.startup(function() {
 	if (process.env.DOMINUS_WORKER == 'true') {
 
 		Cue.dropInProgressTasks()
-		Cue.start()
+		//Cue.start()
 
-		// give all villages a level
-		//Villages.update({}, {$set: {constructionStarted:new Date()}}, {multi:true})
+		Meteor.defer(function() {
 
-		// cleanup old moves
-		// Moves.find().forEach(function(move) {
-		// 	if (Armies.find({_id:move.army_id}).count() == 0) {
-		// 		console.log('removing move')
-		// 		Moves.remove(move._id)
-		// 	}
-		// })
+			// //delete villages with no owner
+			// Villages.find().forEach(function(village) {
+			// 	var user = Meteor.users.findOne(village.user_id)
+			// 	if (!user) {
+			// 		Hexes.update({x:village.x, y:village.y}, {$set: {has_building:false, nearby_buildings:false}})
+			// 		Villages.remove(village._id)
+			// 		console.log('deleting village')
+			// 	}
+			// })
+			//
+			// // remove duplicate castles
+			// Meteor.users.find().forEach(function(u) {
+			// 	Castles.find({user_id:u._id}).forEach(function(castle) {
+			// 		if (castle._id != u.castle_id) {
+			// 			Hexes.update({x:castle.x, y:castle.y}, {$set: {has_building:false, nearby_buildings:false}})
+			// 			Castles.remove(castle._id)
+			// 			console.log('deleted castle')
+			// 		}
+			// 	})
+			// })
+
+			// cleanup old moves
+			// Moves.find().forEach(function(move) {
+			// 	if (Armies.find({_id:move.army_id}).count() == 0) {
+			// 		console.log('removing move')
+			// 		Moves.remove(move._id)
+			// 	}
+			// })
 
 
-		// //set all emails to verified
-		// Meteor.users.find().forEach(function(u) {
-		// 	if (u.emails[0].verified == false) {
-		// 		var emails = u.emails
-		// 		emails[0].verified = true
-		// 		Meteor.users.update(u._id, {$set: {emails:emails}})
-		// 	}
-		// })
-
-
-		//make sure there are no negative armies
-		var find = []
-		_.each(s.army.types, function(type) {
-			var or = {}
-			or[type] = {$lt:0}
-			find.push(or)
-		})
-
-		var castles = Castles.find({$or:find})
-		var villages = Villages.find({$or:find})
-		var armies = Armies.find({$or:find})
-
-		castles.forEach(function(res) {
+			//make sure there are no negative armies
+			var find = []
 			_.each(s.army.types, function(type) {
-				if (res[type] < 0) {
-					console.log('castle '+res._id+' had '+res[type]+' '+type+'s')
-					var set = {}
-					set[type] = 0
-					Castles.update(res._id, {$set:set})
-				}
+				var or = {}
+				or[type] = {$lt:0}
+				find.push(or)
 			})
-		})
 
-		villages.forEach(function(res) {
-			_.each(s.army.types, function(type) {
-				if (res[type] < 0) {
-					console.log('village '+res._id+' had '+res[type]+' '+type+'s')
-					var set = {}
-					set[type] = 0
-					Villages.update(res._id, {$set:set})
-				}
+			var castles = Castles.find({$or:find})
+			var villages = Villages.find({$or:find})
+			var armies = Armies.find({$or:find})
+
+			castles.forEach(function(res) {
+				_.each(s.army.types, function(type) {
+					if (res[type] < 0) {
+						console.log('castle '+res._id+' had '+res[type]+' '+type+'s')
+						var set = {}
+						set[type] = 0
+						Castles.update(res._id, {$set:set})
+					}
+				})
 			})
-		})
 
-		armies.forEach(function(res) {
-			_.each(s.army.types, function(type) {
-				if (res[type] < 0) {
-					console.log('army '+res._id+' had '+res[type]+' '+type+'s')
-					var set = {}
-					set[type] = 0
-					Armies.update(res._id, {$set:set})
-				}
+			villages.forEach(function(res) {
+				_.each(s.army.types, function(type) {
+					if (res[type] < 0) {
+						console.log('village '+res._id+' had '+res[type]+' '+type+'s')
+						var set = {}
+						set[type] = 0
+						Villages.update(res._id, {$set:set})
+					}
+				})
 			})
+
+			armies.forEach(function(res) {
+				_.each(s.army.types, function(type) {
+					if (res[type] < 0) {
+						console.log('army '+res._id+' had '+res[type]+' '+type+'s')
+						var set = {}
+						set[type] = 0
+						Armies.update(res._id, {$set:set})
+					}
+				})
+			})
+
 		})
-
-
-
 
 
 
 		// army moves
 		Meteor.setInterval(function() {
-			var start_time = new Date()
 			Cue.addTask('armyMovementJob', {isAsync:false, unique:true}, {})
-			record_job_stat('all_army_moves', new Date() - start_time)
 		}, s.army_update_interval)
+
 
 
 		// village construction
@@ -92,7 +100,7 @@ Meteor.startup(function() {
 
 
 
-		// resources
+		// resource collection
 		var max = 1000 * 60 * 60
 		var current = moment().minute() * 60 * 1000
 
@@ -113,37 +121,26 @@ Meteor.startup(function() {
 
 
 
+
 		// nightly job
 		var endOfDay = moment().endOf('day').add(2, 'minutes')
 		var timeUntilMidnight = endOfDay - moment()
-
 		Meteor.setTimeout(function() {
+			midnightJob()
 			Meteor.setInterval(function() {
-
-				resetJobStatRunCounter()
-
-				// is this still needed?
-				Meteor.users.find().forEach(function(user) {
-					Cue.addTask('update_num_allies', {isAsync:false, unique:true}, {user_id:user._id})
-				})
-
+				midnightJob()
 			}, 1000 * 60 * 60 * 24)
 		}, timeUntilMidnight)
 
 
 
-		// every 10 minute job
-		var minute = moment().get('minute') % 10
-		var time_til_next_tenMin = moment().add(10 - minute, 'minutes').seconds(0)
-
-		Meteor.setTimeout(function() {
-			Meteor.setInterval(function() {
-				Cue.addTask('gamestats_job', {isAsync:false, unique:true}, {})
-				Cue.addTask('updateIncomeRank', {isAsync:false, unique:true}, {})
-				Cue.addTask('updateIncomeStats', {isAsync:false, unique:true}, {})
-				Cue.addTask('generateTree', {isAsync:false, unique:true}, {})
-			}, 1000 * 60 * 10)
-		}, time_til_next_tenMin)
+		// every 10 minutes
+		Meteor.setInterval(function() {
+			Cue.addTask('gamestats_job', {isAsync:false, unique:true}, {})
+			Cue.addTask('updateIncomeRank', {isAsync:false, unique:true}, {})
+			Cue.addTask('updateIncomeStats', {isAsync:false, unique:true}, {})
+			Cue.addTask('generateTree', {isAsync:false, unique:true}, {})
+		}, 1000 * 60 * 10)
 
 
 		// hourly job
@@ -162,11 +159,17 @@ Meteor.startup(function() {
 
 
 
+var midnightJob = function() {
+	resetJobStatRunCounter()
+
+	// is this still needed?
+	Meteor.users.find().forEach(function(user) {
+		Cue.addTask('update_num_allies', {isAsync:false, unique:true}, {user_id:user._id})
+	})
+}
 
 
-
-resource_interval_jobs = function() {
+var resource_interval_jobs = function() {
 	Cue.addTask('record_market_history', {isAsync:true, unique:false}, {quantity:0})
-	gather_resources_new()
-	Cue.addTask('updateEveryonesNetworth', {isAsync:false, unique:true}, {})
+	Cue.addTask('gatherResources', {isAsync:false, unique:true}, {})
 }

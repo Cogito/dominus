@@ -17,7 +17,6 @@ Cue.addJob('generateTree', {retryOnError:false, maxMs:1000*60*5}, function(task,
 
 
 generateTree = function() {
-    var start_time = new Date()
     var tree = []
 
     Meteor.users.find({lord:null}, {fields:fields}).forEach(function(king) {
@@ -26,6 +25,4 @@ generateTree = function() {
     })
 
     Settings.upsert({name: 'tree'}, {$set: {name:'tree', value:tree}})
-
-    record_job_stat('generateTree', new Date() - start_time)
 }

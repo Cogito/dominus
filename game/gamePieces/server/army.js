@@ -57,7 +57,7 @@ create_army = function(user_id, army, x, y, moves, last_move_at) {
 					// make sure army is still alive
 					var attacker = Armies.findOne(id)
 					if (attacker) {
-						Battle.start_battle(x,y)
+						Cue.addTask('startBattle', {isAsync:true, unique:true}, {x:x, y:y})
 					}
 				} else {
 					if (_.indexOf(user.allies, ea.user_id) == -1) {
@@ -65,7 +65,7 @@ create_army = function(user_id, army, x, y, moves, last_move_at) {
 						// make sure army is still alive
 						var attacker = Armies.findOne(id)
 						if (attacker) {
-							Battle.start_battle(x,y)
+							Cue.addTask('startBattle', {isAsync:true, unique:true}, {x:x, y:y})
 						}
 					}
 				}
@@ -239,7 +239,7 @@ move_army_to_hex = function(army_id, x, y) {
 		}
 
 		if (startBattle) {
-			Battle.start_battle(x,y)
+			Cue.addTask('startBattle', {isAsync:true, unique:true}, {x:x, y:y})
 		}
 	}
 }

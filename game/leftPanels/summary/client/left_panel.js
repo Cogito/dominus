@@ -73,9 +73,9 @@ Template.left_panel.helpers({
 
 	time_til_update: function() {
 		Session.get('refresh_time_field')
-		var stat = Jobstats.findOne()
+		var stat = CueStats.findOne()
 		if (stat) {
-			var will_run_at = moment(new Date(stat.updated_at)).add(s.resource.interval, 'milliseconds')
+			var will_run_at = moment(new Date(stat.lastRunDate)).add(s.resource.interval, 'milliseconds')
 			return will_run_at.fromNow()
 		}
 	},
@@ -91,7 +91,7 @@ Template.left_panel.helpers({
 		}
 	}
 
-	
+
 })
 
 
@@ -162,7 +162,7 @@ Template.left_panel.events({
 	'mouseleave .summary_hover': function(event, template) {
 		Session.set('show_summary_hover_box', false)
 	},
-	
+
 })
 
 

@@ -1,6 +1,9 @@
 Accounts.validateNewUser(function(user) {
-	throw new Meteor.Error(503,'Dominus is full.  Please come back later.')
-	//return true
+	if (process.env.DOMINUS_WORKER == 'true') {
+		return true
+	} else {
+		throw new Meteor.Error(503,'Dominus is full.  Please come back later.')
+	}
 })
 
 
@@ -62,7 +65,7 @@ onCreateUser = function(userId) {
 	check(userId, String)
 	Cue.addTask('create_castle', {isAsync:false, unique:true}, {user_id:userId})
 	init_dailystats_for_new_user(userId)
-	setupEveryoneChatroom()
+	Cue.addTask('setupEveryoneChatroom', {isAsync:false, unique:true}, {})
 }
 
 

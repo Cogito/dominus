@@ -1,6 +1,11 @@
-gather_resources_new = function() {
+Cue.addJob('gatherResources', {retryOnError:false, maxMs:1000*60*8}, function(task, done) {
+	gatherResources()
+	Cue.addTask('updateEveryonesNetworth', {isAsync:false, unique:true}, {})
+	done()
+})
+
+gatherResources = function() {
 	clear_cached_user_update()
-	var start_time = new Date()
 
 	// buy resources in the market with the collected taxes
 	// this is to keep the market from going down
@@ -66,5 +71,4 @@ gather_resources_new = function() {
 	})
 
 	run_cached_user_update()
-	record_job_stat('gather_resources_new', new Date() - start_time)
 }

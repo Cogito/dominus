@@ -1,5 +1,4 @@
 Fight = function (x, y, unitObj, battleDb) {
-	var start_time = new Date()
 	var self = this
 	self.x = x
 	self.y = y
@@ -45,8 +44,6 @@ Fight = function (x, y, unitObj, battleDb) {
 
 	//	self._endBattle()
 	//}
-
-	record_job_stat('battle', new Date() - start_time)
 }
 
 Fight.prototype._handleCastle = function() {

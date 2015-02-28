@@ -1,8 +1,20 @@
+Cue.addJob('startBattle', {retryOnError:false, maxMs:1000*60*8}, function(task, done) {
+	Battle.start_battle(task.data.x, task.data.y)
+	done()
+})
+
+
+Cue.addJob('runBattle', {retryOnError:false, maxMs:1000*60*8}, function(task, done) {
+	Battle.run_battle(task.data.x, task.data.y)
+	done()
+})
+
+
 Battle = {
 	// if no battle exists in this hex create one
 	start_battle: function(x,y) {
 		if (Battles.find({x:x,y:y,isOver:false}).count() == 0) {
-			Battle.run_battle(x,y)
+			Cue.addTask('runBattle', {isAsync:true, unique:true}, {x:x, y:y})
 		}
 	},
 

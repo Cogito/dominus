@@ -1,33 +1,28 @@
-Cue.addJob('updateEveryonesNetworth', {retryOnError:false, maxMs:1000*60*5}, function(task, done) {
-	Meteor.users.find({}, {fields:{_id:1}}).forEach(function(user) {
-		update_networth(user._id)
+Cue.addJob('updateEveryonesNetworth', {retryOnError:false, maxMs:1000*60*10}, function(task, done) {
+	Meteor.users.find().forEach(function(user) {
+		update_networth(user)
 	})
 	done()
 })
 
 
 Cue.addJob('update_networth', {retryOnError:false, maxMs:1000*60*2}, function(task, done) {
-	update_networth(task.data.user_id)
-	done()
+	var user = Meteor.users.findOne(task.data.user_id)
+	if (user) {
+		update_networth(user)
+		done()
+	} else {
+		done('user not found')
+	}
 })
 
 
 
-update_networth = function(user_id) {
-
-	var user = Meteor.users.findOne(user_id)
+update_networth = function(user) {
 
 	if (!user) {
 		throw new Meteor.Error('User not found.')
 	}
-
-	check(user.gold, validNumber)
-	check(user.grain, validNumber)
-	check(user.lumber, validNumber)
-	check(user.ore, validNumber)
-	check(user.wool, validNumber)
-	check(user.clay, validNumber)
-	check(user.glass, validNumber)
 
 	var worth = {
 		gold: user.gold,
@@ -53,14 +48,6 @@ update_networth = function(user_id) {
 		})
 	})
 
-	check(worth.gold, validNumber)
-	check(worth.grain, validNumber)
-	check(worth.lumber, validNumber)
-	check(worth.ore, validNumber)
-	check(worth.wool, validNumber)
-	check(worth.clay, validNumber)
-	check(worth.glass, validNumber)
-
 	var villageFields = _.extend(fields, {level:1})
 
 	// villages and village garrison
@@ -77,44 +64,31 @@ update_networth = function(user_id) {
 		})
 	})
 
-	check(worth.gold, validNumber)
-	check(worth.grain, validNumber)
-	check(worth.lumber, validNumber)
-	check(worth.ore, validNumber)
-	check(worth.wool, validNumber)
-	check(worth.clay, validNumber)
-	check(worth.glass, validNumber)
-
 	// castle garrison
-	Castles.find({user_id: user._id}, {fields: fields}).forEach(function(res) {
+	var res = Castles.findOne({user_id: user._id}, {fields: fields})
+	if (res) {
 		_.each(s.resource.types, function(t) {
 			_.each(s.army.types, function(type) {
 				worth[t] += s.army.cost[type][t] * res[type]
 			})
 		})
-	})
+	}
 
-	check(worth.gold, validNumber)
-	check(worth.grain, validNumber)
-	check(worth.lumber, validNumber)
-	check(worth.ore, validNumber)
-	check(worth.wool, validNumber)
-	check(worth.clay, validNumber)
-	check(worth.glass, validNumber)
+	// _.each(s.resource.types_plus_gold, function(type) {
+	// 		check(worth[type], validNumber)
+	// }
 
 	worth.total = worth.gold
 
 	// convert to gold
-	_.each(s.resource.types, function(t) {
-		var m = Market.findOne({type: t}, {fields: {price: 1}})
-		if (!m) { return false }
-		worth.total += m.price * worth[t]
+	Market.find().forEach(function(resource) {
+		worth.total += resource.price * worth[resource.type]
 	})
 
 	check(worth.total, validNumber)
 
-	Dailystats.upsert({user_id: user_id, created_at: {$gte: statsBegin(), $lt: statsEnd()}}, {$setOnInsert: {user_id:user_id, created_at: new Date()}, $set: {networth:worth.total, updated_at:new Date()}})
-	Meteor.users.update(user_id, {$set: {networth: worth.total}})
+	Dailystats.upsert({user_id:user._id, created_at: {$gte: statsBegin(), $lt: statsEnd()}}, {$setOnInsert: {user_id:user._id, created_at: new Date()}, $set: {networth:worth.total, updated_at:new Date()}})
+	Meteor.users.update(user._id, {$set: {networth: worth.total}})
 }
 
 
@@ -199,8 +173,6 @@ Cue.addJob('updateIncomeStats', {retryOnError:false, maxMs:1000*60*5}, function(
 
 
 updateIncomeStats = function() {
-	var start_time = new Date()
-
 	Meteor.users.find({}, {fields: {res_update:1}}).forEach(function(user) {
 		var income = {}
 		var vassalIncome = {}
@@ -228,8 +200,6 @@ updateIncomeStats = function() {
 			$set: {inc:income, vassalInc:vassalIncome, updated_at:new Date()}
 		})
 	})
-
-	record_job_stat('updateIncomeStats', new Date() - start_time)
 }
 
 
@@ -243,8 +213,6 @@ Cue.addJob('updateIncomeRank', {retryOnError:false, maxMs:1000*60*5}, function(t
 
 
 updateIncomeRank = function() {
-	var start_time = new Date()
-
 	var rank = 1
 	var prevIncome = null
 	Meteor.users.find({}, {sort: {income:-1}, fields: {income:1}}).forEach(function(user) {
@@ -267,8 +235,6 @@ updateIncomeRank = function() {
 
 		prevIncome = user.income
 	})
-
-	record_job_stat('updateIncomeRank', new Date() - start_time)
 }
 
 

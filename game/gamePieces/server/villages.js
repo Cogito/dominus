@@ -131,24 +131,18 @@ Meteor.methods({
 
 
 
+	// return the id of the army created or false
 	destroy_village: function(id) {
 		this.unblock()
 
 		check(id, String)
 
 		var fields = {user_id:1}
-		_.each(s.army.types, function(type) {
-			fields[type] = 1
-		})
 
 		var village = Villages.findOne(id, {fields: fields})
 		if (village) {
 			if (village.user_id == Meteor.userId()) {
-				// spit out army
-				var army_id = Meteor.call('create_army_from_building', village, 'village', village._id, [])
-				Villages.remove(id)
-				Hexes.update({x:village.x, y:village.y}, {$set: {has_building:false, nearby_buildings:false}})
-				return army_id
+				return destroyVillage(village._id)
 			}
 		}
 
@@ -211,4 +205,26 @@ villageConstructionJob = function() {
 			finish_building_village(village._id)
 		}
 	})
+}
+
+
+
+destroyVillage = function(village_id) {
+	check(village_id, String)
+
+	var fields = {user_id:1}
+	_.each(s.army.types, function(type) {
+		fields[type] = 1
+	})
+
+	var village = Villages.findOne(village_id, {fields: fields})
+	if (village) {
+		// spit out army
+		var army_id = Meteor.call('create_army_from_building', village, 'village', village._id, [])
+		Villages.remove(village._id)
+		Hexes.update({x:village.x, y:village.y}, {$set: {has_building:false, nearby_buildings:false}})
+		return army_id
+	}
+
+	return false
 }

@@ -134,13 +134,14 @@ setupKingChatroom = function(king_id) {
 }
 
 
-
+Cue.addJob('destroyKingChatroom', {retryOnError:false, maxMs:1000*60*2}, function(task, done) {
+	destroyKingChatroom(task.data.king_id)
+	done()
+})
 
 // run when someone is no longer a king
 destroyKingChatroom = function(king_id) {
 	check(king_id, String)
-
-	var start_time = new Date()
 
 	var user = Meteor.users.findOne(king_id, {fields: {_id:1}})
 	if (user) {
@@ -150,16 +151,16 @@ destroyKingChatroom = function(king_id) {
 			Rooms.remove(room._id)
 		})
 	}
-
-	record_job_stat('destroyKingChatroom', new Date() - start_time)
 }
 
 
+Cue.addJob('setupEveryoneChatroom', {retryOnError:false, maxMs:1000*60*2}, function(task, done) {
+	setupEveryoneChatroom()
+	done()
+})
 
 // just call cleanupAllKingChatrooms() instead for now
 setupEveryoneChatroom = function() {
-	var start_time = new Date()
-
 	var members = []
 	Meteor.users.find({}, {fields:{_id:1}}).forEach(function(user) {
 		members.push(user._id)
@@ -171,8 +172,6 @@ setupEveryoneChatroom = function() {
 	} else {
 		createChatroom('Everyone', 'everyone', null, members)
 	}
-
-	record_job_stat('setupEveryoneChatroom', new Date() - start_time)
 }
 
 
@@ -198,7 +197,7 @@ cleanupAllKingChatrooms = function() {
 	// destroy all king chatrooms that belong to people who are not kings
 	Meteor.users.find({is_king:false}).forEach(function(user) {
 		if (Rooms.find({owner:user._id, type:'king'}).count() > 0) {
-			destroyKingChatroom(user._id)
+			Cue.addTask('destroyKingChatroom', {isAsync:false, unique:true}, {king_id:user._id})
 		}
 	})
 

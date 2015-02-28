@@ -6,7 +6,7 @@ Meteor.methods({
 
 			var user = Meteor.users.findOne({username:username}, {fields: {_id:1}})
 			if (user) {
-				Cue.addTask('update_allies', {isAsync:false, unique:true}, {user_id:user._id})
+				Cue.addTask('update_allies', {isAsync:true, unique:true}, {user_id:user._id})
 			}
 		}
 	},

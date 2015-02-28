@@ -40,7 +40,7 @@ var check_for_enemies_here = function(building, type) {
 
 			if (_.contains(canAttack, relation)) {
 				if (!attackCreatesLoop(building.x,building.y)) {
-					Battle.start_battle(building.x,building.y)
+					Cue.addTask('startBattle', {isAsync:true, unique:true}, {x:building.x, y:building.y})
 				}
 			}
 		})
@@ -72,7 +72,7 @@ enemies_together_check = function() {
 				if (user && otherUser) {
 					if (user.is_dominus || otherUser.is_dominus) {
 						// dominus' armies can attack any army
-						Battle.start_battle(army.x,army.y)
+						Cue.addTask('startBattle', {isAsync:true, unique:true}, {x:army.x, y:army.y})
 
 					} else {
 						var relation = getPlayersRelationType_server(user._id, otherUser._id)
@@ -80,7 +80,7 @@ enemies_together_check = function() {
 						if (_.contains(canAttack, relation)) {
 
 							if (!attackCreatesLoop(army.x, army.y)) {
-								Battle.start_battle(army.x,army.y)
+								Cue.addTask('startBattle', {isAsync:true, unique:true}, {x:army.x, y:army.y})
 							}
 						}
 					}

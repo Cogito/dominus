@@ -5,8 +5,6 @@ Cue.addJob('gamestats_job', {retryOnError:false, maxMs:1000*60*5}, function(task
 })
 
 gamestats_job = function() {
-	var start_time = new Date()
-
 	var stat = Gamestats.findOne({created_at: {$gte: gamestatsBegin(), $lt: gamestatsEnd()}})
 
 	if (!stat) {
@@ -135,6 +133,4 @@ gamestats_job = function() {
 	})
 
 	Gamestats.update(stat._id, stat)
-
-	record_job_stat('gamestats', new Date() - start_time)
 }

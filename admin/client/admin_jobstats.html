@@ -4,25 +4,6 @@
 			{{> admin_menu}}
 
 			{{> cueStats}}
-
-			<br><br><br><hr>
-
-			<table class="table table-striped table-condensed">
-				<thead>
-					<tr>
-						<td>function</td>
-						<td>times run today</td>
-						<td>ms</td>
-						<td>total ms today</td>
-						<td>finish date</td>
-					</tr>
-				</thead>
-				<tbody>
-					{{#each jobstats}}
-						{{> adminJobstat}}
-					{{/each}}
-				</tbody>
-			</table>
 		</div>
 	{{/if}}
 </template>

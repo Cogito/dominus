@@ -113,7 +113,7 @@ deleteAccount = function(user_id) {
 	var appendToName = '(deleted)'
 
 	Villages.find({user_id: user._id}).forEach(function(village) {
-		Meteor.call('destroy_village', village._id)
+		destroyVillage(village._id)
 	})
 
 	Armies.remove({user_id: user._id})
@@ -180,6 +180,6 @@ deleteAccount = function(user_id) {
 
 	Meteor.users.remove({_id:user._id})
 
-	setupEveryoneChatroom()
+	Cue.addTask('setupEveryoneChatroom', {isAsync:false, unique:true}, {})
 	Cue.addTask('check_for_dominus', {isAsync:false, unique:true}, {})
 }
