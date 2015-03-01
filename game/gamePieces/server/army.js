@@ -1,3 +1,5 @@
+
+
 // last_move_at is optional
 create_army = function(user_id, army, x, y, moves, last_move_at) {
 	check(army, Object)
@@ -177,6 +179,27 @@ move_army_to_hex = function(army_id, x, y) {
 				}
 			}
 		}
+
+		// check for ally building for on ally building icon
+		var onAllyBuilding = false
+
+		var castle = Castles.findOne({x:x, y:y}, {fields: {user_id:1}})
+		if (castle) {
+			var relationship = getPlayersRelationType_server(unit.user_id, castle.user_id)
+			if (relationship == 'mine' || relationship == 'vassal' || relationship == 'direct_vassal') {
+				onAllyBuilding = true
+			}
+		}
+
+		var village = Villages.findOne({x:x, y:y}, {fields: {user_id:1}})
+		if (village) {
+			var relationship = getPlayersRelationType_server(unit.user_id, village.user_id)
+			if (relationship == 'mine' || relationship == 'vassal' || relationship == 'direct_vassal') {
+				onAllyBuilding = true
+			}
+		}
+
+		Armies.update(army_id, {$set:{onAllyBuilding:onAllyBuilding}})
 
 		// send alert
 		alert_armyFinishedAllMoves(userId, army_id, x, y, joinedCastle, joinedVillage, joinedArmy)

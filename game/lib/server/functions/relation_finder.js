@@ -7,13 +7,13 @@
 // team - everyone under your king
 
 
-// this probably shouldn't be used
-// this needs to happen before battle ends, can't be queued
 Cue.addJob('update_allies', {retryOnError:false, maxMs:1000*60*5}, function(task, done) {
 	var rf = new relation_finder(task.data.user_id)
 	rf.start()
-	Cue.addTask('enemies_together_check', {isAsync:false, unique:true}, {})
-	Cue.addTask('enemy_on_building_check', {isAsync:false, unique:true}, {})
+
+	// delay these to give everything a chance to finish
+	Cue.addTask('enemies_together_check', {isAsync:false, unique:true, delay:1000*60}, {})
+	Cue.addTask('enemy_on_building_check', {isAsync:false, unique:true, delay:1000*60}, {})
 	done()
 })
 

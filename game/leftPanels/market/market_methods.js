@@ -56,10 +56,6 @@ Meteor.methods({
 		check(type, String)
 		check(quantity, validNumber)
 
-		if (!isFinite(quantity)) {
-			throw new Meteor.Error(404, "sell_resource quantity !isFinite");
-		}
-
 		if (quantity <= 0) {
 			return {result: false, reason: 'Enter quantity above 0'}
 		}
@@ -78,9 +74,7 @@ Meteor.methods({
 
 			var total = total_of_sell(type, quantity)
 
-			if (isNaN(total) || !isFinite(total)) {
-				return {result: false, reason: 'Error'}
-			}
+			check(total, validNumber)
 
 			var fields = {}
 			fields['gold'] = total

@@ -221,6 +221,8 @@ Meteor.methods({
 
 
 	hire_army: function(army, building_id, building_type) {
+		var user_id = Meteor.userId()
+
 		_.each(s.army.types, function(type) {
 			check(army[type], validNumber)
 		})
@@ -233,7 +235,7 @@ Meteor.methods({
 			userFields[type] = 1
 		})
 
-		var user = Meteor.users.findOne(Meteor.userId(), {fields:userFields})
+		var user = Meteor.users.findOne(user_id, {fields:userFields})
 		if (user) {
 			var fields = {user_id:1}
 			_.each(s.army.types, function(type) {
@@ -282,7 +284,7 @@ Meteor.methods({
 				}
 
 				// is castle mine for my ally below's
-				if (building.user_id == Meteor.userId() || _.indexOf(user.allies_below, building.user_id) != -1) {
+				if (building.user_id == user_id || _.indexOf(user.allies_below, building.user_id) != -1) {
 
 					// cost of army
 					var cost = resource_cost_army(army)
@@ -302,14 +304,9 @@ Meteor.methods({
 
 					// get current market prices to test if we have enough gold
 					var market = {}
-					var m = Market.find({}, {fields: {price:1, type:1}})
-					if (m && m.count() == s.resource.types.length) {
-						m.forEach(function(res) {
-							market[res.type] = res.price
-						})
-					} else {
-						throw new Meteor.Error('Not enough resources.')
-					}
+					Market.find().forEach(function(res) {
+						market[res.type] = res.price
+					})
 
 					// do we need to buy resrouces?  if so set cost_adjusted
 					_.each(s.resource.types, function(type) {

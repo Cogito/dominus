@@ -574,7 +574,7 @@ Units.prototype.getUserOfUnit = function(unit_id) {
 
 Units.prototype.hasEnemies = function(unit) {
 	var hasEnemies = this.getEnemies(unit).length > 0
-	// if (this.debug) {console.log(unit.username+':'+unit.name+':'+unit.type+' hasEnemies is '+hasEnemies)}
+	//if (this.debug) {console.log(unit.username+':'+unit.name+':'+unit.type+' hasEnemies is '+hasEnemies)}
 	return hasEnemies
 }
 

@@ -171,4 +171,5 @@ var midnightJob = function() {
 var resource_interval_jobs = function() {
 	Cue.addTask('record_market_history', {isAsync:true, unique:false}, {quantity:0})
 	Cue.addTask('gatherResources', {isAsync:false, unique:true}, {})
+	Cue.addTask('spendTaxes', {isAsync:false, unique:true}, {})
 }

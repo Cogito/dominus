@@ -1,4 +1,5 @@
 // used in receive income so that user doesn't get updated as often
+
 cached_user_changes = []
 
 cache_user_update = function(user_id, gold, grain, lumber, ore, wool, clay, glass, from_vassal) {
@@ -93,16 +94,9 @@ clear_cached_user_update = function() {
 
 run_cached_user_update = function() {
 	var market = {}
-	var m = Market.find({}, {fields: {price:1, type:1}})
-	if (m && m.count() == s.resource.types.length) {
-		m.forEach(function(res) {
-			market[res.type] = res.price
-		})
-	} else {
-		// no market? exit
-		// happens when in new game
-		return false
-	}
+	Market.find().forEach(function(res) {
+		market[res.type] = res.price
+	})
 
 	_.each(cached_user_changes, function(arr) {
 

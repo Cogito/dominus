@@ -1,12 +1,9 @@
-Cue.addJob('gatherResources', {retryOnError:false, maxMs:1000*60*8}, function(task, done) {
-	gatherResources()
-	Cue.addTask('updateEveryonesNetworth', {isAsync:false, unique:true}, {})
+Cue.addJob('spendTaxes', {retryOnError:false, maxMs:1000*60}, function(task, done) {
+	spendTaxes()
 	done()
 })
 
-gatherResources = function() {
-	clear_cached_user_update()
-
+spendTaxes = function() {
 	// buy resources in the market with the collected taxes
 	// this is to keep the market from going down
 	var tax = Settings.findOne({name:'taxesCollected'})
@@ -23,6 +20,19 @@ gatherResources = function() {
 
 	// reset taxes
 	Settings.update({name:'taxesCollected'}, {$set:{value:0}})
+}
+
+
+
+
+Cue.addJob('gatherResources', {retryOnError:false, maxMs:1000*60*8}, function(task, done) {
+	gatherResources()
+	Cue.addTask('updateEveryonesNetworth', {isAsync:false, unique:true}, {})
+	done()
+})
+
+gatherResources = function() {
+	clear_cached_user_update()
 
 	// only receive income if email is verified
 	Meteor.users.find({}, {fields:{emails:1}}).forEach(function(user) {
@@ -42,12 +52,13 @@ gatherResources = function() {
 	})
 
 
-	Villages.find({under_construction:false}, {fields: {user_id:1, x:1, y:1, level:1}}).forEach(function(res) {
+	Villages.find({under_construction:false}, {fields: {user_id:1, x:1, y:1, level:1, income:1}}).forEach(function(res) {
 
 		// only receive income if email is verified
-		var user = Meteor.users.findOne(res.user_id, {fields:{emails:1}})
+		var user = Meteor.users.findOne(res.user_id, {fields:{emails:1, allies_above:1}})
 		if (user && user.emails[0].verified) {
 
+			// TODO: this could be remove and cache village's income
 			var income = resourcesFromSurroundingHexes(res.x, res.y, s.resource.num_rings_village)
 
 			income.gold = s.resource.gold_gained_at_village
@@ -59,14 +70,14 @@ gatherResources = function() {
 				income[type] = income[type] * multiplier
 			})
 
-			receive_income_id(res.user_id, income.gold, income.grain, income.lumber, income.ore, income.wool, income.clay, income.glass)
+			receive_income(user, income.gold, income.grain, income.lumber, income.ore, income.wool, income.clay, income.glass)
 
 			// find worth for rankings and right panel
-			// TODO: could this be made asynchronous? // it slows down this function
-			income.worth = s.resource.gold_gained_at_village
-			income.worth += resources_to_gold(income.grain, income.lumber, income.ore, income.wool, income.clay, income.glass)
-			Villages.update(res._id, {$set: {income:income}})
-
+			Meteor.defer(function() {
+				income.worth = s.resource.gold_gained_at_village
+				income.worth += resources_to_gold(income.grain, income.lumber, income.ore, income.wool, income.clay, income.glass)
+				Villages.update(res._id, {$set: {income:income}})
+			})
 		}
 	})
 

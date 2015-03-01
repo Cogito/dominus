@@ -53,7 +53,7 @@ Meteor.publish('left_panel_castle', function() {
 Meteor.publish('left_panel_armies', function() {
 	if(this.userId) {
 		var sub = this
-		var fields = {name:1, x:1, y:1, to_x:1, to_y:1, from_x:1, from_x:1, last_move_at:1}
+		var fields = {name:1, x:1, y:1, to_x:1, to_y:1, from_x:1, from_x:1, last_move_at:1, onAllyBuilding:1}
 
 		_.each(s.army.types, function(type) {
 			fields[type] = 1

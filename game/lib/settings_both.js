@@ -11,15 +11,13 @@ s.rankings.perPage = 10
 
 if (Meteor.isServer && process.env.NODE_ENV == 'development') {
 	// cheats
-	s.resource.interval = 1000 * 60
+	s.resource.interval = 1000 * 30
 	s.battle_interval = 1000 * 30
 	s.village.max_can_have = 6
-	s.village.time_to_build = 1000	// old
 } else {
 	s.resource.interval = 1000 * 60 * 10
 	s.battle_interval = 1000 * 60 * 4
 	s.village.max_can_have = 6
-	s.village.time_to_build = 1000 * 60 * 30 	// 30 min	// old
 }
 
 s.hex_size = 60
@@ -176,6 +174,12 @@ s.village.cost = {
 		glass: 800,
 		timeToBuild: 1000 * 60 * 60 * 24 // 24 hours
 	},
+}
+
+if (Meteor.isServer && process.env.NODE_ENV == 'development') {
+	s.village.cost.level1.timeToBuild = 1000
+	s.village.cost.level2.timeToBuild = 1000
+	s.village.cost.level3.timeToBuild = 1000
 }
 
 

@@ -20,10 +20,6 @@ Cue.addJob('update_networth', {retryOnError:false, maxMs:1000*60*2}, function(ta
 
 update_networth = function(user) {
 
-	if (!user) {
-		throw new Meteor.Error('User not found.')
-	}
-
 	var worth = {
 		gold: user.gold,
 		grain: user.grain,

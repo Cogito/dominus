@@ -8,8 +8,53 @@ Fight = function (x, y, unitObj, battleDb) {
 
 	var units = self.unitObj.getAllUnits()
 
-	//if (self.unitObj._someoneHasEnemies()) {
+	// check to make sure battle should take place
+	var doBattle = true
+
+	// if this is the first round of battle
+	if (self.battleDb.record.roundNumber == 1) {
+
+		// if nobody has any enemies
+		if (!self.unitObj._someoneHasEnemies()) {
+			if (self.debug) {console.log('nobody has enemies')}
+
+			// get castle
+			// might not be in battle
+			var castle_fields = {name:1, user_id:1, x:1, y:1, username:1, image:1}
+			_.each(s.army.types, function(type) {
+				castle_fields[type] = 1
+			})
+			var castle = Castles.findOne({x:self.x, y:self.y}, {fields: castle_fields})
+
+			if (castle) {
+				castle.type = 'castle'
+
+				// does the castle have enemies
+				var hasEnemies = false
+				_.each(units, function(unit) {
+
+					if (self.unitObj.isEnemy(castle, unit)) {
+						hasEnemies = true
+					}
+
+					if (self.debug) {console.log('castle has enemies')}
+				})
+
+				// if not skip battle
+				if (!hasEnemies) {
+					doBattle = false
+					if (self.debug) {console.log('castle has no enemies, skipping battle')}
+				}
+			}
+		}
+	}
+
+	if (doBattle) {
 		_.each(units, function(unit) {
+
+			// send alert
+			self.unitObj.enteredBattle(unit)
+
 			if (self.unitObj.hasEnemies(unit)) {
 				if (unit.type == 'castle') {
 					if (self.unitObj.hasSoldiers(unit)) {
@@ -27,23 +72,11 @@ Fight = function (x, y, unitObj, battleDb) {
 		self.unitObj.removeDeadSoldiers()
 		self.unitObj.removeDeadUnits()
 		self._endBattle()
-	//} else {
-		// if there is a castle here that has an enemy then we should save
-		// var castle_fields = {name:1, user_id:1, x:1, y:1, username:1, image:1}
-		// _.each(s.army.types, function(type) {
-		// 	castle_fields[type] = 1
-		// })
-		// var castle = Castles.findOne({x:self.x, y:self.y}, {fields: castle_fields})
-		//
-		// if (castle) {
-		// 	castle.type = 'castle'
-		// 	if (self.unitObj.hasEnemies(castle)) {
-		// 		battleDb.saveRecord()
-		// 	}
-		// }
+	} else {
 
-	//	self._endBattle()
-	//}
+		// delete battle
+		self.battleDb.deleteBattle()
+	}
 }
 
 Fight.prototype._handleCastle = function() {

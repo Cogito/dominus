@@ -13,12 +13,16 @@ BattleDb.prototype.init = function() {
 	self.record.currentUnits = self.getCurrentUnits()
 
 	if (self.debug) {console.log('--- round '+self.record.roundNumber+' ---')}
+}
 
+
+BattleDb.prototype.deleteBattle = function() {
+	var self = this
+
+	// make sure this is round 1
 	if (self.record.roundNumber == 1) {
-
-		_.each(self.unitObj.getAllUnits(), function(unit) {
-			self.unitObj.enteredBattle(unit)
-		})
+		Fights.remove({battle_id:self.record._id})
+		Battles.remove(self.record._id)
 	}
 }
 

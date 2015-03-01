@@ -6,23 +6,6 @@ Template.lp_armies.helpers({
 
 
 Template.lp_army.helpers({
-	onAllyBuilding: function() {
-		var castle = Castles.findOne({x:this.x, y:this.y})
-		if (castle) {
-			var relationship = getUnitRelationType(castle.user_id)
-			if (relationship == 'mine' || relationship == 'vassal' || relationship == 'direct_vassal') {
-				return true
-			}
-		}
-
-		var village = Villages.findOne({x:this.x, y:this.y})
-		if (village) {
-			var relationship = getUnitRelationType(village.user_id)
-			if (relationship == 'mine' || relationship == 'vassal' || relationship == 'direct_vassal') {
-				return true
-			}
-		}
-	},
 
 	unit_count: function() {
 		var self = this
@@ -74,13 +57,5 @@ Template.lp_armies.created = function() {
 	this.autorun(function() {
 		Meteor.subscribe('left_panel_armies')
 		Meteor.subscribe('user_moves')
-	})
-}
-
-Template.lp_army.created = function() {
-	this.autorun(function() {
-		if (Template.currentData()) {
-			Meteor.subscribe('gamePiecesAtHex', Template.currentData().x, Template.currentData().y)
-		}
 	})
 }

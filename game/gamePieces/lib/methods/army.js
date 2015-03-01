@@ -8,32 +8,24 @@ Meteor.methods({
 		check(army_id, String)
 		check(moves, Array)
 
-		if (!self.isSimulation) {
-			if (moves.length > 0) {
-				if (!Meteor.call('doesHexExist', moves[0].from_x, moves[0].from_y)) {
-					return false
-				}
-			}
-		}
-
-		_.each(moves, function(move) {
-			check(move.from_x, validNumber)
-			check(move.from_y, validNumber)
-			check(move.to_x, validNumber)
-			check(move.to_y, validNumber)
-
-			// make sure hex exists
-			// only run on server
-			if (!self.isSimulation) {
-				if (!Meteor.call('doesHexExist', move.to_x, move.to_y)) {
-					return false
-				}
-			}
-		})
-
 		if (moves.length < 1) {
 			// do not throw error here
 			return true
+		}
+
+		if (!self.isSimulation) {
+			// make sure first and last hex exist
+			_.first(moves, function(move) {
+				if (!Meteor.call('doesHexExist', move.to_x, move.to_y)) {
+					return false
+				}
+			})
+
+			_.last(moves, function(move) {
+				if (!Meteor.call('doesHexExist', move.to_x, move.to_y)) {
+					return false
+				}
+			})
 		}
 
 		var army = Armies.findOne({_id:army_id, user_id:Meteor.userId()}, {fields: {x:1, y:1, pastMoves:1}})
