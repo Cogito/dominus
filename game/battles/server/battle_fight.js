@@ -192,6 +192,7 @@ Fight.prototype._killSoldiers = function(unit) {
 	// var combinedFinalPower = unit.final_power + enemyFinalPower
 	var combinedFinalPower = self.unitObj.getTotalFinalPower()
 
+	// if dif is greater than 0 army is the winner
 	if (unit.dif > 0) {
 		var powerToLose = s.battle_power_lost_per_round_winner + (combinedFinalPower/1000)
 	} else {
