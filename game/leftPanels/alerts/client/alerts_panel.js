@@ -98,8 +98,13 @@ Template.alerts_panel.created = function() {
     this.autorun(function() {
         Meteor.subscribe('alertGameEndDate')
         Meteor.subscribe('isGameOver')
-        Meteor.subscribe('alertPreviousDominus')
+        Meteor.subscribe('lastDominusUserId')
         Meteor.subscribe('dominus_rankings')
+
+        var lastDominusUserId = Settings.findOne({name:'lastDominusUserId'})
+        if (lastDominusUserId) {
+            Meteor.subscribe('alertPreviousDominus', lastDominusUserId.value)
+        }
     })
 
 }

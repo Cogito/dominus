@@ -5,9 +5,3 @@ Meteor.publish('gather_resources_jobstat', function() {
 		this.ready()
 	}
 })
-
-// if (Meteor.isServer) {
-// 	Meteor.startup(function () {
-// 		Jobstats._ensureIndex({job_name:1})
-// 	})
-// }

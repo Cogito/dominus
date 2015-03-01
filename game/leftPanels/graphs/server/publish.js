@@ -13,8 +13,3 @@ Meteor.publish('stats_gamestats', function() {
 		this.ready()
 	}
 })
-
-
-Meteor.startup(function () {
-	Dailystats._ensureIndex({user_id:1})
-})

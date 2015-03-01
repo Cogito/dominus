@@ -20,6 +20,6 @@ Template.alerts_battles.created = function() {
     self.numShow = new ReactiveVar(10)
 
     self.autorun(function() {
-        Meteor.subscribe('battleAlertTitles', self.numShow.get())
+        Meteor.subscribe('battleAlertTitles', Math.min(self.numShow.get(), 150))
     })
 }

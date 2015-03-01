@@ -63,7 +63,6 @@ Meteor.publish('alertChatroom', function(room_id) {
 
 
 Meteor.publish('battleAlertTitles', function(numShow) {
-    numShow = Math.min(numShow, 150)
     var self = this
     var fields = {
         created_at:1,
@@ -96,35 +95,29 @@ Meteor.publish('unreadAlerts', function() {
 
 
 Meteor.publish('alertGameEndDate', function() {
-    if(this.userId) {
-        return Settings.find({name:'gameEndDate'})
-    } else {
-        this.ready()
-    }
+    return Settings.find({name:'gameEndDate'})
 })
 
 
 Meteor.publish('isGameOver', function() {
-    if(this.userId) {
-        return Settings.find({name:'isGameOver'})
-    } else {
-        this.ready()
-    }
+    return Settings.find({name:'isGameOver'})
 })
 
 
-Meteor.publish('alertPreviousDominus', function() {
+Meteor.publish('lastDominusUserId', function() {
+    return Settings.find({name:'lastDominusUserId'})
+})
+
+
+Meteor.publish('alertPreviousDominus', function(dominus_id) {
     var sub = this
-    var lastDominusId = Settings.findOne({name: 'lastDominusUserId'})
-    if (lastDominusId && lastDominusId.value) {
-        var cur = Meteor.users.find(lastDominusId.value, {fields: {
-            username:1,
-            castle_id:1,
-            x:1,
-            y:1,
-            is_dominus:1
-        }})
-        Mongo.Collection._publishCursor(cur, sub, 'alertPreviousDominus')
-    }
+    var cur = Meteor.users.find(dominus_id, {fields: {
+        username:1,
+        castle_id:1,
+        x:1,
+        y:1,
+        is_dominus:1
+    }})
+    Mongo.Collection._publishCursor(cur, sub, 'alertPreviousDominus')
     return sub.ready();
 })

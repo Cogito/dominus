@@ -40,8 +40,3 @@ Meteor.publish('fighttitles', function(battle_id) {
 
 Battles.allow({insert: false, update: false, remove: false})
 Fights.allow({insert: false, update: false, remove: false})
-
-Meteor.startup(function () {
-	Battles._ensureIndex({x:1, y:1})
-	Fights._ensureIndex({battle_id:1})
-})

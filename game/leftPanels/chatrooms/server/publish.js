@@ -81,10 +81,6 @@ Meteor.publish('room_list', function() {
 
 
 
-Meteor.startup(function () {
-  Rooms._ensureIndex({members:1, type:1})
-  Roomchats._ensureIndex({room_id:1})
-})
 
 Rooms.allow({insert: false, update: false, remove: false})
 Roomchats.allow({insert: function(userId, doc) {
