@@ -19,6 +19,7 @@ Meteor.methods({
 
 			if (user) {
 				Cue.addTask('deleteAccount', {isAsync:false, unique:true}, {user_id:user._id})
+				gAlert_accountDeleted(user.username)
 			}
 		}
 	},
@@ -108,7 +109,7 @@ deleteAccount = function(user_id) {
 		return false
 	}
 
-	gAlert_accountDeleted(user.username)
+
 
 	var appendToName = '(deleted)'
 

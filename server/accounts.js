@@ -44,11 +44,45 @@ Accounts.onCreateUser(function(options, user) {
 
 	user = setupNewUser(user)
 
+	Cue.addTask('subscribeToNewsletter', {isAsync:true, unique:true}, {email:user.emails[0].address, name:user.username})
+
 	// if someone was dominus make them not dominus
 	remove_dominus()
 
 	return user
 })
+
+
+Cue.addJob('subscribeToNewsletter', {retryOnError:true, maxMs:1000*60*5}, function(task, done) {
+	subscribeToNewsletter(task.data.email, task.data.name)
+	done()
+})
+
+// subscribe to mailchimp
+subscribeToNewsletter = function(email, name) {
+	if (Meteor.isServer && process.env.NODE_ENV != 'development') {
+		var mailingLists = new MailChimpLists()
+
+		var params = {
+			email:{"email": email},
+			id: Meteor.settings.private.MailChimp.listId,
+			merge_vars: {
+				fname: name,
+				username: name
+			},
+			double_optin: false,
+			update_existing: true,
+			send_welcome: false
+		}
+
+		mailingLists.subscribe(params, function(error, data) {
+			if (error) {
+				console.log(error)
+			}
+		})
+	}
+}
+
 
 
 // check when user logs in if they have a castle
