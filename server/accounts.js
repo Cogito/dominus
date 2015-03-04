@@ -157,6 +157,7 @@ setupNewUser = function(user) {
 	user.losses_num = 0
 	user.sp_show_coords = false
 	user.sp_show_minimap = true
+	user.lastActive = new Date()
 
 	return user
 }
@@ -169,6 +170,11 @@ Accounts.config({
 
 Accounts.emailTemplates.siteName = 'Dominus'
 Accounts.emailTemplates.from = 'Dominus <dan@dominusgame.net>'
-Accounts.emailTemplates.verifyEmail.subject = function() {
+Accounts.emailTemplates.verifyEmail.subject = function(user) {
 	return 'Email verification for Dominus'
+}
+
+Accounts.emailTemplates.verifyEmail.html = function(user, url) {
+	var email = '<div><img src="https://dominusgame.net/emails/emailBanner.jpg" style="max-width:100%;max-height:283px;"><br><br><p>Hello,</p><p>To verify your email, simply click the link below.</p><p><a href="'+url+'">'+url+'</a></p><p>Inactive unverified accounts are deleted after 48 hours.</p><p>Thanks.</p><p><a href="https://dominusgame.net">Dominus</a></p></div>'
+	return email
 }

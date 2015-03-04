@@ -9,6 +9,8 @@ s.rankings = {}
 
 s.rankings.perPage = 10
 
+s.serverMaxPlayers = 500
+
 if (Meteor.isServer && process.env.NODE_ENV == 'development') {
 	// cheats
 	s.resource.interval = 1000 * 30

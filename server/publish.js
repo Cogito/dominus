@@ -42,7 +42,9 @@ Meteor.publish('user_data', function () {
 			losses_num:1,
 			sp_show_coords:1,
 			sp_show_minimap:1,
-			emails:1
+			emails:1,
+			lastActive:1,
+			status:1
 		}})
 	} else {
 		this.ready()

@@ -76,24 +76,42 @@
 
 
 <template name="landingCreateAccount">
-	{{> aSocialError}}
-	{{> aGoogleButton}}
-	{{> aFacebookButton}}
+	{{#if serverAtMaxPlayers}}
 
-	<br>
-	<div class="divider">
-		<hr class="left">or<hr class="right"><div class="after"></div>
-	</div>
-	<br>
+		<h3>Dominus is full.</h3>
+		<br>
 
-	<div class="loginTitle">Create an an account.</div>
-	<br>
+		If you would like to be notified when the next game starts add your email to the mailing list.
 
-	<div class="formContainer">
-		{{> aCreateAccount}}
-	</div>
-	<br>
-	<div class="loginLink"><a href="" id="landingSigninLink">Sign In</a></div>
+		<br><br>
+
+		{{> MailChimpListSubscribe}}
+
+		<br>
+		<div class="loginLink"><a href="" id="landingSigninLink">Sign In</a></div>
+
+	{{else}}
+
+		{{> aSocialError}}
+		{{> aGoogleButton}}
+		{{> aFacebookButton}}
+
+		<br>
+		<div class="divider">
+			<hr class="left">or<hr class="right"><div class="after"></div>
+		</div>
+		<br>
+
+		<div class="loginTitle">Create an an account.</div>
+		<br>
+
+		<div class="formContainer">
+			{{> aCreateAccount}}
+		</div>
+		<br>
+		<div class="loginLink"><a href="" id="landingSigninLink">Sign In</a></div>
+
+	{{/if}}
 </template>
 
 

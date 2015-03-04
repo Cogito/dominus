@@ -112,7 +112,7 @@ Template.game.rendered = function() {
 		var canvasSize = Session.get('canvas_size')
 		if (canvasSize) {
 			$('#left_panels').css('height', canvasSize.height - 40)
-			$('#right_panel').css('height', canvasSize.height - 40)
+			$('#right_panels').css('height', canvasSize.height - 40)
 		}
 	})
 
