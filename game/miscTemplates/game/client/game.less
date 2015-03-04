@@ -1,0 +1,35 @@
+@import (reference) url("/lib/client/custom.bootstrap.import.less");
+
+#right_panels {
+    position: absolute;
+    right:0;
+    margin-top:40px;
+    pointer-events: none;
+}
+
+#right_panel {
+    float:right;
+    background-color: @panel_bg;
+    overflow-y: scroll;
+    z-index: 1;
+    -webkit-user-select: text;
+    -khtml-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+    pointer-events: auto;
+    height:100%;
+}
+
+#left_panels {
+    position: absolute;
+    margin-top:40px;
+    pointer-events: none;
+    z-index: 10;
+    -webkit-user-select: text;
+    -khtml-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+    overflow:hidden;
+}

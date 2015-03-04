@@ -17,7 +17,8 @@ Template.landing.helpers({
 
 
 Template.landing.rendered = function() {
-	Session.set('landingForm', 'landingSignin')
+
+	Session.set('landingForm', 'landingCreateAccount')
 
 	setViewport()
 	setBackground()
@@ -27,6 +28,19 @@ Template.landing.rendered = function() {
 	}
 }
 
+
+Template.landing.created = function() {
+	var self = this
+
+	self.subs = new ReadyManager()
+
+	self.autorun(function() {
+		self.subs.subscriptions([{
+			groupName: 'playerCount',
+			subscriptions: [Meteor.subscribe('playerCount').ready()]
+		}])
+	})
+}
 
 var setBackground = function() {
 	document.body.style.backgroundColor = '#111';
@@ -53,6 +67,17 @@ var setViewport = function() {
 	}
 }
 
+
+Template.landingCreateAccount.helpers({
+	serverAtMaxPlayers: function() {
+		var numPlayers = Settings.findOne({name:'playerCount'})
+		if (numPlayers) {
+			if (numPlayers.value >= s.serverMaxPlayers) {
+				return true
+			}
+		}
+	}
+})
 
 Template.landingCreateAccount.events({
 	'click #landingSigninLink': function(event, template) {

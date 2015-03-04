@@ -64,6 +64,13 @@ gAlert_accountDeleted = function(username) {
 }
 
 
+gAlert_inactiveAccountDeleted = function(username) {
+    check(username, String)
+    var vars = {username:username}
+    newGlobalAlert('ga_inactiveAccountDeleted', vars)
+}
+
+
 // --------
 
 

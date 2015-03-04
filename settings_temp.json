@@ -23,5 +23,9 @@
 			"apiKey":"xxx",
 			"listId":"xxx"
 		}
+	},
+	"mandrill": {
+		"username":"xxx",
+		"apikey":"xxx"
 	}
 }

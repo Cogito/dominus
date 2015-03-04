@@ -9,6 +9,8 @@ s.rankings = {}
 
 s.rankings.perPage = 10
 
+s.serverMaxPlayers = 500
+
 if (Meteor.isServer && process.env.NODE_ENV == 'development') {
 	// cheats
 	s.resource.interval = 1000 * 30
@@ -30,6 +32,20 @@ s.battle_power_lost_per_round_winner = 200
 
 // length of time added to game end clock when there is a new dominus
 s.time_til_game_end_when_new_dominus = 1000 * 60 * 60 * 24 * 7 	// 7 days
+
+// removal of inactives
+s.inactives = {
+	deleteCutoff: {
+		unverifiedEmail: 1000 * 60 * 60 * 24 * 2,	// 2 days
+		noVillagesOrVassals: 1000 * 60 * 60 * 24 * 2, 	// 2 days
+		everyoneElse: 1000 * 60 * 60 * 24 * 7 	// 1 week
+	},
+	reminderCutoff: {
+		unverifiedEmail: 1000 * 60 * 60 * 24 * 1,	// 1 day
+		noVillagesOrVassals: 1000 * 60 * 60 * 24 * 1, 	// 1 day
+		everyoneElse: 1000 * 60 * 60 * 24 * 6 	// 6 days
+	}
+}
 
 //s.vassal_tax = 0.25		// percentage of income that goes to lord
 

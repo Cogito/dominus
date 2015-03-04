@@ -1,73 +1,75 @@
 <template name="help_battles">
-    <div class="panel-heading">
-        <a data-toggle="collapse" data-parent="#accordion_help" href="#help-battles">
-            Battles
-        </a>
-    </div>
-    <div id="help-battles" class="panel-collapse collapse">
-        <div class="panel-body">
-            <p>When a unit is on the same hex as an enemy they will battle.  Every {{s_battle_interval}} all units in the battle will lose soldiers.  Winners lose {{s.battle_power_lost_per_round_winner}} power worth of soldiers and losers lose {{s.battle_power_lost_per_round}} power worth of soldiers.  Larger armies and more people in a battle cause losses to go up.</p>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <a data-toggle="collapse" data-parent="#accordion_help" href="#help-battles">
+                Battles
+            </a>
+        </div>
+        <div id="help-battles" class="panel-collapse collapse">
+            <div class="panel-body">
+                <p>When a unit is on the same hex as an enemy they will battle.  Every {{s_battle_interval}} all units in the battle will lose soldiers.  Winners lose {{s.battle_power_lost_per_round_winner}} power worth of soldiers and losers lose {{s.battle_power_lost_per_round}} power worth of soldiers.  Larger armies and more people in a battle cause losses to go up.</p>
 
-            <div class="help_section">Attackers and Defenders</div>
-            <p>If there is a castle or village in the battle then they are a defender.  If an army is on the same hex as their castle or village then they are a defender.  Otherwise the defender is the first army to arrive at the hex.  All allies of this defender are also defenders.</p>
+                <div class="help_section">Attackers and Defenders</div>
+                <p>If there is a castle or village in the battle then they are a defender.  If an army is on the same hex as their castle or village then they are a defender.  Otherwise the defender is the first army to arrive at the hex.  All allies of this defender are also defenders.</p>
 
-            <div class="help_section">Power</div>
-            <p>Every round if your unit's power + your ally's power is greater than your enemies' combined power then you are a winner that round.</p>
+                <div class="help_section">Power</div>
+                <p>Every round if your unit's power + your ally's power is greater than your enemies' combined power then you are a winner that round.</p>
 
-            <p>If you are a defender then your soldiers use their defend power.  If you're an attacker then they use their attack power.</p>
+                <p>If you are a defender then your soldiers use their defend power.  If you're an attacker then they use their attack power.</p>
 
-            <table class="table table-condensed">
-                <thead>
-                    <tr>
-                        <td></td>
-                        <td>Attack Power</td>
-                        <td>Defend Power</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Footmen</td>
-                        <td>{{s.army.stats.footmen.offense}}</td>
-                        <td>{{s.army.stats.footmen.defense}}</td>
-                    </tr>
-                    <tr>
-                        <td>Archers</td>
-                        <td>{{s.army.stats.archers.offense}}</td>
-                        <td>{{s.army.stats.archers.defense}}</td>
-                    </tr>
-                    <tr>
-                        <td>Pikemen</td>
-                        <td>{{s.army.stats.pikemen.offense}}</td>
-                        <td>{{s.army.stats.pikemen.defense}}</td>
-                    </tr>
-                    <tr>
-                        <td>Cavalry</td>
-                        <td>{{s.army.stats.cavalry.offense}}</td>
-                        <td>{{s.army.stats.cavalry.defense}}</td>
-                    </tr>
-                    <tr>
-                        <td>Catapults</td>
-                        <td>{{s.army.stats.catapults.offense}}</td>
-                        <td>{{s.army.stats.catapults.defense}}</td>
-                    </tr>
-                </tbody>
-            </table>
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <td>Attack Power</td>
+                            <td>Defend Power</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Footmen</td>
+                            <td>{{s.army.stats.footmen.offense}}</td>
+                            <td>{{s.army.stats.footmen.defense}}</td>
+                        </tr>
+                        <tr>
+                            <td>Archers</td>
+                            <td>{{s.army.stats.archers.offense}}</td>
+                            <td>{{s.army.stats.archers.defense}}</td>
+                        </tr>
+                        <tr>
+                            <td>Pikemen</td>
+                            <td>{{s.army.stats.pikemen.offense}}</td>
+                            <td>{{s.army.stats.pikemen.defense}}</td>
+                        </tr>
+                        <tr>
+                            <td>Cavalry</td>
+                            <td>{{s.army.stats.cavalry.offense}}</td>
+                            <td>{{s.army.stats.cavalry.defense}}</td>
+                        </tr>
+                        <tr>
+                            <td>Catapults</td>
+                            <td>{{s.army.stats.catapults.offense}}</td>
+                            <td>{{s.army.stats.catapults.defense}}</td>
+                        </tr>
+                    </tbody>
+                </table>
 
-            <div class="help_section">Bonuses</div>
-            <p>Bonuses can increase an army's power.</p>
-            <p>Footmen recieve a bonus against pikemen. Archers recieve a bonus against footmen. Pikemen recieve a bonus against cavalry. Calvary recieve a bonus against archers and footmen.</p>
-            <p>When an archer fights a footman because the archer has a bonus against footmen the archer is twice as powerful.</p>
-            <p>Catapults' offense is multiplied by {{s.army.stats.catapults.bonus_against_buildings}} when attacking a castle or village.  They must be on the same hex as an enemy castle or village.</p>
+                <div class="help_section">Bonuses</div>
+                <p>Bonuses can increase an army's power.</p>
+                <p>Footmen recieve a bonus against pikemen. Archers recieve a bonus against footmen. Pikemen recieve a bonus against cavalry. Calvary recieve a bonus against archers and footmen.</p>
+                <p>When an archer fights a footman because the archer has a bonus against footmen the archer is twice as powerful.</p>
+                <p>Catapults' offense is multiplied by {{s.army.stats.catapults.bonus_against_buildings}} when attacking a castle or village.  They must be on the same hex as an enemy castle or village.</p>
 
-            <p>Armies defending a castle receive a {{castle_defense_bonus}}x bonus.  Armies defending a village receive a  {{village_defense_bonus}}x bonus.  Only armies inside the castle or village get this bonus.</p>
+                <p>Armies defending a castle receive a {{castle_defense_bonus}}x bonus.  Armies defending a village receive a  {{village_defense_bonus}}x bonus.  Only armies inside the castle or village get this bonus.</p>
 
-            <p>Armies on a vassal's castle or village receive a {{ally_castle_defense_bonus}}x bonus.  Armies on the same hex as their own castle or village but outside also receive this bonus.</p>
+                <p>Armies on a vassal's castle or village receive a {{ally_castle_defense_bonus}}x bonus.  Armies on the same hex as their own castle or village but outside also receive this bonus.</p>
 
-            <div class="help_section">Alerts</div>
-            <p>You will get an alert when your units enter a battle.  You can also see battles as they happen in the alerts panel.</p>
+                <div class="help_section">Alerts</div>
+                <p>You will get an alert when your units enter a battle.  You can also see battles as they happen in the alerts panel.</p>
 
-            <div class="help_section">Who Gets the Spoils</div>
-            <p>Multiple armies can attack a castle at the same time.  If they win the castle will go to the first army to arrive that is still alive.</p>
+                <div class="help_section">Who Gets the Spoils</div>
+                <p>Multiple armies can attack a castle at the same time.  If they win the castle will go to the first army to arrive that is still alive.</p>
+            </div>
         </div>
     </div>
 </template>

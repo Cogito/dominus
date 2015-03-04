@@ -63,6 +63,12 @@
 									<td>Lost Soldiers</td>
 									<td style="text-align:right;">{{round user.losses_num}}</td>
 								</tr>
+								{{#if daysSinceUserActive}}
+									<tr>
+										<td>Last Active</td>
+										<td style="text-align:right;">{{daysSinceUserActive}}</td>
+									</tr>
+								{{/if}}
 							</tbody>
 						</table>
 					{{/if}}

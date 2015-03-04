@@ -38,17 +38,51 @@ Accounts.onCreateUser(function(options, user) {
 		}
 	}
 
-	if (Meteor.isServer && process.env.NODE_ENV == 'development') {
-		user.emails[0].verified = true
-	}
+	// if (Meteor.isServer && process.env.NODE_ENV == 'development') {
+	// 	user.emails[0].verified = true
+	// }
 
 	user = setupNewUser(user)
+
+	Cue.addTask('subscribeToNewsletter', {isAsync:true, unique:true}, {email:user.emails[0].address, name:user.username})
 
 	// if someone was dominus make them not dominus
 	remove_dominus()
 
 	return user
 })
+
+
+Cue.addJob('subscribeToNewsletter', {retryOnError:true, maxMs:1000*60*5}, function(task, done) {
+	subscribeToNewsletter(task.data.email, task.data.name)
+	done()
+})
+
+// subscribe to mailchimp
+subscribeToNewsletter = function(email, name) {
+	if (Meteor.isServer && process.env.NODE_ENV != 'development') {
+		var mailingLists = new MailChimpLists()
+
+		var params = {
+			email:{"email": email},
+			id: Meteor.settings.private.MailChimp.listId,
+			merge_vars: {
+				fname: name,
+				username: name
+			},
+			double_optin: false,
+			update_existing: true,
+			send_welcome: false
+		}
+
+		mailingLists.subscribe(params, function(error, data) {
+			if (error) {
+				console.log(error)
+			}
+		})
+	}
+}
+
 
 
 // check when user logs in if they have a castle
@@ -123,6 +157,7 @@ setupNewUser = function(user) {
 	user.losses_num = 0
 	user.sp_show_coords = false
 	user.sp_show_minimap = true
+	user.lastActive = new Date()
 
 	return user
 }
@@ -135,6 +170,11 @@ Accounts.config({
 
 Accounts.emailTemplates.siteName = 'Dominus'
 Accounts.emailTemplates.from = 'Dominus <dan@dominusgame.net>'
-Accounts.emailTemplates.verifyEmail.subject = function() {
+Accounts.emailTemplates.verifyEmail.subject = function(user) {
 	return 'Email verification for Dominus'
+}
+
+Accounts.emailTemplates.verifyEmail.html = function(user, url) {
+	var email = '<div><img src="https://dominusgame.net/emails/emailBanner.jpg" style="max-width:100%;max-height:283px;"><br><br><p>Hello,</p><p>To verify your email, simply click the link below.</p><p><a href="'+url+'">'+url+'</a></p><p>Inactive unverified accounts are deleted after 48 hours.</p><p>Thanks.</p><p><a href="https://dominusgame.net">Dominus</a></p></div>'
+	return email
 }

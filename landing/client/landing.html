@@ -76,34 +76,46 @@
 
 
 <template name="landingCreateAccount">
-	<h3>Dominus is full.</h3>
+	{{#if serverAtMaxPlayers}}
 
-	<br>
+		<h3>Dominus is full.</h3>
+		<br>
 
-	If you would like to be notified when the next game starts add your email to the mailing list.
+		If you would like to be notified when the next game starts add your email to the mailing list.
 
-	<br><br>
+		<br><br>
 
-	{{> MailChimpListSubscribe}}
+		{{> MailChimpListSubscribe}}
 
-	<br>
-	<div class="loginLink"><a href="" id="landingSigninLink">Sign In</a></div>
+		<br>
+		<div class="loginLink"><a href="" id="landingSigninLink">Sign In</a></div>
+
+	{{else}}
+
+		{{> aSocialError}}
+		{{> aGoogleButton}}
+		{{> aFacebookButton}}
+
+		<br>
+		<div class="divider">
+			<hr class="left">or<hr class="right"><div class="after"></div>
+		</div>
+		<br>
+
+		<div class="loginTitle">Create an an account.</div>
+		<br>
+
+		<div class="formContainer">
+			{{> aCreateAccount}}
+		</div>
+		<br>
+		<div class="loginLink"><a href="" id="landingSigninLink">Sign In</a></div>
+
+	{{/if}}
 </template>
 
 
 <template name="landingSignin">
-	<h3>Dominus is full.</h3>
-
-	<br>
-
-	If you would like to be notified when the next game starts add your email to the mailing list.
-
-	<br><br>
-
-	{{> MailChimpListSubscribe}}
-
-	<br><br>
-	
 	{{> aSocialError}}
 	{{> aGoogleButton}}
 	{{> aFacebookButton}}
@@ -120,6 +132,7 @@
 		{{> aSignin}}
 	</div>
 	<br>
+	<div class="loginLink"><a href="" id="landingCreateAccountLink">Create Account</a></div>
 	<div class="loginLink"><a href="" id="landingForgotPasswordLink">Forgot Password</a></div>
 </template>
 

@@ -1,23 +1,25 @@
 <template name="help_villages">
-    <div class="panel-heading">
-        <a data-toggle="collapse" data-parent="#accordion_help" href="#help-villages">
-            Villages
-        </a>
-    </div>
-    <div id="help-villages" class="panel-collapse collapse">
-        <div class="panel-body">
-            <p>Villages give you resources.  They produce resources from the 6 surrounding hexes every {{resource_interval}}.</p>
-            <p>You can build up to {{s.village.max_can_have}} villages at one time.</p>
-            <p>Building a village costs {{s.village.cost.level1.grain}} of each resource and takes {{date_duration_humanize s.village.cost.level1.timeToBuild}} to build.  Level 1 villages can hire only archers.  They can be upgraded to produce more resources and types of soldiers.</p>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <a data-toggle="collapse" data-parent="#accordion_help" href="#help-villages">
+                Villages
+            </a>
+        </div>
+        <div id="help-villages" class="panel-collapse collapse">
+            <div class="panel-body">
+                <p>Villages give you resources.  They produce resources from the 6 surrounding hexes every {{resource_interval}}.</p>
+                <p>You can build up to {{s.village.max_can_have}} villages at one time.</p>
+                <p>Building a village costs {{s.village.cost.level1.grain}} of each resource and takes {{date_duration_humanize s.village.cost.level1.timeToBuild}} to build.  Level 1 villages can hire only archers.  They can be upgraded to produce more resources and types of soldiers.</p>
 
-            <p>Upgrading a village to level 2 costs {{s.village.cost.level2.grain}} of each resource and takes {{date_duration_humanize s.village.cost.level2.timeToBuild}}.  Level 2 villages have a resource production bonus of {{s.village.productionBonus.level2}}x.  Level 2 villages can hire footmen, archers and pikemen.</p>
+                <p>Upgrading a village to level 2 costs {{s.village.cost.level2.grain}} of each resource and takes {{date_duration_humanize s.village.cost.level2.timeToBuild}}.  Level 2 villages have a resource production bonus of {{s.village.productionBonus.level2}}x.  Level 2 villages can hire footmen, archers and pikemen.</p>
 
-            <p>Upgrading a village to level 3 costs {{s.village.cost.level3.grain}} of each resource and takes {{date_duration_humanize s.village.cost.level3.timeToBuild}}.  Level 3 villages have a resource production bonus of {{s.village.productionBonus.level3}}x.  Level 3 villages can hire soldiers of any type except catapults.</p>
+                <p>Upgrading a village to level 3 costs {{s.village.cost.level3.grain}} of each resource and takes {{date_duration_humanize s.village.cost.level3.timeToBuild}}.  Level 3 villages have a resource production bonus of {{s.village.productionBonus.level3}}x.  Level 3 villages can hire soldiers of any type except catapults.</p>
 
-            <p>While upgrading villages do not receive resources and cannot hire soldiers.</p>
+                <p>While upgrading villages do not receive resources and cannot hire soldiers.</p>
 
-            <p>Villages have a {{village_defense_bonus}}x defense bonus.</p>
-            <p>If an army of yours is stopped on the same hex as your village then they will join the village's garrison.</p>
+                <p>Villages have a {{village_defense_bonus}}x defense bonus.</p>
+                <p>If an army of yours is stopped on the same hex as your village then they will join the village's garrison.</p>
+            </div>
         </div>
     </div>
 </template>

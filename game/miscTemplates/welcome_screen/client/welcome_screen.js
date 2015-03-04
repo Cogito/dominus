@@ -40,20 +40,6 @@ Template.welcome_screen.created = function() {
 
 
 Template.welcome_screen.rendered = function() {
-    var canvasSize = Session.get('canvas_size')
-    if (canvasSize) {
-        $('#welcomeScreenPositioner').css('left', canvasSize.width/2 - 250)
-        $('#welcomeScreenPositioner').css('top', canvasSize.height/2 - 150)
-    }
-
-    this.autorun(function() {
-        var canvasSize = Session.get('canvas_size')
-        if (canvasSize) {
-            $('#welcomeScreenPositioner').css('left', canvasSize.width/2 - 250)
-            $('#welcomeScreenPositioner').css('top', canvasSize.height/2 - 150)
-        }
-    })
-
     var _fbq = window._fbq || (window._fbq = []);
     if (!_fbq.loaded) {
         var fbds = document.createElement('script');

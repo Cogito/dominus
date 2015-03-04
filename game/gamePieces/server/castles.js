@@ -29,9 +29,6 @@ Cue.addJob('create_castle', {retryOnError:true, maxMs:1000*60*5}, function(task,
 
 create_castle = function(user_id) {
 	check(user_id, String)
-	if (s.down_for_maintenance == true) {
-		return false
-	}
 
 	if (Castles.find({user_id: user_id}).count() > 0) {
 		console.error('user but already a castle')

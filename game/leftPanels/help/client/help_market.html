@@ -1,27 +1,29 @@
 <template name="help_market">
-    <div class="panel-heading">
-        <a data-toggle="collapse" data-parent="#accordion_help" href="#help-market">
-            Resources and the Market
-        </a>
-    </div>
-    <div id="help-market" class="panel-collapse collapse">
-        <div class="panel-body">
-            <p>There are six different types of resources.  Grain, lumber, ore, wool, clay and glass.  Resources are used to hire soldiers and build villages.  Each hex produces a different type of resouce.</p>
-            <div class="help_section">Collecting Resources</div>
-            <p>Resources are collected at your castle and villages.</p>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <a data-toggle="collapse" data-parent="#accordion_help" href="#help-market">
+                Resources and the Market
+            </a>
+        </div>
+        <div id="help-market" class="panel-collapse collapse">
+            <div class="panel-body">
+                <p>There are six different types of resources.  Grain, lumber, ore, wool, clay and glass.  Resources are used to hire soldiers and build villages.  Each hex produces a different type of resouce.</p>
+                <div class="help_section">Collecting Resources</div>
+                <p>Resources are collected at your castle and villages.</p>
 
-            <p>Your castle collects {{s.castle.income.grain}} grain, {{s.castle.income.lumber}} lumber, {{s.castle.income.ore}} ore, {{s.castle.income.wool}} wool, {{s.castle.income.clay}} clay, and {{s.castle.income.glass}} glass.  Everyone's castle collects the same resources.</p>
+                <p>Your castle collects {{s.castle.income.grain}} grain, {{s.castle.income.lumber}} lumber, {{s.castle.income.ore}} ore, {{s.castle.income.wool}} wool, {{s.castle.income.clay}} clay, and {{s.castle.income.glass}} glass.  Everyone's castle collects the same resources.</p>
 
-            <p>Villages collect resources from the 6 hexes surrounding them.</p>
+                <p>Villages collect resources from the 6 hexes surrounding them.</p>
 
-            <p>Resources are collected every {{resource_interval}}.</p>
-            <p>You can see how many resources you have in the top of the summary panel.  The white number is how many you have.  The first grey number is how many you collected last resource update from your castle and villages.  The second grey number is how many you received from your vassals.</p>
-            <p>Villages collect from the hexes surrounding even if there is another building on the hex.  It is ok to build villages next to each other or next to another village.</p>
-            <div class="help_section">Large Resource Hexes</div>
-            <p>Some hexes produce {{resources_at_large_hexes}} resources instead of {{s.resource.gained_at_hex}}.  These hexes look different than the others.</p>
-            <div class="help_section">The Market</div>
-            <p>The market is where you can exchange resources for gold.  Prices for resources go up and down based on demand.  If grain is in high demand and many people buy grain then the price will go up.</p>
-            <p>Taxes from the market are evenly distrubuted to castles every resource update.</p>
+                <p>Resources are collected every {{resource_interval}}.</p>
+                <p>You can see how many resources you have in the top of the summary panel.  The white number is how many you have.  The first grey number is how many you collected last resource update from your castle and villages.  The second grey number is how many you received from your vassals.</p>
+                <p>Villages collect from the hexes surrounding even if there is another building on the hex.  It is ok to build villages next to each other or next to another village.</p>
+                <div class="help_section">Large Resource Hexes</div>
+                <p>Some hexes produce {{resources_at_large_hexes}} resources instead of {{s.resource.gained_at_hex}}.  These hexes look different than the others.</p>
+                <div class="help_section">The Market</div>
+                <p>The market is where you can exchange resources for gold.  Prices for resources go up and down based on demand.  If grain is in high demand and many people buy grain then the price will go up.</p>
+                <p>Taxes from the market are evenly distrubuted to castles every resource update.</p>
+            </div>
         </div>
     </div>
 </template>

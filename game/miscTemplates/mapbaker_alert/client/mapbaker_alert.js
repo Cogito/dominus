@@ -25,23 +25,6 @@ Template.mapbaker_alert.helpers({
 })
 
 
-Template.mapbaker_alert.rendered = function() {
-    var canvasSize = Session.get('canvas_size')
-    if (canvasSize) {
-        $('#mapbakerPositioner').css('left', canvasSize.width/2 - 200)
-        $('#mapbakerPositioner').css('top', 60)
-    }
-
-    this.autorun(function() {
-        var canvasSize = Session.get('canvas_size')
-        if (canvasSize) {
-            $('#mapbakerPositioner').css('left', canvasSize.width/2 - 200)
-            $('#mapbakerPositioner').css('top', 60)
-        }
-    })
-}
-
-
 Template.mapbaker_alert.created = function() {
     var self = this
 

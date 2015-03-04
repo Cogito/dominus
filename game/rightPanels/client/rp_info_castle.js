@@ -12,7 +12,7 @@ Template.rp_info_castle.helpers({
 			return village[this]
 		}
 	},
-	
+
 	showUnverifiedEmailAlert: function() {
 		if (Template.currentData()) {
 			var user = RightPanelUser.findOne(Template.currentData().user_id)
@@ -104,6 +104,22 @@ Template.rp_info_castle.helpers({
 	user: function() {
 		if (Template.currentData()) {
 			return RightPanelUser.findOne(Template.currentData().user_id)
+		}
+	},
+
+	daysSinceUserActive: function() {
+		var days = Template.instance().daysSinceUserActive.get()
+
+		if (days === null) {
+			return null
+		}
+
+		if (days === 0) {
+			return 'today'
+		} else if (days === 1) {
+			return 'yesterday'
+		} else {
+			return days+' days ago'
 		}
 	}
 })
@@ -198,6 +214,16 @@ Template.rp_info_castle.created = function() {
 		if (Template.currentData() && Template.currentData().user_id) {
 			Tracker.nonreactive(function() {
 				self.relationship.set(getUnitRelationType(Template.currentData().user_id))
+			})
+		}
+	})
+
+
+	self.daysSinceUserActive = new ReactiveVar(null)
+	self.autorun(function() {
+		if (Template.currentData() && Template.currentData().user_id) {
+			Meteor.call('daysSinceUserActive', Template.currentData().user_id, function(error, result) {
+				self.daysSinceUserActive.set(result)
 			})
 		}
 	})
