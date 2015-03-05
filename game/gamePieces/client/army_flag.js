@@ -43,7 +43,6 @@ Template.army_flag.created = function() {
 				var numAbove = 0
 				var numVassal = 0
 				var numBelow = 0
-				//var numSibling = 0
 				var numTeam = 0
 				var numFoe = 0
 
@@ -70,9 +69,6 @@ Template.army_flag.created = function() {
 							} else {
 								numBelow++
 							}
-
-							// } else if (_.indexOf(user.siblings, res.user_id) != -1) {
-							// 	numSibling++
 						} else {
 							numTeam++
 						}
@@ -153,17 +149,6 @@ Template.army_flag.created = function() {
 					flags[index] = {num: numBelow, offset: offset, textOffset: offset+9, type: 'vassal', x: Template.currentData().x, y: Template.currentData().y, drawNum: drawNum}
 					index++
 				}
-
-				// if (numSibling > 0) {
-				// 	if (numSibling > 1) {
-				// 		drawNum = true
-				// 	} else {
-				// 		drawNum = false
-				// 	}
-				// 	offset += shape_size
-				// 	flags[index] = {num: numSibling, offset: offset, textOffset: offset+9, type: 'sibling', x: this.x, y: this.y, drawNum: drawNum}
-				// 	index++
-				// }
 
 				if (numTeam > 0) {
 					if (numTeam > 1) {

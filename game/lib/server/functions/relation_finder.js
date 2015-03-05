@@ -1,10 +1,10 @@
 // update relationships for user and everyone in his king's branch
-// allies - everyone above and below you in tree
-// allies_below - everyone below
-// allies_above - everyone above
-// king - your king
-// siblings - vassals of your lord
-// team - everyone under your king
+// allies - everyone above and below you in tree not including self
+// allies_below - everyone below not including self
+// allies_above - everyone above not including self
+// king - your king or yourself if you are king
+// is_king - are you king
+// team - everyone under your king not including self
 
 
 Cue.addJob('update_allies', {retryOnError:false, maxMs:1000*60*5}, function(task, done) {

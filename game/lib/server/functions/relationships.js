@@ -1,28 +1,33 @@
+// allies - everyone above and below you in tree not including self
+// allies_below - everyone below not including self
+// allies_above - everyone above not including self
+// king - your king (sometimes yourself if you are king sometimes null or undefined if you are king, should fix this)
+// is_king - are you king
+// team - everyone under your king not including self
+
+
 // runUpdateAllies boolean is here so that it doesn't error when calling from deleteAccount()
-set_lord_and_vassal = function(winner, loser, runUpdateAllies) {
-	if (typeof runUpdateAllies === 'undefined') { runUpdateAllies = true; }
+set_lord_and_vassal = function(winner_id, loser_id) {
+	var fields = {allies_above:1, lord:1, king:1, is_king:1}
+
+	var winner = Meteor.users.findOne(winner_id, {fields:fields})
+	var loser = Meteor.users.findOne(loser_id, {fields:fields})
+
+	if (!winner || !loser) {
+		throw new Meteor.Error('winner or loser not found')
+	}
 
 	if (winner._id == loser._id) {
 		throw new Meteor.Error('winner and loser are the same in set_lord_and_vassal')
 	}
 
-	check(winner, Object)
-	check(loser, Object)
-
-	// keep track of this so that we can update_allies on him later
-	var loser_prev_lord_id = null
-
-
-
 	// lost/gained vassal notifications
 	// compare people above loser to people above winner
 	// if someone above loser is not above winner then they lost a vassal
 	// do opposite for gained
-	var above_winner = getPeopleAbove(winner._id)
-	var above_loser = getPeopleAbove(loser._id)
 
-	_.each(above_loser, function(above_loser_lord_id) {
-		if (_.indexOf(above_winner, above_loser_lord_id) == -1) {
+	_.each(loser.allies_above, function(above_loser_lord_id) {
+		if (_.indexOf(winner.allies_above, above_loser_lord_id) == -1) {
 
 			// make sure we don't send it to winner or loser
 			if (above_loser_lord_id != winner._id && above_loser_lord_id != loser._id) {
@@ -31,8 +36,8 @@ set_lord_and_vassal = function(winner, loser, runUpdateAllies) {
 		}
 	})
 
-	_.each(above_winner, function(above_winner_lord_id) {
-		if (_.indexOf(above_loser, above_winner_lord_id) == -1) {
+	_.each(winner.allies_above, function(above_winner_lord_id) {
+		if (_.indexOf(loser.allies_above, above_winner_lord_id) == -1) {
 
 			// make sure we don't send it to winner or loser
 			if (above_winner_lord_id != winner._id && above_winner_lord_id != loser._id) {
@@ -44,8 +49,6 @@ set_lord_and_vassal = function(winner, loser, runUpdateAllies) {
 	// send notification to winner
 	alert_gainedVassal(winner._id, loser._id, winner._id)
 
-
-
 	// vassal is no longer a king, he had no lord, now he does
 	// destroy king chatroom
 	// send notification
@@ -53,7 +56,6 @@ set_lord_and_vassal = function(winner, loser, runUpdateAllies) {
 		Cue.addTask('destroyKingChatroom', {isAsync:false, unique:true}, {king_id:loser._id})
 		Meteor.users.update(loser._id, {$set: {is_king: false}})
 	}
-
 
 	// is loser above winner
 	// he is either above winner or he is in a different branch
@@ -68,22 +70,15 @@ set_lord_and_vassal = function(winner, loser, runUpdateAllies) {
 			create_lord_and_vassal(loser.lord, winner._id)
 		}
 
-
 	// winner is stealing loser from another lord
 	// remove connection between loser and his lord
 	// create notification for old lord that he lost a vassal
 	} else if (loser.lord) {
-
 		remove_lord_and_vassal(loser.lord, loser._id)
-
-		// used later to update his allies
-		loser_prev_lord_id = loser.lord
 	}
-
 
 	// create connection between winner and loser
 	create_lord_and_vassal(winner._id, loser._id)
-
 
 	// is winner a new king
 	// has he conquered his lord?
@@ -91,30 +86,19 @@ set_lord_and_vassal = function(winner, loser, runUpdateAllies) {
 		Meteor.users.update(winner._id, {$set: {is_king:true}})
 	}
 
-
 	// send notification
 	alert_newLord(loser._id, winner._id)
 
-	if (runUpdateAllies) {
-		// var rf = new relation_finder(winner._id)
-		// rf.start()
-		Cue.addTask('update_allies', {isAsync:false, unique:true}, {user_id:winner._id})
-
-
-		if (loser_prev_lord_id) {
-			// var rf = new relation_finder(loser_prev_lord_id)
-			// rf.start()
-			Cue.addTask('update_allies', {isAsync:false, unique:true}, {user_id:loser_prev_lord_id})
-		}
-
-		// Cue.addTask('enemies_together_check', {isAsync:false, unique:true}, {})
-		// Cue.addTask('enemy_on_building_check', {isAsync:false, unique:true}, {})
-	}
+	Cue.addTask('enemies_together_check', {isAsync:false, unique:true}, {})
+	Cue.addTask('enemy_on_building_check', {isAsync:false, unique:true}, {})
+	Cue.addTask('check_for_dominus', {isAsync:false, unique:true}, {})
+	Cue.addTask('cleanupAllKingChatrooms', {isAsync:false, unique:true}, {})
 }
 
 
 
-
+// remove lord and vassal connection
+// vassal is now king
 remove_lord_and_vassal = function(lord_id, vassal_id) {
 	check(lord_id, String)
 	check(vassal_id, String)
@@ -123,16 +107,70 @@ remove_lord_and_vassal = function(lord_id, vassal_id) {
 		throw new Meteor.Error('winner and loser are the same in remove_lord_and_vassal')
 	}
 
+	var fields = {allies_above:1, allies_below:1}
+	var lord = Meteor.users.findOne(lord_id, {fields:fields})
+	var vassal = Meteor.users.findOne(vassal_id, {fields:fields})
+
+	if (!lord || !vassal) {
+		throw new Meteor.Error('lord or vassal not found')
+	}
+
+	// vassal
 	Meteor.users.update(lord_id, {$pull: {
 		vassals: vassal_id
 	}})
 
+	// lord
 	Meteor.users.update(vassal_id, {$set: {
 		lord: null
 	}})
 
+	// allies
+	// remove lord and lord's allies_above from 		vassal and vassal's allies_below
+	// allies_above
+	// remove lord and lord's allies_above from 		vassal and vassal's allies_below
+	var pullIds = lord.allies_above
+	pullIds.push(lord._id)
+	var pullUsers = vassal.allies_below
+	pullUsers.push(vassal._id)
+	Meteor.users.update({_id: {$in:pullUsers}}, {$pull: {allies_above:{$in:pullIds}, allies:{$in:pullIds}}}, {multi:true})
+
+	// allies
+	// remove vassal and vassal's allies_below from 	lord and lord's allies_above
+	// allies_below
+	// remove vassal and vassal's allies_below from 	lord and lord's allies_above
+	var pullIds = vassal.allies_below
+	pullIds.push(vassal._id)
+	var pullUsers = lord.allies_above
+	pullUsers.push(lord._id)
+	Meteor.users.update({_id: {$in:pullUsers}}, {$pull: {allies_below:{$in:pullIds}, allies:{$in:pullIds}}}, {multi:true})
+
+	// king
+	// vassal is now king
+	// vassal is now king of everyone below him
+	Meteor.users.update(vassal._id, {$set:{is_king:true}})
+	var setUsers = vassal.allies_below
+	Meteor.users.update({_id:{$in:setUsers}}, {$set:{king:vassal._id}}, {multi:true})
+
+	// team
+	// remove vassal and vassal's allies_below from everyone's team
+	var pullIds = vassal.allies_below
+	pullIds.push(vassal._id)
+	Meteor.users.update({}, {$pull: {team:{$in:pullIds}}}, {multi:true})
+	// vassal's team = vassal's new allies_below
+	Meteor.users.update({_id:{$in:pullIds}}, {$set:{team:pullIds}}, {multi:true})
+
+	// TODO: turn these into a job
 	update_vassal_ally_count(lord_id)
 	update_vassal_ally_count(vassal_id)
+
+	console.log('')
+	console.log('--- remove lord/vassal')
+	var fields = {allies_above:1, allies_below:1, king:1, team:1, allies:1, is_king:1}
+	var lord = Meteor.users.findOne(lord_id, {fields:fields})
+	var vassal = Meteor.users.findOne(vassal_id, {fields:fields})
+	console.log(lord)
+	console.log(vassal)
 }
 
 
@@ -145,6 +183,14 @@ create_lord_and_vassal = function(lord_id, vassal_id) {
 		throw new Meteor.Error('winner and loser are the same in create_lord_and_vassal')
 	}
 
+	var fields = {allies_above:1, allies_below:1, king:1, team:1, is_king:1}
+	var lord = Meteor.users.findOne(lord_id, {fields:fields})
+	var vassal = Meteor.users.findOne(vassal_id, {fields:fields})
+
+	if (!lord || !vassal) {
+		throw new Meteor.Error('lord or vassal not found')
+	}
+
 	// set lord
 	Meteor.users.update(vassal_id, {$set: {
 		lord: lord_id
@@ -155,6 +201,57 @@ create_lord_and_vassal = function(lord_id, vassal_id) {
 		vassals: vassal_id
 	}})
 
+	// allies_above and allies
+	// add lord and lord's allies_above to 		vassal and vassal's allies below allies_above
+	// add lord and lord's allies_above to		vassal and vassal's allies below allies
+	var addIds = lord.allies_above
+	addIds.push(lord._id)
+	var addUsers = vassal.allies_below
+	addUsers.push(vassal._id)
+	Meteor.users.update({_id: {$in:addUsers}}, {$addToSet: {allies_above:{$each:addIds}, allies:{$each:addIds}}}, {multi:true})
+
+	// allies_below and allies
+	// add vassal and vassal's allies_below to 	lord and lord's allies above allies_below
+	// add vassal and vassal's allies_below to	lord and lord's allies above allies
+	var addIds = vassal.allies_below
+	addIds.push(vassal._id)
+	var addUsers = lord.allies_above
+	addUsers.push(lord._id)
+	Meteor.users.update({_id: {$in:addUsers}}, {$addToSet: {allies_below:{$each:addIds}, allies:{$each:addIds}}}, {multi:true})
+
+	// team
+	// add vassal and vassal's allies_below to lord's team
+	var team = _.union(lord.team, [lord._id], [vassal._id], vassal.allies_below)
+	// set team on everyone in team
+	_.each(team, function(userId) {
+		var t = _.without(team, userId)
+		Meteor.users.update(userId, {$set:{team:t}}, {multi:true})
+	})
+
+	// king
+	// vassal is no longer king if they were king
+	Meteor.users.update(vassal._id, {$set:{is_king:false}})
+	// set vassal and vassal's allies below's king to king of lord
+	if (lord.is_king) {
+		var newKing = lord._id
+	} else if (lord.king){
+		var newKing = lord.king
+	} else {
+		throw new Meteor.Error('lords king is not set')
+	}
+	Meteor.users.update({_id:{$in:vassal.allies_below}}, {$set:{king:newKing}}, {multi:true})
+
+	// TODO: turn these into a job
+	update_vassal_ally_count(lord_id)
+	update_vassal_ally_count(vassal_id)
+
+	console.log('')
+	console.log('--- create lord/vassal')
+	var fields = {allies_above:1, allies_below:1, king:1, team:1, allies:1, is_king:1}
+	var lord = Meteor.users.findOne(lord_id, {fields:fields})
+	var vassal = Meteor.users.findOne(vassal_id, {fields:fields})
+	console.log(lord)
+	console.log(vassal)
 }
 
 
@@ -164,7 +261,7 @@ create_lord_and_vassal = function(lord_id, vassal_id) {
 update_vassal_ally_count = function(user_id) {
 	check(user_id, String)
 
-	var user = Meteor.users.findOne(user_id, {fields: {team:1, siblings:1, vassals:1, allies:1, allies_above:1, allies_below:1}})
+	var user = Meteor.users.findOne(user_id, {fields: {team:1, vassals:1, allies:1, allies_above:1, allies_below:1}})
 	if (user) {
 		if (user.vassals) {
 			var num_vassals = user.vassals.length
@@ -200,31 +297,7 @@ update_vassal_ally_count = function(user_id) {
 			var num_team = 0
 		}
 
-		if (user.siblings) {
-			var num_siblings = user.siblings.length
-		} else {
-			var num_siblings = 0
-		}
-
-		Meteor.users.update(user_id, {$set: {num_team:num_team, num_siblings:num_siblings, num_vassals: num_vassals, num_allies: num_allies, num_allies_above: num_allies_above, num_allies_below: num_allies_below}})
+		Meteor.users.update(user_id, {$set: {num_team:num_team, num_vassals: num_vassals, num_allies: num_allies, num_allies_above: num_allies_above, num_allies_below: num_allies_below}})
 		update_num_allies(user_id)
 	}
-}
-
-
-
-// get array of lord, lord's lord, his lord etc
-// returns array of IDs
-getPeopleAbove = function(user_id) {
-	var arr = _getPeopleAbove(user_id, [])
-	return arr
-}
-
-_getPeopleAbove = function(user_id, arr) {
-	var user = Meteor.users.findOne(user_id, {fields: {lord:1}})
-	if (user && user.lord) {
-		arr.push(user.lord)
-		arr.concat(_getPeopleAbove(user.lord, arr))
-	}
-	return arr
 }

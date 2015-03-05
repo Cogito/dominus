@@ -3,7 +3,7 @@
 // vassal take's lord's castle
 
 // TODO: is there a way to check for enemies with mongodb queries?  use $or maybe
-// $nin team $or in team but not in allies or siblings
+// $nin team $or in team but not in allies
 
 
 Cue.addJob('enemy_on_building_check', {retryOnError:false, maxMs:1000*60*5}, function(task, done) {

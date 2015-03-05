@@ -52,9 +52,6 @@ getUnitRelationType = function(user_id) {
 						return 'vassal'
 					}
 
-					// } else if (_.indexOf(user.siblings, user_id) != -1) {
-					// 	return 'sibling'
-
 				} else {
 					return 'enemy_ally'
 				}
@@ -96,9 +93,6 @@ if (Meteor.isServer) {
 					} else {
 						return 'vassal'
 					}
-
-					// } else if (_.indexOf(user.siblings, user_id) != -1) {
-					// 	return 'sibling'
 
 				} else {
 					return 'enemy_ally'

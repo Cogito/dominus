@@ -27,7 +27,6 @@ Meteor.publish('user_data', function () {
 			x:1,
 			y:1,
 			king:1,
-			//siblings:1,	// not currently used
 			team:1,
 			lp_show_castle:1,
 			lp_show_villages:1,

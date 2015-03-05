@@ -147,7 +147,7 @@ deleteAccount = function(user_id) {
 			_.each(user.vassals, function(vassal_id) {
 				var vassal = Meteor.users.findOne(vassal_id)
 				if (vassal) {
-					set_lord_and_vassal(lord, vassal, false)
+					set_lord_and_vassal(lord._id, vassal._id)
 				}
 			})
 
@@ -155,8 +155,8 @@ deleteAccount = function(user_id) {
 			remove_lord_and_vassal(lord._id, user._id)
 
 			// update lord's tree
-			var rf = new relation_finder(lord._id)
-			rf.start()
+			// var rf = new relation_finder(lord._id)
+			// rf.start()
 		}
 	} else {
 		// make vassals kings
@@ -164,8 +164,8 @@ deleteAccount = function(user_id) {
 			var vassal = Meteor.users.findOne(vassal_id)
 			if (vassal) {
 				remove_lord_and_vassal(user._id, vassal._id)
-				var rf = new relation_finder(vassal._id)
-				rf.start()
+				// var rf = new relation_finder(vassal._id)
+				// rf.start()
 			}
 		})
 	}

@@ -1,6 +1,6 @@
 Meteor.startup(function() {
 
-	if (process.env.DOMINUS_WORKER == 'true') {
+	if (process.env.DOMINUS_WORKER) {
 
 		Cue.dropInProgressTasks()
 		Cue.start()

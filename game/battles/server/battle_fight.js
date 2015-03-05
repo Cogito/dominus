@@ -98,7 +98,7 @@ Fight.prototype._handleCastle = function() {
 			var lord = Meteor.users.findOne(getsCastle.user_id)
 			var vassal = Meteor.users.findOne(castle.user_id)
 			if (lord && vassal) {
-				set_lord_and_vassal(lord, vassal, true)
+				set_lord_and_vassal(lord._id, vassal._id)
 				self.battleDb.record.castleWasTaken = true
 				self.battleDb.record.castleTakenByArmy_id = getsCastle._id
 			}

@@ -37,9 +37,9 @@ mizzao:user-status
 wizonesolutions:underscore-string
 pfafman:nvd3
 datariot:ganalytics
-meteorhacks:kadira
 miro:mailchimp
 danimal:cue
-meteorhacks:cluster
 miro:mailchimp-lists
 wylio:mandrill
+meteorhacks:cluster
+meteorhacks:kadira

@@ -38,9 +38,9 @@ Accounts.onCreateUser(function(options, user) {
 		}
 	}
 
-	// if (Meteor.isServer && process.env.NODE_ENV == 'development') {
-	// 	user.emails[0].verified = true
-	// }
+	if (Meteor.isServer && process.env.NODE_ENV == 'development') {
+		user.emails[0].verified = true
+	}
 
 	user = setupNewUser(user)
 
@@ -127,7 +127,6 @@ setupNewUser = function(user) {
 	user.allies_below = []
 	user.allies_above = []
 	user.team = []
-	user.siblings = []
 	user.is_king = true
 	user.is_dominus = false
 	user.show_welcome_screen = true

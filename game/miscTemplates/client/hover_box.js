@@ -139,9 +139,6 @@ Template.hover_box.helpers({
 								object.flag_name = 'Lower Vassal'
 							}
 
-						// } else if (_.indexOf(user.siblings, object.user_id) != -1) {
-						// 	object.flag_type = 'sibling'
-						// 	object.flag_name = 'Sibling'
 						} else {
 							object.flag_type = 'team'
 							object.flag_name = 'Enemy Ally'
