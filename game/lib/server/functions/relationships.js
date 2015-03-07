@@ -163,7 +163,7 @@ remove_lord_and_vassal = function(lord_id, vassal_id) {
 	var ids = _.union([lord_id, vassal_id], lord.team, vassal.team)
 	_.each(ids, function(id) {
 		if (id) {
-			Cue.addTask('updateVassalAllyCount', {isAsync:true, unique:true}, {user_id:id})
+			Cue.addTask('updateVassalAllyCount', {isAsync:true, unique:false}, {user_id:id})
 		}
 	})
 }
@@ -240,7 +240,7 @@ create_lord_and_vassal = function(lord_id, vassal_id) {
 	var ids = _.union([lord_id, vassal_id], lord.team, vassal.team)
 	_.each(ids, function(id) {
 		if (id) {
-			Cue.addTask('updateVassalAllyCount', {isAsync:true, unique:true}, {user_id:id})
+			Cue.addTask('updateVassalAllyCount', {isAsync:true, unique:false}, {user_id:id})
 		}
 	})
 }

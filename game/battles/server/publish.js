@@ -1,13 +1,13 @@
 Meteor.publish('battle', function(id) {
-		if (this.userId) {
-			return Battles.find(id)
-		} else {
-			this.ready()
-		}
+	if (id) {
+		return Battles.find(id)
+	}
+	this.ready()
 })
 
 Meteor.publish('battle_notifications_at_hex', function(x,y) {
 	if (this.userId) {
+		if (typeof x != 'undefined' && typeof y != 'undefined')
 		return Battles.find({x:x, y:y, isOver:false})
 	} else {
 		this.ready()
@@ -15,19 +15,17 @@ Meteor.publish('battle_notifications_at_hex', function(x,y) {
 })
 
 Meteor.publish('fight', function(id) {
-	if (this.userId) {
+	if (id) {
 		return Fights.find(id)
-	} else {
-		this.ready()
 	}
+	this.ready()
 })
 
 Meteor.publish('lastFightInBattle', function(battle_id) {
-	if (this.userId) {
+	if (battle_id) {
 		return Fights.find({battle_id:battle_id}, {sort:{roundNumber:-1}, limit:1})
-	} else {
-		this.ready()
 	}
+	this.ready()
 })
 
 Meteor.publish('fighttitles', function(battle_id) {

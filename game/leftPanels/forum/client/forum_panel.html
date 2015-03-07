@@ -23,6 +23,7 @@
 										{{/if}}
 										<a href="" class="forum_link" data-id="{{_id}}">{{name}}</a>
 									</div>
+									<div>{{{description}}}</div>
 									<div class="forum_date">
 										Latest Post {{date_calendar updated_at}}
 									</div>
@@ -45,15 +46,6 @@
 				<li><a href="" class="forums_link">Forums</a></li>
 				<li>{{current_forum.name}}</li>
 			</ol>
-
-			{{#if has_description}}
-				<div class="panel panel-default">
-					<div class="panel-body">
-						{{{current_forum.description}}}
-					</div>
-				</div>
-				<br>
-			{{/if}}
 
 			<div class="pad_group">
 				<button class="btn btn-primary" type="button" id="forum_show_new_thread_button">Submit New Thread</button>
@@ -136,7 +128,7 @@
 			</div>
 
 			<br>
-			
+
 			<ol class="breadcrumb">
 				<li><a href="" class="forums_link">Forums</a></li>
 				<li><a href="" class="forum_link" data-id="{{current_forum._id}}">{{current_forum.name}}</a></li>

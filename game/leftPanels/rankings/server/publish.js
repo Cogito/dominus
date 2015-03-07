@@ -88,7 +88,7 @@ Meteor.publish('village_rankings', function(page) {
 	var skip = (page-1) * s.rankings.perPage
 
 	var sub = this
-	var cur = Villages.find({}, {skip:skip, sort: {"income.worth": -1}, fields: {
+	var cur = Villages.find({under_construction:false}, {skip:skip, sort: {"income.worth": -1}, fields: {
 			username:1,
 			name:1,
 			castle_id:1,

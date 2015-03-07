@@ -4,13 +4,15 @@ Template.battle.helpers({
     }
 })
 
-Template.battle.created = function() {
+Template.battle.onCreated(function() {
     this.autorun(function() {
         if (Template.currentData()) {
-            Meteor.subscribe('battle', Template.currentData()._id)
+            if (Template.currentData()._id) {
+                Meteor.subscribe('battle', Template.currentData()._id)
+            }
         }
     })
-}
+})
 
 Template.battle.rendered = function() {
     document.body.style.backgroundColor = '#333';

@@ -58,15 +58,6 @@ Template.forum_panel.helpers({
 			}
 		}
 		return false
-	},
-
-	has_description: function() {
-		var forum = Forums.findOne(Session.get('forum_current_forum'), {fields: {description:1}})
-		if (forum && forum.description) {
-			return true
-		} else {
-			return false
-		}
 	}
 
 })
