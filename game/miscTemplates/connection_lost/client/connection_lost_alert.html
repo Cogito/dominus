@@ -13,7 +13,8 @@
                 {{/if}}
 
                 {{#if isWaiting}}
-                    Tried {{status.retryCount}} times to connect.  Trying again in {{retryTime}} seconds.
+                    <div>Tried {{status.retryCount}} times to connect.  Trying again in {{retryTime}} seconds.</div>
+                    <div class="light_text">Could be happening because the game was just updated is restarting.</div>
                 {{/if}}
 
                 {{#if isOffline}}

@@ -110,25 +110,33 @@ Cue.addJob('setupKingChatroom', {retryOnError:false, maxMs:1000*60*2}, function(
 setupKingChatroom = function(king_id) {
 	check(king_id, String)
 
-	var king = Meteor.users.findOne(king_id, {fields: {is_king:1, team:1, username:1}})
+	var king = Meteor.users.findOne(king_id, {fields: {is_king:1, allies_below:1, username:1}})
 	if (king && king.is_king) {
 
-		if (king.team) {
-			var members = king.team
+		if (king.allies_below) {
+			var members = _.union(king.allies_below, [king._id]
 		} else {
-			var members = []
+			var members = [king._id]
 		}
-		members.push(king._id)
 
-		// does king already have a chatroom
-		var room = Rooms.findOne({owner:king._id, type:'king'})
-		if (room) {
-			// king already has a room
-			Rooms.update(room._id, {$set: {members:members}})
+		if (members.length > 1) {
+			// does king already have a chatroom
+			var room = Rooms.findOne({owner:king._id, type:'king'})
+			if (room) {
+				// king already has a room
+				Rooms.update(room._id, {$set: {members:members}})
+			} else {
+				// create a room for king
+				createChatroom('King '+king.username+' and Vassals', 'king', king._id, members)
+				alert_newKingChatroom(king._id)
+			}
 		} else {
-			// create a room for king
-			createChatroom('King '+king.username+' and Vassals', 'king', king._id, members)
-			alert_newKingChatroom(king._id)
+			// destroy room if there is one
+			var room = Rooms.findOne({owner:king._id, type:'king'})
+			if (room) {
+				// king already has a room
+				destroyKingChatroom(king._id)
+			}
 		}
 	}
 }
@@ -211,8 +219,11 @@ cleanupAllKingChatrooms = function() {
 
 	// create chatrooms for all users who are kings
 	Meteor.users.find({is_king:true}).forEach(function(user) {
-		if (user.team && user.team.length > 0) {
-			setupKingChatroom(user._id)
+		if (user.team) {
+			var team = _.without(user.team, user._id)
+			if (team.length > 0) {
+				setupKingChatroom(user._id)
+			}
 		}
 	})
 

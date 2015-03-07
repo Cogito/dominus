@@ -2,8 +2,11 @@
 // allies_below - everyone below not including self
 // allies_above - everyone above not including self
 // king - your king (sometimes yourself if you are king sometimes null or undefined if you are king, should fix this)
+//		TODO: when user is created this is null even though they are a king
 // is_king - are you king
-// team - everyone under your king not including self
+// team - everyone under your king - may or may not include self
+//		used to not include self, including self now to speed up relations.js
+//		TODO: when user is created team does not include self
 
 
 set_lord_and_vassal = function(winner_id, loser_id) {
@@ -126,20 +129,16 @@ remove_lord_and_vassal = function(lord_id, vassal_id) {
 	// remove lord and lord's allies_above from 		vassal and vassal's allies_below
 	// allies_above
 	// remove lord and lord's allies_above from 		vassal and vassal's allies_below
-	var pullIds = lord.allies_above
-	pullIds.push(lord._id)
-	var pullUsers = vassal.allies_below
-	pullUsers.push(vassal._id)
+	var pullIds = _.union(lord.allies_above, [lord._id])
+	var pullUsers = _.union(vassal.allies_below, [vassal._id])
 	Meteor.users.update({_id: {$in:pullUsers}}, {$pull: {allies_above:{$in:pullIds}, allies:{$in:pullIds}}}, {multi:true})
 
 	// allies
 	// remove vassal and vassal's allies_below from 	lord and lord's allies_above
 	// allies_below
 	// remove vassal and vassal's allies_below from 	lord and lord's allies_above
-	var pullIds = vassal.allies_below
-	pullIds.push(vassal._id)
-	var pullUsers = lord.allies_above
-	pullUsers.push(lord._id)
+	var pullIds = _.union(vassal.allies_below, [vassal._id])
+	var pullUsers = _.union(lord.allies_above, [lord._id])
 	Meteor.users.update({_id: {$in:pullUsers}}, {$pull: {allies_below:{$in:pullIds}, allies:{$in:pullIds}}}, {multi:true})
 
 	// king
@@ -151,8 +150,7 @@ remove_lord_and_vassal = function(lord_id, vassal_id) {
 
 	// team
 	// remove vassal and vassal's allies_below from everyone's team
-	var pullIds = vassal.allies_below
-	pullIds.push(vassal._id)
+	var pullIds = _.union(vassal.allies_below, [vassal._id])
 	Meteor.users.update({}, {$pull: {team:{$in:pullIds}}}, {multi:true})
 	// vassal's team = vassal's new allies_below
 	Meteor.users.update({_id:{$in:pullIds}}, {$set:{team:pullIds}}, {multi:true})
@@ -197,19 +195,15 @@ create_lord_and_vassal = function(lord_id, vassal_id) {
 	// allies_above and allies
 	// add lord and lord's allies_above to 		vassal and vassal's allies below allies_above
 	// add lord and lord's allies_above to		vassal and vassal's allies below allies
-	var addIds = lord.allies_above
-	addIds.push(lord._id)
-	var addUsers = vassal.allies_below
-	addUsers.push(vassal._id)
+	var addIds = _.union(lord.allies_above, [lord._id])
+	var addUsers = _.union(vassal.allies_below, [vassal._id])
 	Meteor.users.update({_id: {$in:addUsers}}, {$addToSet: {allies_above:{$each:addIds}, allies:{$each:addIds}}}, {multi:true})
 
 	// allies_below and allies
 	// add vassal and vassal's allies_below to 	lord and lord's allies above allies_below
 	// add vassal and vassal's allies_below to	lord and lord's allies above allies
-	var addIds = vassal.allies_below
-	addIds.push(vassal._id)
-	var addUsers = lord.allies_above
-	addUsers.push(lord._id)
+	var addIds = _.union(vassal.allies_below, [vassal._id])
+	var addUsers = _.union(lord.allies_above, [lord._id])
 	Meteor.users.update({_id: {$in:addUsers}}, {$addToSet: {allies_below:{$each:addIds}, allies:{$each:addIds}}}, {multi:true})
 
 	// team
