@@ -27,7 +27,6 @@ spendTaxes = function() {
 
 Cue.addJob('gatherResources', {retryOnError:false, maxMs:1000*60*8}, function(task, done) {
 	gatherResources()
-	//Cue.addTask('updateEveryonesNetworth', {isAsync:false, unique:true}, {})
 	done()
 })
 

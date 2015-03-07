@@ -35,7 +35,6 @@ Meteor.publish('user_data', function () {
 			lp_show_allies:1,
 			hex_scale:1,
 			income:1,
-			networth:1,
 			purchases:1,
 			losses_worth:1,
 			losses_num:1,
