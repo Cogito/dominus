@@ -63,7 +63,12 @@ updateNetworth_total = function(userId) {
 			soldiers[type] = 0
 		})
 
-		// get soldier count
+		var resources = {}
+		_.each(s.resource.types_plus_gold, function(type) {
+			resources[type] = user[type]
+		})
+
+		// get soldier worth
 		_.each(s.army.types, function(type) {
 			if (user.net.armies && user.net.armies[type]) {
 				soldiers[type] += user.net.armies[type]
@@ -74,11 +79,10 @@ updateNetworth_total = function(userId) {
 			if (user.net.castle && user.net.castle[type]) {
 				soldiers[type] += user.net.castle[type]
 			}
-		})
 
-		var resources = {}
-		_.each(s.resource.types_plus_gold, function(type) {
-			resources[type] = user[type]
+			_.each(s.resource.types, function(t) {
+				resources[t] += s.army.cost[type][t] * soldiers[type]
+			})
 		})
 
 		// convert villages to resources
