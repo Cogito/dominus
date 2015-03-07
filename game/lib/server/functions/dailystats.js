@@ -44,6 +44,19 @@ updateNetworth_total = function(userId) {
 
 	if (user && user.net) {
 
+		if (!user.net.armies) {
+			Cue.addTask('updateNetArmies', {isAsync:true, unique:false}, {user_id:userId})
+			return
+		}
+		if (!user.net.villages) {
+			Cue.addTask('updateNetVillages', {isAsync:true, unique:false}, {user_id:userId})
+			return
+		}
+		if (!user.net.castle) {
+			Cue.addTask('updateNetCastle', {isAsync:true, unique:false}, {user_id:userId})
+			return
+		}
+
 		// zero out soldiers
 		var soldiers = {}
 		_.each(s.army.types, function(type) {
