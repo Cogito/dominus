@@ -75,8 +75,8 @@ Meteor.methods({
 					alert_receivedGoldFrom(to, from, amount)
 					gAlert_sentGold(from, to, amount)
 
-					Cue.addTask('update_networth', {isAsync:true, unique:false}, {user_id: user_id})
-					Cue.addTask('update_networth', {isAsync:true, unique:false}, {user_id: Meteor.userId()})
+					Cue.addTask('updateNetUser', {isAsync:true, unique:false}, {user_id: user_id})
+					Cue.addTask('updateNetUser', {isAsync:true, unique:false}, {user_id: Meteor.userId()})
 				}
 				return true
 

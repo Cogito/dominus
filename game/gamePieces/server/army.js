@@ -91,11 +91,6 @@ create_army = function(user_id, army, x, y, moves, last_move_at) {
 	return false
 }
 
-destroy_all_armies = function() {
-	Armies.remove({})
-	Moves.remove({})
-}
-
 
 move_army_to_hex = function(army_id, x, y) {
 	check(army_id, String)

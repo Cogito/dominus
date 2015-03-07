@@ -128,5 +128,7 @@ run_cached_user_update = function() {
 				"res_update.from_vassal": arr.from_vassal
 			}
 		})
+
+		//Cue.addTask('updateNetUser', {isAsync:true, unique:false}, {user_id: arr.user_id})
 	})
 }

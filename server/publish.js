@@ -43,7 +43,8 @@ Meteor.publish('user_data', function () {
 			sp_show_minimap:1,
 			emails:1,
 			lastActive:1,
-			status:1
+			status:1,
+			net:1
 		}})
 	} else {
 		this.ready()

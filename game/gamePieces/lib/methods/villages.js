@@ -49,6 +49,9 @@ Meteor.methods({
         })
         Meteor.users.update(user._id, {$inc:inc})
 
+        Cue.addTask('updateNetVillages', {isAsync:true, unique:false}, {user_id: user._id})
+        Cue.addTask('updateNetUser', {isAsync:true, unique:false}, {user_id: user._id})
+
         return true
     },
 })

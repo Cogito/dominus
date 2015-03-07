@@ -1,10 +1,7 @@
 generate_hexes = function(num_of_rings, bakeMap) {
 	if (typeof bakeMap === 'undefined') bakeMap = true
 
-	delete_all_hexes()
-	destroy_all_castles()
-	destroy_all_armies()
-	destroy_all_villages()
+	Hexes.remove({})
 
 	var hexArray = Hx.createHexGrid(num_of_rings)
 
@@ -44,13 +41,6 @@ add_ring = function(is_border) {
 	}
 
 	Minimap.update_map_size_setting()
-}
-
-
-
-
-delete_all_hexes = function() {
-	Hexes.remove({})
 }
 
 

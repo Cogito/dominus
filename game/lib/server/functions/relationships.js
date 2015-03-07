@@ -6,7 +6,6 @@
 // team - everyone under your king not including self
 
 
-// runUpdateAllies boolean is here so that it doesn't error when calling from deleteAccount()
 set_lord_and_vassal = function(winner_id, loser_id) {
 	var fields = {allies_above:1, lord:1, king:1, is_king:1}
 
@@ -89,10 +88,10 @@ set_lord_and_vassal = function(winner_id, loser_id) {
 	// send notification
 	alert_newLord(loser._id, winner._id)
 
-	Cue.addTask('enemies_together_check', {isAsync:false, unique:true}, {})
-	Cue.addTask('enemy_on_building_check', {isAsync:false, unique:true}, {})
-	Cue.addTask('check_for_dominus', {isAsync:false, unique:true}, {})
-	Cue.addTask('cleanupAllKingChatrooms', {isAsync:false, unique:true}, {})
+	Cue.addTask('enemies_together_check', {isAsync:false, unique:true, delay:500}, {})
+	Cue.addTask('enemy_on_building_check', {isAsync:false, unique:true, delay:500}, {})
+	Cue.addTask('check_for_dominus', {isAsync:false, unique:true, delay:500}, {})
+	Cue.addTask('cleanupAllKingChatrooms', {isAsync:false, unique:true, delay:500}, {})
 }
 
 
@@ -160,17 +159,11 @@ remove_lord_and_vassal = function(lord_id, vassal_id) {
 	// vassal's team = vassal's new allies_below
 	Meteor.users.update({_id:{$in:pullIds}}, {$set:{team:pullIds}}, {multi:true})
 
-	// TODO: turn these into a job
-	update_vassal_ally_count(lord_id)
-	update_vassal_ally_count(vassal_id)
-
-	console.log('')
-	console.log('--- remove lord/vassal')
-	var fields = {allies_above:1, allies_below:1, king:1, team:1, allies:1, is_king:1}
-	var lord = Meteor.users.findOne(lord_id, {fields:fields})
-	var vassal = Meteor.users.findOne(vassal_id, {fields:fields})
-	console.log(lord)
-	console.log(vassal)
+	// update count of everyone who was changed
+	var ids = _.union([lord_id, vassal_id], lord.team, vassal.team)
+	_.each(ids, function(id) {
+		Cue.addTask('updateVassalAllyCount', {isAsync:true, unique:true}, {user_id:id})
+	})
 }
 
 
@@ -241,21 +234,19 @@ create_lord_and_vassal = function(lord_id, vassal_id) {
 	}
 	Meteor.users.update({_id:{$in:vassal.allies_below}}, {$set:{king:newKing}}, {multi:true})
 
-	// TODO: turn these into a job
-	update_vassal_ally_count(lord_id)
-	update_vassal_ally_count(vassal_id)
-
-	console.log('')
-	console.log('--- create lord/vassal')
-	var fields = {allies_above:1, allies_below:1, king:1, team:1, allies:1, is_king:1}
-	var lord = Meteor.users.findOne(lord_id, {fields:fields})
-	var vassal = Meteor.users.findOne(vassal_id, {fields:fields})
-	console.log(lord)
-	console.log(vassal)
+	// update count of everyone who was changed
+	var ids = _.union([lord_id, vassal_id], lord.team, vassal.team)
+	_.each(ids, function(id) {
+		Cue.addTask('updateVassalAllyCount', {isAsync:true, unique:true}, {user_id:id})
+	})
 }
 
 
 
+Cue.addJob('updateVassalAllyCount', {retryOnError:false, maxMs:1000*60*5}, function(task, done) {
+	update_vassal_ally_count(task.data.user_id)
+	done()
+})
 
 // used for rankings
 update_vassal_ally_count = function(user_id) {

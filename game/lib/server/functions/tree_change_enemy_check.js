@@ -13,7 +13,6 @@ Cue.addJob('enemy_on_building_check', {retryOnError:false, maxMs:1000*60*5}, fun
 
 
 enemy_on_building_check = function() {
-
 	Castles.find({}, {fields: {_id:1, user_id:1, x:1, y:1}}).forEach(function(res) {
 		check_for_enemies_here(res, 'castle')
 	})

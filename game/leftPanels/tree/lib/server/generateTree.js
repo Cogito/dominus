@@ -1,4 +1,4 @@
-var fields = {x:1,y:1,castle_id:1,income:1, networth:1, username:1}
+var fields = {x:1,y:1,castle_id:1,income:1, "net.total":1, username:1}
 
 var findVassals = function(user_id) {
     var vassals = []

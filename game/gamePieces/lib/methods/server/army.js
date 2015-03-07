@@ -58,6 +58,7 @@ Meteor.methods({
 				Castles.update(castle._id, {$inc:inc})
 				Armies.remove(army._id)
 				Moves.remove({army_id:army._id})
+				Cue.addTask('updateNetCastle', {isAsync:true, unique:true}, {user_id: user_id})
 			} else {
 				var village = Villages.findOne({x:army.x, y:army.y, user_id:user_id}, {fields: {_id:1}})
 				if (village) {
@@ -65,10 +66,13 @@ Meteor.methods({
 					Villages.update(village._id, {$inc: inc})
 					Armies.remove(army._id)
 					Moves.remove({army_id:army._id})
+					Cue.addTask('updateNetVillages', {isAsync:true, unique:true}, {user_id: user_id})
 				} else {
 					throw new Meteor.Error('Could not find building.')
 				}
 			}
+
+			Cue.addTask('updateNetArmies', {isAsync:true, unique:true}, {user_id: user_id})
 		} else {
 			throw new Meteor.Error('Could not find army.')
 		}
@@ -152,12 +156,14 @@ Meteor.methods({
 		check(from_id, String)
 		check(moves, Array)
 
+		var user_id = Meteor.userId()
+
 		if (from_type == 'castle') {
-			var from = Castles.findOne({_id: from_id, user_id: Meteor.userId()})
+			var from = Castles.findOne({_id: from_id, user_id: user_id})
 		}
 
 		if (from_type == 'village') {
-			var from = Villages.findOne({_id: from_id, user_id: Meteor.userId()})
+			var from = Villages.findOne({_id: from_id, user_id: user_id})
 		}
 
 		if (from) {
@@ -188,14 +194,17 @@ Meteor.methods({
 
 				if (from_type == 'castle') {
 					Castles.update(from_id, {$inc: fields})
+					Cue.addTask('updateNetCastle', {isAsync:true, unique:true}, {user_id: user_id})
 				}
 
 				if (from_type == 'village') {
 					Villages.update(from_id, {$inc: fields})
+					Cue.addTask('updateNetVillages', {isAsync:true, unique:true}, {user_id: user_id})
 				}
 
-				var army_id = create_army(Meteor.userId(), army, from.x, from.y, moves)
+				var army_id = create_army(user_id, army, from.x, from.y, moves)
 				if (army_id) {
+					Cue.addTask('updateNetArmies', {isAsync:true, unique:true}, {user_id: user_id})
 					return army_id
 				} else {
 					// couldn't create army so give army back to building
@@ -205,10 +214,12 @@ Meteor.methods({
 
 					if (from_type == 'castle') {
 						Castles.update(from_id, {$inc: fields})
+						Cue.addTask('updateNetCastle', {isAsync:true, unique:true}, {user_id: user_id})
 					}
 
 					if (from_type == 'village') {
 						Villages.update(from_id, {$inc: fields})
+						Cue.addTask('updateNetVillages', {isAsync:true, unique:true}, {user_id: user_id})
 					}
 
 					return false
@@ -353,9 +364,14 @@ Meteor.methods({
 
 					if (building_type == 'castle') {
 						Castles.update(building._id, {$inc: inc})
+						Cue.addTask('updateNetCastle', {isAsync:true, unique:true}, {user_id: building.user_id})
 					} else if (building_type == 'village') {
 						Villages.update(building._id, {$inc: inc})
+						Cue.addTask('updateNetVillages', {isAsync:true, unique:true}, {user_id: building.user_id})
 					}
+
+					Cue.addTask('updateNetArmies', {isAsync:true, unique:true}, {user_id: building.user_id})
+					Cue.addTask('updateNetUser', {isAsync:true, unique:true}, {user_id: user._id})
 
 
 					// send notification if this is not your building
@@ -365,9 +381,6 @@ Meteor.methods({
 						var to = building.user_id
 						alert_receivedArmy(to, from, army)
 						gAlert_sentArmy(from, to, army)
-
-						Cue.addTask('update_networth', {isAsync:true, unique:true}, {user_id: from})
-						Cue.addTask('update_networth', {isAsync:true, unique:true}, {user_id: to})
 					}
 
 					return true

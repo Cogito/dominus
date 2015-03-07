@@ -16,6 +16,233 @@ Cue.addJob('update_networth', {retryOnError:false, maxMs:1000*60*2}, function(ta
 	}
 })
 
+// ----------- new
+
+Cue.addJob('updateNetTotal', {retryOnError:false, maxMs:1000*10}, function(task, done) {
+	updateNetworth_total(task.data.user_id)
+	done()
+})
+
+Cue.addJob('updateNetCastle', {retryOnError:false, maxMs:1000*5}, function(task, done) {
+	updateNetworth_castle(task.data.user_id)
+	done()
+})
+
+Cue.addJob('updateNetArmies', {retryOnError:false, maxMs:1000*5}, function(task, done) {
+	updateNetworth_armies(task.data.user_id)
+	done()
+})
+
+Cue.addJob('updateNetVillages', {retryOnError:false, maxMs:1000*5}, function(task, done) {
+	updateNetworth_villages(task.data.user_id)
+	done()
+})
+
+Cue.addJob('updateNetUser', {retryOnError:false, maxMs:1000*5}, function(task, done) {
+	updateNetworth_user(task.data.user_id)
+	done()
+})
+
+
+updateNetworth_total = function(userId) {
+	var fields = {net:1}
+	var user = Meteor.users.findOne(userId, {fields:fields})
+
+	if (user && user.net) {
+
+		var getUserAgain = false
+
+		if (typeof(user.net.armies) == 'undefined') {
+			updateNetworth_armies(userId)
+			getUserAgain = true
+		}
+
+		if (typeof(user.net.castle) == 'undefined') {
+			updateNetworth_castle(userId)
+			getUserAgain = true
+		}
+
+		if (typeof(user.net.villages) == 'undefined') {
+			updateNetworth_villages(userId)
+			getUserAgain = true
+		}
+
+		if (typeof(user.net.user) == 'undefined') {
+			updateNetworth_user(userId)
+			getUserAgain = true
+		}
+
+		if (getUserAgain) {
+			var user = Meteor.users.findOne(userId, {fields:fields})
+		}
+
+		var worth = 0
+
+		if (user.net.armies) {
+			worth += user.net.armies
+		}
+
+		if (user.net.armies) {
+			worth += user.net.villages
+		}
+
+		if (user.net.armies) {
+			worth += user.net.castle
+		}
+
+		if (user.net.armies) {
+			worth += user.net.user
+		}
+
+		check(worth, validNumber)
+		Meteor.users.update(userId, {$set:{"net.total":worth}})
+		Dailystats.upsert({user_id:user._id, created_at: {$gte: statsBegin(), $lt: statsEnd()}}, {$setOnInsert: {user_id:user._id, created_at: new Date()}, $set: {networth:worth, updated_at:new Date()}})
+	}
+}
+
+updateNetworth_armies = function(userId) {
+	var fields = {}
+	_.each(s.army.types, function(type) {
+		fields[type] = 1
+	})
+
+	worth = {}
+	_.each(s.resource.types, function(t) {
+		worth[t] = 0
+	})
+
+	Armies.find({user_id:userId}, {fields:fields}).forEach(function(army) {
+		_.each(s.resource.types, function(t) {
+			_.each(s.army.types, function(type) {
+				worth[t] += s.army.cost[type][t] * army[type]
+			})
+			check(worth[t] , validNumber)
+		})
+	})
+
+	worth.total = 0
+
+	// convert to gold
+	Market.find().forEach(function(resource) {
+		worth.total += resource.price * worth[resource.type]
+	})
+
+	if (isNaN(worth.total)) {
+		worth.total = 0
+	}
+
+	check(worth.total, validNumber)
+	Meteor.users.update(userId, {$set:{"net.armies":worth.total}})
+	Cue.addTask('updateNetTotal', {isAsync:true, unique:true}, {user_id:userId})
+}
+
+
+updateNetworth_villages = function(userId) {
+	var fields = {level:1}
+	_.each(s.army.types, function(type) {
+		fields[type] = 1
+	})
+
+	worth = {}
+	_.each(s.resource.types, function(t) {
+		worth[t] = 0
+	})
+
+	Villages.find({user_id:userId}, {fields:fields}).forEach(function(village) {
+		_.each(s.resource.types, function(t) {
+			// villages are level 0 while they're being built
+			if (village.level > 0) {
+				worth[t] += s.village.cost['level'+village.level][t]
+			}
+
+			_.each(s.army.types, function(type) {
+				worth[t] += s.army.cost[type][t] * village[type]
+			})
+		})
+	})
+
+	worth.total = 0
+
+	// convert to gold
+	Market.find().forEach(function(resource) {
+		worth.total += resource.price * worth[resource.type]
+	})
+
+	if (isNaN(worth.total)) {
+		worth.total = 0
+	}
+
+	check(worth.total, validNumber)
+	Meteor.users.update(userId, {$set:{"net.villages":worth.total}})
+	Cue.addTask('updateNetTotal', {isAsync:true, unique:true}, {user_id:userId})
+}
+
+
+updateNetworth_castle = function(userId) {
+	var fields = {}
+	_.each(s.army.types, function(type) {
+		fields[type] = 1
+	})
+
+	var castle = Castles.findOne({user_id:userId}, {fields:fields})
+	if (castle) {
+		worth = {}
+
+		_.each(s.resource.types, function(t) {
+			worth[t] = 0
+			_.each(s.army.types, function(type) {
+				worth[t] += s.army.cost[type][t] * castle[type]
+			})
+		})
+
+		worth.total = 0
+
+		// convert to gold
+		Market.find().forEach(function(resource) {
+			worth.total += resource.price * worth[resource.type]
+		})
+
+		if (isNaN(worth.total)) {
+			worth.total = 0
+		}
+
+		check(worth.total, validNumber)
+		Meteor.users.update(userId, {$set:{"net.castle":worth.total}})
+		Cue.addTask('updateNetTotal', {isAsync:true, unique:true}, {user_id:userId})
+	}
+}
+
+
+updateNetworth_user = function(userId) {
+	var fields = {}
+	_.each(s.resource.types_plus_gold, function(type) {
+		fields[type] = 1
+	})
+
+	var user = Meteor.users.findOne(userId, {fields:fields})
+	if (user) {
+		var worth = {}
+
+		_.each(s.resource.types_plus_gold, function(type) {
+			worth[type] = user[type]
+		})
+
+		worth.total = worth.gold
+
+		// convert to gold
+		Market.find().forEach(function(resource) {
+			worth.total += resource.price * worth[resource.type]
+		})
+
+		if (isNaN(worth.total)) {
+			worth.total = 0
+		}
+
+		check(worth.total, validNumber)
+		Meteor.users.update(userId, {$set:{"net.user":worth.total}})
+		Cue.addTask('updateNetTotal', {isAsync:true, unique:true}, {user_id:userId})
+	}
+}
 
 
 update_networth = function(user) {

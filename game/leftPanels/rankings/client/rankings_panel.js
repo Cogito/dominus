@@ -31,7 +31,7 @@ Template.rankings_panel.helpers({
 
 	top10_networth: function() {
 		if (subs.ready('net') && subs.ready('playerCount')) {
-			return RankingsNetworth.find({}, {sort: {networth: -1}}).map(function(u) {
+			return RankingsNetworth.find({}, {sort: {"net.total": -1}}).map(function(u) {
 				if (u._id == Meteor.userId()) {
 					u.is_me = true
 				} else {

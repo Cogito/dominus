@@ -111,8 +111,13 @@ Meteor.methods({
 								Villages.update(id, {$inc: fields})
 								Armies.remove(army._id)
 								Moves.remove({army_id:army._id})
+
+								Cue.addTask('updateNetArmies', {isAsync:true, unique:true}, {user_id: user._id})
 							}
 						})
+
+						Cue.addTask('updateNetVillages', {isAsync:true, unique:true}, {user_id: user._id})
+						Cue.addTask('updateNetUser', {isAsync:true, unique:true}, {user_id: user._id})
 
 						return id
 					} else {
@@ -170,6 +175,7 @@ finish_building_village = function(village_id) {
 				Villages.update(village_id, {$inc: fields})
 				Armies.remove(army._id)
 				Moves.remove({army_id:army._id})
+				Cue.addTask('updateNetArmies', {isAsync:true, unique:true}, {user_id: village.user_id})
 			}
 		})
 
@@ -177,16 +183,13 @@ finish_building_village = function(village_id) {
 		// remove under construction flag
 		Villages.update(village_id, {$set: {under_construction:false}, $inc: {level:1}})
 
+		Cue.addTask('updateNetVillages', {isAsync:true, unique:true}, {user_id: village.user_id})
+
 		// TODO: send notification
 
 	} else {
 		throw new Meteor.Error('Could not find village.')
 	}
-}
-
-
-destroy_all_villages = function() {
-	Villages.remove({})
 }
 
 
@@ -223,6 +226,8 @@ destroyVillage = function(village_id) {
 		var army_id = Meteor.call('create_army_from_building', village, 'village', village._id, [])
 		Villages.remove(village._id)
 		Hexes.update({x:village.x, y:village.y}, {$set: {has_building:false, nearby_buildings:false}})
+		Cue.addTask('updateNetVillages', {isAsync:true, unique:true}, {user_id: village.user_id})
+		Cue.addTask('updateNetUser', {isAsync:true, unique:true}, {user_id: village.user_id})
 		return army_id
 	}
 

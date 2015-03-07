@@ -157,6 +157,12 @@ setupNewUser = function(user) {
 	user.sp_show_coords = false
 	user.sp_show_minimap = true
 	user.lastActive = new Date()
+	user.net = {
+		armies:0,
+		villages:0,
+		castle:0,
+		user:0
+	}
 
 	return user
 }

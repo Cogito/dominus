@@ -10,8 +10,8 @@ Meteor.publish('networth_rankings', function(page) {
 	var skip = (page-1) * s.rankings.perPage
 
 	var sub = this
-	var cur = Meteor.users.find({}, {skip:skip, sort: {networth: -1}, fields: {
-			networth:1,
+	var cur = Meteor.users.find({}, {skip:skip, sort: {"net.total": -1}, fields: {
+			"net.total":1,
 			username:1,
 			castle_id:1,
 			x:1,

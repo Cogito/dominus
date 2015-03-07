@@ -2,12 +2,14 @@
     <div class="tree_panel_user">
         <span class="tree_flag {{relation}}">&nbsp;</span>
         <a href="" class="username">{{username}}</a>
-        <span class="field"><span class="light_text">net:</span> {{round networth}}</span>
+        <span class="field"><span class="light_text">net:</span> {{round net.total}}</span>
         <span class="field"><span class="light_text">inc:</span> {{round income}}</span>
     </div>
-    {{#each vassals}}
-        <li>
-            {{> treeUser}}
-        </li>
-    {{/each}}
+    <ul>
+        {{#each vassals}}
+            <li>
+                {{> treeUser}}
+            </li>
+        {{/each}}
+    </ul>
 </template>
