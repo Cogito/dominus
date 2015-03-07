@@ -7,6 +7,8 @@ Accounts.validateNewUser(function(user) {
 })
 
 
+// this is called before validateNewUser()
+// don't do anything here except setup user object
 Accounts.onCreateUser(function(options, user) {
 	if (options.profile) {
 		user.profile = options.profile;
@@ -43,11 +45,6 @@ Accounts.onCreateUser(function(options, user) {
 	}
 
 	user = setupNewUser(user)
-
-	Cue.addTask('subscribeToNewsletter', {isAsync:true, unique:true}, {email:user.emails[0].address, name:user.username})
-
-	// if someone was dominus make them not dominus
-	remove_dominus()
 
 	return user
 })
@@ -97,9 +94,15 @@ Accounts.onLogin(function(data) {
 
 onCreateUser = function(userId) {
 	check(userId, String)
-	Cue.addTask('create_castle', {isAsync:false, unique:true}, {user_id:userId})
-	init_dailystats_for_new_user(userId)
-	Cue.addTask('setupEveryoneChatroom', {isAsync:false, unique:true}, {})
+	var fields = {emails:1, username:1, castle_id:1}
+	var user = Meteor.users.findOne(userId, {fields:fields})
+	if (user && !user.castle_id) {
+		Cue.addTask('subscribeToNewsletter', {isAsync:true, unique:true}, {email:user.emails[0].address, name:user.username})
+		Cue.addTask('removeDominus', {isAsync:true, unique:true}, {})
+		Cue.addTask('create_castle', {isAsync:false, unique:true}, {user_id:userId})
+		Cue.addTask('initDailystatsForNewUser', {isAsync:false, unique:true}, {user_id:userId})
+		Cue.addTask('setupEveryoneChatroom', {isAsync:false, unique:true}, {})
+	}
 }
 
 

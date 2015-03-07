@@ -343,6 +343,11 @@ updateIncomeRank = function() {
 
 
 
+Cue.addJob('initDailystatsForNewUser', {retryOnError:false, maxMs:1000*60*2}, function(task, done) {
+	init_dailystats_for_new_user(task.data.user_id)
+	done()
+})
+
 init_dailystats_for_new_user = function(user_id) {
 	var stat = {
 		user_id: user_id,

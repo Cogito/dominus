@@ -35,6 +35,10 @@ Cue.addJob('check_for_dominus', {retryOnError:false, maxMs:1000*60*2}, function(
 })
 
 
+Cue.addJob('removeDominus', {retryOnError:false, maxMs:1000*60*2}, function(task, done) {
+	remove_dominus()
+	done()
+})
 
 // called when new user joins the game
 remove_dominus = function() {

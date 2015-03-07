@@ -9,7 +9,7 @@ Meteor.methods({
 					Meteor.call('admin_create_forum', 'Dominus News', '')
 					Meteor.call('admin_create_forum', 'Dominus General', '')
 					Meteor.call('admin_create_forum', 'Feature Requests', 'The Dominus roadmap is on <a href="https://trello.com/b/q40VdLBJ/dominus">Trello</a>.  Vote for features you would like added soon.')
-					Meteor.call('admin_create_forum', 'Report a Bug', 'Bugs are tracked <a href="https://github.com/dan335/dominus/issues">on Github</a>.')
+					Meteor.call('admin_create_forum', 'Report a Bug', 'Bugs are tracked on <a href="https://github.com/dan335/dominus/issues">Github</a>.')
 					Meteor.call('admin_create_forum', 'Everything Else', 'Anything not related to Dominus.')
 				}
 			}
