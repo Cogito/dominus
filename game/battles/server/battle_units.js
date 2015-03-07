@@ -189,12 +189,15 @@ Units.prototype.removeDeadSoldiers = function() {
 		switch (unit.type) {
 			case 'castle':
 				Castles.update(unit._id, {$inc: inc})
+				Cue.addTask('updateNetCastle', {isAsync:true, unique:false}, {user_id: unit.user_id})
 				break
 			case 'village':
 				Villages.update(unit._id, {$inc: inc})
+				Cue.addTask('updateNetVillages', {isAsync:true, unique:false}, {user_id: unit.user_id})
 				break;
 			case 'army':
 				Armies.update(unit._id, {$inc: inc})
+				Cue.addTask('updateNetArmies', {isAsync:true, unique:false}, {user_id: unit.user_id})
 				break
 		}
 	})
@@ -216,6 +219,7 @@ Units.prototype.removeDeadUnits = function() {
 				case 'village':
 					alert_villageDestroyed(unit.user_id, self.battleDb.getRecord()._id, unit.name)
 					Villages.remove(unit._id)
+					Cue.addTask('updateNetVillages', {isAsync:true, unique:true}, {user_id: unit.user_id})
 					break
 				case 'army':
 					alert_armyDestroyed(unit.user_id, self.battleDb.getRecord()._id, unit.name)

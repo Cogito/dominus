@@ -160,10 +160,10 @@ Meteor.startup(function() {
 
 
 var midnightJob = function() {
-
-	// is this still needed?
 	Meteor.users.find().forEach(function(user) {
+		// is this still needed?
 		Cue.addTask('update_num_allies', {isAsync:false, unique:true}, {user_id:user._id})
+		Cue.addTask('updateNetForEveryone', {isAsync:false, unique:true}, {})
 	})
 }
 

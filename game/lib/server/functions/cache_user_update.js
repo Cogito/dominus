@@ -129,6 +129,6 @@ run_cached_user_update = function() {
 			}
 		})
 
-		//Cue.addTask('updateNetUser', {isAsync:true, unique:false}, {user_id: arr.user_id})
+		Cue.addTask('updateNetTotal', {isAsync:true, unique:false}, {user_id: arr.user_id})
 	})
 }

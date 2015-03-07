@@ -110,8 +110,7 @@ create_castle = function(user_id) {
 
 						}
 
-						Cue.addTask('updateNetCastle', {isAsync:true, unique:true}, {user_id: user._id})
-						Cue.addTask('updateNetUser', {isAsync:true, unique:true}, {user_id: user._id})
+						Cue.addTask('updateNetCastle', {isAsync:true, unique:false}, {user_id: user._id})
 
 						return true
 					}

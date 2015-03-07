@@ -1,23 +1,3 @@
-Cue.addJob('updateEveryonesNetworth', {retryOnError:false, maxMs:1000*60*10}, function(task, done) {
-	Meteor.users.find().forEach(function(user) {
-		update_networth(user)
-	})
-	done()
-})
-
-
-Cue.addJob('update_networth', {retryOnError:false, maxMs:1000*60*2}, function(task, done) {
-	var user = Meteor.users.findOne(task.data.user_id)
-	if (user) {
-		update_networth(user)
-		done()
-	} else {
-		done('user not found')
-	}
-})
-
-// ----------- new
-
 Cue.addJob('updateNetTotal', {retryOnError:false, maxMs:1000*10}, function(task, done) {
 	updateNetworth_total(task.data.user_id)
 	done()
@@ -38,61 +18,72 @@ Cue.addJob('updateNetVillages', {retryOnError:false, maxMs:1000*5}, function(tas
 	done()
 })
 
-Cue.addJob('updateNetUser', {retryOnError:false, maxMs:1000*5}, function(task, done) {
-	updateNetworth_user(task.data.user_id)
+// run nightly
+Cue.addJob('updateNetForEveryone', {retryOnError:false, maxMs:1000*60*5}, function(task, done) {
+	updateNetForEveryone()
 	done()
 })
+
+updateNetForEveryone = function() {
+	var fields = {_id:1}
+	Meteor.users.find({}, {fields:fields}).forEach(function(user) {
+		updateNetworth_castle(user._id)
+		updateNetworth_armies(user._id)
+		updateNetworth_villages(user._id)
+		updateNetworth_total(user._id)
+	})
+}
 
 
 updateNetworth_total = function(userId) {
 	var fields = {net:1}
+	_.each(s.resource.types_plus_gold, function(type) {
+		fields[type] = 1
+	})
 	var user = Meteor.users.findOne(userId, {fields:fields})
 
 	if (user && user.net) {
 
-		var getUserAgain = false
+		// zero out soldiers
+		var soldiers = {}
+		_.each(s.army.types, function(type) {
+			soldiers[type] = 0
+		})
 
-		if (typeof(user.net.armies) == 'undefined') {
-			updateNetworth_armies(userId)
-			getUserAgain = true
-		}
+		// get soldier count
+		_.each(s.army.types, function(type) {
+			if (user.net.armies && user.net.armies[type]) {
+				soldiers[type] += user.net.armies[type]
+			}
+			if (user.net.villages && user.net.villages[type]) {
+				soldiers[type] += user.net.villages[type]
+			}
+			if (user.net.castle && user.net.castle[type]) {
+				soldiers[type] += user.net.castle[type]
+			}
+		})
 
-		if (typeof(user.net.castle) == 'undefined') {
-			updateNetworth_castle(userId)
-			getUserAgain = true
-		}
+		var resources = {}
+		_.each(s.resource.types_plus_gold, function(type) {
+			resources[type] = user[type]
+		})
 
-		if (typeof(user.net.villages) == 'undefined') {
-			updateNetworth_villages(userId)
-			getUserAgain = true
-		}
+		// convert villages to resources
+		var villageLevelNames = _.keys(s.village.cost)
+		_.each(villageLevelNames, function(name) {
+			var numVillages = user.net.villages[name]
+			if (numVillages > 0) {
+				_.each(s.resource.types, function(type) {
+					resources[type] += s.village.cost[name][type] * numVillages
+				})
+			}
+		})
 
-		if (typeof(user.net.user) == 'undefined') {
-			updateNetworth_user(userId)
-			getUserAgain = true
-		}
-
-		if (getUserAgain) {
-			var user = Meteor.users.findOne(userId, {fields:fields})
-		}
-
-		var worth = 0
-
-		if (user.net.armies) {
-			worth += user.net.armies
-		}
-
-		if (user.net.armies) {
-			worth += user.net.villages
-		}
-
-		if (user.net.armies) {
-			worth += user.net.castle
-		}
-
-		if (user.net.armies) {
-			worth += user.net.user
-		}
+		// convert resources to gold
+		var worth = resources.gold
+		Market.find().forEach(function(res) {
+			worth += res.price * resources[res.type]
+		})
 
 		check(worth, validNumber)
 		Meteor.users.update(userId, {$set:{"net.total":worth}})
@@ -101,218 +92,91 @@ updateNetworth_total = function(userId) {
 }
 
 updateNetworth_armies = function(userId) {
+	var net = {}
 	var fields = {}
 	_.each(s.army.types, function(type) {
+		net[type] = 0
 		fields[type] = 1
 	})
 
-	worth = {}
-	_.each(s.resource.types, function(t) {
-		worth[t] = 0
-	})
-
 	Armies.find({user_id:userId}, {fields:fields}).forEach(function(army) {
-		_.each(s.resource.types, function(t) {
-			_.each(s.army.types, function(type) {
-				worth[t] += s.army.cost[type][t] * army[type]
-			})
-			check(worth[t] , validNumber)
+		_.each(s.army.types, function(type) {
+			net[type] += army[type]
 		})
 	})
 
-	worth.total = 0
-
-	// convert to gold
-	Market.find().forEach(function(resource) {
-		worth.total += resource.price * worth[resource.type]
+	_.each(s.army.types, function(type) {
+		check(net[type], validNumber)
 	})
 
-	if (isNaN(worth.total)) {
-		worth.total = 0
-	}
-
-	check(worth.total, validNumber)
-	Meteor.users.update(userId, {$set:{"net.armies":worth.total}})
+	Meteor.users.update(userId, {$set:{"net.armies":net}})
 	Cue.addTask('updateNetTotal', {isAsync:true, unique:true}, {user_id:userId})
 }
 
 
 updateNetworth_villages = function(userId) {
 	var fields = {level:1}
+	var net = {}
 	_.each(s.army.types, function(type) {
 		fields[type] = 1
+		net[type] = 0
 	})
 
-	worth = {}
-	_.each(s.resource.types, function(t) {
-		worth[t] = 0
+	// zero out villages
+	// net.level1 = 0
+	var villageLevelNames = _.keys(s.village.cost)
+	_.each(villageLevelNames, function(name) {
+		net[name] = 0
 	})
 
-	Villages.find({user_id:userId}, {fields:fields}).forEach(function(village) {
-		_.each(s.resource.types, function(t) {
-			// villages are level 0 while they're being built
-			if (village.level > 0) {
-				worth[t] += s.village.cost['level'+village.level][t]
-			}
-
-			_.each(s.army.types, function(type) {
-				worth[t] += s.army.cost[type][t] * village[type]
-			})
+	Villages.find({user_id:userId, level:{$gt:0}}, {fields:fields}).forEach(function(village) {
+		_.each(s.army.types, function(type) {
+			net[type] += village[type]
 		})
+
+		net['level'+village.level] ++
 	})
 
-	worth.total = 0
-
-	// convert to gold
-	Market.find().forEach(function(resource) {
-		worth.total += resource.price * worth[resource.type]
+	// check for errors
+	_.each(s.army.types, function(type) {
+		check(net[type], validNumber)
+	})
+	_.each(villageLevelNames, function(name) {
+		check(net[name], validNumber)
 	})
 
-	if (isNaN(worth.total)) {
-		worth.total = 0
-	}
-
-	check(worth.total, validNumber)
-	Meteor.users.update(userId, {$set:{"net.villages":worth.total}})
+	Meteor.users.update(userId, {$set:{"net.villages":net}})
 	Cue.addTask('updateNetTotal', {isAsync:true, unique:true}, {user_id:userId})
 }
 
 
 updateNetworth_castle = function(userId) {
-	var fields = {}
+	var fields = {level:1}
+	var net = {}
 	_.each(s.army.types, function(type) {
 		fields[type] = 1
+		net[type] = 0
 	})
 
 	var castle = Castles.findOne({user_id:userId}, {fields:fields})
 	if (castle) {
-		worth = {}
-
-		_.each(s.resource.types, function(t) {
-			worth[t] = 0
-			_.each(s.army.types, function(type) {
-				worth[t] += s.army.cost[type][t] * castle[type]
-			})
+		_.each(s.army.types, function(type) {
+			net[type] += castle[type]
 		})
 
-		worth.total = 0
-
-		// convert to gold
-		Market.find().forEach(function(resource) {
-			worth.total += resource.price * worth[resource.type]
+		_.each(s.army.types, function(type) {
+			check(net[type], validNumber)
 		})
 
-		if (isNaN(worth.total)) {
-			worth.total = 0
-		}
-
-		check(worth.total, validNumber)
-		Meteor.users.update(userId, {$set:{"net.castle":worth.total}})
+		Meteor.users.update(userId, {$set:{"net.castle":net}})
 		Cue.addTask('updateNetTotal', {isAsync:true, unique:true}, {user_id:userId})
 	}
 }
 
 
-updateNetworth_user = function(userId) {
-	var fields = {}
-	_.each(s.resource.types_plus_gold, function(type) {
-		fields[type] = 1
-	})
-
-	var user = Meteor.users.findOne(userId, {fields:fields})
-	if (user) {
-		var worth = {}
-
-		_.each(s.resource.types_plus_gold, function(type) {
-			worth[type] = user[type]
-		})
-
-		worth.total = worth.gold
-
-		// convert to gold
-		Market.find().forEach(function(resource) {
-			worth.total += resource.price * worth[resource.type]
-		})
-
-		if (isNaN(worth.total)) {
-			worth.total = 0
-		}
-
-		check(worth.total, validNumber)
-		Meteor.users.update(userId, {$set:{"net.user":worth.total}})
-		Cue.addTask('updateNetTotal', {isAsync:true, unique:true}, {user_id:userId})
-	}
-}
 
 
-update_networth = function(user) {
-
-	var worth = {
-		gold: user.gold,
-		grain: user.grain,
-		lumber: user.lumber,
-		ore: user.ore,
-		wool: user.wool,
-		clay: user.clay,
-		glass: user.glass
-	}
-
-	var fields = {}
-	_.each(s.army.types, function(type) {
-		fields[type] = 1
-	})
-
-	// armies
-	Armies.find({user_id: user._id}, {fields: fields}).forEach(function(army) {
-		_.each(s.resource.types, function(t) {
-			_.each(s.army.types, function(type) {
-				worth[t] += s.army.cost[type][t] * army[type]
-			})
-		})
-	})
-
-	var villageFields = _.extend(fields, {level:1})
-
-	// villages and village garrison
-	Villages.find({user_id: user._id}, {fields: villageFields}).forEach(function(res) {
-		_.each(s.resource.types, function(t) {
-			// villages are level 0 while they're being built
-			if (res.level > 0) {
-				worth[t] += s.village.cost['level'+res.level][t]
-			}
-
-			_.each(s.army.types, function(type) {
-				worth[t] += s.army.cost[type][t] * res[type]
-			})
-		})
-	})
-
-	// castle garrison
-	var res = Castles.findOne({user_id: user._id}, {fields: fields})
-	if (res) {
-		_.each(s.resource.types, function(t) {
-			_.each(s.army.types, function(type) {
-				worth[t] += s.army.cost[type][t] * res[type]
-			})
-		})
-	}
-
-	// _.each(s.resource.types_plus_gold, function(type) {
-	// 		check(worth[type], validNumber)
-	// }
-
-	worth.total = worth.gold
-
-	// convert to gold
-	Market.find().forEach(function(resource) {
-		worth.total += resource.price * worth[resource.type]
-	})
-
-	check(worth.total, validNumber)
-
-	Dailystats.upsert({user_id:user._id, created_at: {$gte: statsBegin(), $lt: statsEnd()}}, {$setOnInsert: {user_id:user._id, created_at: new Date()}, $set: {networth:worth.total, updated_at:new Date()}})
-	Meteor.users.update(user._id, {$set: {networth: worth.total}})
-}
+// ---------------------------------------------
 
 
 

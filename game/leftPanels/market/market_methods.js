@@ -34,6 +34,7 @@ Meteor.methods({
 				if (!this.isSimulation) {
 					update_market_price(type, quantity, true)
 					Cue.addTask('record_market_history', {isAsync:true, unique:false}, {quantity:quantity})
+					Cue.addTask('updateNetTotal', {isAsync:true, unique:false}, {user_id:user._id})
 
 					// save how much tax was collected
 					// tax is later distributed to castles
@@ -84,6 +85,7 @@ Meteor.methods({
 			if (!this.isSimulation) {
 				update_market_price(type, quantity, false)
 				Cue.addTask('record_market_history', {isAsync:true, unique:false}, {quantity:quantity})
+				Cue.addTask('updateNetTotal', {isAsync:true, unique:false}, {user_id:user._id})
 			}
 
 			return {result: true, total: total}

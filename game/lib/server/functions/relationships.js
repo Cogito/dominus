@@ -162,7 +162,9 @@ remove_lord_and_vassal = function(lord_id, vassal_id) {
 	// update count of everyone who was changed
 	var ids = _.union([lord_id, vassal_id], lord.team, vassal.team)
 	_.each(ids, function(id) {
-		Cue.addTask('updateVassalAllyCount', {isAsync:true, unique:true}, {user_id:id})
+		if (id) {
+			Cue.addTask('updateVassalAllyCount', {isAsync:true, unique:true}, {user_id:id})
+		}
 	})
 }
 
@@ -237,7 +239,9 @@ create_lord_and_vassal = function(lord_id, vassal_id) {
 	// update count of everyone who was changed
 	var ids = _.union([lord_id, vassal_id], lord.team, vassal.team)
 	_.each(ids, function(id) {
-		Cue.addTask('updateVassalAllyCount', {isAsync:true, unique:true}, {user_id:id})
+		if (id) {
+			Cue.addTask('updateVassalAllyCount', {isAsync:true, unique:true}, {user_id:id})
+		}
 	})
 }
 
