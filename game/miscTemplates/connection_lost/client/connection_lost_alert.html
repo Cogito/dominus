@@ -2,9 +2,23 @@
     <div id="connectionLostPositioner" class="popupPanelContainer">
         {{#if show}}
             <div id="connection_lost_modal">
-                <h4>Connection to server lost.</h4>
-                <br>
-                Either the game code is updating or your connection is dead.  Try reloading the page if this box doesn't go away in a few seconds.
+                <h3>Lost Connection to Server</h3>
+
+                {{#if isConnecting}}
+                    Disconnected, trying a new connection.
+                {{/if}}
+
+                {{#if isFailed}}
+                    Failed to connect. {{status.reason}}  Try reloading the web page.
+                {{/if}}
+
+                {{#if isWaiting}}
+                    Tried {{status.retryCount}} times to connect.  Trying again in {{retryTime}} seconds.
+                {{/if}}
+
+                {{#if isOffline}}
+                    Offline.  Try reloading the web page andcheck internet connection.
+                {{/if}}
             </div>
         {{/if}}
     </div>

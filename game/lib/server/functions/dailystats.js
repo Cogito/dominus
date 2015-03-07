@@ -197,13 +197,13 @@ updateNetworth_castle = function(userId) {
 
 
 
-Cue.addJob('update_num_allies', {retryOnError:false, maxMs:1000*60*5}, function(task, done) {
-	update_num_allies(task.data.user_id)
+Cue.addJob('dailystats_num_allies', {retryOnError:false, maxMs:1000*60*5}, function(task, done) {
+	dailystats_num_allies(task.data.user_id)
 	done()
 })
 
 
-update_num_allies = function(user_id) {
+dailystats_num_allies = function(user_id) {
 	var user = Meteor.users.findOne(user_id, {fields: {num_allies_below:1}})
 	if (user) {
 		if (user.num_allies_below) {

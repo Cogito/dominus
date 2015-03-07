@@ -38,6 +38,10 @@ Meteor.setInterval(function() {
 	Session.set('refresh_time_field', Random.fraction())
 }, 1000 * 10)
 
+Meteor.setInterval(function() {
+	Session.set('refresh_time_field_every_sec', Random.fraction())
+}, 1000 * 1)
+
 Session.setDefault('num_villages', null)	// the number of villages that player has
 
 

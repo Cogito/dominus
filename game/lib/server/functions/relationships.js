@@ -50,10 +50,8 @@ set_lord_and_vassal = function(winner_id, loser_id) {
 
 	// vassal is no longer a king, he had no lord, now he does
 	// destroy king chatroom
-	// send notification
 	if (loser.is_king) {
 		Cue.addTask('destroyKingChatroom', {isAsync:false, unique:true}, {king_id:loser._id})
-		Meteor.users.update(loser._id, {$set: {is_king: false}})
 	}
 
 	// is loser above winner
@@ -261,28 +259,24 @@ update_vassal_ally_count = function(user_id) {
 		if (user.vassals) {
 			var num_vassals = user.vassals.length
 		} else {
-			//console.log('WTF: why is vassals empty for '+user_id)
 			var num_vassals = 0
 		}
 
 		if (user.allies) {
 			var num_allies = user.allies.length
 		} else {
-			//console.log('WTF: why is allies empty for '+user_id)
 			var num_allies = 0
 		}
 
 		if (user.allies_above) {
 			var num_allies_above = user.allies_above.length
 		} else {
-			//console.log('WTF: why is num_allies_above empty for '+user_id)
 			var num_allies_above = 0
 		}
 
 		if (user.allies_below) {
 			var num_allies_below = user.allies_below.length
 		} else {
-			//console.log('WTF: why is allies_below empty for '+user_id)
 			var num_allies_below = 0
 		}
 
@@ -293,6 +287,6 @@ update_vassal_ally_count = function(user_id) {
 		}
 
 		Meteor.users.update(user_id, {$set: {num_team:num_team, num_vassals: num_vassals, num_allies: num_allies, num_allies_above: num_allies_above, num_allies_below: num_allies_below}})
-		update_num_allies(user_id)
+		Cue.addTask('dailystats_num_allies', {isAsync:true, unique:false}, {user_id:user_id})
 	}
 }
