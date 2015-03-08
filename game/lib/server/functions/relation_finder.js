@@ -207,7 +207,8 @@ relation_finder = function(user_id) {
 					allies_above: cache.allies_above,
 					king: user._id,
 					siblings: cache.siblings,
-					team: _.without(self.team, cache.user_id),
+					//team: _.without(self.team, cache.user_id),
+					team: self.team,
 					is_king: cache.user_id == user._id
 				}})
 

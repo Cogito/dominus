@@ -107,10 +107,12 @@ onCreateUser = function(userId) {
 
 
 Meteor.startup(function() {
-	Accounts.loginServiceConfiguration.remove({service:'google'})
-	Accounts.loginServiceConfiguration.remove({service:'facebook'})
-	Accounts.loginServiceConfiguration.insert(Meteor.settings.googleLogin)
-	Accounts.loginServiceConfiguration.insert(Meteor.settings.facebookLogin)
+	if (process.env.DOMINUS_WORKER == 'true') {
+		Accounts.loginServiceConfiguration.remove({service:'google'})
+		Accounts.loginServiceConfiguration.remove({service:'facebook'})
+		Accounts.loginServiceConfiguration.insert(Meteor.settings.googleLogin)
+		Accounts.loginServiceConfiguration.insert(Meteor.settings.facebookLogin)
+	}
 })
 
 

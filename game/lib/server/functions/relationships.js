@@ -152,7 +152,7 @@ remove_lord_and_vassal = function(lord_id, vassal_id) {
 	// remove vassal and vassal's allies_below from everyone's team
 	var pullIds = _.union(vassal.allies_below, [vassal._id])
 	Meteor.users.update({}, {$pull: {team:{$in:pullIds}}}, {multi:true})
-	// vassal's team = vassal's new allies_below
+	// vassal's team = vassal's new allies_below plus self
 	Meteor.users.update({_id:{$in:pullIds}}, {$set:{team:pullIds}}, {multi:true})
 
 	// update count of everyone who was changed
@@ -182,9 +182,10 @@ create_lord_and_vassal = function(lord_id, vassal_id) {
 		throw new Meteor.Error('lord or vassal not found')
 	}
 
-	// set lord
+	// set lord and remove king
 	Meteor.users.update(vassal_id, {$set: {
-		lord: lord_id
+		lord: lord_id,
+		is_king:false
 	}})
 
 	// set vassal
@@ -208,16 +209,9 @@ create_lord_and_vassal = function(lord_id, vassal_id) {
 
 	// team
 	// add vassal and vassal's allies_below to lord's team
-	var team = _.union(lord.team, [lord._id], [vassal._id], vassal.allies_below)
-	// set team on everyone in team
-	_.each(team, function(userId) {
-		var t = _.without(team, userId)
-		Meteor.users.update(userId, {$set:{team:t}}, {multi:true})
-	})
+	var team = _.union(lord.team, [lord._id, vassal._id], vassal.allies_below)
+	Meteor.users.update({_id:{$in:team}}, {$set:{team:team}}, {multi:true})
 
-	// king
-	// vassal is no longer king if they were king
-	Meteor.users.update(vassal._id, {$set:{is_king:false}})
 	// set vassal and vassal's allies below's king to king of lord
 	if (lord.is_king) {
 		var newKing = lord._id

@@ -28,7 +28,7 @@ s.hex_squish = 0.7
 // winner loses x percent of s.battle_dead_per_round_lose or x percent of soldiers in enemy armies
 // double so that when attacking a castle you lost about the same amount as the castle
 s.battle_power_lost_per_round = 500
-s.battle_power_lost_per_round_winner = 200
+s.battle_power_lost_winner_ratio = 0.4
 
 // length of time added to game end clock when there is a new dominus
 s.time_til_game_end_when_new_dominus = 1000 * 60 * 60 * 24 * 7 	// 7 days

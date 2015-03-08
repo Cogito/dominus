@@ -114,7 +114,7 @@ setupKingChatroom = function(king_id) {
 	if (king && king.is_king) {
 
 		if (king.allies_below) {
-			var members = _.union(king.allies_below, [king._id]
+			var members = _.union(king.allies_below, [king._id])
 		} else {
 			var members = [king._id]
 		}

@@ -192,22 +192,27 @@ Fight.prototype._killSoldiers = function(unit) {
 	// var combinedFinalPower = unit.final_power + enemyFinalPower
 	var combinedFinalPower = self.unitObj.getTotalFinalPower()
 
-	// if dif is greater than 0 army is the winner
 	if (unit.dif > 0) {
-		var powerToLose = s.battle_power_lost_per_round_winner + (combinedFinalPower/1000)
-	} else {
+
+		// winner
 		var powerToLose = s.battle_power_lost_per_round + (combinedFinalPower/1000)
+		powerToLose = Math.min(powerToLose, enemyFinalPower)
+		powerToLose = powerToLose * s.battle_power_lost_winner_ratio
+
+	} else {
+
+		// tie or loser
+		var powerToLose = s.battle_power_lost_per_round + (combinedFinalPower/1000)
+
 	}
+
 
 	// take number of enemy armies into account
 	var numEnemyArmies = self.unitObj.getNumUniqueEnemies(unit)
 	var numTeamArmies = self.unitObj.getNumUniqueTeamMemebers(unit)
 	var adjust = Math.max(1, numEnemyArmies / numTeamArmies)
-	powerToLose = powerToLose * adjust
-	check(powerToLose, validNumber)
 
-	// shouldn't lose more than the enemy has
-	powerToLose = Math.min(powerToLose, enemyFinalPower)
+	powerToLose = powerToLose * adjust
 	check(powerToLose, validNumber)
 
 	// set survivors to unit's current soldiers
