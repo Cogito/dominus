@@ -23,7 +23,7 @@ create_castle = function(user_id) {
 	// set game end date to null
 	if (Hexes.find().count() == 0) {
 		console.log('--- creating new game ---')
-		generate_hexes(4)
+		generate_hexes(20)
 		reset_market()
 		Settings.upsert({name: 'gameEndDate'}, {$set: {name: 'gameEndDate', value: null}})
 		Settings.upsert({name: 'lastDominusUserId'}, {$set: {name: 'lastDominusUserId', value: null}})
@@ -95,6 +95,7 @@ create_castle = function(user_id) {
 
 						if (has_added_rings) {
 							// add some rings of border hexes so that new people aren't on the edge
+							add_ring(true)
 							add_ring(true)
 							add_ring(true)
 							add_ring(true)

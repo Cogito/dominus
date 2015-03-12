@@ -19,7 +19,7 @@ Cue.addJob('updateNetVillages', {retryOnError:false, maxMs:1000*5}, function(tas
 })
 
 // run nightly
-Cue.addJob('updateNetForEveryone', {retryOnError:false, maxMs:1000*60*5}, function(task, done) {
+Cue.addJob('updateNetForEveryone', {retryOnError:false, maxMs:1000*60*10}, function(task, done) {
 	updateNetForEveryone()
 	done()
 })

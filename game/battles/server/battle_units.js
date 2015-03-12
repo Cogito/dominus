@@ -568,7 +568,7 @@ Units.prototype.getUserOfUnit = function(unit_id) {
 	})
 
 	if (unit) {
-		var user = Meteor.users.findOne(unit.user_id, {fields: {allies:1, team:1, allies_below:1, allies_above:1}})
+		var user = Meteor.users.findOne(unit.user_id, {fields: {team:1, allies_below:1, allies_above:1}})
 		if (user) {
 			return user
 		}
@@ -666,7 +666,8 @@ Units.prototype.isAlly = function(unit, otherUnit) {
 	}
 
 	var isAlly = false
-	var user = Meteor.users.findOne(unit.user_id, {fields: {allies:1, team:1, allies_below:1, allies_above:1}})
+	var user = Meteor.users.findOne(unit.user_id, {fields: {team:1, allies_below:1, allies_above:1}})
+	var allies = _.union(user.allies_above, user.allies_below)
 
 	if (user) {
 		switch (unit.type) {
@@ -688,7 +689,7 @@ Units.prototype.isAlly = function(unit, otherUnit) {
 					}
 				} else {
 					// anyone in allies
-					if (_.indexOf(user.allies, otherUnit.user_id) != -1) {
+					if (_.indexOf(allies, otherUnit.user_id) != -1) {
 						isAlly = true
 					}
 				}
@@ -712,7 +713,8 @@ Units.prototype.isEnemy = function(unit, otherUnit) {
 	// if (self.debug) {console.log('running isEnemy for '+unit.username+':'+unit.name+':'+unit.type+' and '+otherUnit.username+':'+otherUnit.name+':'+otherUnit.type)}
 
 	var isEnemy = false
-	var user = Meteor.users.findOne(unit.user_id, {fields: {allies:1, team:1, allies_below:1, allies_above:1, is_dominus:1}})
+	var user = Meteor.users.findOne(unit.user_id, {fields: {team:1, allies_below:1, allies_above:1, is_dominus:1}})
+	var allies = _.union(user.allies_below, user.allies_above)
 	var otherUser = Meteor.users.findOne(otherUnit.user_id, {fields: {is_dominus:1}})
 	if (user && otherUser) {
 
@@ -744,7 +746,7 @@ Units.prototype.isEnemy = function(unit, otherUnit) {
 							}
 						}
 					} else {
-						if (_.indexOf(user.allies, otherUnit.user_id) == -1) {
+						if (_.indexOf(allies, otherUnit.user_id) == -1) {
 							// if (self.debug) {console.log('. . . '+otherUnit.username+':'+otherUnit.name+':'+otherUnit.type+' is enemy of '+unit.username+':'+unit.name+':'+unit.type)}
 							isEnemy = true
 						} else {

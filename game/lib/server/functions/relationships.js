@@ -131,7 +131,7 @@ remove_lord_and_vassal = function(lord_id, vassal_id) {
 	// remove lord and lord's allies_above from 		vassal and vassal's allies_below
 	var pullIds = _.union(lord.allies_above, [lord._id])
 	var pullUsers = _.union(vassal.allies_below, [vassal._id])
-	Meteor.users.update({_id: {$in:pullUsers}}, {$pull: {allies_above:{$in:pullIds}, allies:{$in:pullIds}}}, {multi:true})
+	Meteor.users.update({_id: {$in:pullUsers}}, {$pull: {allies_above:{$in:pullIds}}}, {multi:true})
 
 	// allies
 	// remove vassal and vassal's allies_below from 	lord and lord's allies_above
@@ -139,7 +139,7 @@ remove_lord_and_vassal = function(lord_id, vassal_id) {
 	// remove vassal and vassal's allies_below from 	lord and lord's allies_above
 	var pullIds = _.union(vassal.allies_below, [vassal._id])
 	var pullUsers = _.union(lord.allies_above, [lord._id])
-	Meteor.users.update({_id: {$in:pullUsers}}, {$pull: {allies_below:{$in:pullIds}, allies:{$in:pullIds}}}, {multi:true})
+	Meteor.users.update({_id: {$in:pullUsers}}, {$pull: {allies_below:{$in:pullIds}}}, {multi:true})
 
 	// king
 	// vassal is now king
@@ -182,6 +182,19 @@ create_lord_and_vassal = function(lord_id, vassal_id) {
 		throw new Meteor.Error('lord or vassal not found')
 	}
 
+	check(lord.allies_above, Array)
+	check(lord.allies_below, Array)
+	check(lord.team, Array)
+	check(vassal.allies_above, Array)
+	check(vassal.allies_below, Array)
+	check(vassal.team, Array)
+
+	// vassal must not have a lord
+	// if so call remove first
+	if (vassal.lord) {
+		throw new Meteor.Error('vassal must not have a lord')
+	}
+
 	// set lord and remove king
 	Meteor.users.update(vassal_id, {$set: {
 		lord: lord_id,
@@ -198,14 +211,14 @@ create_lord_and_vassal = function(lord_id, vassal_id) {
 	// add lord and lord's allies_above to		vassal and vassal's allies below allies
 	var addIds = _.union(lord.allies_above, [lord._id])
 	var addUsers = _.union(vassal.allies_below, [vassal._id])
-	Meteor.users.update({_id: {$in:addUsers}}, {$addToSet: {allies_above:{$each:addIds}, allies:{$each:addIds}}}, {multi:true})
+	Meteor.users.update({_id: {$in:addUsers}}, {$addToSet: {allies_above:{$each:addIds}}}, {multi:true})
 
 	// allies_below and allies
 	// add vassal and vassal's allies_below to 	lord and lord's allies above allies_below
 	// add vassal and vassal's allies_below to	lord and lord's allies above allies
 	var addIds = _.union(vassal.allies_below, [vassal._id])
 	var addUsers = _.union(lord.allies_above, [lord._id])
-	Meteor.users.update({_id: {$in:addUsers}}, {$addToSet: {allies_below:{$each:addIds}, allies:{$each:addIds}}}, {multi:true})
+	Meteor.users.update({_id: {$in:addUsers}}, {$addToSet: {allies_below:{$each:addIds}}}, {multi:true})
 
 	// team
 	// add vassal and vassal's allies_below to lord's team
@@ -223,7 +236,7 @@ create_lord_and_vassal = function(lord_id, vassal_id) {
 	Meteor.users.update({_id:{$in:vassal.allies_below}}, {$set:{king:newKing}}, {multi:true})
 
 	// update count of everyone who was changed
-	var ids = _.union([lord_id, vassal_id], lord.team, vassal.team)
+	var ids = _.union([lord_id, vassal_id], lord.team)
 	_.each(ids, function(id) {
 		if (id) {
 			Cue.addTask('updateVassalAllyCount', {isAsync:true, unique:false}, {user_id:id})
@@ -242,18 +255,12 @@ Cue.addJob('updateVassalAllyCount', {retryOnError:false, maxMs:1000*60*5}, funct
 update_vassal_ally_count = function(user_id) {
 	check(user_id, String)
 
-	var user = Meteor.users.findOne(user_id, {fields: {team:1, vassals:1, allies:1, allies_above:1, allies_below:1}})
+	var user = Meteor.users.findOne(user_id, {fields: {team:1, vassals:1, allies_above:1, allies_below:1}})
 	if (user) {
 		if (user.vassals) {
 			var num_vassals = user.vassals.length
 		} else {
 			var num_vassals = 0
-		}
-
-		if (user.allies) {
-			var num_allies = user.allies.length
-		} else {
-			var num_allies = 0
 		}
 
 		if (user.allies_above) {
@@ -274,7 +281,7 @@ update_vassal_ally_count = function(user_id) {
 			var num_team = 0
 		}
 
-		Meteor.users.update(user_id, {$set: {num_team:num_team, num_vassals: num_vassals, num_allies: num_allies, num_allies_above: num_allies_above, num_allies_below: num_allies_below}})
+		Meteor.users.update(user_id, {$set: {num_team:num_team, num_vassals: num_vassals, num_allies_above: num_allies_above, num_allies_below: num_allies_below}})
 		Cue.addTask('dailystats_num_allies', {isAsync:true, unique:false}, {user_id:user_id})
 	}
 }

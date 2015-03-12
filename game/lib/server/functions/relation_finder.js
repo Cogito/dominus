@@ -1,5 +1,5 @@
 // update relationships for user and everyone in his king's branch
-// allies - everyone above and below you in tree not including self
+// allies - everyone above and below you in tree not including self - NON LONGER USED
 // allies_below - everyone below not including self
 // allies_above - everyone above not including self
 // king - your king or yourself if you are king
@@ -70,38 +70,38 @@ relation_finder = function(user_id) {
 			self.num_branches--
 			self.traverse_up(user, [])
 		} else {
-			// record siblings
-			var siblings = vassals.map(function(sib) {
-				return sib._id
-			})
-
-			vassals.forEach(function(v) {
-				// add siblings info to update_cache
-				var cache_v = _.find(self.update_cache, function(cache) {
-					return (cache.user_id == v._id)
-				})
-
-				// check if user is already in update_cache
-				if (cache_v) {
-					// if so add siblings
-					cache_v.siblings = _.without(siblings, v._id)
-
-					self.update_cache = _.reject(self.update_cache, function(cache) {
-						return cache.user_id == cache_v.user_id
-					})
-
-					self.update_cache.push(cache_v)
-
-				} else {
-					// if not add new user
-					self.update_cache.push({
-						user_id: v._id,
-						allies_below: [],
-						allies_above: [],
-						siblings: _.without(siblings, v._id)
-					})
-				}
-			})
+			// // record siblings
+			// var siblings = vassals.map(function(sib) {
+			// 	return sib._id
+			// })
+			//
+			// vassals.forEach(function(v) {
+			// 	// add siblings info to update_cache
+			// 	var cache_v = _.find(self.update_cache, function(cache) {
+			// 		return (cache.user_id == v._id)
+			// 	})
+			//
+			// 	// check if user is already in update_cache
+			// 	if (cache_v) {
+			// 		// if so add siblings
+			// 		cache_v.siblings = _.without(siblings, v._id)
+			//
+			// 		self.update_cache = _.reject(self.update_cache, function(cache) {
+			// 			return cache.user_id == cache_v.user_id
+			// 		})
+			//
+			// 		self.update_cache.push(cache_v)
+			//
+			// 	} else {
+			// 		// if not add new user
+			// 		self.update_cache.push({
+			// 			user_id: v._id,
+			// 			allies_below: [],
+			// 			allies_above: [],
+			// 			siblings: _.without(siblings, v._id)
+			// 		})
+			// 	}
+			// })
 
 			self.num_branches += vassals.count() - 1
 			vassals.forEach(function(vassal) {
@@ -162,7 +162,7 @@ relation_finder = function(user_id) {
 				user_id: user._id,
 				allies_below: _.compact(allies_below_array),
 				allies_above: [],
-				siblings: []
+				//siblings: []
 			})
 		}
 
@@ -191,22 +191,22 @@ relation_finder = function(user_id) {
 			self.update_cache = _.map(self.update_cache, function(cache) {
 				cache.allies_below = _.without(cache.allies_below, cache.user_id)
 				cache.allies_above = _.without(cache.allies_above, cache.user_id)
-				cache.allies = _.union(cache.allies_below, cache.allies_above)
+				//cache.allies = _.union(cache.allies_below, cache.allies_above)
 				return cache
 			})
 
 			_.each(self.update_cache, function(cache) {
-				check(cache.allies, Array)
+				//check(cache.allies, Array)
 				check(cache.allies_below, Array)
 				check(cache.allies_above, Array)
-				check(cache.siblings, Array)
+				//check(cache.siblings, Array)
 
 				Meteor.users.update(cache.user_id, {$set: {
-					allies: cache.allies,
+					//allies: cache.allies,
 					allies_below: cache.allies_below,
 					allies_above: cache.allies_above,
 					king: user._id,
-					siblings: cache.siblings,
+					//siblings: cache.siblings,
 					//team: _.without(self.team, cache.user_id),
 					team: self.team,
 					is_king: cache.user_id == user._id

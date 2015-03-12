@@ -11,7 +11,7 @@ Template.battle_report_unit.helpers({
     },
 
     hasAllies: function() {
-        return this.allies.length > 0
+        return (this.allies_below.length > 0 || this.allies_above.length > 0)
     },
 
     icon_name: function() {

@@ -12,7 +12,9 @@ create_army = function(user_id, army, x, y, moves, last_move_at) {
 
 	var name = names.armies.part1[_.random(names.armies.part1.length-1)] +' '+ names.armies.part2[_.random(names.armies.part2.length-1)]
 
-	var user = Meteor.users.findOne(user_id, {fields: {username:1, x:1, y:1, castle_id:1, allies:1, is_dominus:1}})
+	var fields = {username:1, x:1, y:1, allies_above:1, allies_below:1, castle_id:1, is_dominus:1}
+	var user = Meteor.users.findOne(user_id, {fields:fields})
+	var allies = _.union(user.allies_above, user.allies_below)
 
 	var fields = {
 		name: name,
@@ -62,7 +64,7 @@ create_army = function(user_id, army, x, y, moves, last_move_at) {
 						Cue.addTask('startBattle', {isAsync:false, unique:true}, {x:x, y:y})
 					}
 				} else {
-					if (_.indexOf(user.allies, ea.user_id) == -1) {
+					if (_.indexOf(allies, ea.user_id) == -1) {
 						// army is enemy
 						// make sure army is still alive
 						var attacker = Armies.findOne(id)
@@ -211,7 +213,8 @@ move_army_to_hex = function(army_id, x, y) {
 		Armies.update(unit._id, {$set: {pastMoves:pastMoves}})
 
 		// get user info for later
-		var user = Meteor.users.findOne(unit.user_id, {fields: {allies:1, team:1, allies_below:1, is_dominus:1}})
+		var user = Meteor.users.findOne(unit.user_id, {fields: {team:1, allies_above:1, allies_below:1, is_dominus:1}})
+		var allies = _.union(user.allies_above, user.allies_below)
 
 		// so that battle isn't called once for each enemy in hex
 		var startBattle = false
@@ -226,7 +229,7 @@ move_army_to_hex = function(army_id, x, y) {
 					// dominus' armies can attack any army
 					startBattle = true
 				} else {
-					if (_.indexOf(user.allies, a.user_id) == -1) {
+					if (_.indexOf(allies, a.user_id) == -1) {
 						// army is enemy
 						startBattle = true
 					}
@@ -251,7 +254,7 @@ move_army_to_hex = function(army_id, x, y) {
 		// check for enemy villages
 		var ev = Villages.findOne({x:x, y:y, user_id: {$ne: unit.user_id}}, {fields: {user_id: 1}})
 		if (ev) {
-			if (_.indexOf(user.allies, ev.user_id) == -1) {
+			if (_.indexOf(allies, ev.user_id) == -1) {
 				startBattle = true
 			}
 		}

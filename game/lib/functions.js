@@ -74,10 +74,9 @@ is_hex_empty_except_allies_coords = function(x,y) {
 		return false
 	}
 
-    var user = Meteor.users.findOne(Meteor.userId(), {fields: {allies:1}})
+    var user = Meteor.users.findOne(Meteor.userId(), {fields: {allies_above:1, allies_below:1}})
     if (user) {
-        var allies = user.allies
-        allies.push(user._id)
+        var allies = _.union(user.allies_above, user.allies_below, [user._id])
         check(allies, Array)
         var numFound = Armies.find({x: x, y: y, user_id: {$nin: allies} }).count()
         if (numFound > 0) { return false }

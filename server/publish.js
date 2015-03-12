@@ -2,7 +2,7 @@ Meteor.publish('user_data', function () {
 	if (this.userId) {
 		return Meteor.users.find({_id: this.userId}, {fields: {
 			admin:1,
-			allies:1,
+			//allies:1,
 			allies_above:1,
 			allies_below:1,
 			castle_id:1,
@@ -15,7 +15,7 @@ Meteor.publish('user_data', function () {
 			is_king:1,
 			lord:1,
 			lumber:1,
-			num_allies:1,
+			//num_allies:1,
 			num_allies_above:1,
 			num_allies_below:1,
 			num_vassals:1,
