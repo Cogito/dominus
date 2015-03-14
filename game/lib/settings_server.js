@@ -78,7 +78,7 @@ if (Meteor.isServer) {
 	}
 
 	// how much time between dailystat ticks
-	// hours
+	// in hours
 	s.statsInverval = 6
 
 	statsBegin = function() {
@@ -91,6 +91,7 @@ if (Meteor.isServer) {
 		return begin.add(s.statsInverval, 'hours').toDate()
 	}
 
+	// in hours
 	s.gamestatsInterval = 3
 
 	gamestatsBegin = function() {

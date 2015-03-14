@@ -40,6 +40,11 @@ Accounts.onCreateUser(function(options, user) {
 		}
 	}
 
+	// limit username to 25 character
+	if (user.username.length > 25) {
+		user.username = user.username.substring(0,25)
+	}
+
 	if (Meteor.isServer && process.env.NODE_ENV == 'development') {
 		user.emails[0].verified = true
 	}

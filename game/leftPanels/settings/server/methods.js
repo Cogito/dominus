@@ -39,7 +39,7 @@ Meteor.methods({
 				throw new Meteor.Error('New username must be at least 3 characters long.')
 			}
 
-			if (username.length > 30) {
+			if (username.length > 25) {
 				throw new Meteor.Error('New username is too long.')
 			}
 

@@ -28,7 +28,7 @@ s.hex_squish = 0.7
 // winner loses x percent of s.battle_dead_per_round_lose or x percent of soldiers in enemy armies
 // double so that when attacking a castle you lost about the same amount as the castle
 s.battle_power_lost_per_round = 500
-s.battle_power_lost_winner_ratio = 0.4
+s.battle_power_lost_winner_ratio = 0.5
 
 // length of time added to game end clock when there is a new dominus
 s.time_til_game_end_when_new_dominus = 1000 * 60 * 60 * 24 * 7 	// 7 days
@@ -49,15 +49,14 @@ s.inactives = {
 
 //s.vassal_tax = 0.25		// percentage of income that goes to lord
 
-s.market.sell_tax = 0.25
+s.market.sell_tax = 0.2
 s.market.increment = 0.000004	// how much it goes up or down when someone buys or sells
 
 s.resource.gained_at_hex = 3
 //s.resource.gold_gained_at_castle = 20	// non longer used
 s.resource.gold_gained_at_village = 0
-s.resource.num_rings_castle = 2
 s.resource.num_rings_village = 1
-s.resource.large_resource_multiplier = 4 	// large resource hexes give you x times as much
+s.resource.large_resource_multiplier = 3 	// large resource hexes give you x times as much
 
 s.resource.types = ['grain', 'lumber', 'ore', 'wool', 'clay', 'glass']
 s.resource.types_plus_gold = ['gold'].concat(s.resource.types)
@@ -76,12 +75,12 @@ s.army.types = ['footmen', 'archers', 'pikemen', 'cavalry', 'catapults']
 
 s.castle.income = {
 	gold: 0,	// not used
-	grain: 10,
-	lumber: 10,
-	ore: 10,
-	wool: 10,
-	clay: 10,
-	glass: 10
+	grain: 20,
+	lumber: 20,
+	ore: 20,
+	wool: 20,
+	clay: 20,
+	glass: 20
 }
 
 s.army.cost = {
@@ -151,7 +150,7 @@ s.army.stats = {
 	catapults: {
 		offense: 1,
 		defense: 1,
-		speed: 3,
+		speed: 4,
 		bonus_against_buildings: 60
 	}
 }
@@ -182,13 +181,13 @@ s.village.cost = {
 		timeToBuild: 1000 * 60 * 60 * 6	// 6 hours
 	},
 	level3: {
-		grain: 800,
-		lumber: 800,
-		ore: 800,
-		wool: 800,
-		clay: 800,
-		glass: 800,
-		timeToBuild: 1000 * 60 * 60 * 24 // 24 hours
+		grain: 600,
+		lumber: 600,
+		ore: 600,
+		wool: 600,
+		clay: 600,
+		glass: 600,
+		timeToBuild: 1000 * 60 * 60 * 12 // 24 hours
 	},
 }
 

@@ -42,7 +42,7 @@ Template.settings_panel.events({
 			msg = 'Username must be at least 3 characters long.'
 		}
 
-		if (username.length > 30) {
+		if (username.length > 25) {
 			error = true
 			msg = 'New username is too long.'
 		}
