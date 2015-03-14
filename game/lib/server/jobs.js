@@ -150,7 +150,7 @@ Meteor.startup(function() {
 
 		// hourly job
 		Meteor.setTimeout(function() {
-			Cue.addTask('deleteInactiveUsers', {isAsync:false, unique:true}, {})
+			Cue.addTask('deleteInactiveUsers_new', {isAsync:false, unique:true}, {})
 		}, 1000 * 60 * 60)
 
 

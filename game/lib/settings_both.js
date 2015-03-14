@@ -38,12 +38,12 @@ s.inactives = {
 	deleteCutoff: {
 		unverifiedEmail: 1000 * 60 * 60 * 24 * 2,	// 2 days
 		noVillagesOrVassals: 1000 * 60 * 60 * 24 * 2, 	// 2 days
-		everyoneElse: 1000 * 60 * 60 * 24 * 7 	// 1 week
+		everyoneElse: 1000 * 60 * 60 * 24 * 10 	// 1 week
 	},
 	reminderCutoff: {
 		unverifiedEmail: 1000 * 60 * 60 * 24 * 1,	// 1 day
 		noVillagesOrVassals: 1000 * 60 * 60 * 24 * 1, 	// 1 day
-		everyoneElse: 1000 * 60 * 60 * 24 * 6 	// 6 days
+		everyoneElse: 1000 * 60 * 60 * 24 * 9 	// 6 days
 	}
 }
 
