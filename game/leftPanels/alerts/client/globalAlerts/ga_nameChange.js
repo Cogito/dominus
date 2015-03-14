@@ -4,10 +4,7 @@ var helpers = {
     },
 
     title: function() {
-        var user = AlertUsers.findOne(this.vars.user_id)
-        if (user) {
-            return this.vars.previousName +"'s new name is "+this.vars.newName
-        }
+        return this.vars.previousName +"'s new name is "+this.vars.newName
     }
 }
 
