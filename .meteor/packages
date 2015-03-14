@@ -21,7 +21,7 @@ reactive-var
 spiderable
 momentjs:moment
 meteor-platform
-
+meteorhacks:cluster@=1.5.0
 nemo64:bootstrap
 fortawesome:fontawesome
 danimal:readymanager
@@ -42,4 +42,3 @@ danimal:cue
 miro:mailchimp-lists
 wylio:mandrill
 meteorhacks:kadira
-meteorhacks:cluster
