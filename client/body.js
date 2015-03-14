@@ -85,7 +85,7 @@ UI.registerHelper('multiplierToPercentage', function(float) {
 	return (float - 1) * 100
 })
 
-// 1.25 = 25%
+// 0.25 = 25%
 UI.registerHelper('floatToPercentage', function(float) {
 	check(float, validNumber)
 	return float * 100

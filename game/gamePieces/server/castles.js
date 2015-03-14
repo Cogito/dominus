@@ -23,7 +23,7 @@ create_castle = function(user_id) {
 	// set game end date to null
 	if (Hexes.find().count() == 0) {
 		console.log('--- creating new game ---')
-		generate_hexes(20)
+		generate_hexes(12)
 		reset_market()
 		Settings.upsert({name: 'gameEndDate'}, {$set: {name: 'gameEndDate', value: null}})
 		Settings.upsert({name: 'lastDominusUserId'}, {$set: {name: 'lastDominusUserId', value: null}})
