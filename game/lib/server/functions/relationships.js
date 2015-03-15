@@ -171,7 +171,9 @@ create_lord_and_vassal = function(lord_id, vassal_id) {
 	check(vassal_id, String)
 
 	if (lord_id == vassal_id) {
-		throw new Meteor.Error('winner and loser are the same in create_lord_and_vassal')
+		console.log('lord '+lord_id)
+		console.log('vassal '+vassal_id)
+		console.error('winner and loser are the same in create_lord_and_vassal')
 	}
 
 	var fields = {allies_above:1, allies_below:1, king:1, team:1, is_king:1}
@@ -179,7 +181,9 @@ create_lord_and_vassal = function(lord_id, vassal_id) {
 	var vassal = Meteor.users.findOne(vassal_id, {fields:fields})
 
 	if (!lord || !vassal) {
-		throw new Meteor.Error('lord or vassal not found')
+		console.log('lord '+lord_id)
+		console.log('vassal '+vassal_id)
+		console.error('lord or vassal not found')
 	}
 
 	check(lord.allies_above, Array)
@@ -192,7 +196,25 @@ create_lord_and_vassal = function(lord_id, vassal_id) {
 	// vassal must not have a lord
 	// if so call remove first
 	if (vassal.lord) {
-		throw new Meteor.Error('vassal must not have a lord')
+		console.log('lord '+lord_id)
+		console.log('vassal '+vassal_id)
+		console.error('vassal must not have a lord')
+	}
+
+	// set vassal and vassal's allies below's king to king of lord
+	var newKing = null
+	if (lord.is_king) {
+		newKing = lord._id
+	} else if (lord.king){
+		newKing = lord.king
+	} else {
+		console.log('lord '+lord_id)
+		console.log('vassal '+vassal_id)
+		console.error('lords king is not set')
+	}
+	
+	if (newKing) {
+		Meteor.users.update({_id:{$in:vassal.allies_below}}, {$set:{king:newKing}}, {multi:true})
 	}
 
 	// set lord and remove king
@@ -224,16 +246,6 @@ create_lord_and_vassal = function(lord_id, vassal_id) {
 	// add vassal and vassal's allies_below to lord's team
 	var team = _.union(lord.team, [lord._id, vassal._id], vassal.allies_below)
 	Meteor.users.update({_id:{$in:team}}, {$set:{team:team}}, {multi:true})
-
-	// set vassal and vassal's allies below's king to king of lord
-	if (lord.is_king) {
-		var newKing = lord._id
-	} else if (lord.king){
-		var newKing = lord.king
-	} else {
-		throw new Meteor.Error('lords king is not set')
-	}
-	Meteor.users.update({_id:{$in:vassal.allies_below}}, {$set:{king:newKing}}, {multi:true})
 
 	// update count of everyone who was changed
 	var ids = _.union([lord_id, vassal_id], lord.team)
