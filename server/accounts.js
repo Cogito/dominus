@@ -138,6 +138,7 @@ setupNewUser = function(user) {
 	user.allies_above = []
 	user.team = []
 	user.is_king = true
+	user.king = null
 	user.is_dominus = false
 	user.show_welcome_screen = true
 	user.num_vassals = 0

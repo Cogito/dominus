@@ -212,10 +212,7 @@ create_lord_and_vassal = function(lord_id, vassal_id) {
 		console.log('vassal '+vassal_id);
 		console.error('lords king is not set');
 	}
-
-	if (newKing) {
-		Meteor.users.update({_id:{$in:vassal.allies_below}}, {$set:{king:newKing}}, {multi:true});
-	}
+	Meteor.users.update({_id:{$in:vassal.allies_below}}, {$set:{king:newKing}}, {multi:true});
 
 	// set lord and remove king
 	Meteor.users.update(vassal_id, {$set: {
