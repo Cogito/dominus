@@ -103,19 +103,19 @@ var delete_everyoneElse = function(user) {
 };
 
 var reminder_UnverifiedEmail = function(user) {
-    if (!user.user.accountDelNotificationSent) {
+    if (!user.accountDelNotificationSent) {
         Accounts.sendVerificationEmail(user._id);
     }
 };
 
 var reminder_noVillagesOrVassals = function(user) {
-    if (!user.user.accountDelNotificationSent) {
+    if (!user.accountDelNotificationSent) {
         mandrillSendTemplate('inactive-reminder-no-villages-or-vassals', user.emails[0].address, user.username);
     }
 };
 
 var reminder_everyoneElse = function(user) {
-    if (!user.user.accountDelNotificationSent) {
+    if (!user.accountDelNotificationSent) {
         mandrillSendTemplate('inactive-reminder-6-days', user.emails[0].address, user.username);
     }
 };
