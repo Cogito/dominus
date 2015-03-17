@@ -148,7 +148,7 @@ Meteor.startup(function() {
 			Cue.addTask('generateTree', {isAsync:false, unique:true}, {});
 		}, 1000 * 60 * 10);
 
-		Cue.addTask('deleteInactiveUsers_new', {isAsync:false, unique:true}, {});
+
 		// hourly job
 		Meteor.setTimeout(function() {
 			Cue.addTask('deleteInactiveUsers_new', {isAsync:false, unique:true}, {});
