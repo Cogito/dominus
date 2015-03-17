@@ -17,21 +17,21 @@ if (Meteor.isServer && process.env.NODE_ENV == 'development') {
 	s.battle_interval = 1000 * 30
 	s.village.max_can_have = 6
 } else {
-	s.resource.interval = 1000 * 60 * 10
-	s.battle_interval = 1000 * 60 * 4
-	s.village.max_can_have = 6
+	s.resource.interval = 1000 * 60 * 10;
+	s.battle_interval = 1000 * 60 * 4;
+	s.village.max_can_have = 6;
 }
 
-s.hex_size = 60
-s.hex_squish = 0.7
+s.hex_size = 60;
+s.hex_squish = 0.7;
 
 // winner loses x percent of s.battle_dead_per_round_lose or x percent of soldiers in enemy armies
 // double so that when attacking a castle you lost about the same amount as the castle
-s.battle_power_lost_per_round = 500
-s.battle_power_lost_winner_ratio = 0.5
+s.battle_power_lost_per_round = 500;
+s.battle_power_lost_winner_ratio = 0.5;
 
 // length of time added to game end clock when there is a new dominus
-s.time_til_game_end_when_new_dominus = 1000 * 60 * 60 * 24 * 7 	// 7 days
+s.time_til_game_end_when_new_dominus = 1000 * 60 * 60 * 24 * 7; 	// 7 days
 
 // removal of inactives
 s.inactives = {
@@ -45,12 +45,12 @@ s.inactives = {
 		noVillagesOrVassals: 1000 * 60 * 60 * 24 * 1, 	// 1 day
 		everyoneElse: 1000 * 60 * 60 * 24 * 9 	// 6 days
 	}
-}
+};
 
 //s.vassal_tax = 0.25		// percentage of income that goes to lord
 
-s.market.sell_tax = 0.2
-s.market.increment = 0.000004	// how much it goes up or down when someone buys or sells
+s.market.sell_tax = 0.2;
+s.market.increment = 0.000004;	// how much it goes up or down when someone buys or sells
 
 s.resource.gained_at_hex = 3
 //s.resource.gold_gained_at_castle = 20	// non longer used
