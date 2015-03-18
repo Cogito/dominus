@@ -3,7 +3,7 @@ Meteor.startup(function() {
 	if (process.env.DOMINUS_WORKER == 'true') {
 		// delay because meteor up seems to start server twice
 		Meteor.setTimeout(function() {
-			console.log(' --- dominus worker started ---');
+			console.log('--- dominus worker started ---');
 			Cue.dropInProgressTasks();
 			Cue.maxTasksAtOnce = 20;
 			Cue.start();
@@ -108,8 +108,8 @@ Meteor.startup(function() {
 		// resource collection
 		var max = 1000 * 60 * 60;
 		var current = moment().minute() * 60 * 1000;
-
 		var ms_until;
+
 		if (current + s.resource.interval >= max) {
 			ms_until = max - current;
 		} else {
@@ -150,14 +150,14 @@ Meteor.startup(function() {
 
 
 		// hourly job
-		Meteor.setTimeout(function() {
+		Meteor.setInterval(function() {
 			Cue.addTask('deleteInactiveUsers_new', {isAsync:false, unique:true}, {});
 		}, 1000 * 60 * 60);
 
 
 		// game over job
 		// check to see if game is over and send alert
-		Meteor.setTimeout(function() {
+		Meteor.setInterval(function() {
 			Cue.addTask('checkForGameOver', {isAsync:false, unique:true}, {});
 		}, 1000 * 60);
 	}
