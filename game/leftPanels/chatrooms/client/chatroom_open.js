@@ -269,6 +269,10 @@ Template.chatroom_open.events({
 			return
 		}
 
+		if (message.length > 400) {
+			return;
+		}
+
 		var date = new Date(TimeSync.serverTime(null, 5000))
 
 		Roomchats.insert({
@@ -322,6 +326,10 @@ Template.chatroom_open.events({
 
 			if (message.length == 0) {
 				return
+			}
+
+			if (message.length > 400) {
+				return;
 			}
 
 			var date = new Date(TimeSync.serverTime(null, 5000))
