@@ -28,7 +28,7 @@ Template.adminChatrooms.created = function() {
 	self.autorun(function() {
 		var roomId = self.openRoomId.get()
 		if (roomId) {
-			Meteor.subscribe('roomchats', roomId)
+			Meteor.subscribe('adminRoomchats', roomId)
 
 			var room = Rooms.findOne(self.openRoomId.get())
 			if (room) {
