@@ -1,11 +1,11 @@
-Accounts.validateNewUser(function(user) {
-	var bannedEmails = EJSON.parse(process.env.BANNED_EMAILS);
-	if (_.contains(bannedEmails, user.emails[0].address)) {
-		throw new Meteor.Error('403', 'User banned.');
-	} else {
-		return true;
-	}
-});
+// Accounts.validateNewUser(function(user) {
+// 	var bannedEmails = EJSON.parse(process.env.BANNED_EMAILS);
+// 	if (_.contains(bannedEmails, user.emails[0].address)) {
+// 		throw new Meteor.Error('403', 'User banned.');
+// 	} else {
+// 		return true;
+// 	}
+// });
 
 
 // this is called before validateNewUser()
