@@ -82,6 +82,8 @@ Meteor.methods({
 
 
 	// do this on server only because the army might not be in client db
+	// both armies get the lastMoveAt time that the first army had
+	// the time of their next move doesn't change
 	split_armies: function(id, new_army) {
 		check(id, String)
 

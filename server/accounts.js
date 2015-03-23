@@ -100,9 +100,6 @@ Accounts.onLogin(function(data) {
 	// reset this
 	// flag for has notification that your account will soon been deleted been sent to this user
 	Meteor.users.update(data.user._id, {$set:{accountDelNotificationSent:false}});
-
-	console.log(data.connection.clientAddress);
-	console.log(data.connection.httpHeaders);
 });
 
 
