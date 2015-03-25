@@ -11,7 +11,6 @@ facts
 email
 accounts-ui
 mrt:cookies@0.3.0
-reactive-dict
 mizzao:timesync
 danimal:accounts-templates
 danimal:hx
@@ -41,3 +40,4 @@ miro:mailchimp
 danimal:cue
 miro:mailchimp-lists
 wylio:mandrill
+meteorhacks:kadira
