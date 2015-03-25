@@ -9,7 +9,7 @@ s.rankings = {}
 
 s.rankings.perPage = 10
 
-s.serverMaxPlayers = 500
+s.serverMaxPlayers = 700
 
 if (Meteor.isServer && process.env.NODE_ENV == 'development') {
 	// cheats
