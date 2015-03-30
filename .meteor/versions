@@ -17,7 +17,7 @@ classcraft:knox@0.9.11
 coffeescript@1.0.6
 d3js:d3@3.5.5
 danimal:accounts-templates@1.0.4
-danimal:cue@1.0.13
+danimal:cue@1.0.14
 danimal:hx@1.0.6
 danimal:mapbaker@1.0.13
 danimal:mapmover@1.0.7
@@ -30,7 +30,7 @@ email@1.0.6
 facebook@1.1.4
 facts@1.0.4
 fastclick@1.0.3
-fongandrew:find-and-modify@0.1.2
+fongandrew:find-and-modify@0.2.0
 fortawesome:fontawesome@4.2.0_2
 geojson-utils@1.0.3
 google@1.1.5

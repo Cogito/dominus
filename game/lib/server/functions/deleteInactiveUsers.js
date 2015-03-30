@@ -132,6 +132,10 @@ UserStatus.events.on('connectionLogout', function(fields) {
     updateUserLastActive(fields.userId);
 });
 
+UserStatus.events.on('connectionIdle', function(fields) {
+    updateUserLastActive(fields.userId);
+});
+
 var updateUserLastActive = function(userId) {
     Meteor.users.update(userId, {$set:{lastActive:new Date()}});
 };
