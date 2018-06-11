@@ -1,0 +1,39 @@
+<template name="help_howToStart">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <a data-toggle="collapse" data-parent="#accordion_help" href="#help-start">
+                How to start playing
+            </a>
+        </div>
+        <div id="help-start" class="panel-collapse collapse">
+            <div class="panel-body">
+                <p>{{game_name}} is a slow strategy game that does not require a lot of time to play.  Give your armies their orders then come back in a few hours to check on them.</p>
+
+                <p>Games last about a month.  When someone wins everything is reset and a new game starts.</p>
+
+                <div class="help_section">Build a Village</div>
+
+                <p>When you start playing you should focus on building up your income.  One way to do that is to build villages. A village collects resources from the ring of hexes surrounding it.</p>
+
+                <p>Villages are built using armies.</p>
+                <ul>
+                    <li>Find a good hex to build your village at.  You can only build villages on grain hexes, those are the light green ones.  Find a grain hex near your castle that is surrounded by hexes other than grain.</li>
+                    <li>Click on your castle.</li>
+                    <li>Click the "Send Army from Castle" button.</li>
+                    <li>Move the cavalry slider to the right.</li>
+                    <li>Click on the hex where you want to build your village.</li>
+                </ul>
+                <p>You should now see your army next to your castle.  If you click on your army you will see their path highlighted and how long it will take to reach their destination.</p>
+
+                <p>When they reach their destination they will have a "Build Village" button which you can click on to build your village.</p>
+
+                <div class="help_section">Next Steps</div>
+
+                <p>Continue building viillages to gain more income.  You can have up to {{s.village.max_can_have}} villages at one time.</p>
+                <p>Hire soldiers to protect your castle and villages.</p>
+                <p>After you have an army try attacking someone's castle.  If you win then they become your vassal and will send you part of their income.</p>
+                <p>When you gain a vassal it's usually a good idea to place an army on their castle to prevent someone else from stealing your vassal.</p>
+            </div>
+        </div>
+    </div>
+</template>

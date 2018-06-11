@@ -1,0 +1,194 @@
+<template name="rp_info_castle">
+	<div class="rp_content" id="rp_info_castle">
+		{{#if castleInfoLoaded}}
+			<div class="panel panel-default" style="margin-top:0;">
+				{{#if is_owner}}
+
+					<div class="panel-heading">
+						<h4>
+							<span class="light_text">Castle</span> {{name}}
+							&nbsp;
+							{{> edit_name_button}}
+						</h4>
+						{{> hex_location}} &nbsp;&nbsp; {{> center_on_button x=x y=y selected_type='castle' selected_id=_id}}
+					</div>
+
+					<table class="table table-condensed table-striped">
+						<tbody>
+							<tr>
+								<td>Vassals</td>
+								<td style="text-align:right;">{{round user.num_allies_below}}</td>
+							</tr>
+							<tr>
+								<td>Networth</td>
+								<td style="text-align:right;">{{round user.net.total}}</td>
+							</tr>
+							<tr>
+								<td>Income</td>
+								<td style="text-align:right;">{{round user.income}}</td>
+							</tr>
+							<tr>
+								<td>Lost Soldiers</td>
+								<td style="text-align:right;">{{round user.losses_num}}</td>
+							</tr>
+						</tbody>
+					</table>
+
+				{{else}}
+
+					<div class="panel-heading">
+						<h4>
+							<div style="margin-bottom:8px;">
+								<span class="light_text">Castle</span> {{name}}
+							</div>
+							<span class="light_text">Lord</span> {{username}}
+						</h4>
+					</div>
+					{{#if rightPanelUserReady}}
+						<table class="table table-condensed table-striped">
+							<tbody>
+								<tr>
+									<td>Vassals</td>
+									<td style="text-align:right;">{{round user.num_allies_below}}</td>
+								</tr>
+								<tr>
+									<td>Networth</td>
+									<td style="text-align:right;">{{round user.net.total}}</td>
+								</tr>
+								<tr>
+									<td>Income</td>
+									<td style="text-align:right;">{{round user.income}}</td>
+								</tr>
+								<tr>
+									<td>Lost Soldiers</td>
+									<td style="text-align:right;">{{round user.losses_num}}</td>
+								</tr>
+								{{#if daysSinceUserActive}}
+									<tr>
+										<td>Last Active</td>
+										<td style="text-align:right;">{{daysSinceUserActive}}</td>
+									</tr>
+								{{/if}}
+							</tbody>
+						</table>
+					{{/if}}
+					<div class="panel-body" style="text-align:center;">
+						{{> hex_location}} &nbsp;&nbsp; {{> center_on_button x=x y=y selected_type='castle' selected_id=_id}}
+					</div>
+
+				{{/if}}
+			</div>
+
+			{{#if unitRelationType}}
+				<div class="panel panel-default panel-body" style="text-align:center;">
+					{{username}} is your {{unitRelationType}}
+				</div>
+			{{/if}}
+
+			{{#unless is_owner}}
+				{{#if rightPanelTreeReady}}
+					{{> rightPanelTree}}
+				{{/if}}
+
+				<div class="pad_group">
+					<button class="btn btn-primary btn-block" id="createChatButton">Create chatroom</button>
+				</div>
+			{{/unless}}
+
+
+			{{#if showUnverifiedEmailAlert}}
+				<div class="panel pandel-default panel-body" style="text-align:center;">
+					Email not yet verified.  {{username}} isn't receiving income.
+				</div>
+			{{/if}}
+
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Castle Garrison
+				</div>
+				{{#if no_soldiers}}
+					<div class="panel-body">
+						Empty
+					</div>
+				{{else}}
+					<table class="table table-condensed table-striped">
+						<tbody>
+							{{#each s.army.types}}
+								{{#if hasSoldierType}}
+								<tr>
+									<td>{{capitalize this}}</td>
+									<td style="text-align:right;">{{round numSoldierType}}</td>
+								</tr>
+								{{/if}}
+							{{/each}}
+
+							<tr>
+								<td>Defense Power</td>
+								<td style="text-align:right;">{{round defensePower}}</td>
+							</tr>
+						</tbody>
+					</table>
+				{{/if}}
+			</div>
+
+			{{#if is_vassal}}
+				<div class="pad_group">
+					<button type="button" class="btn btn-sm btn-primary btn-block" id="send_gold_button">Send Gold to {{username}}</button>
+					<button type="button" class="btn btn-sm btn-primary btn-block" id="hire_army_from_castle_button">Hire Soldiers for {{username}}</button>
+				</div>
+			{{/if}}
+
+
+			{{#if is_owner}}
+				<div class="pad_group">
+					<button type="button" class="btn btn-sm btn-primary btn-block" id="hire_army_from_castle_button">Hire Soldiers</button>
+
+					<button type="button" class="btn btn-sm btn-primary btn-block" id="send_army_from_castle_button" disabled="{{no_soldiers}}">Send Army from Castle</button>
+				</div>
+
+
+				{{#if more_than_one_owned_image}}
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							Set Castle Image
+						</div>
+						<div class="panel-body">
+							{{#each owned_images}}
+								<div class="radio">
+									<label>
+										<input type="radio" class="image_radios" name="image_radios" value="{{this}}" {{image_radio_is_checked}}>
+										{{image_name this}}
+									</label>
+								</div>
+							{{/each}}
+						</div>
+					</div>
+				{{/if}}
+
+			{{/if}}		<!-- is owner -->
+
+		{{else}}
+			<div class="pad_group" style="text-align:center;">
+				<i class="fa fa-refresh fa-spin"></i>
+				&nbsp;
+				Loading
+			</div>
+		{{/if}}
+
+
+		{{#if battleInfoReady}}
+			{{#if battle}}
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Battle
+					</div>
+					<div class="panel-body">
+						{{> battle_report battle}}
+					</div>
+				</div>
+			{{/if}}
+		{{/if}}
+
+	</div>
+</template>

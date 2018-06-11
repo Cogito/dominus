@@ -1,0 +1,23 @@
+<template name="tree_panel">
+	<div id="tree_panel">
+		<div class="panel_title"><i class="fa fa-sitemap fa-lg"></i> &nbsp;Tree</div>
+
+		<div class="panel panel-body" style="text-align:center;">
+			Updates every 10 minutes.
+		</div>
+
+		<div class="panel panel-body" id="tree">
+			{{#if treeReady}}
+				<ul>
+					{{#each tree}}
+						<li>
+							{{> treeUser}}
+						</li>
+					{{/each}}
+				</ul>
+			{{else}}
+				{{> loading}}
+			{{/if}}
+		</div>
+	</div>
+</template>

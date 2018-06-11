@@ -1,0 +1,113 @@
+@hex_grain: #b1e09d;
+@hex_clay: #b3a070;
+@hex_lumber: #72b57f;
+@hex_ore: #b5b5b5;
+
+@highlighted_hex: #ddd;
+@hex_stroke: rgba(0,0,0,0.2);
+@hex_stroke_width: 1;
+
+@panel_bg: rgba(20,20,20,0.65);
+@panel_padding: 0px 0px 0px 0px;
+@text-color-light: #aaa;
+
+.panel-heading {
+   padding: 5px 15px 5px 15px !important;
+   text-align: center;
+   font-size: 120%;
+}
+.panel {
+   margin: 5px 0 0px 0 !important;
+   border:0 !important;
+}
+
+// @icon_default_fill: #ddd;
+// @icon_mine_fill: #6efa4b;
+// @icon_foe_fill: #fa4e4b;
+// @icon_ally_fill: black;
+// @icon_lord_fill: #4baefa;
+// @icon_ally_below_fill: #fafa4b;
+// @icon_ally_above_fill: #fff;
+
+@icon_default_fill: #ddd;
+@icon_mine_fill: #6efa4b;
+@icon_king_fill: #9d4bfa;
+@icon_above_fill: #4d97ff;
+@icon_lord_fill: #4bcefa;
+@icon_vassal_fill: #fadd4b;
+@icon_below_fill: #faa24b;
+@icon_foe_fill: #fa4e4b;
+@icon_team_fill: #fa4e4b;
+@icon_team_gradient: linear-gradient(to bottom right, @icon_team_fill, @icon_team_fill 50%, #ffa7a6 55%);
+.icon_team_gradient_mixin {
+   background: @icon_team_gradient;
+   background: -moz-linear-gradient(-45deg,  @icon_team_fill 0%, @icon_team_fill 50%, #ffa7a6 54%, #ffa7a6 100%);
+   background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,@icon_team_fill), color-stop(50%,@icon_team_fill), color-stop(54%,#ffa7a6), color-stop(100%,#ffa7a6));
+   background: -webkit-linear-gradient(-45deg,  @icon_team_fill 0%,@icon_team_fill 50%,#ffa7a6 54%,#ffa7a6 100%);
+   background: -o-linear-gradient(-45deg,  @icon_team_fill 0%,@icon_team_fill 50%,#ffa7a6 54%,#ffa7a6 100%);
+   background: -ms-linear-gradient(-45deg,  @icon_team_fill 0%,@icon_team_fill 50%,#ffa7a6 54%,#ffa7a6 100%);
+   background: linear-gradient(135deg,  @icon_team_fill 0%,@icon_team_fill 50%,#ffa7a6 54%,#ffa7a6 100%);
+   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='@icon_team_fill', endColorstr='#ffa7a6',GradientType=1 );
+}
+
+html {
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+}
+
+
+blockquote {
+   padding: 0px 18px;
+}
+
+
+body {
+   overflow-x:hidden;
+}
+
+p {
+   margin-bottom: 14px;
+}
+
+.light_text {
+   color: @text-color-light
+}
+
+@default_border_radius: 5px;
+
+dd {
+   margin-bottom:15px;
+}
+
+/* login */
+
+.accounts-dialog {
+   width: 250px;
+}
+
+#login-buttons .login-button, .accounts-dialog .login-button {
+   background: @brand-primary;
+   border: 0;
+
+   &:hover {
+      background: lighten(@brand-primary, 10%);
+   }
+   &:active {
+      background: lighten(@brand-primary, 10%);
+   }
+}
+
+.pad_group {
+   padding: 5px 15px 5px 15px;
+}
+
+
+input[type="range"]::-ms-thumb {
+   background-color: #fff;
+}
+
+input[type="range"]::-ms-fill-upper {
+   background-color: #555;
+}
+
+@progress-bg: #444;

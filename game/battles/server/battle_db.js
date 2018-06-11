@@ -1,31 +1,54 @@
-BattleDb = function(x,y, unitObj) {
+BattleDb = function(x,y, unitObj, record) {
+	this.unitObj = unitObj
+	this.debug = false
+	this.x = x
+	this.y = y
+	this.record = record
+}
+
+
+BattleDb.prototype.init = function() {
 	var self = this
-	self.unitObj = unitObj
 
-	// get battle here
-	self.record = Battles.findOne({x:x, y:y})
+	self.record.currentUnits = self.getCurrentUnits()
 
-	// if there is no battle here then create one
-	if (self.record) {
-		self.record.roundNumber++
-	} else {
-		self.record = {
-			x:x,
-			y:y,
-			created_at:new Date(),
-			updated_at:new Date(),
-			roundNumber: 1,
-			deaths: [],
-			roundData: [],
-			currentUnits: self.getCurrentUnits()
-		}
-		self.record._id = Battles.insert(self.record)
+	if (self.debug) {console.log('--- round '+self.record.roundNumber+' ---')}
+}
 
-		// send new battle notification
-		_.each(self.unitObj.getAllUnits(), function(unit) {
-			self.record.unit = unit
-			notification_battle_start(unit.user_id, self.record)
-		})
+
+BattleDb.prototype.deleteBattle = function() {
+	var self = this
+
+	// make sure this is round 1
+	if (self.record.roundNumber == 1) {
+		Fights.remove({battle_id:self.record._id})
+		Battles.remove(self.record._id)
+	}
+}
+
+
+BattleDb.prototype.hasStartAlertBeenSentTo = function(unit) {
+	var self = this
+
+	var foundRecord = _.find(self.record.sentStartAlertTo, function(u) {
+		return u == unit._id
+	})
+
+	return foundRecord
+}
+
+// keep track of who we've sent battle started alert to
+// so that we don't send twice
+BattleDb.prototype.addToSentStartAlertTo = function(unit) {
+	var self = this
+
+	var foundRecord = _.find(self.record.sentStartAlertTo, function(u) {
+		return u == unit._id
+	})
+
+	if (!foundRecord) {
+		self.record.sentStartAlertTo.push(unit._id)
+		if (self.debug) {console.log(unit.username+':'+unit.name+':'+unit.type+' added to sentStartAlertTo list')}
 	}
 }
 
@@ -36,8 +59,8 @@ BattleDb.prototype.getCurrentUnits = function() {
 	var allUnits = []
 
 	_.each(self.unitObj.getAllUnits(), function(unit) {
-		if (self.unitObj.hasSoldiers(unit)) {
-			if (self.unitObj.hasEnemies(unit)) {
+//		if (self.unitObj.hasSoldiers(unit)) {
+//			if (self.unitObj.hasEnemies(unit)) {
 				var cloned = cloneObject(unit)
 				cloned.allies = self.unitObj.getAllies(unit)
 				cloned.teamFinalPower = self.unitObj.getTeamFinalPower(unit)
@@ -54,8 +77,8 @@ BattleDb.prototype.getCurrentUnits = function() {
 				cloned.onAllyCastleBonus = unit.onAllyCastleBonus
 				cloned.onAllyVillageBonus = unit.onAllyVillageBonus
 				allUnits.push(cloned)
-			}
-		}
+//			}
+//		}
 	})
 
 	return allUnits
@@ -64,61 +87,71 @@ BattleDb.prototype.getCurrentUnits = function() {
 
 
 BattleDb.prototype.endBattle = function() {
+	if (this.debug) {console.log('db endBattle called')}
 	this._trackLosses()
-	Battles.remove(this.record._id)
+	Battles.update(this.record._id, {$set: {isOver:true}})
+	this.record.isOver = true
 }
 
 
 BattleDb.prototype.saveRecord = function() {
 	var self = this
 
-	// var allUnits = []
+	var currentUnits = self.getCurrentUnits()
 
-	// _.each(self.unitObj.getAllUnits(), function(unit) {
-	// 	if (self.unitObj.hasSoldiers(unit)) {
-	// 		if (self.unitObj.hasEnemies(unit)) {
-	// 			var cloned = cloneObject(unit)
-	// 			cloned.allies = self.unitObj.getAllies(unit)
-	// 			cloned.teamFinalPower = self.unitObj.getTeamFinalPower(unit)
-	// 			cloned.teamBasePower = self.unitObj.getTeamBasePower(unit)
-	// 			cloned.teamBonus = self.unitObj.getTeamBonus(unit)
-	// 			cloned.teamNumSoldiers = self.unitObj.getTeamNumSoldiers(unit)
-	// 			cloned.enemies = self.unitObj.getEnemies(unit)
-	// 			cloned.enemyFinalPower = self.unitObj.getEnemyFinalPower(unit)
-	// 			cloned.enemyBasePower = self.unitObj.getEnemyBasePower(unit)
-	// 			cloned.enemyBonus = self.unitObj.getEnemyBonus(unit)
-	// 			cloned.enemyNumSoldiers = self.unitObj.getEnemyNumSoldiers(unit)
-	// 			cloned.castleDefenseBonus = unit.castleDefenseBonus
-	// 			cloned.villageDefenseBonus = unit.villageDefenseBonus
-	// 			cloned.onAllyCastleBonus = unit.onAllyCastleBonus
-	// 			cloned.onAllyVillageBonus = unit.onAllyVillageBonus
-	// 			allUnits.push(cloned)
-	// 		}
-	// 	}
-	// })
+	// if there is not a castle in the fight
+	// check if there is a castle in the hex
+	// if so add it so that it's listed in the report
+	var castle = self.unitObj.getCastle()
+	if (!castle) {
+		var castle_fields = {name:1, user_id:1, x:1, y:1, username:1, image:1}
+		var castle = Castles.findOne({x:self.x, y:self.y}, {fields: castle_fields})
+		if (castle) {
+			castle.type = 'castle'
+			currentUnits.push(castle)
+		}
+	}
 
 	var roundData = {
 		roundNumber: self.record.roundNumber,
-		units: self.getCurrentUnits()
+		units: self.getCurrentUnits(),
+		battle_id:self.record._id,
+		created_at: new Date(),
 	}
 
 	var set = {
 		updated_at:new Date(),
 		roundNumber: self.record.roundNumber,
 		deaths: self.record.deaths,
-		currentUnits: self.getCurrentUnits()
+		currentUnits: currentUnits,
+		sentStartAlertTo: self.record.sentStartAlertTo,
+		castleWasTaken: self.record.castleWasTaken,
+		castle_id: self.record.castle_id,
+		castleTakenByArmy_id: self.record.castleTakenByArmy_id
 	}
 
-	Battles.update(self.record._id, {$set: set, $addToSet: {roundData: roundData}})
+	Fights.insert(roundData)
+	Battles.update(self.record._id, {$set: set})
+}
+
+
+BattleDb.prototype.saveAfterCastleTaken = function() {
+	var self = this
+	var set = {
+		castleWasTaken: self.record.castleWasTaken,
+		castle_id: self.record.castle_id,
+		castleTakenByArmy_id: self.record.castleTakenByArmy_id
+	}
+	Battles.update(self.record._id, {$set: set})
 }
 
 
 BattleDb.prototype.getRecord = function() {
-	return this.record
+	return cloneObject(this.record)
 }
 
 
-BattleDb.prototype.addToLosses = function(unit, armyType, numDead) {
+BattleDb.prototype.addToLosses = function(unit, armyType, numDead, power) {
 	var self = this
 	check(unit, Object)
 	check(armyType, String)
@@ -144,6 +177,8 @@ BattleDb.prototype.addToLosses = function(unit, armyType, numDead) {
 		})
 
 		existsInDeaths[armyType] += numDead
+		existsInDeaths.power += power
+		existsInDeaths.total += numDead
 
 		self.record.deaths.push(existsInDeaths)
 
@@ -155,7 +190,9 @@ BattleDb.prototype.addToLosses = function(unit, armyType, numDead) {
 			name: unit.name,
 			type: unit.type,
 			x: unit.x,
-			y: unit.y
+			y: unit.y,
+			power: power,
+			total: numDead
 		}
 
 		_.each(s.army.types, function(type) {
@@ -196,7 +233,7 @@ BattleDb.prototype._trackLosses =  function() {
 				Meteor.users.update(user._id, {$set: inc})
 			}
 
-			worker.enqueue('update_losses_worth', {user_id: user._id})
+			Cue.addTask('update_losses_worth',{isAsync:true, unique:true}, {user_id: user._id})
 		}
 	})
 }

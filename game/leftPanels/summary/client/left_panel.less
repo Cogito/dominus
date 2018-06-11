@@ -1,0 +1,56 @@
+@import (reference) url("/lib/client/custom.bootstrap.import.less");
+
+.left_panel_content {
+	float: left;
+	height: 100%;
+	pointer-events: none;
+}
+
+#summary_panel {
+	overflow-y: auto;
+	overflow-x: hidden;
+	background-color: @panel_bg;
+	padding: @panel_padding;
+	height: 100%;
+	pointer-events: auto;
+	z-index: 10;
+	white-space:nowrap;
+	min-width:240px;
+}
+
+.summaryPanelColorBlock {
+	width:15px;
+	margin-right:5px;
+
+	&.mine {
+		background-color:@icon_mine_fill
+	}
+
+	&.king {
+		background-color:@icon_king_fill
+	}
+
+	&.lord {
+		background-color:@icon_above_fill
+	}
+
+	&.direct_lord {
+		background-color:@icon_lord_fill
+	}
+
+	&.direct_vassal {
+		background-color:@icon_vassal_fill
+	}
+
+	&.vassal {
+		background-color:@icon_below_fill
+	}
+
+	&.enemy {
+		background-color:@icon_foe_fill
+	}
+
+	&.enemy_ally {
+		background-color:@icon_team_fill
+	}
+}

@@ -4,6 +4,9 @@ Units = function(x, y) {
 	self.allUnits = []
 	self.x = x
 	self.y = y
+	self.debug = false
+
+	if (self.debug) {console.log('--- loading units ---')}
 
 	var castle_fields = {name:1, user_id:1, x:1, y:1, username:1, image:1}
 	var army_fields = {name:1, user_id:1, x:1, y:1, last_move_at:1, username:1, castle_x:1, castle_y:1, castle_id:1}
@@ -22,6 +25,7 @@ Units = function(x, y) {
 	armies.forEach(function(army) {
 		army.type = 'army'
 		self.allUnits.push(army)
+		self._debugMsg(army)
 	})
 
 	if (castle) {
@@ -37,22 +41,27 @@ Units = function(x, y) {
 
 		if (hasSoldiers) {
 			self.allUnits.push(castle)
+			self._debugMsg(castle)
 		}
 	}
 
 	if (village) {
 		village.type = 'village'
 		self.allUnits.push(village)
+		self._debugMsg(village)
 	}
 
 	// set defaults
 	_.each(self.allUnits, function(unit) {
 		// soldiers lost this round
-		unit.losses = {total:0}
+		unit.losses = {total:0, power:0}
 		_.each(s.army.types, function(type) {
 			unit.losses[type] = 0
 		})
+		unit.dead = false
 	})
+
+
 
 	// if nobody has enemies then keep everyone
 	// if someone has an enemy then remove everyone with no enemies
@@ -65,23 +74,73 @@ Units = function(x, y) {
 	self._computeBonus()
 	self._computeFinalPower()
 	self._computeLocationBonus()
+
+	if (self.debug) {console.log('--- finished loading units ---')}
 }
 
+
+Units.prototype._debugMsg = function(unit) {
+	var self = this
+
+	if (self.debug) {
+		console.log('adding '+unit.username+':'+unit.name+':'+unit.type+' to allunits')
+		var hasSoldiers = false
+		_.each(s.army.types, function(type) {
+			if (unit[type] > 0) {
+				console.log('    '+type+': '+unit[type])
+				hasSoldiers = true
+			}
+		})
+		if (!hasSoldiers) {
+			console.log('    has no soldiers')
+		}
+	}
+}
+
+
+Units.prototype.enteredBattle = function(unit) {
+	var self = this
+
+	if (self.debug) {console.log(unit.username+':'+unit.name+':'+unit.type+' entered battle')}
+
+	var record = self.battleDb.getRecord()
+	record.unit = unit
+
+	// send new battle sert if not already sent
+	if (!self.battleDb.hasStartAlertBeenSentTo(unit)) {
+		alert_battleStart(unit.user_id, unit._id, unit.type, record._id)
+		self.battleDb.addToSentStartAlertTo(unit)
+
+		// if this is a castle send alert to lords that vassal is under attack
+		if (unit.type == 'castle') {
+			var user = self.getUserOfUnit(unit._id)
+			alert_vassalIsUnderAttack(user.allies_above, user._id, record._id)
+		}
+	}
+}
+
+Units.prototype.exitedBattle = function(unit) {
+	var self = this
+
+	if (self.debug) {console.log(unit.username+':'+unit.name+':'+unit.type+' exited battle')}
+}
 
 
 
 Units.prototype._setAlliesOfDefenderAsDefenders = function() {
 	var self = this
-	
+
 	var defender = self.getDefender()
 	var allies = self.getAllies(defender)
 
 	_.each(allies, function(unit) {
 		unit.isAttacker = false
+		if (self.debug) {console.log('making '+unit.username+':'+unit.name+':'+unit.type+' also a defender')}
 	})
 
 	_.each(self.getUnitsWithSameOwner(defender), function(unit) {
 		unit.isAttacker = false
+		if (self.debug) {console.log('making '+unit.username+':'+unit.name+':'+unit.type+' also a defender')}
 	})
 }
 
@@ -97,6 +156,8 @@ Units.prototype._someoneHasEnemies = function() {
 		}
 	})
 
+	if (self.debug && !hasEnemy) {console.log('nobody has enemies')}
+
 	return hasEnemy
 }
 
@@ -106,18 +167,10 @@ Units.prototype._removeUnitsWithNoEnemies = function() {
 
 	_.each(self.allUnits, function(unit) {
 		if (!self.hasEnemies(unit)) {
+			if (self.debug) {console.log(unit.username+':'+unit.name+':'+unit.type+' has no enemies so removing from allunits')}
 			self._removeFromAllUnits(unit)
 		}
 	})
-}
-
-
-
-Units.prototype.sendNotification = function(unit) {
-	var self = this
-	var record = Battles.findOne({x:self.x, y:self.y})
-	record.unit = unit
-	notification_battle(unit.user_id, record)
 }
 
 
@@ -136,12 +189,15 @@ Units.prototype.removeDeadSoldiers = function() {
 		switch (unit.type) {
 			case 'castle':
 				Castles.update(unit._id, {$inc: inc})
+				Cue.addTask('updateNetCastle', {isAsync:true, unique:false}, {user_id: unit.user_id})
 				break
 			case 'village':
 				Villages.update(unit._id, {$inc: inc})
+				Cue.addTask('updateNetVillages', {isAsync:true, unique:false}, {user_id: unit.user_id})
 				break;
 			case 'army':
 				Armies.update(unit._id, {$inc: inc})
+				Cue.addTask('updateNetArmies', {isAsync:true, unique:false}, {user_id: unit.user_id})
 				break
 		}
 	})
@@ -154,16 +210,21 @@ Units.prototype.removeDeadUnits = function() {
 	var units = self.getAllUnits()
 	_.each(units, function(unit) {
 		if (!self.hasSoldiers(unit)) {
-			self.sendNotification(unit)
+			if (self.debug) {console.log(unit.username+':'+unit.name+':'+unit.type+' has no more soldiers')}
+			self.exitedBattle(unit)
 			self._removeFromAllUnits(unit)
 			switch(unit.type) {
 				case 'castle':
 					break
 				case 'village':
+					alert_villageDestroyed(unit.user_id, self.battleDb.getRecord()._id, unit.name)
 					Villages.remove(unit._id)
+					Cue.addTask('updateNetVillages', {isAsync:true, unique:true}, {user_id: unit.user_id})
 					break
 				case 'army':
+					alert_armyDestroyed(unit.user_id, self.battleDb.getRecord()._id, unit.name)
 					Armies.remove(unit._id)
+					Moves.remove({army_id:unit._id})
 					break;
 			}
 		}
@@ -176,10 +237,15 @@ Units.prototype.addToDead = function(unit, type, num) {
 	check(num, validNumber)
 	check(type, String)
 
-	self.battleDb.addToLosses(unit, type, num)
-
 	unit.losses[type] += num
 	unit.losses.total += num
+
+	// keep track of how much power they lost
+	var soldierPower = self.getPowerOfSoldiers(unit)
+	var power = soldierPower[type] * num
+	unit.losses.power += power
+
+	self.battleDb.addToLosses(unit, type, num, power)
 }
 
 
@@ -385,6 +451,18 @@ Units.prototype.getEnemyNumSoldiers = function(unit) {
 }
 
 
+Units.prototype.getTotalFinalPower = function() {
+	var self = this
+	var finalPower = 0
+
+	_.each(self.getAllUnits(), function(unit) {
+		finalPower += unit.final_power
+	})
+
+	return finalPower
+}
+
+
 Units.prototype.getTeamFinalPower = function(unit) {
 	var self = this
 	var final_power = 0
@@ -409,7 +487,7 @@ Units.prototype.getEnemyFinalPower = function(unit) {
 		final_power += enemy.final_power
 	})
 
-	return final_power 
+	return final_power
 }
 
 
@@ -424,7 +502,7 @@ Units.prototype.getEnemyFinalPower = function(unit) {
 // 		final_power += ally.final_power
 // 	})
 
-// 	return final_power 
+// 	return final_power
 // }
 
 
@@ -490,7 +568,7 @@ Units.prototype.getUserOfUnit = function(unit_id) {
 	})
 
 	if (unit) {
-		var user = Meteor.users.findOne(unit.user_id, {fields: {allies:1, team:1, allies_below:1, allies_above:1}})
+		var user = Meteor.users.findOne(unit.user_id, {fields: {team:1, allies_below:1, allies_above:1}})
 		if (user) {
 			return user
 		}
@@ -499,7 +577,9 @@ Units.prototype.getUserOfUnit = function(unit_id) {
 
 
 Units.prototype.hasEnemies = function(unit) {
-	return  this.getEnemies(unit).length > 0
+	var hasEnemies = this.getEnemies(unit).length > 0
+	//if (this.debug) {console.log(unit.username+':'+unit.name+':'+unit.type+' hasEnemies is '+hasEnemies)}
+	return hasEnemies
 }
 
 
@@ -586,7 +666,8 @@ Units.prototype.isAlly = function(unit, otherUnit) {
 	}
 
 	var isAlly = false
-	var user = Meteor.users.findOne(unit.user_id, {fields: {allies:1, team:1, allies_below:1, allies_above:1}})
+	var user = Meteor.users.findOne(unit.user_id, {fields: {team:1, allies_below:1, allies_above:1}})
+	var allies = _.union(user.allies_above, user.allies_below)
 
 	if (user) {
 		switch (unit.type) {
@@ -608,7 +689,7 @@ Units.prototype.isAlly = function(unit, otherUnit) {
 					}
 				} else {
 					// anyone in allies
-					if (_.indexOf(user.allies, otherUnit.user_id) != -1) {
+					if (_.indexOf(allies, otherUnit.user_id) != -1) {
 						isAlly = true
 					}
 				}
@@ -629,22 +710,26 @@ Units.prototype.isEnemy = function(unit, otherUnit) {
 		return false
 	}
 
+	// if (self.debug) {console.log('running isEnemy for '+unit.username+':'+unit.name+':'+unit.type+' and '+otherUnit.username+':'+otherUnit.name+':'+otherUnit.type)}
+
 	var isEnemy = false
-	var user = Meteor.users.findOne(unit.user_id, {fields: {allies:1, team:1, allies_below:1, allies_above:1, is_dominus:1}})
+	var user = Meteor.users.findOne(unit.user_id, {fields: {team:1, allies_below:1, allies_above:1, is_dominus:1}})
+	var allies = _.union(user.allies_below, user.allies_above)
 	var otherUser = Meteor.users.findOne(otherUnit.user_id, {fields: {is_dominus:1}})
 	if (user && otherUser) {
 
 		// dominus' armies can attack all other armies
 		if (user.is_dominus || otherUser.is_dominus) {
 			if (unit.type == 'army' && otherUnit.type == 'army') {
-				isEnemy = true	
+				// if (self.debug) {console.log('. . . '+otherUnit.username+':'+otherUnit.name+':'+otherUnit.type+' is enemy of '+unit.username+':'+unit.name+':'+unit.type+' because one side is dominus. ')}
+				isEnemy = true
 			}
 		}
 
 		if (!isEnemy) {
 			switch (unit.type) {
 				case 'castle':
-					
+
 					if (_.indexOf(user.allies_above, otherUnit.user_id) == -1) {
 						isEnemy = true
 					}
@@ -661,14 +746,19 @@ Units.prototype.isEnemy = function(unit, otherUnit) {
 							}
 						}
 					} else {
-						if (_.indexOf(user.allies, otherUnit.user_id) == -1) {
+						if (_.indexOf(allies, otherUnit.user_id) == -1) {
+							// if (self.debug) {console.log('. . . '+otherUnit.username+':'+otherUnit.name+':'+otherUnit.type+' is enemy of '+unit.username+':'+unit.name+':'+unit.type)}
 							isEnemy = true
+						} else {
+							// if (self.debug) {console.log('. . . '+otherUnit.username+':'+otherUnit.name+':'+otherUnit.type+' is NOT enemy of '+unit.username+':'+unit.name+':'+unit.type)}
 						}
 					}
 					break
 			}
 		}
-		
+
+	} else {
+		throw new Meteor.Error('Could not find both users')
 	}
 
 	return isEnemy
@@ -686,8 +776,11 @@ Units.prototype.isEnemy = function(unit, otherUnit) {
 
 Units.prototype._removeFromAllUnits = function(unit) {
 	var self = this
+
+	if (self.debug) {console.log('removing '+unit.username+':'+unit.name+':'+unit.type+' from allUnits')}
+
 	self.allUnits = _.reject(self.allUnits, function(u) {
-		if (unit == u) {
+		if (unit._id == u._id) {
 			return true
 		}
 		return false
@@ -729,14 +822,17 @@ Units.prototype._computeLocationBonus = function() {
 }
 
 
+// allies_below + self
 Units.prototype._isOnAllyCastle = function(unit) {
 	check(unit.user_id, String)
 
-	var user = this.getUserOfUnit(unit._id)
-	if (user) {
-		check(user.allies_below, Array)
-		if (user.allies_below.length > 0) {
-			if (Castles.find({x: unit.x, y: unit.y, user_id: {$in: user.allies_below}}).count() > 0) {
+	if (unit.type == 'army') {
+		var user = this.getUserOfUnit(unit._id)
+		if (user) {
+			check(user.allies_below, Array)
+			var allies = cloneArray(user.allies_below)
+			allies.push(unit.user_id)
+			if (Castles.find({x: unit.x, y: unit.y, user_id: {$in: allies}}).count() > 0) {
 				return true
 			}
 		}
@@ -748,12 +844,14 @@ Units.prototype._isOnAllyCastle = function(unit) {
 
 Units.prototype._isOnAllyVillage = function(unit) {
 	check(unit.user_id, String)
-	
-	var user = this.getUserOfUnit(unit._id)
-	if (user) {
-		check(user.allies_below, Array)
-		if (user.allies_below.length > 0) {
-			if (Villages.find({x: unit.x, y: unit.y, user_id: {$in: user.allies_below}}).count() > 0) {
+
+	if (unit.type == 'army') {
+		var user = this.getUserOfUnit(unit._id)
+		if (user) {
+			check(user.allies_below, Array)
+			var allies = cloneArray(user.allies_below)
+			allies.push(unit.user_id)
+			if (Villages.find({under_construction:false, x: unit.x, y: unit.y, user_id: {$in: allies}}).count() > 0) {
 				return true
 			}
 		}
@@ -789,7 +887,7 @@ Units.prototype._computeBonus = function() {
 
 		// bonus
 		unit.bonus = {}
-		unit.bonus.footmen = 0
+		unit.bonus.footmen = unit.basePower.footmen * unit.percentage.footmen * enemy_percentage.pikemen
 		unit.bonus.archers = unit.basePower.archers * unit.percentage.archers * enemy_percentage.footmen
 		unit.bonus.pikemen = unit.basePower.pikemen * unit.percentage.pikemen * enemy_percentage.cavalry
 		unit.bonus.cavalry = unit.basePower.cavalry * unit.percentage.cavalry * (enemy_percentage.archers + enemy_percentage.footmen)
@@ -797,19 +895,24 @@ Units.prototype._computeBonus = function() {
 
 		// catapults
 		// if there is an enemy castle of village in this hex then catapults get bonus
+		// catapults must be attacker to get bonus
+		// catapults get bonus even if building is not in fight
+		// this is to stop building from sending out units and cats losing their bonus
 		var isEnemyCastleOrVillageHere = false
 
-		if (castle && castle.user_id != unit.user_id) {
-			castle.type = 'castle'	// isEnemy needs this to be set
-			if (self.isEnemy(unit, castle)) {
-				isEnemyCastleOrVillageHere = true
+		if (unit.isAttacker) {
+			if (castle && castle.user_id != unit.user_id) {
+				castle.type = 'castle'	// isEnemy needs this to be set
+				if (self.isEnemy(unit, castle)) {
+					isEnemyCastleOrVillageHere = true
+				}
 			}
-		}
 
-		if (village && village.user_id != unit.user_id) {
-			village.type = 'village'	// isEnemy needs this to be set
-			if (self.isEnemy(unit, village)) {
-				isEnemyCastleOrVillageHere = true
+			if (village && village.user_id != unit.user_id) {
+				village.type = 'village'	// isEnemy needs this to be set
+				if (self.isEnemy(unit, village)) {
+					isEnemyCastleOrVillageHere = true
+				}
 			}
 		}
 
@@ -912,20 +1015,46 @@ Units.prototype._findAttackersAndDefender = function() {
 	// if there is a castle or a village then they are the defender
 	var castle = self.getCastle()
 	if (castle) {
+		if (self.debug) {console.log(castle.username+':'+castle.name+':'+castle.type+' is defender')}
 		castle.isAttacker = false
 		defenderFound = true
 	}
 
 	var village = self.getVillage()
 	if (village) {
+		if (self.debug) {console.log(village.username+':'+village.name+':'+village.type+' is defender')}
 		village.isAttacker = false
 		defenderFound = true
+	}
+
+	// if an army is on their own building then they are defender
+	// getCastle only gets castles in battle
+	var castleHere = Castles.findOne({x:self.x, y:self.y}, {fields: {user_id:1}})
+	var villageHere = Villages.findOne({x:self.x, y:self.y}, {fields: {user_id:1}})
+
+	if (castleHere || villageHere) {
+		_.each(this.allUnits, function(unit) {
+			if (unit.type == 'army') {
+				if (castleHere && unit.user_id == castleHere.user_id) {
+					if (self.debug) {console.log(unit.username+':'+unit.name+':'+unit.type+' is defender')}
+					unit.isAttacker = false
+					defenderFound = true
+				}
+
+				if (villageHere && unit.user_id == villageHere.user_id) {
+					if (self.debug) {console.log(unit.username+':'+unit.name+':'+unit.type+' is defender')}
+					unit.isAttacker = false
+					defenderFound = true
+				}
+			}
+		})
 	}
 
 	// if no castle or village then get the first army that arrived here
 	if (!defenderFound) {
 		var firstArmy = self._findArmyThatArrivedFirst()
 		if (firstArmy) {
+			if (self.debug) {console.log(firstArmy.username+':'+firstArmy.name+':'+firstArmy.type+' is defender')}
 			firstArmy.isAttacker = false
 		}
 	}
@@ -944,7 +1073,7 @@ Units.prototype._findArmyThatArrivedFirst = function() {
 			} else {
 				var last_move_at = moment(new Date())
 			}
-			
+
 			if (last_move_at.isBefore(oldest_date)) {
 				oldest_date = last_move_at
 				firstArmy = unit
@@ -956,3 +1085,33 @@ Units.prototype._findArmyThatArrivedFirst = function() {
 }
 
 
+
+
+// how much final power is each soldier type worth
+Units.prototype.getPowerOfSoldiers = function(unit) {
+	var soldierPower = {}
+	_.each(s.army.types, function(type) {
+		soldierPower[type] = unit.basePower[type] + unit.bonus[type]
+		if (unit.castleDefenseBonus) {
+			soldierPower[type] = soldierPower[type] * s.castle.defense_bonus
+		}
+		if (unit.villageDefenseBonus) {
+			soldierPower[type] = soldierPower[type] * s.village.defense_bonus
+		}
+		if (unit.onAllyCastleBonus) {
+			soldierPower[type] = soldierPower[type] * s.castle.ally_defense_bonus
+		}
+		if (unit.onAllyVillageBonus) {
+			soldierPower[type] = soldierPower[type] * s.village.ally_defense_bonus
+		}
+
+		if (unit[type] == 0) {
+			soldierPower[type] = 0
+		} else {
+			soldierPower[type] = soldierPower[type] / unit[type]
+		}
+
+		check(soldierPower[type], validNumber)
+	})
+	return soldierPower
+}

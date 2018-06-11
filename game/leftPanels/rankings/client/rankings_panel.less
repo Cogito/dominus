@@ -1,0 +1,59 @@
+@import (reference) url("/lib/client/custom.bootstrap.import.less");
+
+#rankings_panel {
+	overflow-y: auto;
+	overflow-x: hidden;
+	background-color: @panel_bg;
+	padding: @panel_padding;
+	height: 100%;
+	pointer-events: auto;
+	margin-left: 10px;
+	max-width: 450px;
+}
+
+#rankings_panel .panel {
+	margin-top:15px;
+}
+
+
+.vassalRank_username:before {
+	content: counter(vassal-counter) ". ";
+	counter-increment: vassal-counter;
+	color:#aaa;
+}
+.incomeRank_username:before {
+	content: counter(income-counter) ". ";
+	counter-increment: income-counter;
+	color:#aaa;
+}
+.networthRank_username:before {
+	content: counter(networth-counter) ". ";
+	counter-increment: networth-counter;
+	color:#aaa;
+}
+.lostSoldiersRank_username:before {
+	content: counter(lostSoldiers-counter) ". ";
+	counter-increment: lostSoldiers-counter;
+	color:#aaa;
+}
+.villagesRank_username:before {
+	content: counter(villages-counter) ". ";
+	counter-increment: villages-counter;
+	color:#aaa;
+}
+
+
+.rank_username {
+	white-space:nowrap;
+}
+
+.rank_numbers {
+	text-align:right;
+	white-space:nowrap;
+}
+
+.rank_buttons {
+	text-align:right;
+	white-space:nowrap;
+	width:83px !important;
+}

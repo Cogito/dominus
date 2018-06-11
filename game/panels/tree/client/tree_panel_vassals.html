@@ -1,8 +1,0 @@
-<template name="tree_panel_vassals">
-	{{#each vassals}}
-		<li>
-			{{> tree_panel_user}}
-			{{#if has_vassals num_vassals}}<ul>{{> tree_panel_vassals}}</ul>{{/if}}
-		</li>
-	{{/each}}
-</template>

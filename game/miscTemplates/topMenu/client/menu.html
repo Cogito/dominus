@@ -1,0 +1,122 @@
+<template name="menu">
+	<div id="menu">
+		<ul class="nav nav-pills">
+			<li class="{{summary_active}}">
+				<a href="#" id="show_summary_panel_button" data-toggle="tooltip" data-placement="bottom" title="Summary">
+					{{#if smallScreen}}
+						<i class="fa fa-bars fa-lg"></i>
+					{{else}}
+						Summary
+					{{/if}}
+				</a>
+			</li>
+
+			<li class="{{alerts_active}}">
+				<a href="#" id="show_alerts_panel_button" data-toggle="tooltip" data-placement="bottom" title="Alerts">
+					{{#if smallScreen}}
+						<i class="fa fa-bullhorn fa-lg"></i>
+					{{else}}
+						Alerts
+					{{/if}}
+					<span class="badge">{{#if numUnreadAlerts}}{{numUnreadAlerts}}{{/if}}</span>
+				</a>
+			</li>
+
+			<li class="{{market_active}}">
+				<a href="#" id="show_market_panel_button" data-toggle="tooltip" data-placement="bottom" title="Market">
+					{{#if smallScreen}}
+						<i class="fa fa-money fa-lg"></i>
+					{{else}}
+						Market
+					{{/if}}
+				</a>
+			</li>
+
+			<li class="{{stats_active}}">
+				<a href="#" id="show_stats_panel_button" data-toggle="tooltip" data-placement="bottom" title="Graphs">
+					{{#if smallScreen}}
+					<i class="fa fa-line-chart fa-lg"></i>
+					{{else}}
+						Graphs
+					{{/if}}
+				</a>
+			</li>
+
+			<li class="{{chatrooms_active}}">
+				<a href="#" id="show_chatrooms_panel_button" data-toggle="tooltip" data-placement="bottom" title="Chatrooms">
+					{{#if smallScreen}}
+						<i class="fa fa-comments fa-lg"></i>
+					{{else}}
+						Chatrooms
+					{{/if}}
+					<span class="badge">{{#if is_new_chat}}!{{/if}}</span>
+				</a>
+			</li>
+
+			<li class="{{forum_active}}">
+				<a href="#" id="show_forum_panel_button" data-toggle="tooltip" data-placement="bottom" title="Forums">
+					{{#if smallScreen}}
+						<i class="fa fa-pencil fa-lg"></i>
+					{{else}}
+						Forums
+					{{/if}}
+					<span class="badge">{{#if is_new_forum_post}}!{{/if}}</span>
+				</a>
+			</li>
+
+			<li class="{{rankings_active}}">
+				<a href="#" id="show_rankings_panel_button" data-toggle="tooltip" data-placement="bottom" title="Rankings">
+					{{#if smallScreen}}
+						<i class="fa fa-trophy fa-lg"></i>
+					{{else}}
+						Rankings
+					{{/if}}
+				</a>
+			</li>
+
+			<li class="{{settings_active}}">
+				<a href="#" id="show_settings_panel_button" data-toggle="tooltip" data-placement="bottom" title="Settings">
+					{{#if smallScreen}}
+						<i class="fa fa-wrench fa-lg"></i>
+					{{else}}
+						Settings
+					{{/if}}
+				</a>
+			</li>
+
+			<li class="{{help_active}}">
+				<a href="#" id="show_help_panel_button" data-toggle="tooltip" data-placement="bottom" title="Help">
+					{{#if smallScreen}}
+						<i class="fa fa-question fa-lg"></i>
+					{{else}}
+						Help
+					{{/if}}
+				</a>
+			</li>
+
+			<li class="{{tree_active}}">
+				<a href="#" id="show_tree_panel_button" data-toggle="tooltip" data-placement="bottom" title="Tree">
+					{{#if smallScreen}}
+						<i class="fa fa-sitemap fa-lg"></i>
+					{{else}}
+						Tree
+					{{/if}}
+				</a>
+			</li>
+
+			<li class="{{store_active}}">
+				<a href="#" id="show_store_panel_button" data-toggle="tooltip" data-placement="bottom" title="Store">
+					{{#if smallScreen}}
+						<i class="fa fa-photo fa-lg"></i>
+					{{else}}
+						Store
+					{{/if}}
+				</a>
+			</li>
+
+			{{#if currentUser.admin}}
+				<li class="{{admin_active}}"><a href="#" id="show_admin_panel_button">A</a></li>
+			{{/if}}
+		</ul>
+	</div>
+</template>

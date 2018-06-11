@@ -1,6 +1,37 @@
 #!/bin/bash
+# requires imagemagick
 
 i=0
+
+result[$i]=~/meteor/dominus/public/game_images/village_lvl03.png
+all[$i]=maya/renders/village_lvl3_all/render.png
+ao[$i]=maya/renders/village_lvl3_ao/render.png
+((i++))
+
+result[$i]=~/meteor/dominus/public/game_images/village_lvl02.png
+all[$i]=maya/renders/village_lvl2_all/render.png
+ao[$i]=maya/renders/village_lvl2_ao/render.png
+((i++))
+
+result[$i]=~/meteor/dominus/public/game_images/village_lvl01.png
+all[$i]=maya/renders/village_lvl1_all/render.png
+ao[$i]=maya/renders/village_lvl1_ao/render.png
+((i++))
+
+result[$i]=~/meteor/dominus/public/game_images/village_construction_lvl03.png
+all[$i]=maya/renders/village_construction_lvl3_all/render.png
+ao[$i]=maya/renders/village_construction_lvl3_ao/render.png
+((i++))
+
+result[$i]=~/meteor/dominus/public/game_images/village_construction_lvl02.png
+all[$i]=maya/renders/village_construction_lvl2_all/render.png
+ao[$i]=maya/renders/village_construction_lvl2_ao/render.png
+((i++))
+
+result[$i]=~/meteor/dominus/public/game_images/village_construction_lvl01.png
+all[$i]=maya/renders/village_construction_lvl1_all/render.png
+ao[$i]=maya/renders/village_construction_lvl1_ao/render.png
+((i++))
 
 result[$i]=~/meteor/dominus/public/game_images/army_01.png
 all[$i]=maya/renders/army_01_all/render.png
@@ -85,12 +116,6 @@ ao[$i]=maya/renders/ore_01_ao/render.png
 result[$i]=~/meteor/dominus/public/game_images/hex_ore_large_01.png
 all[$i]=maya/renders/ore_large_01_all/render.png
 ao[$i]=maya/renders/ore_large_01_ao/render.png
-((i++))
-
-
-result[$i]=~/meteor/dominus/public/game_images/village_01.png
-all[$i]=maya/renders/village_01_all/render.png
-ao[$i]=maya/renders/village_01_ao/render.png
 ((i++))
 
 result[$i]=~/meteor/dominus/public/game_images/hex_wool_01.png

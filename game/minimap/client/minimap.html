@@ -3,45 +3,31 @@
 		<svg id="minimap">
 			<polygon points="{{bg_points}}" id="minimap_bg" />
 
+			{{#each villages}}
+				{{> minimapVillage}}
+			{{/each}}
+
+			{{#each castles}}
+				{{> minimapCastle}}
+			{{/each}}
+
+			{{#each lords}}
+				{{> minimapUser}}
+			{{/each}}
+
+			{{#each allies}}
+				{{> minimapUser}}
+			{{/each}}
+
+			<g id="minimap_moves">
+				{{#each moves}}
+					<line x1="{{minimap_coord_to_pixel_x from_x from_y}}" y1="{{minimap_coord_to_pixel_y from_x from_y}}" x2="{{minimap_coord_to_pixel_x to_x to_y}}" y2="{{minimap_coord_to_pixel_y to_x to_y}}" class="minimap_move" />
+				{{/each}}
+			</g>
+
 			<g id="minimap_armies">
 				{{#each armies}}
-					<circle cx="{{minimap_coord_to_pixel_x x y}}" cy="{{minimap_coord_to_pixel_y x y}}" r="3" class="minimap_army" />
-				{{/each}}
-			</g>
-
-			<g id="minimap_villages">
-				{{#each villages}}
-					<circle cx="{{minimap_coord_to_pixel_x x y}}" cy="{{minimap_coord_to_pixel_y x y}}" r="3" class="minimap_village" />
-				{{/each}}
-			</g>
-
-			<g id="minimap_castle">
-				{{#with castle}}
-					<circle cx="{{minimap_coord_to_pixel_x x y}}" cy="{{minimap_coord_to_pixel_y x y}}" r="3" class="minimap_castle" />
-				{{/with}}
-			</g>
-
-			<g id="minimap_lords">
-				{{#each lords}}
-					{{#if is_king}}
-						<circle cx="{{minimap_coord_to_pixel_x x y}}" cy="{{minimap_coord_to_pixel_y x y}}" r="3" class="minimap_dominus" />
-					{{else}}
-						{{#if my_lord}}
-							<circle cx="{{minimap_coord_to_pixel_x x y}}" cy="{{minimap_coord_to_pixel_y x y}}" r="3" class="minimap_my_lord" />
-						{{else}}
-							<circle cx="{{minimap_coord_to_pixel_x x y}}" cy="{{minimap_coord_to_pixel_y x y}}" r="3" class="minimap_lords" />
-						{{/if}}
-					{{/if}}
-				{{/each}}
-			</g>
-
-			<g id="minimap_vassals">
-				{{#each allies}}
-					{{#if direct_vassal}}
-						<circle cx="{{minimap_coord_to_pixel_x x y}}" cy="{{minimap_coord_to_pixel_y x y}}" r="3" class="minimap_direct_vassal" />
-					{{else}}
-						<circle cx="{{minimap_coord_to_pixel_x x y}}" cy="{{minimap_coord_to_pixel_y x y}}" r="3" class="minimap_vassal" />
-					{{/if}}
+					<circle cx="{{minimap_coord_to_pixel_x x y}}" cy="{{minimap_coord_to_pixel_y x y}}" r="2" class="minimap_army" />
 				{{/each}}
 			</g>
 
@@ -54,4 +40,17 @@
 			</defs>
 		</svg>
 	</div>
+</template>
+
+
+<template name="minimapVillage">
+	<circle cx="{{minimap_coord_to_pixel_x x y}}" cy="{{minimap_coord_to_pixel_y x y}}" r="4" class="minimap_village {{relationship user_id}}" />
+</template>
+
+<template name="minimapCastle">
+	<circle cx="{{minimap_coord_to_pixel_x x y}}" cy="{{minimap_coord_to_pixel_y x y}}" r="4" class="minimap_castle {{relationship user_id}}" />
+</template>
+
+<template name="minimapUser">
+	<circle cx="{{minimap_coord_to_pixel_x x y}}" cy="{{minimap_coord_to_pixel_y x y}}" r="4" class="minimap_castle {{relationship _id}}" />
 </template>

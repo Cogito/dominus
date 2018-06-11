@@ -1,8 +1,0 @@
-<template name="not_sent_army">
-	<a href="" class="sent_army_goto_from_link">{{vars.from.username}}</a> sent <a href="" class="sent_army_goto_to_link">{{vars.to.username}}</a> an army.
-	<ul>
-		{{#each s.army.types}}
-			{{#if has_army}}<li>{{capitalize this}}: {{num_army}}</li>{{/if}}
-		{{/each}}
-	</ul>
-</template>

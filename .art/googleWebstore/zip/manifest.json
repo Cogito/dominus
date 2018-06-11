@@ -1,0 +1,20 @@
+{
+    "name": "Dominus",
+    "description": "A free open source multiplayer browser strategy game. Gain vassals and climb the tree to become the Dominus.",
+    "version": "1.0.0.1",
+    "manifest_version": 2,
+    "icons": {
+        "128": "icon_128.png"
+    },
+    "app": {
+        "urls": [
+            "*://dominusgame.net/"
+        ],
+        "launch": {
+            "web_url": "https://dominusgame.net/"
+        }
+    },
+    "permissions": [
+        "notifications"
+    ]
+}

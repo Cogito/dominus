@@ -1,0 +1,119 @@
+<template name="help_panel">
+	<div id="help_panel">
+		<div class="panel_title"><i class="fa fa-question fa-lg"></i> &nbsp;Help</div>
+
+		<div class="panel-group" id="accordion_help">
+
+			{{> help_objective}}
+			{{> help_howToStart}}
+			{{> help_colors}}
+			{{> help_market}}
+			{{> help_castles}}
+			{{> help_armies}}
+			{{> help_villages}}
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<a data-toggle="collapse" data-parent="#accordion_help" href="#help-lords">
+						Lords, Vassals, Kings, and the Dominus
+					</a>
+				</div>
+				<div id="help-lords" class="panel-collapse collapse">
+					<div class="panel-body">
+						<p>If you attack someone's castle and win then you become their lord and they become your vassal.</p>
+
+						<p>Vassals send {{floatToPercentage s.income.percentToLords}}% of their income to each person above them in the tree.  If there are more than 5 people above them then they send {{floatToPercentage s.income.maxToLords}}% / number_of_people_above to each person above them.</p>
+
+						<p>You can send gold to your vassals.  You cannot send gold to your enemies or anyone above you in the tree.  To send someone gold click on the "Send Gold" button at their castle.</p>
+						<p>If you do not have a lord then you are a king.  If you have a lord and you attack their castle and win then his lord will become your lord.</p>
+						<p>You cannot attack anyone below you in the tree.  These will have a yellow or orange square or flag.</p>
+						<p>You can attack the castle of people above you in the tree but you cannot attack their armies or villages.  These will have a blue or purple square or flag.</p>
+					</div>
+				</div>
+			</div>
+
+			{{> help_battles}}
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<a data-toggle="collapse" data-parent="#accordion_help" href="#help-win">
+						Winning the Game
+					</a>
+				</div>
+				<div id="help-win" class="panel-collapse collapse">
+					<div class="panel-body">
+						<p>When someone becomes the Dominus a {{date_duration_humanize s.time_til_game_end_when_new_dominus}} countdown starts.  If nobody else becomes the Dominus before the countdown ends then the last person who was the Dominus wins the game.  If someone new becomes the Dominus then the {{date_duration_humanize s.time_til_game_end_when_new_dominus}} countdown is restarted.</p>
+						<p>The current countdown is in the alerts panel.</p>
+						<p>The winner of the game gets the prize pool.  Check out the store panel for more info on the prize pool.</p>
+						<p>While you are the Dominus your armies are able to attack anyone else's armies.</p>
+						<p>After someone wins the game will end and a new one will start.  This may not happen exactly when the countdown ends.  It will happen as soon as Danimal has time.  An email will be sent to everyone letting them know that a new game has started.</p>
+					</div>
+				</div>
+			</div>
+
+			{{> help_inactive}}
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<a data-toggle="collapse" data-parent="#accordion_help" href="#help-dupes">
+						Duplicate Accounts
+					</a>
+				</div>
+				<div id="help-dupes" class="panel-collapse collapse">
+					<div class="panel-body">
+						<p>Duplicate accounts are not allowed.</p>
+						<p>Email verification is required when someone creates an account with a password (not for Google or Facebook logins).  Players who haven't verified their email will not receive income.  The castle's info panel shows if a player hasn't yet verified their email.  This is visible to everyone.</p>
+						<p>Gold transfers and buying soldiers for vassals are public.  Everyone can see alerts for these in the global alerts panel.</p>
+						<p>If you suspect someone as having a duplicate account please report them.</p>
+						<p>If someone is actively playing more than one account then both accounts will probably be deleted.</p>
+						<p>If you wish to start another account please first delete your current account.</p>
+						<p>To delete your account click the "Delete Account" button in the settings.</p>
+					</div>
+				</div>
+			</div>
+
+			{{> help_faq}}
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<a data-toggle="collapse" data-parent="#accordion_help" href="#help-etc">
+						Links and Things
+					</a>
+				</div>
+				<div id="help-etc" class="panel-collapse collapse">
+					<div class="panel-body">
+						<p>Dominus on <a href="https://github.com/dan335/dominus">Github</a>.</p>
+						<p>Issues on <a href="https://trello.com/b/q40VdLBJ/dominus">Trello</a>.</p>
+						<p>Follow <a href="https://twitter.com/DominusGame">@DominusGame</a> on Twitter.</p>
+						<p>Dominus on <a href="https://www.facebook.com/dominusgame">Facebook</a></p>
+						<p>Dominus <a href="https://medium.com/@Dominus">Blog</a> on Medium</p>
+						<p>Domin on the <a href="https://chrome.google.com/webstore/detail/dominus/pbnhiikmohpnlplijjljcamfnkllinic">Chrome app store</a></p>
+
+
+						<br>
+						<a href="https://docs.google.com/spreadsheets/d/1XjlgPet_nngzJ6oeLkKKggn9evIa0raAA5ag-DQ01aE/">Battle Calculator by ShadowHawk</a> Losses are a bit off.<br>
+						<br>
+						These may no longer be correct<br>
+						<a href="https://docs.google.com/spreadsheets/d/1TBZwucFoGp8xyaaNmGaHzI_-KO5N2zg4knNRwR8-e8w/edit?usp=sharing" target="_blank">Battle and Trade Calculator by Cogito</a><br>
+						<a href="https://docs.google.com/spreadsheets/d/1I8_87eal1dDPt1Niu1vuJbngRGsYxJhX7JSJXNKaJpI/edit#gid=0" target="_blank">Battle Calculator by Ollyfg</a>
+
+						<br><br>
+
+						<p><a href="https://www.desmos.com/calculator/ltoauhpcdf">Market Formulas</a></p>
+
+						<p>
+							<a href="/privacy">Privacy Policy</a><br>
+							<a href="/terms">Terms of Service</a>
+						</p>
+
+						<p><a href="http://newrpg.com/browser-games/dominus/">NewRPG</a></p>
+
+						<p><a href="http://gametrove.net">Gametrove</a></p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+</template>

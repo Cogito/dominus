@@ -1,48 +1,136 @@
 <template name="landing">
-<div id="landing">
-
-	<div id="landingContentTop">
-		<div id="landingDominus">Dominus</div>
-		<div class="landingLargeText" style="text-align:center;">
-			A free <a href="https://github.com/dan335/dominus">open source</a> multiplayer strategy game.
-		</div>
-	</div>
-
-	<div id="landingContent">
-		<div class="landingPad">
-			<div class="landingLargeText">
-				Grow in power by conquering castles. &nbsp; Make everyone in the game your vassal to become the Dominus.
+	<div id="landing">
+		<div id="landingTop">
+			<div id="logo">
+				DOMINUS
 			</div>
-			<br>
-			Game {{s.game_number}} started {{date_from_now s.game_start_date}}.
+			A free open source multiplayer strategy game.
 		</div>
-	</div>
 
-	<div id="landingForm">
-		<div class="landingPad">
+		<div id="landingBanner">
+			<div class="landingPad">
+				<img src="/landing/landingScreenshot.jpg" id="gameScreenshot" alt="Dominus Screenshot" width=440 height=297>
+
+				<div style="margin-top:20px;">
+					Grow in power by conquering castles.  Gain vassals until you can overthrow your lord and climb the tree to become the Dominus.
+				</div>
+
+				<div style="text-align:left;margin-top:20px;">
+					{{startText}}
+				</div>
+			</div>
+		</div>
+
+		<div class="landingPad" id="passwordLoginContainer">
 			{{> UI.dynamic template=form}}
 		</div>
+
+		<div id="landingFooter">
+			<div class="landingPad" style="text-align:center;">
+
+				<a href="https://github.com/dan335/dominus">
+					<span class="fa-stack fa-2x">
+						<i class="fa fa-circle fa-stack-2x"></i>
+						<i class="fa fa-github fa-stack-1x fa-inverse"></i>
+					</span>
+				</a>
+
+				<a href="https://trello.com/b/q40VdLBJ/dominus">
+					<span class="fa-stack fa-2x">
+						<i class="fa fa-circle fa-stack-2x"></i>
+						<i class="fa fa-trello fa-stack-1x fa-inverse"></i>
+					</span>
+				</a>
+
+
+				<a href="https://twitter.com/DominusGame">
+					<span class="fa-stack fa-2x">
+						<i class="fa fa-circle fa-stack-2x"></i>
+						<i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+					</span>
+				</a>
+
+				<a href="https://medium.com/@Dominus">
+					<span class="fa-stack fa-2x">
+						<i class="fa fa-circle fa-stack-2x"></i>
+						<i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+					</span>
+				</a>
+
+				<a href="https://www.facebook.com/dominusgame">
+					<span class="fa-stack fa-2x">
+						<i class="fa fa-circle fa-stack-2x"></i>
+						<i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+					</span>
+				</a>
+
+				<br><br><br>
+				<a href="/privacy">Privacy Policy</a>
+				-
+				<a href="/terms">Terms of Service</a>
+			</div>
+		</div>
+
 	</div>
-
-	<img src="/landing/mapBg.jpg" id="landingBg" alt="">
-
-</div>
 </template>
 
 
 <template name="landingCreateAccount">
-	<div class="loginTitle">Create an an account to start playing.</div>
-	<br>
-	{{> aCreateAccount}}
-	<br>
-	<div class="loginLink"><a href="" id="landingSigninLink">Sign In</a></div>
+	{{#if serverAtMaxPlayers}}
+
+		<h3>Dominus is full.</h3>
+		<br>
+
+		If you would like to be notified when the next game starts add your email to the mailing list.
+
+		<br><br>
+
+		{{> MailChimpListSubscribe}}
+
+		<br>
+		<div class="loginLink"><a href="" id="landingSigninLink">Sign In</a></div>
+
+	{{else}}
+
+		{{> aSocialError}}
+		{{> aGoogleButton}}
+		{{> aFacebookButton}}
+
+		<br>
+		<div class="divider">
+			<hr class="left">or<hr class="right"><div class="after"></div>
+		</div>
+		<br>
+
+		<div class="loginTitle">Create an an account.</div>
+		<br>
+
+		<div class="formContainer">
+			{{> aCreateAccount}}
+		</div>
+		<br>
+		<div class="loginLink"><a href="" id="landingSigninLink">Sign In</a></div>
+
+	{{/if}}
 </template>
 
 
 <template name="landingSignin">
+	{{> aSocialError}}
+	{{> aGoogleButton}}
+	{{> aFacebookButton}}
+
+	<br>
+	<div class="divider">
+		<hr class="left">or<hr class="right"><div class="after"></div>
+	</div>
+	<br>
+
 	<div class="loginTitle">Sign In</div>
 	<br>
-	{{> aSignin}}
+	<div class="formContainer">
+		{{> aSignin}}
+	</div>
 	<br>
 	<div class="loginLink"><a href="" id="landingCreateAccountLink">Create Account</a></div>
 	<div class="loginLink"><a href="" id="landingForgotPasswordLink">Forgot Password</a></div>

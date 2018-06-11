@@ -25,6 +25,13 @@ UI.registerHelper('date_duration_humanize', function(ms) {
 	return moment.duration(ms).humanize()
 })
 
+UI.registerHelper('dateUnixOffset', function(date) {
+	return new Date(date).getTime()
+})
+
+UI.registerHelper('greater_than_zero', function(num) {
+	return num > 0
+})
 
 
 
@@ -60,4 +67,36 @@ UI.registerHelper('round_2', function(num) {
 
 UI.registerHelper('capitalize', function(words) {
 	return _.capitalize(words)
+})
+
+UI.registerHelper('autolink', function(text, escape) {
+	if (escape || escape === undefined){
+		text = UI._escape(text)
+	}
+
+	return new Spacebars.SafeString(
+		Autolinker.link(hex_link(text), {twitter: false})
+	);
+})
+
+// 1.25 = 25%
+UI.registerHelper('multiplierToPercentage', function(float) {
+	check(float, validNumber)
+	return (float - 1) * 100
+})
+
+// 0.25 = 25%
+UI.registerHelper('floatToPercentage', function(float) {
+	check(float, validNumber)
+	return float * 100
+})
+
+
+Session.setDefault('windowHasFocus', true)
+jQuery(document).ready(function() {
+	jQuery(window).bind('focus', function(event) {
+		Session.set('windowHasFocus', true)
+	}).bind('blur', function(event) {
+		Session.set('windowHasFocus', false)
+	})
 })

@@ -1,0 +1,62 @@
+<template name="store_panel">
+	<div id="store_panel">
+		<div class="panel_title"><i class="fa fa-photo fa-lg"></i> &nbsp;Store</div>
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Prize Pool
+			</div>
+			<div class="panel-body" style="text-align:center;">
+				<h4>${{round_2 prize_pool}}</h4>
+				25% of purchases go to the prize pool.  The prize pool goes to the winner of the game.
+			</div>
+		</div>
+
+		{{#each _store.castles.types_not_free}}
+			{{> store_panel_item type='castles' id=this}}
+		{{/each}}
+
+		<div class="panel panel-default panel-body">
+			<div class="alert alert-danger" id="donation_error_alert" style="display:none;"></div>
+			<div class="alert alert-success" id="donation_success_alert" style="display:none;"></div>
+			<div style="text-align:center;">Dominus is a free game.<br>Please donate if you enjoy it.  Thanks.</div>
+			<br>
+
+			<button class="btn btn-primary btn-block store_donate_button" type="button" data-amount="2">Donate $2 to {{game_name}}</button>
+			<button class="btn btn-primary btn-block store_donate_button" type="button" data-amount="10">Donate $10 to {{game_name}}</button>
+			<button class="btn btn-primary btn-block store_donate_button" type="button" data-amount="50">Donate $50 to {{game_name}}</button>
+
+			<br>
+
+			<p>{{percentToWinner}}% goes to the prize pool and {{percentToDev}}% goes to the developer.</p>
+
+			<input type="range" data-type="{{this}}" id="donatePercentage" value="25" min="0" step="1" max="50">
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				FAQ
+			</div>
+			<div class="panel-body">
+				<dl>
+					<dt>Do purchases affect gameplay?</dt>
+					<dd>No, puchases are cosmetic only.</dd>
+					
+					<dt>Is my credit card information secure?</dt>
+					<dd>Yes.  Payment processing is handled by <a href="https://stripe.com">Stripe</a>.  Your credit card number is never sent to {{game_name}}' server or stored in {{game_name}}' database.</dd>
+
+					<dt>Who gets the prize pool?</dt>
+					<dd>The prize pool is awarded to the winner of the game.</dd>
+
+					<dt>How is the prize pool paid?</dt>
+					<dd>Paypal.  If you need it sent some other way we'll figure something out.</dd>
+
+					<dt>How do I change my castle?</dt>
+					<dd>After you purchase a new castle click on your castle in the map.  In the right panel there will be a place to set the image.</dd>
+
+				</dl>
+			</div>
+		</div>
+
+	</div>
+</template>

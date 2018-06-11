@@ -1,0 +1,29 @@
+@import (reference) url("/lib/client/custom.bootstrap.import.less");
+
+#stats_panel {
+	overflow-y: auto;
+	overflow-x: hidden;
+	background-color: @panel_bg;
+	padding: @panel_padding;
+	height: 100%;
+	pointer-events: auto;
+	margin-left: 10px;
+	width: 500px;
+}
+
+.dailystats_chart {
+	height: 300px;
+	& text {
+		fill: @text-color;
+	}
+	& .nvtooltip {
+		background-color: rgba(20,20,20,0.6);
+		color: @text-color;
+	}
+	& .nvd3 .nv-axis line {
+		stroke: #666 !important;
+	}
+	& .nvd3 .nv-axis path {
+		stroke: #666;
+	}
+}

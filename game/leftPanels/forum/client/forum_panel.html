@@ -1,0 +1,139 @@
+<template name="forum_panel">
+	<div id="forum_panel">
+		<div class="panel_title"><i class="fa fa-pencil fa-lg"></i> &nbsp;Forums</div>
+
+
+		{{#if show_forums}}
+			<div class="panel panel-default">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th></th>
+							<th>Threads</th>
+							<th>Messages</th>
+						</tr>
+					</thead>
+					<tbody>
+						{{#each forums}}
+							<tr>
+								<td>
+									<div class="forum_name">
+										{{#if is_new_forum_post _id}}
+											<span class="badge">!</span>
+										{{/if}}
+										<a href="" class="forum_link" data-id="{{_id}}">{{name}}</a>
+									</div>
+									<div>{{{description}}}</div>
+									<div class="forum_date">
+										Latest Post {{date_calendar updated_at}}
+									</div>
+								</td>
+								<td style="text-align:center;vertical-align:middle;" class="forum_name">{{numThreads}}</td>
+								<td style="text-align:center;vertical-align:middle;" class="forum_name">{{numMessages}}</td>
+							</tr>
+						{{else}}
+							<tr>
+								<td>Loading...</td>
+							</tr>
+						{{/each}}
+					</tbody>
+				</table>
+			</div>
+		{{/if}}
+
+		{{#if show_threads}}
+			<ol class="breadcrumb">
+				<li><a href="" class="forums_link">Forums</a></li>
+				<li>{{current_forum.name}}</li>
+			</ol>
+
+			<div class="pad_group">
+				<button class="btn btn-primary" type="button" id="forum_show_new_thread_button">Submit New Thread</button>
+				<button class="btn btn-primary" type="button" id="forum_mark_all_read_button">Mark All as Read</button>
+			</div>
+
+			<div class="panel panel-default" id="new_thread_form" style="display:none;">
+				<div class="panel-heading">
+					Post a New Thread in {{current_forum.name}}
+				</div>
+				<div class="panel-body">
+					<div class="alert alert-danger" id="forum_thread_error_alert" style="display:none;"></div>
+					<div class="form-group">
+						<input class="form-control" type="text" placeholder="Title" id="forum_new_thread_title">
+					</div>
+					<div class="form-group">
+						<textarea class="form-control" placeholder="Type your message here." id="forum_new_thread_message" rows=5></textarea>
+					</div>
+					<div class="form-group">
+						<button class="btn btn-primary" type="button" id="forum_submit_thread_button">Submit New Thread</button>
+					</div>
+				</div>
+			</div>
+
+			<br>
+
+			<div class="panel panel-default">
+				<table class="table table-striped table-condensed">
+					<thead>
+						<tr>
+							<th></th>
+							<th>Messages</th>
+							<th>Views</th>
+						</tr>
+					</thead>
+					<tbody>
+						{{#each threads}}
+							{{> forum_thread}}
+						{{else}}
+							<tr>
+								<td colspan="4">
+									No threads in this forum yet.
+								</td>
+							</tr>
+						{{/each}}
+					</tbody>
+				</table>
+			</div>
+
+		{{/if}}
+
+		{{#if show_messages}}
+			<ol class="breadcrumb">
+				<li><a href="" class="forums_link">Forums</a></li>
+				<li><a href="" class="forum_link" data-id="{{current_forum._id}}">{{current_forum.name}}</a></li>
+				<li>{{current_thread.name}}</li>
+			</ol>
+
+			<div class="list-group">
+				{{#each messages}}
+					{{> forum_message}}
+				{{else}}
+					<p>Loading...</p>
+				{{/each}}
+			</div>
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					Reply to Thread
+				</div>
+				<div class="panel-body">
+					<div class="alert alert-danger" id="forum_message_error_alert" style="display:none;"></div>
+					<div class="form-group">
+						<textarea class="form-control" placeholder="Type your message here." id="forum_new_message" rows=8></textarea>
+					</div>
+					<div class="form-group">
+						<button class="btn btn-primary" type="button" id="forum_submit_message_button">Submit Reply</button>
+					</div>
+				</div>
+			</div>
+
+			<br>
+
+			<ol class="breadcrumb">
+				<li><a href="" class="forums_link">Forums</a></li>
+				<li><a href="" class="forum_link" data-id="{{current_forum._id}}">{{current_forum.name}}</a></li>
+				<li>{{current_thread.name}}</li>
+			</ol>
+		{{/if}}
+	</div>
+</template>

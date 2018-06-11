@@ -1,0 +1,13 @@
+new round
+round.add army
+round.add castle
+round.fight
+
+new battle(previous battle record or null)
+battle.addround(round.results)
+
+round doesn't know anything about which round it is or saving
+round can be used for a battle calculator
+
+
+hooks on unts when they enter, exit battle

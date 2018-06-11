@@ -3,6 +3,9 @@
 		<div id="admin_container">
 			{{> admin_menu}}
 
+			{{> MailChimpListsRefresh}}
+			{{> MailChimpLists}}
+
 			<pre>{{#each users}}{{emails.[0].address}}	{{username}}	{{_id}}
 {{/each}}</pre>
 		</div>

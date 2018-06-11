@@ -1,6 +1,34 @@
 var minimap_size = 300
 
+UI.registerHelper('minimap_coord_to_pixel_x', function(x,y) {
+	check(x, validNumber)
+	check(y, validNumber)
+
+	var hex_size = get_hex_size()
+	var coords = minimap_coordinates_to_grid(x, y, hex_size)
+	return coords.x
+})
+
+UI.registerHelper('minimap_coord_to_pixel_y', function(x,y) {
+	check(x, validNumber)
+	check(y, validNumber)
+
+	var hex_size = get_hex_size()
+	var coords = minimap_coordinates_to_grid(x, y, hex_size)
+	return coords.y
+})
+
+UI.registerHelper('relationship', function(user_id) {
+	return getUnitRelationType(user_id)
+})
+
+
+
 Template.minimap.helpers({
+	moves: function() {
+		return Moves.find()
+	},
+
 	bg_points: function() {
 		var points = ''
 		for (var i = 0; i < 6; i++) {
@@ -19,59 +47,24 @@ Template.minimap.helpers({
 		return points
 	},
 
-	castle: function() {
-		return Castles.findOne({user_id: Meteor.userId()}, {fields: {x:1, y:1}})
+	castles: function() {
+		return LeftPanelCastle.find()
 	},
 
 	villages: function() {
-		return Villages.find({user_id: Meteor.userId()}, {fields: {x:1, y:1}})
+		return LeftPanelVillages.find()
 	},
 
 	armies: function() {
-		return Armies.find({user_id: Meteor.userId()}, {fields: {x:1, y:1}})
+		return LeftPanelArmies.find({}, {fields: {x:1, y:1}})
 	},
 
 	lords: function() {
-		var user = Meteor.users.findOne(Meteor.userId(), {fields: {lord:1}})
-		if (user) {
-			return LeftPanelLords.find().map(function(u) {
-				if (user.lord == u._id) {
-					u.my_lord = true
-				} else {
-					u.my_lord = false
-				}
-				return u
-			})
-		}
+		return LeftPanelLords.find()
 	},
 
 	allies: function() {
-		var user = Meteor.users.findOne(Meteor.userId(), {fields: {vassals:1}})
-		if (user) {
-			return LeftPanelAllies.find().map(function(u) {
-				if (_.indexOf(user.vassals, u._id) == -1) {
-					u.direct_vassal = false
-				} else {
-					u.direct_vassal = true
-				}
-				return u
-			})
-		}
-
-
 		return LeftPanelAllies.find()
-	},
-
-	minimap_coord_to_pixel_x: function(x,y) {
-		var hex_size = get_hex_size()
-		var coords = minimap_coordinates_to_grid(x, y, hex_size)
-		return coords.x
-	},
-
-	minimap_coord_to_pixel_y: function(x,y) {
-		var hex_size = get_hex_size()
-		var coords = minimap_coordinates_to_grid(x, y, hex_size)
-		return coords.y
 	},
 
 	viewport_size: function() {
@@ -80,11 +73,13 @@ Template.minimap.helpers({
 
 	viewport_position: function() {
 		var center_hex = Session.get('center_hex')
-		var viewport_size = get_viewport_size()
-		var coords = minimap_coordinates_to_grid(center_hex.x, center_hex.y, hex_size)
-		coords.x = coords.x - viewport_size.width/2
-		coords.y = coords.y - viewport_size.height/2
-		return coords
+		if (center_hex) {
+			var viewport_size = get_viewport_size()
+			var coords = minimap_coordinates_to_grid(center_hex.x, center_hex.y, hex_size)
+			coords.x = coords.x - viewport_size.width/2
+			coords.y = coords.y - viewport_size.height/2
+			return coords
+		}
 	}
 })
 
@@ -100,14 +95,14 @@ Template.minimap.events({
 })
 
 
-Template.minimap.rendered = function() {
+Template.minimap.created = function() {
 	var self = this
 
 	this.autorun(function() {
 		Meteor.subscribe('minimap_map_size')
 	})
 
-	self.deps_set_hex_size = Deps.autorun(function() {
+	this.autorun(function() {
 		var map_size = Settings.findOne({name:'map_size'})
 		if (map_size && map_size.value) {
 			var hex_size = ((minimap_size / 2) / map_size.value) / 2
@@ -115,39 +110,29 @@ Template.minimap.rendered = function() {
 		}
 	})
 
-	self.deps_viewport_size = Deps.autorun(function() {
+	this.autorun(function() {
 		var mini_hex_size = get_hex_size()
 		var canvas_size = Session.get('canvas_size')
-		var hex_scale = get_hex_scale()
+		var hex_scale = Session.get('hexScale')
 
-		var hex_size = s.hex_size * hex_scale
+		if (canvas_size && hex_scale) {
+			var hex_size = s.hex_size * hex_scale
 
-		var hex_width = hex_size * 2
-		var hex_height = Math.sqrt(3)/2 * hex_width
+			var hex_width = hex_size * 2
+			var hex_height = Math.sqrt(3)/2 * hex_width
 
-		var mini_hex_width = mini_hex_size * 2
-		var mini_hex_height = Math.sqrt(3)/2 * mini_hex_width
+			var mini_hex_width = mini_hex_size * 2
+			var mini_hex_height = Math.sqrt(3)/2 * mini_hex_width
 
-		var tiles_onscreen_wide = canvas_size.width / (hex_size * 3/2)
-		var tiles_onscreen_high = canvas_size.height / ((Math.sqrt(3) * s.hex_squish) * hex_size)
+			var tiles_onscreen_wide = canvas_size.width / (hex_size * 3/2)
+			var tiles_onscreen_high = canvas_size.height / ((Math.sqrt(3) * s.hex_squish) * hex_size)
 
-		 var mini_canvas_width = (canvas_size.width / hex_width) * mini_hex_width
-		 var mini_canvas_height = (canvas_size.height / hex_height) * mini_hex_height
+			var mini_canvas_width = (canvas_size.width / hex_width) * mini_hex_width
+			var mini_canvas_height = (canvas_size.height / hex_height) * mini_hex_height
 
-		 set_viewport_size(mini_canvas_width, mini_canvas_height)
+			set_viewport_size(mini_canvas_width, mini_canvas_height)
+		}
 	})
-}
-
-
-Template.minimap.destroyed = function() {
-	var self = this
-
-	if (self.deps_set_map_max_x) {
-		self.deps_set_hex_size.stop()
-	}
-	if (self.deps_viewport_size) {
-		self.deps_viewport_size.stop()
-	}
 }
 
 
@@ -181,7 +166,7 @@ get_hex_size = function() {
 }
 
 set_hex_size = function(num) {
-	check(num, Number)
+	check(num, validNumber)
 	if (hex_size != num) {
 		hex_size = num
 		hex_size_dep.changed()
@@ -192,8 +177,8 @@ set_hex_size = function(num) {
 
 
 var minimap_coordinates_to_grid = function(x, y, hex_size) {
-	check(x, Number)
-	check(y, Number)
+	check(x, validNumber)
+	check(y, validNumber)
 
 	var pixel_x = hex_size * 3/2 * x
 	var pixel_y = hex_size * (Math.sqrt(3) * s.hex_squish) * (y + x/2)

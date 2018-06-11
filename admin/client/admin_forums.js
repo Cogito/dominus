@@ -14,17 +14,21 @@ Template.adminForums.events({
 	},
 
 	'click #delete_forum_button': function(event, template) {
-		var id = $(event.currentTarget).attr('data-id')
+		var id = event.currentTarget.getAttribute('data-id')
 		Meteor.call('admin_delete_forum', id)
 	},
 
 	'click #up_forum_button': function(event, template) {
-		var id = $(event.currentTarget).attr('data-id')
+		var id = event.currentTarget.getAttribute('data-id')
 		Meteor.call('admin_forum_move_up', id)
 	},
 
 	'click #down_forum_button': function(event, template) {
-		var id = $(event.currentTarget).attr('data-id')
+		var id = event.currentTarget.getAttribute('data-id')
 		Meteor.call('admin_forum_move_down', id)
 	},
+
+	'click #setupDefaultButton': function(event, template) {
+		Meteor.call('admin_setupDefaultForums')
+	}
 })

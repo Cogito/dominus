@@ -1,0 +1,17 @@
+<template name="ga_mapExpanded">
+    {{> ga_titleTemplate title=title iconName='fa-globe' date=created_at}}
+    <div class="alertAnimationWrapper">
+        {{#if isOpen}}
+            <div class="alertBody">
+                The land of Dominus has grown.  There are now {{round vars.numRings}} rings and {{round vars.numHexes}} hexes.
+
+                <br><br>
+
+                <div class="light_text">The map grows as people join the game.  If you're searching for a good spot to build a village try the edge of the map.</div>
+
+                <br><br>
+                <a href="/alert/{{_id}}">link for sharing</a>
+            </div>
+        {{/if}}
+    </div>
+</template>
